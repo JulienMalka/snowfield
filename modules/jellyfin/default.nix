@@ -1,0 +1,41 @@
+{ lib, pkgs, config, ... }:
+with lib;
+let 
+  cfg = config.luj.jellyfin;
+  port = 8096;
+in {
+
+  options.luj.jellyfin = { 
+    enable = mkEnableOption "activate jellyfin service"; 
+    nginx.enable = mkEnableOption "activate nginx";
+    nginx.subdomain = mkOption {
+      type = types.str;
+    };
+  };
+
+  config = mkIf cfg.enable (
+    mkMerge [{ 
+    services.jellyfin = {
+      enable = true;
+      group = "tv";
+      package = pkgs.jellyfin; 
+    };
+    networking.firewall = { allowedTCPPorts = [ port ]; };
+  } 
+
+    (mkIf cfg.nginx.enable {
+      services.nginx.virtualHosts."${cfg.nginx.subdomain}.julienmalka.me" = {
+        enableACME = true;
+        forceSSL = true;
+        locations."/" = {
+          proxyPass = "http://localhost:${toString port}";
+        };
+      };
+
+    })
+  ]);
+    
+
+
+  
+}
