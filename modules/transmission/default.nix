@@ -31,6 +31,7 @@ in {
   } 
 
     (mkIf cfg.nginx.enable {
+      luj.nginx.enable = true;
       services.nginx.virtualHosts."${cfg.nginx.subdomain}.julienmalka.me" = {
         enableACME = true;
         forceSSL = true;

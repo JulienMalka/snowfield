@@ -92,22 +92,6 @@
         "type": "github"
       }
     },
-    "nixos": {
-      "locked": {
-        "lastModified": 1638371214,
-        "narHash": "sha256-0kE6KhgH7n0vyuX4aUoGsGIQOqjIx2fJavpCWtn73rc=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "a640d8394f34714578f3e6335fc767d0755d78f9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-21.11",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1638376152,
@@ -158,11 +142,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1638605839,
-        "narHash": "sha256-f/REgJDMli9MLdvUSU4doYPnKyC8LrAPcj35fwdM5s8=",
+        "lastModified": 1638622311,
+        "narHash": "sha256-Jcn+xvme8X57vmB1THosjYHMhUqMmKiQeLbAI9rtuEA=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "3d7aba159607fb9de8f148e86afbaf585bcfa07e",
+        "rev": "3d283655b37acadb5485768bfb89d68e5263458e",
         "type": "github"
       },
       "original": {
@@ -174,7 +158,6 @@
       "inputs": {
         "home-manager": "home-manager",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
-        "nixos": "nixos",
         "nixpkgs": "nixpkgs_3",
         "nur": "nur"
       }

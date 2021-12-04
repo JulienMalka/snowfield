@@ -9,8 +9,6 @@ in {
 
   config = mkIf cfg.enable {
 
-    luj.nginx.enable = true;
-    luj.nginx.email = "julien.malka@me.com";
 
     luj.sonarr = {
       enable = true;
