@@ -71,7 +71,7 @@ in
 
 
     luj.nginx.enable = true;
-    virtualHosts."cloud.julienmalka.me" = {
+    services.nginx.virtualHosts."cloud.julienmalka.me" = {
       forceSSL = true;
       enableACME = true;
       locations."/" = {
@@ -88,4 +88,6 @@ in
 
 
 
-  }
+  };
+
+}

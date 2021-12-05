@@ -10,6 +10,11 @@
     neovim-nightly-overlay = {
       url = "github:nix-community/neovim-nightly-overlay";
     };
+    homepage = {
+      url = "github:JulienMalka/homepage";
+      flake = false;
+    };
+
 
   };
 
@@ -55,7 +60,10 @@
         })
         (builtins.attrNames (builtins.readDir ./modules)));
 
-        nixosConfigurations = mapAttrs (name: value: (mkMachine name value nixosModules)) (importDir ./machines);
+      nixosConfigurations = mapAttrs (name: value: (mkMachine name value nixosModules)) (importDir ./machines);
+
+
+
 
     };
 

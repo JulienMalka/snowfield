@@ -51,6 +51,22 @@
         "type": "github"
       }
     },
+    "homepage": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1638627658,
+        "narHash": "sha256-1mGBNxJqzvbQG4HcHfRLVn5sx+nTx5g/DzeihloGbr8=",
+        "owner": "JulienMalka",
+        "repo": "homepage",
+        "rev": "20d331990ad8c889ef6817ad4f84638947880ac4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "JulienMalka",
+        "repo": "homepage",
+        "type": "github"
+      }
+    },
     "neovim-flake": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -142,11 +158,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1638622311,
-        "narHash": "sha256-Jcn+xvme8X57vmB1THosjYHMhUqMmKiQeLbAI9rtuEA=",
+        "lastModified": 1638628541,
+        "narHash": "sha256-3xNNiD+UKdI0zMqo6FAP0/53nm6Q/GPwRITPJkYYUvg=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "3d283655b37acadb5485768bfb89d68e5263458e",
+        "rev": "8f0ed744fa090ccc90feea252ea0290d80c9a0d9",
         "type": "github"
       },
       "original": {
@@ -157,6 +173,7 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "homepage": "homepage",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
         "nixpkgs": "nixpkgs_3",
         "nur": "nur"
