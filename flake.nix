@@ -14,14 +14,13 @@
       url = "github:JulienMalka/homepage";
       flake = false;
     };
-
-
   };
 
   outputs = { self, home-manager, nixpkgs, neovim-nightly-overlay, nur, ... }@inputs:
     let
       utils = import ./utils.nix { inherit nixpkgs home-manager inputs; };
-    in with utils;
+    in
+    with utils;
     {
       nixosModules = builtins.listToAttrs (map
         (x: {
@@ -31,8 +30,6 @@
         (builtins.attrNames (builtins.readDir ./modules)));
 
       nixosConfigurations = builtins.mapAttrs (name: value: (mkMachine name value self.nixosModules)) (importConfig ./machines);
-
-
 
 
     };
