@@ -16,9 +16,7 @@ in
       host-config
       home-manager.nixosModules.home-manager
       {
-        home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
-        home-manager.users.julien = import ./config/home/home-lisa.nix;
         nixpkgs.overlays = [
           inputs.neovim-nightly-overlay.overlay
         ];

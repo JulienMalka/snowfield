@@ -1,8 +1,3 @@
-# This is my configuration file for neovim.
-# I've written it in nix for ease of use with home-manager, 
-# but there are several vimscript and lua files imported as well.
-# If you want more help understanding or modifying these configurations, 
-# please submit an issue on Github or contact me on Discord 'notusknot#5622'
 { pkgs, config, ... }:
 let
     dusk-vim = pkgs.vimUtils.buildVimPlugin {

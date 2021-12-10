@@ -1,0 +1,90 @@
+
+
+[Filter.1]
+query = subject:"Formulaire d'externement"
+tags =  +externement
+message = Externement
+
+
+[Filter.2]
+query = subject:/\[DG\]/
+tags = +dg
+message = Mail pour la DG
+
+[Filter.3]
+query = subject:"Demande de malle"
+tags = +malle
+message = Malle
+
+[Filter.4]
+query = subject:"Demande d'inscription de"
+tags = +thurnage
+message = Thurnage
+
+[Filter.5]
+query = subject:"Formulaire situation de"
+tags = +situation
+message = Situation
+
+[Filter.6]
+query = subject:"Inscription au thurnage général de"
+tags = +thurnage
+message = TG
+
+[Filter.7]
+query = subject:"Prévision d'externement de"
+tags = +externement
+message = previsionext
+
+[Filter.8]
+query = subject:"Demande d'accès"
+tags = +malle
+message = acces
+
+[Filter.9]
+query = subject:"Rendu de malle"
+tags = +malle
+message = rendu
+
+[Filter.10]
+query = subject:"Prolongation de la malle"
+tags = +malle
+message = prolong
+
+[Filter.11]
+query = subject:"Fermeture de l'internat"
+tags = +fermeture
+message = fermeture
+
+[Filter.12]
+query = subject:/\[COF\]/
+tags = +cof
+message = COF
+
+[Filter.13]
+query = subject:"Modification inscription TG"
+tags= +thurnage
+
+[Filter.14]
+query = subject:/\[Pouët-Pouêt\]/
+tags = +fanfare
+message = fanfare
+
+[Filter.15]
+query = subject:/\[K-Fêt\]/
+tags = +kfet
+message = kfet 
+
+[Filter.16]
+query = subject:/\[Chef.fe.s\]/
+tags = +chefs
+message = chefs
+
+
+[InboxFilter]
+
+[MailMover]
+folders = ens/INBOX ens/DG
+rename = True
+ens/INBOX = 'tag:dg':ens/DG 'tag:COF':ens/COF 'tag:fanfare':ens/Fanfare 'tag:kfet':ens/K-Fet 'tag:chefs':ens/K-Fet/Chefs 
+ens/DG = 'tag:externement':ens/DG/Externements 'tag:malle':ens/DG/Malles 'tag:thurnage':ens/DG/Thurnages 'tag:situation':ens/DG/Situations 'tag:fermeture':ens/DG/Fermeture

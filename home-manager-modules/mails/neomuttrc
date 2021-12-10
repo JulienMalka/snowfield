@@ -1,0 +1,83 @@
+set from = "julien.malka@ens.fr"
+
+# Nom complet de l'expéditeur
+set realname = "Julien Malka"
+
+# Génération du champs from
+set use_from = yes
+
+set edit_headers=yes
+set reverse_name
+set mark_old=no
+set editor = "nvim -c 'set tw=72' -c 'set wrap'"
+#set editor="vim +':set textwidth=0' +':set wrapmargin=0' +':set wrap'"
+#set wrap="72"
+set folder = ~/Maildir/ens
+
+set mbox_type=Maildir
+set virtual_spoolfile=yes
+set header_cache=~/.cache/mutt
+set sidebar_visible = yes
+set record = "+Sent\ Messages"
+#mailboxes =Inbox =DG =DG/Malles =DG/Externements =DG/Thurnages =DG/Situations =DG/Fermeture =Sent\ Messages
+#named-mailboxes "Malles" =DG/Malles
+#named-mailboxes "Externements" =DG/Externements
+#named-mailboxes "Thurnages" =DG/Thurnages
+#named-mailboxes "Situations" =DG/Situations
+#named-mailboxes "Fermeture" =DG/Fermeture
+#named-mailboxes "Sent" =Sent\ Messages
+set nm_unread_tag = unread
+set mail_check_stats=yes
+set sidebar_short_path = yes
+
+
+set timeout=10
+set mail_check=10
+virtual-mailboxes "Inbox" "notmuch://?query=tag:inbox and NOT tag:dg and NOT tag:cof and NOT tag:fanfare and NOT tag:kfet and NOT tag:chefs"
+virtual-mailboxes "K-Fêt" "notmuch://?query=tag:kfet"
+virtual-mailboxes "Chefs" "notmuch://?query=tag:chefs"
+virtual-mailboxes "DG" "notmuch://?query=tag:dg and NOT tag:externement and NOT tag:fermeture and NOT tag:malle and NOT tag:situation and NOT tag:thurnage"
+virtual-mailboxes "Externements" "notmuch://?query=tag:externement"
+virtual-mailboxes "Fermeture" "notmuch://?query=tag:fermeture"
+virtual-mailboxes "Malles" "notmuch://?query=tag:malle"
+virtual-mailboxes "Situations" "notmuch://?query=tag:situation"
+virtual-mailboxes "Thurnages" "notmuch://?query=tag:thurnage"
+virtual-mailboxes "Fanfare" "notmuch://?query=tag:fanfare"
+
+set sidebar_width=15
+set sidebar_divider_char='|'
+# color of folders with new mail
+# ctrl-n, ctrl-p to select next, prev folder# ctrl-o to open selected folder
+bind index \CP sidebar-prev
+bind index \CN sidebar-next
+bind index \CO sidebar-open
+bind pager \CP sidebar-prev
+bind pager \CN sidebar-next
+bind pager \CO sidebar-open
+bind pager <Backspace> previous-line
+set nm_default_url = "notmuch:///home/julien/Maildir"
+
+macro index \\ "<vfolder-from-query>"
+set metoo=yes
+
+set text_flowed
+
+set collapse_unread = no
+set collapse_all = yes
+
+bind index - collapse-thread
+
+
+
+set sort = threads 
+set sort_aux = reverse-last-date-received
+
+folder-hook .  'source /home/julien/dotfiles/profile.default'
+folder-hook "DG"  'source /home/julien/dotfiles/profile.dg'
+folder-hook "K-Fêt" 'source /home/julien/dotfiles/profile.kfet'
+folder-hook "Chefs" 'source /home/julien/dotfiles/profile.chefs'
+set sidebar_format = '%D%* %?N?(%N)?%*'
+color sidebar_unread yellow default
+
+source ~/dotfiles/dracula.muttrc
+set sendmail = "msmtp"
