@@ -15,7 +15,7 @@
     notmuch.enable = true;
     primary = true;
     realName = "Julien Malka";
-    passwordCommand = "echo ***REMOVED***";
+    passwordCommand = "passwordCommand";
     smtp = {
       host = "clipper.ens.fr";
       };
