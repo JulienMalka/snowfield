@@ -71,6 +71,7 @@ in
 
 
     luj.nginx.enable = true;
+    services.nginx.recommendedProxySettings = true;
     services.nginx.virtualHosts."cloud.julienmalka.me" = {
       forceSSL = true;
       enableACME = true;
