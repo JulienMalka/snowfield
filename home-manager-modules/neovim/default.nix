@@ -18,8 +18,8 @@ with lib;
     enable = mkEnableOption "activate neovim program";
   };
 
-  config = mkIf cfg.enable{
-      programs.neovim = {
+  config = mkIf cfg.enable {
+    programs.neovim = {
       enable = true;
       package = pkgs.neovim-unwrapped;
       plugins = with pkgs.vimPlugins; [
@@ -47,7 +47,7 @@ with lib;
         telescope-nvim
 
         # Indent lines
-        indent-blankline-nvim
+        #indent-blankline-nvim
       ];
       extraPackages = with pkgs; [
         gcc
@@ -62,7 +62,7 @@ with lib;
         luafile ${./lua}/settings.lua
       '';
     };
-};
+  };
 
 }
 

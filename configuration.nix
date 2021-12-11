@@ -25,7 +25,7 @@
    users.users.julien = {
         isNormalUser = true;
         extraGroups = [ "wheel" ]; 
-	home = "/home/julien";
+    	home = "/home/julien";
         shell = pkgs.fish;
     };
     

@@ -9,13 +9,14 @@ in
   home.username = "julien";
   home.homeDirectory = "/home/julien";
   home.stateVersion = "21.11"; 
-  imports = [../home-manager-modules/mails/default.nix ../home-manager-modules/neovim/default.nix];
+  imports = [../home-manager-modules/mails/default.nix ../home-manager-modules/neovim/default.nix ../home-manager-modules/git/default.nix ];
   luj.emails = {
       enable = true;
       backend.enable = true;
     };
 	
    luj.programs.neovim.enable = true;
+   luj.programs.git.enable = true;
 
   };
   boot.loader.grub.enable = true;
