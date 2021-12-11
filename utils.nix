@@ -12,7 +12,7 @@ in
       inherit inputs;
     };
     modules = builtins.attrValues modules ++ [
-      ./configuration.nix
+      ./base.nix
       host-config
       home-manager.nixosModules.home-manager
       {
