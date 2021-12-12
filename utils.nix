@@ -19,6 +19,22 @@ in
         home-manager.useUserPackages = true;
         nixpkgs.overlays = [
           inputs.neovim-nightly-overlay.overlay
+          (final: prev:
+            {
+              mosh = prev.mosh.overrideAttrs (old: {
+                patches = [];
+                postPatch = '''';
+                buildInputs = with prev; [ protobuf ncurses zlib openssl ]
+                  ++ (with perlPackages; [ perl IOTty ])
+                  ++ lib.optional true libutempter;
+                src = prev.fetchFromGitHub {
+                  owner = "mobile-shell";
+                  repo = "mosh";
+                  rev = "378dfa6aa5778cf168646ada7f52b6f4a8ec8e41";
+                  sha256 = "LJssBMrICVgaZtTvZTO6bYMFO4fQ330lIUkWzDSyf7o=";
+                };
+              });
+            })
         ];
       }
     ];

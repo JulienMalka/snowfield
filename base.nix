@@ -16,6 +16,7 @@
     #boot.kernelPackages = pkgs.linuxPackages_latest;
 
     services.openssh.enable = true;
+    programs.mosh.enable = true;
 
 
 }
