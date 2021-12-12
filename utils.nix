@@ -27,6 +27,10 @@ in
                 buildInputs = with prev; [ protobuf ncurses zlib openssl ]
                   ++ (with perlPackages; [ perl IOTty ])
                   ++ lib.optional true libutempter;
+                preConfigure = ''
+                  ./autogen.sh
+                '';
+                NIX_CFLAGS_COMPILE = "-O2";
                 src = prev.fetchFromGitHub {
                   owner = "mobile-shell";
                   repo = "mosh";
