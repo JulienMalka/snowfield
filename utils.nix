@@ -22,7 +22,7 @@ in
           (final: prev:
             {
               mosh = prev.mosh.overrideAttrs (old: {
-                patches = [];
+                patches = (prev.lib.take 1 old.patches) ++ (prev.lib.sublist 4 4 old.patches);
                 postPatch = '''';
                 buildInputs = with prev; [ protobuf ncurses zlib openssl ]
                   ++ (with perlPackages; [ perl IOTty ])
