@@ -4,20 +4,17 @@ let
 in
 {
 
-  home-manager.users.julien = {
-    home.username = "julien";
-    home.homeDirectory = "/home/julien";
-    home.stateVersion = "21.11";
-    imports = [ ../home-manager-modules/mails/default.nix ../home-manager-modules/neovim/default.nix ../home-manager-modules/git/default.nix ];
+
+  luj.hmgr.julien = {
+    luj.programs.neovim.enable = true;
+    luj.programs.git.enable = true;
     luj.emails = {
       enable = true;
       backend.enable = true;
     };
-
-    luj.programs.neovim.enable = true;
-    luj.programs.git.enable = true;
-
   };
+
+
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
   boot.supportedFilesystems = [ "zfs" ];
@@ -75,7 +72,6 @@ in
 
 
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
 
  
   # Open ports in the firewall.

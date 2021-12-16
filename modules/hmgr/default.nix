@@ -1,14 +1,31 @@
 { config, pkgs, lib, ... }:
 let
-  cfg = options.luj.hmgr;
-in with lib;
+  cfg = config.luj.hmgr;
+in
+with lib;
 {
   options.luj.hmgr = mkOption {
-    description = "";
-    type = with types; attrsOf (submodule {
-      enable = mkEnableOption "enable hmngr for some user";
-    });
+    type = with types; attrsOf anything;
   };
 
-  config = lib.mapAttrs (name: value: test) cfg; 
-}
+
+  config = {
+    home-manager.users =
+      lib.mapAttrs
+        (name: value:
+          {
+            imports = [ ../../home-manager-modules/git/default.nix ../../home-manager-modules/neovim/default.nix ];
+            home.username = "${name}";
+            home.homeDirectory = "/home/${name}";
+            home.stateVersion = "21.11";
+          } // value)
+        cfg;
+  };
+}  
+
+
+
+
+
+
+
