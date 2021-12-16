@@ -13,16 +13,8 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
-#  home-manager.users.julien = {
- #   home.username = "julien";
-  #  home.homeDirectory = "/home/julien";
-   # home.stateVersion = "21.11";
-    #imports = [ ../home-manager-modules/mails/default.nix ../home-manager-modules/neovim/default.nix  ../home-manager-modules/git/default.nix ];
-    #luj.programs.neovim.enable = true;
-   # luj.programs.git.enable = true;
-
- # };
- luj.hmgr.julien = {
+ 
+  luj.hmgr.julien = {
     luj.programs.neovim.enable = true;
     luj.programs.git.enable = true;
 
