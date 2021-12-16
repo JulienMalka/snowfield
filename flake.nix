@@ -19,7 +19,7 @@
   outputs = { self, home-manager, nixpkgs, neovim-nightly-overlay, nur, ... }@inputs:
     let
       utils = import ./utils.nix { inherit nixpkgs home-manager inputs; };
-      pkgs = import nixpkgs {};
+      pkgs = import nixpkgs { };
     in
     with utils;
     {
@@ -31,12 +31,6 @@
         (builtins.attrNames (builtins.readDir ./modules)));
 
       nixosConfigurations = builtins.mapAttrs (name: value: (mkMachine name value self.nixosModules)) (importConfig ./machines);
-      
-      #legacyPackages."x86_64-linux"."mosh" = import ./packages/mosh/default.nix;
-
 
     };
-
-
-
 }

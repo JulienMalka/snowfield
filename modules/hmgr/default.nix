@@ -8,13 +8,12 @@ with lib;
     type = with types; attrsOf anything;
   };
 
-
   config = {
     home-manager.users =
       lib.mapAttrs
         (name: value:
           {
-            imports = [ ../../home-manager-modules/git/default.nix ../../home-manager-modules/neovim/default.nix ];
+            imports = with builtins; map (x: ../../home-manager-modules + "/${x}/default.nix") (attrNames (readDir ../../home-manager-modules)); 
             home.username = "${name}";
             home.homeDirectory = "/home/${name}";
             home.stateVersion = "21.11";
@@ -22,10 +21,4 @@ with lib;
         cfg;
   };
 }  
-
-
-
-
-
-
 
