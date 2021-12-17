@@ -12,7 +12,7 @@ with lib;
     {
       nix = {
         autoOptimiseStore = true;
-        allowedUsers = [ "julien" ];
+        allowedUsers = [ "julien" "hydra" ];
         gc = {
           automatic = true;
           dates = "daily";

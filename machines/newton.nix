@@ -14,7 +14,28 @@ in
     };
   };
 
+  services.hydra = {
+    enable = true;
+    hydraURL = "https://hydra.julienmalka.me"; # externally visible URL
+    notificationSender = "hydra@localhost"; # e-mail of hydra service
+    port = 9876; # Default
+    # a standalone hydra will require you to unset the buildMachinesFiles list to avoid using a nonexistant /etc/nix/machines
+    buildMachinesFiles = [ ];
+    # you will probably also want, otherwise *everything* will be built from scratch
+    useSubstitutes = true;
+  };
 
+
+  services.nginx = {
+    enable = true;
+    virtualHosts = {
+      "hydra.julienmalka.me" = {
+        forceSSL = true;
+        enableACME = true;
+        locations."/" = { proxyPass = "http://127.0.0.1:9876"; };
+      };
+    };
+  };
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
   boot.supportedFilesystems = [ "zfs" ];
