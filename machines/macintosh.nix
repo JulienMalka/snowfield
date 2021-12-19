@@ -107,6 +107,7 @@ programs.dconf.enable = true;
 luj.hmgr.julien = {
   luj.programs.neovim.enable = true;
   luj.i3.enable = true;
+  luj.polybar.enable = true;
   home.packages  = with pkgs; [
     feh
     meld
@@ -148,20 +149,6 @@ home.keyboard = {
 
 
 fonts.fontconfig.enable = true;
-
-services.polybar = {
-  enable = true;
-  package = pkgs.polybar.override {
-     i3GapsSupport = true;
-     #i3Support = true;
-};
-
-
-script = "polybar -q PolybarTony &";
-
-};
-
-
 
 xsession.enable = true;
 programs.rofi.enable = true;
