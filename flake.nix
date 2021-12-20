@@ -16,10 +16,6 @@
       flake = false;
     };
 
-    hardware = {
-      url = "github:NixOS/nixos-hardware";
-    };
-
     unstable = {
       url = "github:NixOS/nixpkgs/nixos-unstable";
     };
@@ -40,7 +36,7 @@
         })
         (builtins.attrNames (builtins.readDir ./modules)));
 
-      nixosConfigurations = builtins.mapAttrs (name: value: (mkMachine name value self.nixosModules)) (importConfig ./machines);
+       nixosConfigurations = builtins.mapAttrs (name: value: (mkMachine name value self.nixosModules)) (importConfig ./machines);
        hydraJobs = (nixpkgs.lib.mapAttrs' (name: config:
         nixpkgs.lib.nameValuePair "nixos-${name}"
         config.config.system.build.toplevel) self.nixosConfigurations);

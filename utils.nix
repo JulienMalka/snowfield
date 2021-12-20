@@ -1,8 +1,7 @@
 { nixpkgs, home-manager, nixpkgs-unstable, inputs }:
 with builtins;
 
-let mapAttrNames = f: set:
-  listToAttrs (map (attr: { name = f attr; value = set.${attr}; }) (attrNames set));
+let
   overlay-unstable = final: prev: {
     unstable = nixpkgs-unstable.legacyPackages.x86_64-linux;
   };
@@ -48,8 +47,6 @@ in
     ];
   };
 
-
-  importConfig = path: (mapAttrNames (name: nixpkgs.lib.removeSuffix ".nix" name)) ((builtins.mapAttrs (name: value: import (path + "/${name}")) (builtins.readDir path)));
-
+  importConfig = with builtins; path: (mapAttrs (name: value: import (path + "/${name}/default.nix")) (readDir path));
 
 }
