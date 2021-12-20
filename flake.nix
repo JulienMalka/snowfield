@@ -19,13 +19,17 @@
     hardware = {
       url = "github:NixOS/nixos-hardware";
     };
+
+    unstable = {
+      url = "github:NixOS/nixpkgs/nixos-unstable";
+    };
       
   };
 
-  outputs = { self, home-manager, nixpkgs, neovim-nightly-overlay, nur, ... }@inputs:
+  outputs = { self, home-manager, nixpkgs, unstable, neovim-nightly-overlay, nur, ... }@inputs:
     let
-      utils = import ./utils.nix { inherit nixpkgs home-manager inputs; };
-      pkgs = import nixpkgs { };
+      utils = import ./utils.nix { inherit nixpkgs home-manager inputs; nixpkgs-unstable = unstable; };
+      #pkgs = import nixpkgs { };
     in
     with utils;
     {

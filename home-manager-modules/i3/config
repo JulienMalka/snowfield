@@ -95,7 +95,7 @@ bindsym $mod+q kill
 
 # start rofi
 
-bindsym $mod+space exec ~/.config/rofi/bin/launcher_text
+bindsym $mod+space exec rofi -show run
 
 
 # change focus

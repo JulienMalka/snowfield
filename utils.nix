@@ -1,8 +1,11 @@
-{ nixpkgs, home-manager, inputs }:
+{ nixpkgs, home-manager, nixpkgs-unstable, inputs }:
 with builtins;
 
 let mapAttrNames = f: set:
   listToAttrs (map (attr: { name = f attr; value = set.${attr}; }) (attrNames set));
+  overlay-unstable = final: prev: {
+    unstable = nixpkgs-unstable.legacyPackages.x86_64-linux;
+  };
 in
 {
 
@@ -19,6 +22,7 @@ in
         home-manager.useUserPackages = true;
         nixpkgs.overlays = [
           inputs.neovim-nightly-overlay.overlay
+          overlay-unstable
           (final: prev:
             {
               mosh = prev.mosh.overrideAttrs (old: {
