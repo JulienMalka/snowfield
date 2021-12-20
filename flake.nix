@@ -25,7 +25,6 @@
   outputs = { self, home-manager, nixpkgs, unstable, neovim-nightly-overlay, nur, ... }@inputs:
     let
       utils = import ./utils.nix { inherit nixpkgs home-manager inputs; nixpkgs-unstable = unstable; };
-      #pkgs = import nixpkgs { };
     in
     with utils;
     {
