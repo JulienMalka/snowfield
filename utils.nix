@@ -1,4 +1,4 @@
-{ nixpkgs, home-manager, nixpkgs-unstable, inputs }:
+{ nixpkgs, home-manager, sops-nix, nixpkgs-unstable, inputs }:
 with builtins;
 
 let
@@ -15,6 +15,7 @@ in
     };
     modules = builtins.attrValues modules ++ [
       ./base.nix
+      sops-nix.nixosModules.sops
       host-config
       home-manager.nixosModules.home-manager
       {

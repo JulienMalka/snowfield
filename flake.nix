@@ -19,12 +19,16 @@
     unstable = {
       url = "github:NixOS/nixpkgs/nixos-unstable";
     };
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+    };
       
   };
 
-  outputs = { self, home-manager, nixpkgs, unstable, neovim-nightly-overlay, nur, ... }@inputs:
+  outputs = { self, home-manager, nixpkgs, unstable, sops-nix, neovim-nightly-overlay, nur, ... }@inputs:
     let
-      utils = import ./utils.nix { inherit nixpkgs home-manager inputs; nixpkgs-unstable = unstable; };
+      utils = import ./utils.nix { inherit nixpkgs sops-nix home-manager inputs; nixpkgs-unstable = unstable; };
     in
     with utils;
     {
