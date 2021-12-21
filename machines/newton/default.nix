@@ -14,25 +14,11 @@ in
   luj = {
     filerun.enable = true;
     zfs-mails.enable = true;
-  };
-
-
-  services.hydra = {
-    enable = true;
-    hydraURL = "https://hydra.julienmalka.me";
-    notificationSender = "hydra@localhost";
-    port = 9876;
-    buildMachinesFiles = [ ];
-    useSubstitutes = true;
-  };
-
-  services.nginx = {
-    enable = true;
-    virtualHosts = {
-      "hydra.julienmalka.me" = {
-        forceSSL = true;
-        enableACME = true;
-        locations."/" = { proxyPass = "http://127.0.0.1:9876"; };
+    hydra = {
+      enable = true;
+      nginx = {
+        enable = true;
+        subdomain = "hydra";
       };
     };
   };
