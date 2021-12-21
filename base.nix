@@ -1,9 +1,14 @@
-{ config, pkgs, ... }:
+{ config, pkgs, sops-nix, ... }:
 
 {
 
-  imports = [ ./users/julien.nix ];
+  imports = [ 
+    ./users/julien.nix 
+  ];
   luj.nix.enable = true;
+
+  sops.defaultSopsFile = ./secrets/secrets.yaml;
+  sops.age.sshKeyPaths = [ "/home/julien/.ssh/id_ed25519"];
 
   time.timeZone = "Europe/Paris";
     i18n.defaultLocale = "en_US.UTF-8";
