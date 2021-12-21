@@ -20,12 +20,14 @@
       neomutt
       htop
       evince
+      brightnessctl
       wireguard
       mosh
       signal-desktop
       flameshot
       ctags
       ungoogled-chromium
+      networkmanagerapplet
     ];
 
 
