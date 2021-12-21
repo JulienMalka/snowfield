@@ -20,6 +20,7 @@
       neomutt
       htop
       evince
+      wireguard
       mosh
       signal-desktop
       flameshot
