@@ -20,7 +20,7 @@ with lib;
         lisa = {
           hostname = "2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb";
           user = "julien";
-#          port = 45;
+          port = 45;
         };
         newton-init = {
           hostname = "newton.julienmalka.me";
