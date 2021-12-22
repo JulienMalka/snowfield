@@ -22,7 +22,6 @@ in {
       #dataDir = "/var/lib/sonarr/.config/NzbDrone";
       group = "tv";
     };
-    networking.firewall = { allowedTCPPorts = [ port ]; };
     users.groups.tv = { name = "tv"; };
   } 
 

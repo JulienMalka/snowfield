@@ -20,7 +20,6 @@ in {
       group = "tv";
       package = pkgs.jellyfin; 
     };
-    networking.firewall = { allowedTCPPorts = [ port ]; };
     users.groups.tv = { name = "tv"; };
   } 
 
