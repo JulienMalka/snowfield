@@ -23,6 +23,7 @@ in {
       group = "tv";
     };
     networking.firewall = { allowedTCPPorts = [ port ]; };
+    users.groups.tv = { name = "tv"; };
   } 
 
     (mkIf cfg.nginx.enable {

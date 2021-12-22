@@ -15,6 +15,7 @@ in {
 
     security.acme.email = "${cfg.email}";
     security.acme.acceptTerms = true;
+    users.groups.nginx = { name = "nginx"; };
 
     services.nginx = {
       enable = true;
