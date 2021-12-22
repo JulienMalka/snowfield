@@ -1,2 +1,2 @@
 # nix-config
-My Machines configuration
+My Machines configurations
