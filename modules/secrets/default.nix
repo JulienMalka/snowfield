@@ -16,7 +16,9 @@ with lib;
       };
 
       sops.secrets.sendinblue-mail-passwd = {};
-      sops.secrets.git-gpg-private-key = {};
+      sops.secrets.git-gpg-private-key = {
+        owner = "julien";
+      };
       
       };
 
