@@ -54,6 +54,7 @@ with lib;
         rnix-lsp
         tree-sitter
         sumneko-lua-language-server
+        ripgrep
       ];
       extraConfig = ''
         luafile ${./lua}/lsp.lua

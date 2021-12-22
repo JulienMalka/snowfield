@@ -29,7 +29,7 @@ with lib;
           msmtp.enable = true;
           primary = true;
           realName = "Julien Malka";
-          passwordCommand = "${pkgs.gnupg}/bin/gpg -q --batch --passphrase-file /home/julien/email-passphrase -d ${./ens.pass.gpg}";
+          passwordCommand = "cat /home/julien/.config/ens-mail-passwd";
           smtp = {
             host = "clipper.ens.fr";
           };

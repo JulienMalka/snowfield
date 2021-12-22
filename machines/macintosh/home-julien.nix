@@ -3,6 +3,7 @@
 
   luj.hmgr.julien = {
     luj.programs.neovim.enable = true;
+    luj.programs.ssh-client.enable = true;
     luj.i3.enable = true;
     luj.polybar.enable = true;
     home.packages = with pkgs; [
@@ -28,6 +29,7 @@
       ctags
       ungoogled-chromium
       networkmanagerapplet
+      sops
     ];
 
 

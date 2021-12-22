@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 let
   cfg = config.luj.hmgr;
 in
@@ -13,7 +13,7 @@ with lib;
       lib.mapAttrs
         (name: value:
           {
-            imports = with builtins; map (x: ../../home-manager-modules + "/${x}/default.nix") (attrNames (readDir ../../home-manager-modules)); 
+            imports = with builtins; (map (x: ../../home-manager-modules + "/${x}/default.nix") (attrNames (readDir ../../home-manager-modules))); 
             home.username = "${name}";
             home.homeDirectory = "/home/${name}";
             home.stateVersion = "21.11";

@@ -8,7 +8,7 @@ let
     host = "smtp-relay.sendinblue.com";
     port = "587";
     user = "julien.malka@me.com";
-    passwordeval = "${pkgs.gnupg}/bin/gpg -q --batch --passphrase-file /home/julien/email-passphrase -d ${./sendinblue.pass.gpg}";
+    passwordeval = "cat /run/secrets/sendinblue-mail-passwd";
     from = emailFrom;
   };
 
