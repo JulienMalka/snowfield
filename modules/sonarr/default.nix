@@ -17,13 +17,9 @@ in {
     mkMerge [{ 
     services.sonarr = {
       enable = true;
-      #user = "transmission";
-      #group = "transmission";
-      #dataDir = "/var/lib/sonarr/.config/NzbDrone";
       group = "tv";
     };
     users.groups.tv = { name = "tv"; };
-    networking.firewall = { allowedTCPPorts = [ port ]; };
   } 
 
     (mkIf cfg.nginx.enable {

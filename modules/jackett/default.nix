@@ -18,7 +18,6 @@ in {
     services.jackett = {
       enable = true;
     };
-    networking.firewall = { allowedTCPPorts = [ port ]; };
   } 
 
     (mkIf cfg.nginx.enable {
