@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, config, lib, inputs, ... }:
 let
   cfg = config.luj.nix;
 in
@@ -21,6 +21,9 @@ with lib;
         extraOptions = ''
           experimental-features = nix-command flakes
         '';
+        nixPath = [
+          "nixpkgs=${inputs.nixpkgs}"
+        ]; 
       };
 
 
