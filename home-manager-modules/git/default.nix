@@ -18,5 +18,13 @@ with lib;
         key = "3C68E13964FEA07F";
       };
     };
+
+    home.extraActivationPath = [ pkgs.gnupg ];
+    home.activation = 
+        {
+          myActivationAction = lib.hm.dag.entryAfter ["writeBoundary"] ''
+          gpg --import /run/secrets/git-gpg-private-key
+          '';
+        };
   };
 }
