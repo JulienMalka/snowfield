@@ -21,6 +21,7 @@ in {
       package = pkgs.jellyfin; 
     };
     networking.firewall = { allowedTCPPorts = [ port ]; };
+    users.groups.tv = { name = "tv"; };
   } 
 
     (mkIf cfg.nginx.enable {

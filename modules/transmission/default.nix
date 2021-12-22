@@ -27,6 +27,7 @@ in {
       };
 
     };
+    users.groups.tv = { name = "tv"; };
     networking.firewall = { allowedTCPPorts = [ port ]; };
   } 
 
