@@ -3,6 +3,7 @@
 {
 
   imports = [ 
+    ./users/default.nix
     ./users/julien.nix 
   ];
   luj.nix.enable = true;

@@ -1,8 +1,8 @@
 { config, pkgs, lib, ... }: {
 
 
-  users.mutableUsers = false;
   sops.secrets.user-julien-password.neededForUsers = true;
+
 
   users.users.julien = {
     isNormalUser = true;
@@ -18,5 +18,6 @@
     ];
   };
 
-  nix.allowedUsers = [ "lol" "julien" ];
+
+  nix.allowedUsers = [ "julien" ];
 }

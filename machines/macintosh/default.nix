@@ -57,9 +57,10 @@
     git
     rxvt_unicode
     xorg.xbacklight
+    neovim
   ];
 
-  environment.variables.EDITOR = "urxvt";
+  environment.variables.EDITOR = "nvim";
 
   programs.dconf.enable = true;
 
