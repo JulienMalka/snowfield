@@ -3,6 +3,7 @@
 
   luj.hmgr.julien = {
     luj.programs.neovim.enable = true;
+    luj.programs.git.enable = true;
     luj.programs.ssh-client.enable = true;
     luj.i3.enable = true;
     luj.polybar.enable = true;

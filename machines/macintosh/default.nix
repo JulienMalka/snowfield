@@ -54,7 +54,6 @@
 
   environment.systemPackages = with pkgs; [
     wget
-    git
     rxvt_unicode
     xorg.xbacklight
     neovim
