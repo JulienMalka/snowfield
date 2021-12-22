@@ -16,6 +16,7 @@ with lib;
       };
 
       sops.secrets.sendinblue-mail-passwd = {};
+      sops.secrets.git-gpg-private-key = {};
       
       };
 
