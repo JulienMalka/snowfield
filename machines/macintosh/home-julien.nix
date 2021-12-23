@@ -5,6 +5,7 @@
     luj.programs.neovim.enable = true;
     luj.programs.git.enable = true;
     luj.programs.ssh-client.enable = true;
+    luj.programs.gtk.enable = true;
     luj.i3.enable = true;
     luj.polybar.enable = true;
     home.packages = with pkgs; [
@@ -39,24 +40,9 @@
     };
 
 
-
-    gtk = {
-      enable = true;
-      theme = {
-        name = "Nordic";
-        package = pkgs.nordic;
-      };
-    };
-    qt = {
-      enable = true;
-      platformTheme = "gtk";
-    };
-
-
     fonts.fontconfig.enable = true;
 
     xsession.enable = true;
-
 
     home.stateVersion = "21.11";
 
