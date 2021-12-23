@@ -51,16 +51,6 @@
   };
 
 
-
-  environment.systemPackages = with pkgs; [
-    wget
-    rxvt_unicode
-    xorg.xbacklight
-    neovim
-  ];
-
-  environment.variables.EDITOR = "nvim";
-
   programs.dconf.enable = true;
 
   system.stateVersion = "21.11"; 

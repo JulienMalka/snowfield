@@ -24,4 +24,15 @@
   programs.mosh.enable = true;
   programs.gnupg.agent.enable = true;
 
+  environment.systemPackages = with pkgs; [
+    wget
+    rxvt_unicode
+    xorg.xbacklight
+    neovim
+  ];
+
+  environment.variables.EDITOR = "nvim";
+
+
+
 }
