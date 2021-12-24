@@ -12,7 +12,7 @@
 
   networking.hostName = "macintosh"; # Define your hostname.
   networking.networkmanager.enable = true;
-  networking.firewall.enable = false;
+  networking.firewall.enable = true;
 
   sound.enable = true;
   hardware.pulseaudio.enable = true;
