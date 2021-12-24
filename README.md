@@ -1,4 +1,6 @@
-# My NixOS Configurations ❄
+# My NixOS Configurations ❄ 
+
+[![Build Status](https://ci.julienmalka.me/api/badges/JulienMalka/nix-config/status.svg?ref=refs/heads/main)](https://ci.julienmalka.me/JulienMalka/nix-config)
 
 This repository contains the configurations of my machines using NixOS. 
 
