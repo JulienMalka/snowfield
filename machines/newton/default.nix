@@ -15,7 +15,7 @@ in
     filerun.enable = true;
     zfs-mails.enable = true;
     hydra = {
-      enable = true;
+      enable = false;
       nginx = {
         enable = true;
         subdomain = "hydra";
