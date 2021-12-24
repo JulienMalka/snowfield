@@ -29,6 +29,6 @@ This configuration defines a number of custom NixOS and home-manager modules. Th
 
 Secrets are stored in the secrets folder. They are decrypted upon system activation using the host ssh key.
 
-### Inspiration 
+### Inspirations 
 
 This project is freely inspired by some really cool projects, including MayNiklas/nixos, pinox/nixos and ncfavier/config.
