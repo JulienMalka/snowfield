@@ -13,7 +13,6 @@ with lib;
       nixpkgs.config.allowUnfree = true;
       nix = {
         autoOptimiseStore = true;
-        allowedUsers = [ "julien" "hydra" "nix-serve" ];
         gc = {
           automatic = true;
           dates = "daily";
