@@ -28,7 +28,6 @@
     keyMap = "fr";
   };
 
-  nixpkgs.config.allowUnfree = true;
 
   hardware.trackpoint = {
     enable = true;
