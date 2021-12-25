@@ -13,6 +13,13 @@
 
   luj.mediaserver.enable = true;
   luj.homepage.enable = true;
+  luj.drone = {
+    enable = true;
+    nginx = {
+      enable = true;
+      subdomain = "ci";
+    };
+  };
  
   nix.maxJobs = lib.mkDefault 8;
 
