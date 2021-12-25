@@ -31,6 +31,7 @@
   outputs = { self, home-manager, nixpkgs, unstable, sops-nix, neovim-nightly-overlay, nur, ... }@inputs:
     let
       utils = import ./utils.nix { inherit nixpkgs sops-nix home-manager inputs; nixpkgs-unstable = unstable; };
+      pkgs = import nixpkgs { system = "x86_64-linux"; };
     in
     with utils;
     {
@@ -42,5 +43,6 @@
         (builtins.attrNames (builtins.readDir ./modules)));
 
       nixosConfigurations = builtins.mapAttrs (name: value: (mkMachine name value self.nixosModules)) (importConfig ./machines);
+      packages."x86_64-linux".tinystatus = import ./packages/tinystatus { inherit pkgs; };
     };
 }
