@@ -11,16 +11,18 @@
       ./home-julien.nix
     ];
 
-  luj.mediaserver.enable = true;
-  luj.homepage.enable = true;
-  luj.drone = {
-    enable = true;
-    nginx = {
+  luj = {
+    mediaserver.enable = true;
+    homepage.enable = true;
+    drone = {
       enable = true;
-      subdomain = "ci";
+      nginx = {
+        enable = true;
+        subdomain = "ci";
+      };
     };
   };
- 
+
   nix.maxJobs = lib.mkDefault 8;
 
   networking.hostName = "lisa"; # Define your hostname.
@@ -30,10 +32,7 @@
     address = "2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb";
     prefixLength = 120;
   }];
-  networking.firewall.allowedTCPPorts = [ 22 80 443 8096 8920 ];
-  networking.firewall.allowedUDPPorts = [ 22 80 443 1900 7359 ];
-  networking.firewall.allowedUDPPortRanges = [{ from = 60000; to = 61000; }];
-
+  networking.firewall.allowedTCPPorts = [ 80 443 8096 8920 ];
+  networking.firewall.allowedUDPPorts = [ 80 443 1900 7359 ];
   system.stateVersion = "20.09"; # Did you read the comment?
-
 }
