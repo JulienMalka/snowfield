@@ -15,9 +15,7 @@ with lib;
 
   config = mkIf cfg.enable
     {
-      sops.secrets.bin-cache-priv-key = {
-        owner = "nix-serve";
-      };
+      sops.secrets.bin-cache-priv-key = {};
 
       services.nix-serve = {
         enable = true;
