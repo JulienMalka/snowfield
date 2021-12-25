@@ -10,6 +10,7 @@
 
     neovim-nightly-overlay = {
       url = "github:nix-community/neovim-nightly-overlay";
+      inputs.nixpkgs.follows = "unstable";
     };
     homepage = {
       url = "github:JulienMalka/homepage";
@@ -22,6 +23,7 @@
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
   };
