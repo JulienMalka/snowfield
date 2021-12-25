@@ -13,7 +13,7 @@ with lib;
       nixpkgs.config.allowUnfree = true;
       nix = {
         autoOptimiseStore = true;
-        allowedUsers = [ "julien" "hydra" ];
+        allowedUsers = [ "julien" "hydra" "nix-serve" ];
         gc = {
           automatic = true;
           dates = "daily";
@@ -26,7 +26,7 @@ with lib;
           "nixpkgs=${inputs.nixpkgs}"
         ]; 
         binaryCaches = [
-          "https://bin.julienmalka.me"
+         # "https://bin.julienmalka.me"
           "https://cache.nixos.org/"
         ];
         binaryCachePublicKeys = [
