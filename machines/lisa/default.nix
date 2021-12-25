@@ -14,6 +14,10 @@
   luj = {
     mediaserver.enable = true;
     homepage.enable = true;
+    bincache = {
+      enable = true;
+      subdomain = "bin";
+    };
     drone = {
       enable = true;
       nginx = {
