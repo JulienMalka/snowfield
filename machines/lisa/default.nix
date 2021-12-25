@@ -25,6 +25,13 @@
         subdomain = "ci";
       };
     };
+    status = {
+      enable = true;
+      nginx = {
+        enable = true;
+        subdomain = "status";
+      };
+    };
   };
 
   nix.maxJobs = lib.mkDefault 8;

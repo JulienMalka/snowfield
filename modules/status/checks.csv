@@ -1,0 +1,4 @@
+http,   200,  Homepage,         https://julienmalka.me
+http,  200,  CI,  https://ci.julienmalka.me
+ping,   0,    Newton,            newton.julienmalka.me
+
