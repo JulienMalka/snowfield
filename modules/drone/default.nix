@@ -54,16 +54,6 @@ in
       };
       users.groups.droneserver = { };
 
-      #environment.etc.drone-runner-exec = {
-      #  target = "drone-runner-exec/config";
-      #  text = ''
-      #    DRONE_RPC_PROTO=https
-      #    DRONE_RPC_HOST=${cfg.nginx.subdomain}.julienmalka.me
-      #    DRONE_RPC_SECRET=JIJ1pfTgJldCMAgKtGLOnbQE5e8oUPSo2DqlWayVLQFVXDe3898DYvixRiprddY1M
-      #    DRONE_UI_USERNAME=root
-      #    DRONE_UI_PASSWORD=root
-      #  '';
-      #};
 
       systemd.services.drone-runner-exec = {
         description = "Drone Exec Runner";
@@ -79,7 +69,7 @@ in
           ExecStart = "${pkgs.drone-runner-exec}/bin/drone-runner-exec service run";
         };
         wantedBy = [ "multi-user.target" ];
-        path = [ pkgs.git pkgs.docker pkgs.docker-compose ];
+        path = [ pkgs.nixUnstable pkgs.git pkgs.docker pkgs.docker-compose ];
       };
 
     }
