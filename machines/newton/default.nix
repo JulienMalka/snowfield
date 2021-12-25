@@ -13,6 +13,11 @@ in
 
   luj = {
     filerun.enable = true;
+    drone.enable = true;
+    drone.nginx = {
+      enable = true;
+      subdomain = "ci";
+    };
     zfs-mails.enable = true;
     hydra = {
       enable = true;
@@ -30,8 +35,8 @@ in
   networking.interfaces.enp2s0f0.useDHCP = true;
   networking.interfaces.enp2s0f1.useDHCP = true;
   networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [ 22 80 443 ];
-  networking.firewall.allowedUDPPorts = [ 22 80 443 ];
+  networking.firewall.allowedTCPPorts = [ 22 80 8080 443 ];
+  networking.firewall.allowedUDPPorts = [ 22 80 8080 443 ];
   networking.firewall.allowedUDPPortRanges = [{ from = 60000; to = 61000; }];
 
 

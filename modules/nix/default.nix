@@ -10,6 +10,7 @@ with lib;
 
   config = mkIf cfg.enable
     {
+      nixpkgs.config.allowUnfree = true;
       nix = {
         autoOptimiseStore = true;
         allowedUsers = [ "julien" "hydra" ];
