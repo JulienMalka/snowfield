@@ -26,7 +26,7 @@ with lib;
           "nixpkgs=${inputs.nixpkgs}"
         ]; 
         binaryCaches = [
-         # "https://bin.julienmalka.me"
+          "https://bin.julienmalka.me"
           "https://cache.nixos.org/"
         ];
         binaryCachePublicKeys = [
