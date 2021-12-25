@@ -23,7 +23,7 @@
     sops-nix = {
       url = "github:Mic92/sops-nix";
     };
-      
+
   };
 
   outputs = { self, home-manager, nixpkgs, unstable, sops-nix, neovim-nightly-overlay, nur, ... }@inputs:
@@ -39,10 +39,6 @@
         })
         (builtins.attrNames (builtins.readDir ./modules)));
 
-       nixosConfigurations = builtins.mapAttrs (name: value: (mkMachine name value self.nixosModules)) (importConfig ./machines);
-       hydraJobs = (nixpkgs.lib.mapAttrs' (name: config:
-        nixpkgs.lib.nameValuePair "nixos-${name}"
-        config.config.system.build.toplevel) self.nixosConfigurations);
-
+      nixosConfigurations = builtins.mapAttrs (name: value: (mkMachine name value self.nixosModules)) (importConfig ./machines);
     };
 }

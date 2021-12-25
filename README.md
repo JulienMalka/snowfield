@@ -1,4 +1,6 @@
-# My NixOS Configurations ❄
+# My NixOS Configurations ❄ 
+
+[![Build Status](https://ci.julienmalka.me/api/badges/JulienMalka/nix-config/status.svg?ref=refs/heads/main)](https://ci.julienmalka.me/JulienMalka/nix-config)
 
 This repository contains the configurations of my machines using NixOS. 
 
@@ -29,6 +31,6 @@ This configuration defines a number of custom NixOS and home-manager modules. Th
 
 Secrets are stored in the secrets folder. They are decrypted upon system activation using the host ssh key.
 
-### Inspiration 
+### Inspirations 
 
 This project is freely inspired by some really cool projects, including MayNiklas/nixos, pinox/nixos and ncfavier/config.
