@@ -14,12 +14,13 @@ with lib;
   };
 
   config = mkIf cfg.enable
-  {
-    users.users.nix-serve = {
-      isSystemUser = true;
-    };
+    {
+      users.users.nix-serve = {
+        isSystemUser = true;
+      };
+      nix.allowedUsers = [ "nix-serve" ];
       users.users.nix-serve.group = "nix-serve";
-      users.groups.nix-serve = {};
+      users.groups.nix-serve = { };
 
       sops.secrets.bin-cache-priv-key = {
         owner = "nix-serve";
@@ -30,7 +31,7 @@ with lib;
         secretKeyFile = "/run/secrets/bin-cache-priv-key";
         port = port;
       };
-      
+
       luj.nginx.enable = true;
       services.nginx.virtualHosts."${cfg.subdomain}.julienmalka.me" = {
         enableACME = true;
