@@ -15,7 +15,6 @@ in
         enableACME = true;
         forceSSL = true;
         root = inputs.homepage;
-        default = true;
       };
 
       services.nginx.virtualHosts."www.julienmalka.me" = {
