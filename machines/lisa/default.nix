@@ -34,16 +34,14 @@
     };
   };
 
-  nix.maxJobs = lib.mkDefault 8;
+  nix.maxJobs = lib.mkDefault 4;
 
-  networking.hostName = "lisa"; # Define your hostname.
+  networking.hostName = "lisa";
   networking.interfaces.ens18.useDHCP = true;
   networking.interfaces.ens19.useDHCP = false;
   networking.interfaces.ens19.ipv6.addresses = [{
     address = "2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb";
     prefixLength = 120;
   }];
-  networking.firewall.allowedTCPPorts = [ 80 443 8096 8920 ];
-  networking.firewall.allowedUDPPorts = [ 80 443 1900 7359 ];
-  system.stateVersion = "20.09"; # Did you read the comment?
+  system.stateVersion = "20.09";
 }
