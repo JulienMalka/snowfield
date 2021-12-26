@@ -19,7 +19,7 @@ in
         timers.tinystatus = {
           wantedBy = [ "timers.target" ];
           partOf = [ "tinystatus.service" ];
-          timerConfig.OnCalendar = "*-*-* *:05,15,25,35,45,55:00";
+          timerConfig.OnCalendar = "*-*-* *:05,10,15,20,25,30,35,40,45,50,55:00";
           timerConfig.Unit = "tinystatus.service";
         };
         services.tinystatus = {
