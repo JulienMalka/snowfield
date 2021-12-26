@@ -142,5 +142,6 @@ trigger:
   branch:
   - main
   event:
+  - push
   - pull_request
   - cron
