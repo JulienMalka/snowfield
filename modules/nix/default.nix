@@ -23,6 +23,7 @@ with lib;
         '';
         nixPath = [
           "nixpkgs=${inputs.nixpkgs}"
+          "nixos=${inputs.nixpkgs}"
         ];
         binaryCaches = [
           "https://bin.julienmalka.me"

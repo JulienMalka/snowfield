@@ -20,6 +20,8 @@ in
 
       sops.secrets.drone = { };
 
+      virtualisation.docker.enable = true;
+
       systemd.services.drone-server = {
         wantedBy = [ "multi-user.target" ];
         serviceConfig = {
@@ -71,6 +73,25 @@ in
         wantedBy = [ "multi-user.target" ];
         path = [ pkgs.nixUnstable pkgs.git pkgs.docker pkgs.docker-compose ];
       };
+
+      systemd.services.drone-runner-docker = {
+        description = "Drone Docker Runner";
+        startLimitIntervalSec = 5;
+        serviceConfig = {
+          EnvironmentFile = [ config.sops.secrets.drone.path ];
+          Environment = [
+            "DRONE_SERVER_HOST=${cfg.nginx.subdomain}.julienmalka.me"
+            "DRONE_SERVER_PROTO=https"
+            "CLIENT_DRONE_RPC_HOST=127.0.0.1:3030"
+          ];
+
+          ExecStart = "${pkgs.drone-runner-docker}/bin/drone-runner-docker";
+        };
+        wantedBy = [ "multi-user.target" ];
+        path = [ pkgs.nixUnstable pkgs.git pkgs.docker pkgs.docker-compose ];
+      };
+
+
 
     }
 

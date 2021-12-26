@@ -39,3 +39,52 @@ trigger:
   - push
   - pull_request
   
+---
+kind: pipeline
+name: push flake update
+type: docker
+
+steps:
+- name: Update flake.lock
+  image: nixpkgs/nix-flakes
+  commands:
+  - nix flake update --inputs-from nixpkgs
+  - nix flake show
+  - nix flake metadata
+  - nix flake check
+  - nix flake check --show-trace
+  environment:
+    NIX_PATH: nixpkgs=channel:nixos-unstable
+
+- name: Push updated flake.lock
+  image: appleboy/drone-git-push
+  settings:
+    branch: update-flake
+    remote: git@github.com:JulienMalka/nix-config.git
+    force: true
+    commit: true
+    force: true
+    commit_message: "Updated flake.lock"
+    ssh_key:
+      from_secret: deploy_key
+
+- name: notify on failure
+  image: drillster/drone-email
+  settings:
+    username: "julien.malka@me.com"
+    from:
+      from_secret: email_from
+    host:
+      from_secret: email_host
+    password:
+      from_secret: email_password
+  when:
+    status:
+    - failure
+
+trigger:
+  branch:
+  - main
+  event:
+  - push
+  - cron
