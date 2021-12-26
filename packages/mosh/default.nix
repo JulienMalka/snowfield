@@ -1,20 +1,20 @@
-#{ lib, stdenv, fetchFromGithub, fetchpatch, zlib, protobuf, ncurses, pkg-config
-#, makeWrapper, perlPackages, openssl, autoreconfHook, openssh, bash-completion
-#, withUtempter ? stdenv.isLinux, libutempter }:
+{ pkgs, lib, stdenv, fetchFromGithub, fetchpatch, zlib, protobuf, ncurses, pkg-config
+, makeWrapper, perlPackages, openssl, autoreconfHook, openssh, bash-completion
+, withUtempter ? stdenv.isLinux, libutempter }:
 
 stdenv.mkDerivation rec {
   pname = "mosh";
   version = "1.3.2";
 
-  src = fetchFromGitHub {
+  src = pkgs.fetchFromGitHub {
     owner = "mobile-shell";
     repo = pname;
     rev = "378dfa6aa5778cf168646ada7f52b6f4a8ec8e41"; 
-    sha256 = "05hjhlp6lk8yjcy59zywpf0r6s0h0b9zxq0lw66dh9x8vxrhaq6s";
+    sha256 = "LJssBMrICVgaZtTvZTO6bYMFO4fQ330lIUkWzDSyf7o=";
   };
 
   nativeBuildInputs = [ autoreconfHook pkg-config makeWrapper ];
-  buildInputs = [ protobuf ncurses zlib openssl bash-completion ]
+  buildInputs = [ protobuf ncurses zlib openssl ]
     ++ (with perlPackages; [ perl IOTty ])
     ++ lib.optional withUtempter libutempter;
 
@@ -22,30 +22,15 @@ stdenv.mkDerivation rec {
 
   patches = [
     ./ssh_path.patch
-    ./mosh-client_path.patch
-    ./utempter_path.patch
-    # Fix w/c++17, ::bind vs std::bind
-    (fetchpatch {
-      url = "https://github.com/mobile-shell/mosh/commit/e5f8a826ef9ff5da4cfce3bb8151f9526ec19db0.patch";
-      sha256 = "15518rb0r5w1zn4s6981bf1sz6ins6gpn2saizfzhmr13hw4gmhm";
-    })
-    # Fix build with bash-completion 2.10
     ./bash_completion_datadir.patch
   ];
 
-  postPatch = ''
-    # Fix build with Xcode 12.5 toolchain/case-insensitive filesystems
-    # Backport of https://github.com/mobile-shell/mosh/commit/12199114fe4234f791ef4c306163901643b40538;
-    # remove on next upstream release.
-    patch -p0 < ${fetchpatch {
-      url = "https://raw.githubusercontent.com/macports/macports-ports/70ca3f65e622c17582fd938602d800157ed951c3/net/mosh/files/patch-version-subdir.diff";
-      sha256 = "1yyh6d07y9zbdx4fb0r56zkq9nd9knwzj22v4dfi55k4k42qxapd";
-    }}
 
-    substituteInPlace scripts/mosh.pl \
-      --subst-var-by ssh "${openssh}/bin/ssh" \
-      --subst-var-by mosh-client "$out/bin/mosh-client"
+  preConfigure = ''
+  ./autogen.sh
   '';
+
+  NIX_CFLAGS_COMPILE = "-O2";
 
   configureFlags = [ "--enable-completion" ]
     ++ lib.optional withUtempter "--with-utempter";
@@ -72,5 +57,6 @@ stdenv.mkDerivation rec {
     platforms = platforms.unix;
   };
 }
+
 
 

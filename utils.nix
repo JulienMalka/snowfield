@@ -26,23 +26,7 @@ in
           (final: prev:
             {
               tinystatus = prev.pkgs.callPackage ./packages/tinystatus {};
-              mosh = prev.mosh.overrideAttrs (old: {
-                patches = (prev.lib.take 1 old.patches) ++ (prev.lib.sublist 4 4 old.patches);
-                postPatch = '''';
-                buildInputs = with prev; [ protobuf ncurses zlib openssl ]
-                  ++ (with perlPackages; [ perl IOTty ])
-                  ++ lib.optional true libutempter;
-                preConfigure = ''
-                  ./autogen.sh
-                '';
-                NIX_CFLAGS_COMPILE = "-O2";
-                src = prev.fetchFromGitHub {
-                  owner = "mobile-shell";
-                  repo = "mosh";
-                  rev = "378dfa6aa5778cf168646ada7f52b6f4a8ec8e41";
-                  sha256 = "LJssBMrICVgaZtTvZTO6bYMFO4fQ330lIUkWzDSyf7o=";
-                };
-              });
+              mosh = prev.pkgs.callPackage ./packages/mosh {};
             })
         ];
       }
