@@ -25,6 +25,7 @@ in
           overlay-unstable
           (final: prev:
             {
+              tinystatus = prev.pkgs.callPackage ./packages/tinystatus {};
               mosh = prev.mosh.overrideAttrs (old: {
                 patches = (prev.lib.take 1 old.patches) ++ (prev.lib.sublist 4 4 old.patches);
                 postPatch = '''';

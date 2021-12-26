@@ -18,18 +18,15 @@ in
 
   programs.gnupg.agent.enable = true;
 
-  networking.hostName = hostName; # Define your hostname.
+  networking.hostName = hostName;
   networking.hostId = "f7cdfbc9";
   networking.interfaces.enp2s0f0.useDHCP = true;
   networking.interfaces.enp2s0f1.useDHCP = true;
   networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
-  networking.firewall.allowedUDPPorts = [ 80 443 ];
-
 
   services.zfs.autoSnapshot.enable = true;
   services.zfs.autoScrub.enable = true;
 
-  system.stateVersion = "21.05"; # Did you read the comment?
+  system.stateVersion = "21.05";
 
 }
