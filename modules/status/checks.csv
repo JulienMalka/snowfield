@@ -6,5 +6,5 @@ http,   200,  Transmission,           https://downloads.julienmalka.me
 http,   200,  Sonarr,                 https://series.julienmalka.me
 http,   200,  Radarr,                 https://films.julienmalka.me
 http,   200,  Jackett,                https://jackett.julienmalka.me/UI/Dashboard
-ping,     0,  Newton,                 newton.julienmalka.me
+port,     0,  Newton,                 newton.julienmalka.me 45
 http,   200,  Cloud,                  cloud.julienmalka.me
