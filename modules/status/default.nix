@@ -5,7 +5,7 @@ let
 in
 {
 
-  options.luj.jackett = {
+  options.luj.status = {
     enable = mkEnableOption "activate status page";
     nginx.enable = mkEnableOption "activate nginx";
     nginx.subdomain = mkOption {
@@ -16,16 +16,20 @@ in
   config = mkIf cfg.enable (
     mkMerge [{
       systemd = {
-        timers.simple-timer = {
+        timers.tinystatus = {
           wantedBy = [ "timers.target" ];
           partOf = [ "tinystatus.service" ];
-          timerConfig.OnCalendar = "minutely";
+          timerConfig.OnCalendar = "*-*-* *:05,10,15,20,25,30,35,40,45,50,55:00";
+          timerConfig.Unit = "tinystatus.service";
         };
         services.tinystatus = {
           serviceConfig.Type = "oneshot";
+          path = [ pkgs.gawk pkgs.gnused pkgs.curl pkgs.netcat pkgs.unixtools.ping ];
           script = ''
-          mkdir -p /var/www/status
-          ${pkgs.tinystatus}/bin/tinystatus ${./checks.csv} > /var/www/status/index.html 
+            mkdir -p /var/www/status
+            ${pkgs.tinystatus}/bin/tinystatus ${./checks.csv} > /var/www/status/index.html
+            ${pkgs.gnused}/bin/sed -i 's/tinystatus/Services status/g' /var/www/status/index.html
+            ${pkgs.gnused}/bin/sed -i 's/80%/60%/g' /var/www/status/index.html
           '';
         };
       };
