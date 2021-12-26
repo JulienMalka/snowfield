@@ -30,7 +30,6 @@
     rxvt_unicode
     xorg.xbacklight
     neovim
-    tinystatus
   ];
 
   environment.variables.EDITOR = "nvim";
