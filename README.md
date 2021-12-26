@@ -29,7 +29,7 @@ This configuration defines a number of custom NixOS and home-manager modules. Th
 
 #### Secrets
 
-Secrets are stored in the secrets folder. They are decrypted upon system activation using the host ssh key. Secrets are managed using nix-sops.
+Secrets are stored in the secrets folder. They are uncrypted upon system activation using the host ssh key. Secrets are managed using nix-sops.
 
 ### Inspirations 
 
