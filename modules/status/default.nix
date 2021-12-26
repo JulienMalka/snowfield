@@ -29,6 +29,7 @@ in
             mkdir -p /var/www/status
             ${pkgs.tinystatus}/bin/tinystatus ${./checks.csv} > /var/www/status/index.html
             ${pkgs.gnused}/bin/sed -i 's/tinystatus/Services status/g' /var/www/status/index.html
+            ${pkgs.gnused}/bin/sed -i 's/80%/60%/g' /var/www/status/index.html
           '';
         };
       };
