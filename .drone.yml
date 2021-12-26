@@ -1,7 +1,7 @@
 ---
 kind: pipeline
 type: exec
-name: Build all hosts
+name: Build all configurations
 
 platform:
   os: linux
@@ -38,4 +38,109 @@ trigger:
   event:
   - push
   - pull_request
-  
+ 
+
+
+---
+kind: pipeline
+type: exec
+name: Build custom packages
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+
+- name: Build tinystatus
+  commands:
+  - nix build .#tinystatus
+
+- name: Build mosh
+  commands:
+  - nix build .#mosh
+
+
+trigger:
+  branch:
+  - main
+  event:
+  - push
+  - pull_request
+
+
+---
+kind: pipeline
+type: exec
+name: Update flake
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+
+- name: create old builds
+  commands:
+  - nix build -v '.#nixosConfigurations.lisa.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
+  - mv result lisa-old
+  - nix build -v '.#nixosConfigurations.newton.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
+  - mv result newton-old
+  - nix build -v '.#nixosConfigurations.macintosh.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
+  - mv result macintosh-old
+
+
+- name: flake update
+  commands:
+  - nix --experimental-features "nix-command flakes" flake update --inputs-from nixpkgs
+
+- name: Show git diff
+  commands:
+  - git diff
+
+- name: Show flake info
+  commands:
+  - nix --experimental-features "nix-command flakes" flake show
+  - nix --experimental-features "nix-command flakes" flake metadata
+  - nix --experimental-features "nix-command flakes" flake check
+
+- name: Run flake checks
+  commands:
+  - nix --experimental-features "nix-command flakes" flake check --show-trace
+
+- name: Build lisa
+  commands:
+  - nix build -v '.#nixosConfigurations.lisa.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
+  - mv result lisa-new
+
+- name: Build newton
+  commands:
+  - nix build -v '.#nixosConfigurations.newton.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
+  - mv result newton-new
+
+- name: Build macintosh
+  commands:
+  - nix build -v '.#nixosConfigurations.macintosh.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
+  - mv result macintosh-new
+
+
+- name: Print report
+  commands:
+  - echo "lisa:" && nix store diff-closures $(readlink -f lisa-old) $(readlink -f lisa-new)
+  - echo "newton:" && nix store diff-closures $(readlink -f newton-old) $(readlink -f newton-new)
+  - echo "macintosh:" && nix store diff-closures $(readlink -f macintosh-old) $(readlink -f macintosh-new)
+
+
+- name: Push
+  commands:
+  - git checkout -b flake-update
+  - git add flake.lock
+  - git commit -m "Updated flake.lock"
+  - git push
+
+trigger:
+  branch:
+  - main
+  event:
+  - pull_request
+  - cron
