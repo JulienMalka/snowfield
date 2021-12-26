@@ -10,7 +10,7 @@
     ];
 
 
-  networking.hostName = "macintosh"; # Define your hostname.
+  networking.hostName = "macintosh";
   networking.networkmanager.enable = true;
   networking.firewall.enable = true;
 

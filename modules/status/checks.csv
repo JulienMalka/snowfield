@@ -1,0 +1,10 @@
+http,   200,  Lisa,                   https://google.com
+http,   200,  Homepage,               https://julienmalka.me
+http,   200,  CI,                     https://ci.julienmalka.me
+http,   200,  Jellyfin,               https://tv.julienmalka.me
+http,   200,  Transmission,           https://downloads.julienmalka.me
+http,   200,  Sonarr,                 https://series.julienmalka.me
+http,   200,  Radarr,                 https://films.julienmalka.me
+http,   200,  Jackett,                https://jackett.julienmalka.me/UI/Dashboard
+port,     0,  Newton,                 newton.julienmalka.me 45
+http,   200,  Cloud,                  cloud.julienmalka.me
