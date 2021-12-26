@@ -14,7 +14,7 @@
     openssh.authorizedKeys.keyFiles = [
       (pkgs.fetchurl {
         url = "https://github.com/JulienMalka.keys";
-        sha256 = "sha256:27lY1/ZmItXNEB03ULu10TUbGvqwbB1EiVrytZONtak=";
+        sha256 = "sha256-27lY1/ZmItXNEB03ULu10TUbGvqwbB1EiVrytZONtak=";
       })
     ];
   };
