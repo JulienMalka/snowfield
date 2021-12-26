@@ -2,6 +2,8 @@
 with lib;
 let
   cfg = config.luj.filerun;
+  mysql_root_pw = [ (builtins.readFile /run/secrets/filerun-root-passwd) ];
+  mysql_pw = [ (builtins.readFile /run/secrets/filerun-passwd) ];
 in
 {
   options.luj.filerun = {
@@ -10,17 +12,23 @@ in
 
 
   config = mkIf cfg.enable {
+
+
+    sops.secrets.filerun = {};
+
+    
     virtualisation.docker.enable = true;
 
     virtualisation.oci-containers.containers."filerun-mariadb" = {
       image = "mariadb:10.1";
       environment = {
-        "MYSQL_ROOT_PASSWORD" = "randompasswd";
         "MYSQL_USER" = "filerun";
-        "MYSQL_PASSWORD" = "randompasswd";
         "MYSQL_DATABASE" = "filerundb";
         "TZ" = "Europe/Paris";
       };
+      environmentFiles = [
+        /run/secrets/filerun
+      ];
       volumes = [ "/home/delegator/filerun/db:/var/lib/mysql" ];
       extraOptions = [ "--network=filerun-br" ];
     };
@@ -51,16 +59,18 @@ in
     virtualisation.oci-containers.containers."filerun" = {
       image = "afian/filerun:libreoffice";
       environment = {
-        "FR_DB_HOST" = "filerun-mariadb"; # !! IMPORTANT
+        "FR_DB_HOST" = "filerun-mariadb";
         "FR_DB_PORT" = "3306";
         "FR_DB_NAME" = "filerundb";
         "FR_DB_USER" = "filerun";
-        "FR_DB_PASS" = "randompasswd";
         "APACHE_RUN_USER" = "filerunuser";
         "APACHE_RUN_USER_ID" = "1000";
         "APACHE_RUN_GROUP" = "hello";
         "APACHE_RUN_GROUP_ID" = "100";
       };
+      environmentFiles = [
+        /run/secrets/filerun
+      ];
       ports = [ "2000:80" ];
       volumes = [
         "/home/delegator/filerun/web:/var/www/html"
