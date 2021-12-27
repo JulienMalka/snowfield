@@ -136,6 +136,7 @@ steps:
   - git checkout -b flake-update
   - git add flake.lock
   - git commit -m "Updated flake lock"
+  - git config --global --add url."git@github.com:".insteadOf "https://github.com/"
   - git push --force --set-upstream origin flake-update 
 
 trigger:
