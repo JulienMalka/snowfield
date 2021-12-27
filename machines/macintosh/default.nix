@@ -12,7 +12,6 @@
 
   networking.hostName = "macintosh";
   networking.networkmanager.enable = true;
-  networking.firewall.enable = true;
 
   sound.enable = true;
   hardware.pulseaudio.enable = true;
