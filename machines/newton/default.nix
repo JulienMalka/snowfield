@@ -16,13 +16,10 @@ in
     zfs-mails.enable = true;
   };
 
-  programs.gnupg.agent.enable = true;
-
   networking.hostName = hostName;
   networking.hostId = "f7cdfbc9";
   networking.interfaces.enp2s0f0.useDHCP = true;
   networking.interfaces.enp2s0f1.useDHCP = true;
-  networking.firewall.enable = true;
 
   services.zfs.autoSnapshot.enable = true;
   services.zfs.autoScrub.enable = true;
