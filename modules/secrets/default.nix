@@ -18,6 +18,8 @@ with lib;
       sops.secrets.sendinblue-mail-passwd = {};
       sops.secrets.git-gpg-private-key = {
         owner = "julien";
+        mode = "0440";
+        group = config.users.groups.keys.name;
       };
       
       };
