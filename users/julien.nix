@@ -4,7 +4,6 @@
   sops.secrets.user-julien-password.neededForUsers = true;
 
 
-  users.groups.docker = {};
   users.users.julien = {
     isNormalUser = true;
     home = "/home/julien";

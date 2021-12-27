@@ -18,6 +18,8 @@ in
   config = mkIf cfg.enable (
     mkMerge [{
 
+
+      users.groups.docker = {};
       sops.secrets.drone = { };
 
       virtualisation.docker.enable = true;
