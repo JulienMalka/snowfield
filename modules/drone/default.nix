@@ -54,11 +54,11 @@ in
         }];
       };
       users.users.droneserver = {
-        isSystemUser = true;
+        isNormalUser = true;
         createHome = true;
         home = "/home/droneserver";
-        group = droneserver;
-        extraGroups = [ config.users.groups.keys.name ];
+        extraGroups = [ droneserver config.users.groups.keys.name ];
+        passwordFile = config.sops.secrets.user-julien-password.path;
       };
       users.groups.droneserver = { };
 
