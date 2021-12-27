@@ -17,7 +17,7 @@ This whole repository is a flake. It is an experimental feature of Nix, allowing
 #### Machines 
 
 This project manage the configuration of three machines :
-- **Macintosh**, a thinkpad laptop (yes!),
+- **Macintosh**, a thinkpad laptop,
 - **Lisa**, a high performance server,
 - **Newton**, a low performance stockage server.
 
