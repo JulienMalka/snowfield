@@ -20,10 +20,7 @@
     };
     drone = {
       enable = true;
-      nginx = {
-        enable = true;
-        subdomain = "ci";
-      };
+      subdomain = "ci";
     };
     status = {
       enable = true;
