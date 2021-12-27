@@ -79,7 +79,7 @@ in
           ExecStart = "${pkgs.drone-runner-exec}/bin/drone-runner-exec service run";
         };
         wantedBy = [ "multi-user.target" ];
-        path = [ pkgs.nixUnstable pkgs.git pkgs.docker pkgs.docker-compose ];
+        path = [ pkgs.nixUnstable pkgs.git pkgs.docker pkgs.docker-compose pkgs.openssh ];
       };
 
       systemd.services.drone-runner-docker = {
@@ -96,7 +96,7 @@ in
           ExecStart = "${pkgs.drone-runner-docker}/bin/drone-runner-docker";
         };
         wantedBy = [ "multi-user.target" ];
-        path = [ pkgs.nixUnstable pkgs.git pkgs.docker pkgs.docker-compose ];
+        path = [ pkgs.nixUnstable pkgs.git pkgs.docker pkgs.docker-compose pkgs.openssh ];
       };
 
 
