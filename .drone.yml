@@ -183,8 +183,13 @@ steps:
     - failure
 
 
+depends_on:
+- Update flake
+
 trigger:
   branch:
   - main
   event:
   - cron
+
+
