@@ -16,15 +16,15 @@ in
 
   config = mkIf cfg.enable {
 
-    users.users.droneserver = {
+    users.users.drone = {
       isNormalUser = true;
       createHome = true;
-      home = "/home/droneserver";
-      extraGroups = [ droneserver config.users.groups.keys.name ];
+      home = "/home/drone";
+      extraGroups = [ drone config.users.groups.keys.name ];
       passwordFile = config.sops.secrets.user-julien-password.path;
     };
-    users.groups.droneserver = { };
-    luj.hmgr.droneserver.luj.programs.git.enable = true;
+    users.groups.drone = { };
+    luj.hmgr.drone.luj.programs.git.enable = true;
     nix.allowedUsers = [ drone ];
 
     sops.secrets.drone = { };
@@ -35,7 +35,7 @@ in
       serviceConfig = {
         EnvironmentFile = [ config.sops.secrets.drone.path ];
         Environment = [
-          "DRONE_SERVER_HOST=${cfg.nginx.subdomain}.julienmalka.me"
+          "DRONE_SERVER_HOST=${cfg.subdomain}.julienmalka.me"
           "DRONE_SERVER_PROTO=https"
           "DRONE_DATABASE_DATASOURCE=postgres:///droneserver?host=/run/postgresql"
           "DRONE_DATABASE_DRIVER=postgres"
@@ -67,7 +67,7 @@ in
         Group = drone;
         EnvironmentFile = [ config.sops.secrets.drone.path ];
         Environment = [
-          "DRONE_SERVER_HOST=${cfg.nginx.subdomain}.julienmalka.me"
+          "DRONE_SERVER_HOST=${cfg.subdomain}.julienmalka.me"
           "DRONE_SERVER_PROTO=https"
           "CLIENT_DRONE_RPC_HOST=127.0.0.1:3030"
         ];
@@ -77,7 +77,7 @@ in
       path = [ pkgs.nixUnstable pkgs.git pkgs.openssh ];
     };
 
-    services.nginx.virtualHosts."${cfg.nginx.subdomain}.julienmalka.me" = {
+    services.nginx.virtualHosts."${cfg.subdomain}.julienmalka.me" = {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
