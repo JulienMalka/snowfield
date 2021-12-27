@@ -37,7 +37,7 @@ in
         Environment = [
           "DRONE_SERVER_HOST=${cfg.subdomain}.julienmalka.me"
           "DRONE_SERVER_PROTO=https"
-          "DRONE_DATABASE_DATASOURCE=postgres:///droneserver?host=/run/postgresql"
+          "DRONE_DATABASE_DATASOURCE=postgres:///drone?host=/run/postgresql"
           "DRONE_DATABASE_DRIVER=postgres"
           "DRONE_SERVER_PORT=:3030"
           "DRONE_USER_CREATE=username:Julien,admin:true"
