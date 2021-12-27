@@ -136,6 +136,7 @@ trigger:
   event:
   - pull_request
   - cron
+  - push
 
 
   
@@ -191,5 +192,6 @@ trigger:
   - main
   event:
   - cron
+  - push
 
 
