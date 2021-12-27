@@ -34,11 +34,11 @@ in {
       nginx.subdomain = "jackett";
     };
 
-    luj.transmission = {
-      enable = true;
-      nginx.enable = true;
-      nginx.subdomain = "downloads";
-    };
+    #luj.transmission = {
+    #  enable = true;
+    #  nginx.enable = true;
+    #  nginx.subdomain = "downloads";
+    #};
   };
 
 }
