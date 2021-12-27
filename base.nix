@@ -25,6 +25,7 @@
   luj.programs.mosh.enable = true;
   programs.gnupg.agent.enable = true;
 
+  networking.firewall.enable = true;
   environment.systemPackages = with pkgs; [
     wget
     rxvt_unicode
