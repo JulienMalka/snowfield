@@ -146,4 +146,3 @@ trigger:
   event:
   - pull_request
   - cron
-  - push
