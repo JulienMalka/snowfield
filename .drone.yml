@@ -130,6 +130,14 @@ steps:
   - echo "newton:" && nix store diff-closures $(readlink -f newton-old) $(readlink -f newton-new)
   - echo "macintosh:" && nix store diff-closures $(readlink -f macintosh-old) $(readlink -f macintosh-new)
 
+
+- name: Push update
+  commands:
+  - git checkout -b flake-update
+  - git add flake.lock
+  - git commit -m "Updated flake lock"
+  - git push --force 
+
 trigger:
   branch:
   - main
@@ -137,61 +145,3 @@ trigger:
   - pull_request
   - cron
   - push
-
-
-  
----
-kind: pipeline
-name: Push flake update
-type: docker
-
-steps:
-- name: Update flake.lock
-  image: nixpkgs/nix-flakes
-  commands:
-  - nix flake update --inputs-from nixpkgs
-  - nix flake show
-  - nix flake metadata
-  - nix flake check
-  - nix flake check --show-trace
-  environment:
-    NIX_PATH: nixpkgs=channel:nixos-unstable
-
-- name: Push updated flake.lock
-  image: appleboy/drone-git-push
-  settings:
-    branch: update-flake
-    remote: git@github.com:JulienMalka/nix-config.git
-    force: true
-    commit: true
-    force: true
-    commit_message: "Updated flake.lock"
-    ssh_key:
-      from_secret: deploy_key
-
-- name: notify on failure
-  image: drillster/drone-email
-  settings:
-    username: "julien.malka@me.com"
-    from:
-      from_secret: email_from
-    host:
-      from_secret: email_host
-    password:
-      from_secret: email_password
-  when:
-    status:
-    - failure
-
-
-depends_on:
-- Update flake
-
-trigger:
-  branch:
-  - main
-  event:
-  - cron
-  - push
-
-

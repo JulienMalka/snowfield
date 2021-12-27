@@ -19,8 +19,10 @@ in
     mkMerge [{
 
 
+      luj.hmgr.droneserver.luj.programs.git.enable = true;
       users.groups.docker = {};
       sops.secrets.drone = { };
+      nix.allowedUsers = [ "droneserver"];
 
       virtualisation.docker.enable = true;
 
@@ -54,7 +56,9 @@ in
       users.users.droneserver = {
         isSystemUser = true;
         createHome = true;
+        home = "/home/droneserver";
         group = droneserver;
+        extraGroups = [ config.users.groups.keys.name ];
       };
       users.groups.droneserver = { };
 
@@ -63,6 +67,8 @@ in
         description = "Drone Exec Runner";
         startLimitIntervalSec = 5;
         serviceConfig = {
+          User = droneserver;
+          Group = droneserver;
           EnvironmentFile = [ config.sops.secrets.drone.path ];
           Environment = [
             "DRONE_SERVER_HOST=${cfg.nginx.subdomain}.julienmalka.me"
