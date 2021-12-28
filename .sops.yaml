@@ -9,3 +9,8 @@ creation_rules:
       - *macintosh
       - *newton
       - *lisa
+  - key_groups: 
+    - age:
+      - *macintosh
+      - *newton
+      - *lisa
