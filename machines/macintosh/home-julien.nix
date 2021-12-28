@@ -49,6 +49,7 @@
       ungoogled-chromium
       networkmanagerapplet
       sops
+      jftui
     ];
 
 
