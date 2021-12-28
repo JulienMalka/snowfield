@@ -17,6 +17,8 @@ in {
     mkMerge [{ 
     services.jackett = {
       enable = true;
+      user = "mediaserver";
+      group = "mediaserver";
     };
   } 
 

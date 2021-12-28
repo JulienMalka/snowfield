@@ -17,9 +17,9 @@ in {
     mkMerge [{ 
     services.sonarr = {
       enable = true;
-      group = "tv";
+      user = "mediaserver";
+      group = "mediaserver";
     };
-    users.groups.tv = { name = "tv"; };
   } 
 
     (mkIf cfg.nginx.enable {

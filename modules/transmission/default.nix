@@ -15,19 +15,27 @@ in {
 
   config = mkIf cfg.enable (
     mkMerge [{ 
+
+
+    sops.secrets.transmission = {
+      owner = "mediaserver";
+      format = "binary";
+      sopsFile = ../../secrets/transmission-login;
+    };
+
     services.transmission = {
       enable = true;
-      group = "tv";
-      downloadDirPermissions = "774";
+      user = "mediaserver";
+      group = "mediaserver";
+      credentialsFile = "/run/secrets/transmission";
+      downloadDirPermissions = "770";
       settings = {
         rpc-port = 9091;
-        download-dir = "/home/transmission/Downloads/";
-        incomplete-dir = "/home/transmission/Incomplete/";
+        download-dir = "/home/mediaserver/downloads/complete/";
+        incomplete-dir = "/home/mediaserver/downloads/incomplete/";
         incomplete-dir-enable = true;
       };
-
     };
-    users.groups.tv = { name = "tv"; };
   } 
 
     (mkIf cfg.nginx.enable {

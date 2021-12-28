@@ -17,12 +17,9 @@ in {
     mkMerge [{ 
     services.radarr = {
       enable = true;
-      #user = "transmission";
-      #group = "transmission";
-      #dataDir = "/var/lib/sonarr/.config/NzbDrone";
-      group = "tv";
+      user = "mediaserver";
+      group = "mediaserver";
     };
-    users.groups.tv = { name = "tv"; };
   } 
 
     (mkIf cfg.nginx.enable {
