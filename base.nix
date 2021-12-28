@@ -10,6 +10,7 @@
   luj.nix.enable = true;
   luj.secrets.enable = true;
   luj.ssh-server.enable = true;
+  luj.programs.mosh.enable = true;
 
   sops.defaultSopsFile = ./secrets/secrets.yaml;
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
@@ -22,7 +23,6 @@
   };
 
 
-  luj.programs.mosh.enable = true;
   programs.gnupg.agent.enable = true;
 
   networking.firewall.enable = true;
