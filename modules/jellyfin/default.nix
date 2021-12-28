@@ -17,10 +17,10 @@ in {
     mkMerge [{ 
     services.jellyfin = {
       enable = true;
-      group = "tv";
+      user = "mediaserver";
+      group = "mediaserver";
       package = pkgs.jellyfin; 
     };
-    users.groups.tv = { name = "tv"; };
   } 
 
     (mkIf cfg.nginx.enable {

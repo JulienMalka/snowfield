@@ -9,6 +9,17 @@ in {
 
   config = mkIf cfg.enable {
 
+    users.users.mediaserver = {
+      name = "mediaserver";
+      isNormalUser = true;
+      home = "/home/mediaserver";
+      group = config.users.groups.mediaserver.name;
+    };
+
+    users.groups.mediaserver = {
+      name = "mediaserver";
+    };
+
 
     luj.sonarr = {
       enable = true;
@@ -34,11 +45,11 @@ in {
       nginx.subdomain = "jackett";
     };
 
-    #luj.transmission = {
-    #  enable = true;
-    #  nginx.enable = true;
-    #  nginx.subdomain = "downloads";
-    #};
+    luj.transmission = {
+      enable = true;
+      nginx.enable = true;
+      nginx.subdomain = "downloads";
+    };
   };
 
 }
