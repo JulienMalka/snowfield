@@ -136,8 +136,8 @@ steps:
   - git checkout -b flake-update
   - git add flake.lock
   - git commit -m "Updated flake lock"
-  - git config --global --add url."git@github.com:".insteadOf "https://github.com/"
-  - git config core.sshCommand 'ssh -i /home/droneserver/.ssh/id_rsa' 
+  - git config --add url."git@github.com:".insteadOf "https://github.com/"
+  - git config core.sshCommand 'ssh -i /home/drone/.ssh/id_rsa' 
   - git push --force --set-upstream origin flake-update 
 
 trigger:
