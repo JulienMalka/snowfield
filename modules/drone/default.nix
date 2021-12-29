@@ -14,7 +14,7 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = mkIf cfg.enable (recursiveUpdate {
 
     users.users.drone = {
       isNormalUser = true;
@@ -93,5 +93,5 @@ in
       path = [ pkgs.nixUnstable pkgs.git pkgs.openssh ];
     };
 
-  } // mkSubdomain cfg.subdomain port;
+  } (mkSubdomain cfg.subdomain port));
 }

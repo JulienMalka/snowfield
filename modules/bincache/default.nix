@@ -13,7 +13,7 @@ with lib;
 
   };
 
-  config = mkIf cfg.enable
+  config = mkIf cfg.enable (recursiveUpdate
     {
       users.users.nix-serve = {
         isSystemUser = true;
@@ -32,5 +32,5 @@ with lib;
         port = port;
       };
 
-    } // mkSubdomain cfg.subdomain port;
+    } (mkSubdomain cfg.subdomain port));
 }
