@@ -15,7 +15,7 @@ in
   };
 
 
-  config = mkIf cfg.enable {
+  config = mkIf cfg.enable (recursiveUpdate {
 
 
     sops.secrets.filerun = {};
@@ -83,6 +83,6 @@ in
       extraOptions = [ "--network=filerun-br" ];
     };
 
-  } // mkSubdomain cfg.subdomain port;
+  } (mkSubdomain cfg.subdomain port));
 
 }

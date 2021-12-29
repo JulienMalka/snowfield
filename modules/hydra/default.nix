@@ -28,9 +28,9 @@ in
       networking.firewall = { allowedTCPPorts = [ port ]; };
     }
 
-      (mkIf cfg.nginx.enable {
+      (mkIf cfg.nginx.enable (recursiveUpdate {
         services.hydra.hydraURL = "${cfg.nginx.subdomain}.julienmalka.me";
-      } // mkSubdomain cfg.nginx.subdomain port )]);
+      } (mkSubdomain cfg.nginx.subdomain port)) )]);
 
 
 

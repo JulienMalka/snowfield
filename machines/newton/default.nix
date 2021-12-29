@@ -12,7 +12,10 @@ in
     ];
 
   luj = {
-    filerun.enable = true;
+    filerun = {
+      enable = true;
+      subdomain = "cloud";
+    };
     zfs-mails.enable = true;
   };
 
