@@ -23,30 +23,40 @@ in {
 
     luj.sonarr = {
       enable = true;
+      user = "mediaserver";
+      group = "mediaserver";
       nginx.enable = true;
       nginx.subdomain = "series";
     };
 
     luj.radarr = {
       enable = true;
+      user = "mediaserver";
+      group = "mediaserver";
       nginx.enable = true;
       nginx.subdomain = "films";
     };
 
     luj.jellyfin = {
       enable = true;
+      user = "mediaserver";
+      group = "mediaserver";
       nginx.enable = true;
       nginx.subdomain = "tv";
     };
 
     luj.jackett = {
       enable = true;
+      user = "mediaserver";
+      group = "mediaserver";
       nginx.enable = true;
       nginx.subdomain = "jackett";
     };
 
     luj.transmission = {
       enable = true;
+      user = "mediaserver";
+      group = "mediaserver";
       nginx.enable = true;
       nginx.subdomain = "downloads";
     };
