@@ -34,6 +34,8 @@
 
   nix.maxJobs = lib.mkDefault 4;
 
+  services.fail2ban.enable = true;
+
   networking.hostName = "lisa";
   networking.interfaces.ens18.useDHCP = true;
   networking.interfaces.ens19.useDHCP = false;
