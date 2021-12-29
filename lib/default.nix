@@ -10,6 +10,7 @@ in
 {
 
   mkMachine = host: host-config: modules: nixpkgs.lib.nixosSystem {
+    lib = final;
     system = "x86_64-linux";
     specialArgs = {
       inherit inputs;
@@ -35,6 +36,17 @@ in
   };
 
   importConfig = path: (mapAttrs (name: value: import (path + "/${name}/default.nix")) (readDir path));
+
+  mkSubdomain = name: port: {
+    luj.nginx.enable = true;
+    services.nginx.virtualHosts."${name}.julienmalka.me" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://localhost:${toString port}";
+      };
+    };
+  };
 
 }
 

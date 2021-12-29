@@ -4,10 +4,14 @@ let
   cfg = config.luj.filerun;
   mysql_root_pw = [ (builtins.readFile /run/secrets/filerun-root-passwd) ];
   mysql_pw = [ (builtins.readFile /run/secrets/filerun-passwd) ];
+  port = 2000;
 in
 {
   options.luj.filerun = {
     enable = mkEnableOption "enable filerun service";
+    subdomain = mkOption {
+      type = types.str;
+    };
   };
 
 
@@ -79,26 +83,6 @@ in
       extraOptions = [ "--network=filerun-br" ];
     };
 
-
-    luj.nginx.enable = true;
-    services.nginx.recommendedProxySettings = true;
-    services.nginx.virtualHosts."cloud.julienmalka.me" = {
-      forceSSL = true;
-      enableACME = true;
-      locations."/" = {
-        proxyPass = "http://localhost:2000";
-        extraConfig = ''
-          proxy_set_header  X-Forwarded-Proto https;
-          proxy_set_header    X-Forwarded-Port 443;
-        '';
-      };
-
-
-
-    };
-
-
-
-  };
+  } // mkSubdomain cfg.subdomain port;
 
 }

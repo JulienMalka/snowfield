@@ -32,13 +32,5 @@ with lib;
         port = port;
       };
 
-      luj.nginx.enable = true;
-      services.nginx.virtualHosts."${cfg.subdomain}.julienmalka.me" = {
-        enableACME = true;
-        forceSSL = true;
-        locations."/" = {
-          proxyPass = "http://localhost:${toString port}";
-        };
-      };
-    };
+    } // mkSubdomain cfg.subdomain port;
 }
