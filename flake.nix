@@ -30,10 +30,10 @@
 
   outputs = { self, home-manager, nixpkgs, unstable, sops-nix, neovim-nightly-overlay, nur, ... }@inputs:
     let
-      utils = import ./utils.nix { inherit nixpkgs sops-nix home-manager inputs; nixpkgs-unstable = unstable; };
       pkgs = import nixpkgs { system = "x86_64-linux"; };
+      lib = nixpkgs.lib.extend (import ./lib inputs);
     in
-    with utils;
+    with lib;
     {
       nixosModules = builtins.listToAttrs (map
         (x: {
