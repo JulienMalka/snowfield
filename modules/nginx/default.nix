@@ -22,6 +22,7 @@ in {
       enable = true;
       recommendedOptimisation = true;
       recommendedTlsSettings = true;
+      recommendedProxySettings = true;
       clientMaxBodySize = "128m";
 
       commonHttpConfig = ''

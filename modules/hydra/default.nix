@@ -29,17 +29,8 @@ in
     }
 
       (mkIf cfg.nginx.enable {
-        luj.nginx.enable = true;
         services.hydra.hydraURL = "${cfg.nginx.subdomain}.julienmalka.me";
-        services.nginx.virtualHosts."${cfg.nginx.subdomain}.julienmalka.me" = {
-          enableACME = true;
-          forceSSL = true;
-          locations."/" = {
-            proxyPass = "http://localhost:${toString port}";
-          };
-        };
-
-      })]);
+      } // mkSubdomain cfg.nginx.subdomain port )]);
 
 
 

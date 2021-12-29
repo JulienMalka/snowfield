@@ -37,17 +37,7 @@ in
       };
     }
 
-      (mkIf cfg.nginx.enable {
-        luj.nginx.enable = true;
-        services.nginx.virtualHosts."${cfg.nginx.subdomain}.julienmalka.me" = {
-          enableACME = true;
-          forceSSL = true;
-          locations."/" = {
-            proxyPass = "http://localhost:${toString port}";
-          };
-        };
-
-      })]);
+      (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port) )]);
 
 
 
