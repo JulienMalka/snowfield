@@ -34,7 +34,7 @@ in
     ];
   };
 
-  importConfig = with builtins; path: (mapAttrs (name: value: import (path + "/${name}/default.nix")) (readDir path));
+  importConfig = path: (mapAttrs (name: value: import (path + "/${name}/default.nix")) (readDir path));
 
 }
 
