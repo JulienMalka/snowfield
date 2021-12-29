@@ -1,5 +1,6 @@
-{ nixpkgs, home-manager, sops-nix, nixpkgs-unstable, inputs }:
-with builtins;
+inputs: final: prev: 
+
+with builtins; with inputs;
 
 let
   overlay-unstable = final: prev: {
@@ -14,7 +15,7 @@ in
       inherit inputs;
     };
     modules = builtins.attrValues modules ++ [
-      ./base.nix
+      ../base.nix
       sops-nix.nixosModules.sops
       host-config
       home-manager.nixosModules.home-manager
@@ -25,8 +26,8 @@ in
           overlay-unstable
           (final: prev:
             {
-              tinystatus = prev.pkgs.callPackage ./packages/tinystatus {};
-              mosh = prev.pkgs.callPackage ./packages/mosh {};
+              tinystatus = prev.pkgs.callPackage ../packages/tinystatus {};
+              mosh = prev.pkgs.callPackage ../packages/mosh {};
             })
         ];
       }
@@ -36,3 +37,4 @@ in
   importConfig = with builtins; path: (mapAttrs (name: value: import (path + "/${name}/default.nix")) (readDir path));
 
 }
+
