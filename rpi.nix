@@ -20,6 +20,7 @@
   environment.systemPackages = with pkgs; [
     libraspberrypi
     tinystatus
+    git
   ];
 
   # File systems configuration for using the installer's partition layout
