@@ -2,13 +2,8 @@
 
 {
 
-  imports = [
-    ./users/default.nix
-    ./users/julien.nix
-  ];
-
   luj.nix.enable = true;
-  luj.secrets.enable = true;
+  #luj.secrets.enable = true;
   luj.ssh-server.enable = true;
   luj.programs.mosh.enable = true;
 
