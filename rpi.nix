@@ -35,7 +35,13 @@
   nix.gc.automatic = true;
   nix.gc.options = "--delete-older-than 30d";
   boot.cleanTmpDir = true;
-
+luj.status = {
+      enable = true;
+      nginx = {
+        enable = true;
+        subdomain = "status";
+      };
+    };
   # Configure basic SSH access
   services.openssh.enable = true;
 #  services.openssh.permitRootLogin = "yes";
