@@ -9,9 +9,9 @@ let
 in
 {
 
-  mkMachine = host: host-config: modules: nixpkgs.lib.nixosSystem {
+  mkMachine = {host, host-config, modules, system ? "x86_64-linux"}: nixpkgs.lib.nixosSystem {
     lib = final;
-    system = "x86_64-linux";
+    system = system;
     specialArgs = {
       inherit inputs;
     };

@@ -31,6 +31,7 @@
   outputs = { self, home-manager, nixpkgs, unstable, sops-nix, neovim-nightly-overlay, nur, ... }@inputs:
     let
       pkgs = import nixpkgs { system = "x86_64-linux"; };
+      pkgsrpi = import nixpkgs { system = "aarch64-linux";};
       lib = nixpkgs.lib.extend (import ./lib inputs);
     in
     with lib;
@@ -42,10 +43,15 @@
         })
         (builtins.attrNames (builtins.readDir ./modules)));
 
-      nixosConfigurations = builtins.mapAttrs (name: value: (mkMachine name value self.nixosModules)) (importConfig ./machines);
+        nixosConfigurations = builtins.mapAttrs (name: value: (mkMachine {host=name; host-config=value; modules=self.nixosModules;})) (importConfig ./machines) //
+        {"lambda" = mkMachine { host = "lambda"; host-config = import ./rpi.nix; modules=self.nixosModules; system="aarch64-linux";};};
       packages."x86_64-linux" = {
         tinystatus = import ./packages/tinystatus { inherit pkgs; };
         mosh = pkgs.callPackage ./packages/mosh {};
+      };
+      packages."aarch64-linux" = {
+        tinystatus = import ./packages/tinystatus { pkgs = pkgsrpi; };
+        mosh = pkgsrpi.callPackage ./packages/mosh {};
       };
     };
 }
