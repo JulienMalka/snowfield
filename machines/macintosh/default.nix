@@ -7,6 +7,8 @@
       (modulesPath + "/installer/scan/not-detected.nix")
       ./hardware.nix
       ./home-julien.nix
+      ../../users/julien.nix
+      ../../users/default.nix
     ];
 
 

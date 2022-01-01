@@ -1,5 +1,8 @@
 { config, pkgs, lib, ... }:
 {
+
+
+  imports = [ ./users/status.nix ];
   # NixOS wants to enable GRUB by default
   boot.loader.grub.enable = false;
 
@@ -41,5 +44,5 @@
   # when installing lots of things while running other things at the same time.
   swapDevices = [ { device = "/swapfile"; size = 1024; } ];
 
-  luj.hmgr.julien = {};
+  luj.hmgr.status = {};
 }
