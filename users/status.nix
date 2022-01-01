@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }: {
 
-  users.users.julien = {
+  users.users.status = {
     isNormalUser = true;
     home = "/home/status";
     extraGroups = [ "wheel" ];
