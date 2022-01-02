@@ -64,9 +64,11 @@ in
     users.users.filerun = {
       isSystemUser = true;
       uid = 250;
+      name = "filerun";
     };
     users.groups.filerun = {
       gid = 350;
+      name = "filerun";
     };
     users.users.filerun.group = config.users.groups.filerun.name;
 
