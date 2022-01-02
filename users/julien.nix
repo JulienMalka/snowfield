@@ -5,7 +5,7 @@
   users.users.julien = {
     isNormalUser = true;
     home = "/home/julien";
-    extraGroups = [ "wheel" config.users.groups.keys.name ];
+    extraGroups = [ "wheel" config.users.groups.keys.name config.users.groups.filerun.name ];
     shell = pkgs.fish;
     passwordFile = config.sops.secrets.user-julien-password.path;
     openssh.authorizedKeys.keyFiles = [
