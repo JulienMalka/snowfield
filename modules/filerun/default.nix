@@ -58,19 +58,29 @@ in
         '';
     };
 
+    
 
+  
+    users.users.filerun = {
+      isSystemUser = true;
+      uid = 250;
+    };
+    users.groups.filerun = {
+      gid = 350;
+    };
+    users.users.filerun.group = config.users.groups.filerun.name;
 
     virtualisation.oci-containers.containers."filerun" = {
-      image = "afian/filerun:libreoffice";
+      image = "filerun/filerun";
       environment = {
         "FR_DB_HOST" = "filerun-mariadb";
         "FR_DB_PORT" = "3306";
         "FR_DB_NAME" = "filerundb";
         "FR_DB_USER" = "filerun";
-        "APACHE_RUN_USER" = "filerunuser";
-        "APACHE_RUN_USER_ID" = "1000";
-        "APACHE_RUN_GROUP" = "hello";
-        "APACHE_RUN_GROUP_ID" = "100";
+        "APACHE_RUN_USER" = config.users.users.filerun.name;
+        "APACHE_RUN_USER_ID" = "250";
+        "APACHE_RUN_GROUP" = config.users.groups.filerun.name;
+        "APACHE_RUN_GROUP_ID" = "350"; 
       };
       environmentFiles = [
         /run/secrets/filerun
