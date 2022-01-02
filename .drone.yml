@@ -130,7 +130,7 @@ steps:
   - nix build -v '.#nixosConfigurations.macintosh.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
   - mv result macintosh-new
 
-- name: Build macintosh
+- name: Build lambda
   commands:
   - nix build -v '.#nixosConfigurations.lambda.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
   - mv result lambda-new
