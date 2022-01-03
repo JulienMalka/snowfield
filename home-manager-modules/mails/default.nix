@@ -29,7 +29,7 @@ with lib;
           msmtp.enable = true;
           primary = true;
           realName = "Julien Malka";
-          passwordCommand = "cat /home/julien/.config/ens-mail-passwd";
+          passwordCommand = "${pkgs.coreutils}/bin/cat /home/julien/.config/ens-mail-passwd";
           smtp = {
             host = "clipper.ens.fr";
           };
@@ -38,8 +38,8 @@ with lib;
       };
       services.mbsync = {
         enable = true;
-        frequency = "*-*-* *:*:00";
-        verbose = false;
+        frequency = "minutely";
+        verbose = true;
       };
       xdg.configFile = {
         "neomutt/neomuttrc".source = lib.mkForce ./neomuttrc;

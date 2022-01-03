@@ -84,7 +84,7 @@ message = chefs
 [InboxFilter]
 
 [MailMover]
-folders = ens/INBOX ens/DG
+folders = ens/Inbox ens/DG
 rename = True
-ens/INBOX = 'tag:dg':ens/DG 'tag:COF':ens/COF 'tag:fanfare':ens/Fanfare 'tag:kfet':ens/K-Fet 'tag:chefs':ens/K-Fet/Chefs 
+ens/Inbox = 'tag:dg':ens/DG 'tag:COF':ens/COF 'tag:fanfare':ens/Fanfare 'tag:kfet':ens/K-Fet 'tag:chefs':ens/K-Fet/Chefs 
 ens/DG = 'tag:externement':ens/DG/Externements 'tag:malle':ens/DG/Malles 'tag:thurnage':ens/DG/Thurnages 'tag:situation':ens/DG/Situations 'tag:fermeture':ens/DG/Fermeture
