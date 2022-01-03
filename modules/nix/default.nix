@@ -15,7 +15,7 @@ with lib;
         autoOptimiseStore = true;
         gc = {
           automatic = true;
-          dates = "daily";
+          dates = "weekly";
         };
         package = pkgs.nixUnstable;
         extraOptions = ''
