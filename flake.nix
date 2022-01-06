@@ -48,10 +48,12 @@
       packages."x86_64-linux" = {
         tinystatus = import ./packages/tinystatus { inherit pkgs; };
         mosh = pkgs.callPackage ./packages/mosh {};
+        htpdate = pkgs.callPackage ./packages/htpdate {};
       };
       packages."aarch64-linux" = {
         tinystatus = import ./packages/tinystatus { pkgs = pkgsrpi; };
         mosh = pkgsrpi.callPackage ./packages/mosh {};
+        htpdate = pkgsrpi.callPackage ./packages/htpdate {};
       };
     };
 }
