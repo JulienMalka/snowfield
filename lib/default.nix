@@ -29,6 +29,7 @@ in
             {
               tinystatus = prev.pkgs.callPackage ../packages/tinystatus {};
               mosh = prev.pkgs.callPackage ../packages/mosh {};
+              htpdate = prev.pkgs.callPackage ../packages/htpdate {};
             })
         ];
       }
