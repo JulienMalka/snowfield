@@ -64,6 +64,11 @@ steps:
   commands:
   - nix build .#mosh
 
+- name: Build htpdate
+  commands:
+  - nix build .#htpdate
+
+
 
 trigger:
   branch:
