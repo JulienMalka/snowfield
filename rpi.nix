@@ -41,6 +41,24 @@
   ];
   networking.defaultGateway = "129.199.134.254";
   networking.nameservers = [ "8.8.8.8" ];
+  
+  services.timesyncd.enable = true;
+  systemd.services.htpdate = {
+      description = "htpdate daemon";
+      wantedBy = [ "multi-user.target" ];
+      after = [ "network.target" ];
+      serviceConfig = {
+        Type = "forking";
+        PIDFile = "/run/htpdate.pid";
+        ExecStart = lib.concatStringsSep " " [
+          "${pkgs.htpdate}/bin/htpdate"
+          "-D -u nobody"
+          "-a -s"
+          "-l"
+          "www.linux.org"
+        ];
+      };
+    };
 
   documentation.nixos.enable = false;
   nix.gc.automatic = true;
