@@ -74,11 +74,11 @@
       },
       "locked": {
         "dir": "contrib",
-        "lastModified": 1641414078,
-        "narHash": "sha256-jUt4yGclE0627CxsaSlgGr8LH+Ek9dSpCHACv917N5c=",
+        "lastModified": 1641520266,
+        "narHash": "sha256-u80ASs6Nv7G3lx3SYf/SODArunkfyaKDCsq58jzy2+8=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "09d270bcea5f81a0772e387244cc841e280a5339",
+        "rev": "e58071c92c98fa54fcb29ab87ac6de7c02ede27b",
         "type": "github"
       },
       "original": {
@@ -97,11 +97,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1641456891,
-        "narHash": "sha256-OXtbN9CkI0qpFIqBDA/GsIlM3qEEtMuPJANrYzj0Q34=",
+        "lastModified": 1641543268,
+        "narHash": "sha256-+hlQi+iCGMfogRweYkuwPluhnPXdKeJe+4tlJdBkfA8=",
         "owner": "nix-community",
         "repo": "neovim-nightly-overlay",
-        "rev": "cc577df89d0e968470b48f84a2b05bd13d1b7ecc",
+        "rev": "615aee1060084ce95aed2f9af9d223bf1cdaa80e",
         "type": "github"
       },
       "original": {
@@ -112,11 +112,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1641230035,
-        "narHash": "sha256-hFyqihERaTbLxCOlugy/rpp22VLtLh8SPRnA2uu3F/8=",
+        "lastModified": 1641528457,
+        "narHash": "sha256-FyU9E63n1W7Ql4pMnhW2/rO9OftWZ37pLppn/c1aisY=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "78cd22c1b8604de423546cd49bfe264b786eca13",
+        "rev": "ff377a78794d412a35245e05428c8f95fef3951f",
         "type": "github"
       },
       "original": {
@@ -144,11 +144,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1641498156,
-        "narHash": "sha256-qQ3dNY2jNob4wvzl+gYDonbdXCDGrTfIM86Q5/fkD90=",
+        "lastModified": 1641595892,
+        "narHash": "sha256-HocXaA4u1hzAmMouDeT1BsOMWtyNLvQAfhMWa/CUENI=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "8802d87484f97501229b7d31140ffb8a6504a5cf",
+        "rev": "cf371e86175b550a2664b214d43f207efda280cb",
         "type": "github"
       },
       "original": {
@@ -189,11 +189,11 @@
     },
     "unstable": {
       "locked": {
-        "lastModified": 1641230035,
-        "narHash": "sha256-hFyqihERaTbLxCOlugy/rpp22VLtLh8SPRnA2uu3F/8=",
+        "lastModified": 1641528457,
+        "narHash": "sha256-FyU9E63n1W7Ql4pMnhW2/rO9OftWZ37pLppn/c1aisY=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "78cd22c1b8604de423546cd49bfe264b786eca13",
+        "rev": "ff377a78794d412a35245e05428c8f95fef3951f",
         "type": "github"
       },
       "original": {
