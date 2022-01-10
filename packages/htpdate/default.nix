@@ -7,7 +7,7 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "twekkel";
     repo = pname;
-    rev = "v1.3.1"; 
+    rev = "v${version}";
     sha256 = "JPaxbu7LlGV+Bh5qxVxeNSPnMQNqLaLYWBRbpETSpQs=";
   };
 
@@ -15,12 +15,11 @@ stdenv.mkDerivation rec {
     "prefix=$(out)"
   ];
 
-
   meta = with lib; {
     description = "Utility to fetch time and set the system clock over HTTP";
     homepage = "https://github.com/twekkel/htpdate";
     platforms = platforms.linux;
     license = licenses.gpl2Plus;
-    maintainers = with lib.maintainers; [ julienmalka ];
+    maintainers = with maintainers; [ julienmalka ];
   };
 }
