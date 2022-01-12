@@ -36,7 +36,6 @@
   networking.hostName = "lisa";
   networking.interfaces.ens20.useDHCP = false;
   networking.interfaces.ens20.ipv4.addresses = [{ address = "212.129.40.11"; prefixLength = 32; }];
-  #networking.defaultGateway = { interface = "ens20"; };
   networking.localCommands = ''
     ip r del default || ip r add default dev ens20
   '';
@@ -46,5 +45,11 @@
     address = "2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb";
     prefixLength = 120;
   }];
-  system.stateVersion = "20.09";
+
+  networking.hostId = "fbb334ae";
+  services.zfs.autoSnapshot.enable = true;
+  services.zfs.autoScrub.enable = true;
+
+
+  system.stateVersion = "21.11";
 }
