@@ -18,7 +18,7 @@ with lib;
           port = 45;
         };
         lisa = {
-          hostname = "2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb";
+          hostname = "lisa.julienmalka.me";
           user = "julien";
           port = 45;
         };
@@ -30,6 +30,11 @@ with lib;
         sas = {
           hostname = "sas.eleves.ens.fr";
           user = "jmalka";
+        };
+        lambda = {
+          hostname = "status.julienmalka.me";
+          user = "status";
+          port = 45;
         };
       };
     };
