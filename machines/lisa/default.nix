@@ -25,7 +25,7 @@
       enable = true;
       subdomain = "ci";
     };
-    
+
   };
 
   nix.maxJobs = lib.mkDefault 4;
@@ -35,11 +35,11 @@
 
   networking.hostName = "lisa";
   networking.interfaces.ens20.useDHCP = false;
-  networking.interfaces.ens20.ipv4.addresses = [ {address = "212.129.40.11"; prefixLength = 32;} ];
+  networking.interfaces.ens20.ipv4.addresses = [{ address = "212.129.40.11"; prefixLength = 32; }];
   #networking.defaultGateway = { interface = "ens20"; };
   networking.localCommands = ''
-ip r del default || ip r add default dev ens20
-'';
+    ip r del default || ip r add default dev ens20
+  '';
   networking.interfaces.ens18.useDHCP = true;
   networking.interfaces.ens19.useDHCP = false;
   networking.interfaces.ens19.ipv6.addresses = [{
