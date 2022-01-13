@@ -19,6 +19,8 @@ in
       subdomain = "cloud";
     };
     zfs-mails.enable = true;
+    zfs-mails.name = hostName;
+    zfs-mails.smart.enable = true;
   };
 
   networking.hostName = hostName;
