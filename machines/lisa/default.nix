@@ -25,6 +25,11 @@
       enable = true;
       subdomain = "ci";
     };
+    zfs-mails = {
+      enable = true;
+      name = "lisa";
+      smart.enable = false;
+    };
 
   };
 

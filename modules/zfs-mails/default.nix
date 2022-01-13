@@ -26,7 +26,7 @@ let
         ];
     });
 
-  hostName = "newton";
+  hostName = cfg.name;
   sendEmailEvent = { event }: ''
     printf "Subject: ${hostName} ${event} ''$(${pkgs.coreutils}/bin/date --iso-8601=seconds)\n\nzpool status:\n\n''$(${pkgs.zfs}/bin/zpool status)" | ${pkgs.msmtp}/bin/msmtp -a default ${emailTo}
   '';
@@ -36,10 +36,14 @@ with lib;
 {
   options.luj.zfs-mails = {
     enable = mkEnableOption "enable zfs status mails";
+    name = mkOption {
+      type = types.str;
+    }; 
+    smart.enable = mkEnableOption "enable smart deamon";
   };
 
 
-  config = mkIf cfg.enable {
+  config = mkIf cfg.enable (mkMerge [{
 
     nixpkgs.config.packageOverrides = pkgs: {
       zfsStable = customizeZfs pkgs.zfsStable;
@@ -63,10 +67,7 @@ with lib;
       ZED_EMAIL_OPTS = "-a 'FROM:${emailFrom}' -s '@SUBJECT@' @ADDRESS@";
       ZED_NOTIFY_VERBOSE = true;
     };
-    services.smartd.enable = true;
-    services.smartd.notifications.mail.enable = true;
-    services.smartd.notifications.mail.sender = emailFrom;
-    services.smartd.notifications.mail.recipient = emailTo;
+
 
     systemd.services."boot-mail-alert" = {
       wantedBy = [ "multi-user.target" ];
@@ -99,7 +100,18 @@ with lib;
 
 
 
-  };
+  }
+
+  (mkIf cfg.smart.enable {
+    services.smartd.enable = true;
+    services.smartd.notifications.mail.enable = true;
+    services.smartd.notifications.mail.sender = emailFrom;
+    services.smartd.notifications.mail.recipient = emailTo;
+
+
+  })
+
+]);
 
 }
 
