@@ -1,4 +1,4 @@
-inputs: final: prev: 
+inputs: final: prev:
 
 with builtins; with inputs;
 
@@ -9,7 +9,7 @@ let
 in
 {
 
-  mkMachine = {host, host-config, modules, system ? "x86_64-linux"}: nixpkgs.lib.nixosSystem {
+  mkMachine = { host, host-config, modules, system ? "x86_64-linux" }: nixpkgs.lib.nixosSystem {
     lib = final;
     system = system;
     specialArgs = {
@@ -22,15 +22,16 @@ in
       home-manager.nixosModules.home-manager
       {
         home-manager.useUserPackages = true;
+        home-manager.useGlobalPkgs = true;
         nixpkgs.overlays = [
-          inputs.neovim-nightly-overlay.overlay
           overlay-unstable
           (final: prev:
             {
-              tinystatus = prev.pkgs.callPackage ../packages/tinystatus {};
-              mosh = prev.pkgs.callPackage ../packages/mosh {};
-              htpdate = prev.pkgs.callPackage ../packages/htpdate {};
+              tinystatus = prev.pkgs.callPackage ../packages/tinystatus { };
+              mosh = prev.pkgs.callPackage ../packages/mosh { };
+              htpdate = prev.pkgs.callPackage ../packages/htpdate { };
             })
+          inputs.neovim-nightly-overlay.overlay
         ];
       }
     ];
