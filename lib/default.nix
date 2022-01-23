@@ -20,6 +20,7 @@ in
       sops-nix.nixosModules.sops
       host-config
       home-manager.nixosModules.home-manager
+      simple-nixos-mailserver.nixosModule
       {
         home-manager.useUserPackages = true;
         home-manager.useGlobalPkgs = true;

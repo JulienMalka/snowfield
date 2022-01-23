@@ -26,10 +26,18 @@
       subdomain = "ci";
     };
     zfs-mails = {
-      enable = true;
+      enable = false;
       name = "lisa";
       smart.enable = false;
     };
+    docs = {
+      enable = true;
+      nginx = {
+        enable = true;
+        subdomain = "docs";
+      };
+    };
+    mailserver.enable = true;
 
   };
 
@@ -51,10 +59,10 @@
     prefixLength = 120;
   }];
 
+  networking.nameservers = [ "8.8.8.8" ];
   networking.hostId = "fbb334ae";
   services.zfs.autoSnapshot.enable = true;
   services.zfs.autoScrub.enable = true;
-
 
   system.stateVersion = "21.11";
 }
