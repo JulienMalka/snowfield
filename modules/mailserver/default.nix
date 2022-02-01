@@ -26,7 +26,7 @@ with lib;
             hashedPasswordFile = "/run/secrets/ensmailmalka-pw";
           };
           "camille.mondon@ens.school" = {
-            hashedPassword = "/run/secrets/ensmailmondon-pw";
+            hashedPasswordFile = "/run/secrets/ensmailmondon-pw";
           };
         };
         certificateScheme = 3;
