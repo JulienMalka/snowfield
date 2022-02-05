@@ -30,6 +30,7 @@ in
             {
               tinystatus = prev.pkgs.callPackage ../packages/tinystatus { };
               mosh = prev.pkgs.callPackage ../packages/mosh { };
+              flaresolverr = prev.pkgs.callPackage ../packages/flaresolverr { };
               htpdate = prev.pkgs.callPackage ../packages/htpdate { };
             })
           inputs.neovim-nightly-overlay.overlay

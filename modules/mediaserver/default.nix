@@ -37,6 +37,14 @@ in {
       nginx.subdomain = "films";
     };
 
+    luj.lidarr = {
+      enable = true;
+      user = "mediaserver";
+      group = "mediaserver";
+      nginx.enable = true;
+      nginx.subdomain = "songs";
+    };
+
     luj.jellyfin = {
       enable = true;
       user = "mediaserver";
@@ -51,6 +59,16 @@ in {
       group = "mediaserver";
       nginx.enable = true;
       nginx.subdomain = "jackett";
+    };
+
+    luj.flaresolverr.enable = true;
+
+    luj.navidrome = {
+      enable = true;
+      user = "mediaserver";
+      group = "mediaserver";
+      nginx.enable = true;
+      nginx.subdomain = "music";
     };
 
     luj.transmission = {
