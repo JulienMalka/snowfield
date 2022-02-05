@@ -33,11 +33,13 @@ in
       services.jackett = {
         enable = true;
         user = cfg.user;
+        package = pkgs.unstable.jackett;
         group = cfg.group;
       };
+
     }
 
-      (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port) )]);
+      (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port))]);
 
 
 

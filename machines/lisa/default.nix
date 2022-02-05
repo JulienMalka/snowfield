@@ -37,6 +37,13 @@
         subdomain = "docs";
       };
     };
+    bruit = {
+      enable = true;
+      nginx = {
+        enable = true;
+        subdomain = "bruit";
+      };
+    };
     mailserver.enable = true;
 
   };

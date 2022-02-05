@@ -53,11 +53,13 @@
       packages."x86_64-linux" = {
         tinystatus = import ./packages/tinystatus { inherit pkgs; };
         mosh = pkgs.callPackage ./packages/mosh {};
+        flaresolverr = pkgs.callPackage ./package/flaresolverr {};
         htpdate = pkgs.callPackage ./packages/htpdate {};
       };
       packages."aarch64-linux" = {
         tinystatus = import ./packages/tinystatus { pkgs = pkgsrpi; };
         mosh = pkgsrpi.callPackage ./packages/mosh {};
+        flaresolverr = pkgsrpi.callPacakge ./packages/flaresolverr {};
         htpdate = pkgsrpi.callPackage ./packages/htpdate {};
       };
     };
