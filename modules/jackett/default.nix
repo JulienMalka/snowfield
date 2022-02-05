@@ -33,7 +33,6 @@ in
       services.jackett = {
         enable = true;
         user = cfg.user;
-        package = pkgs.unstable.jackett;
         group = cfg.group;
       };
 
