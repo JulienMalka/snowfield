@@ -15,7 +15,11 @@
 
 
   luj = {
-    mediaserver.enable = true;
+    mediaserver = {
+      enable = true;
+      tv.enable = true;
+      music.enable = true;
+    };
     homepage.enable = true;
     bincache = {
       enable = true;
