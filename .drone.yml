@@ -68,6 +68,10 @@ steps:
   commands:
   - nix build .#htpdate
 
+- name: Build flaresolverr
+  commands:
+  - nix build .#flaresolverr
+
 
 
 trigger:
