@@ -59,7 +59,7 @@
       packages."aarch64-linux" = {
         tinystatus = import ./packages/tinystatus { pkgs = pkgsrpi; };
         mosh = pkgsrpi.callPackage ./packages/mosh {};
-        flaresolverr = pkgsrpi.callPacakge ./packages/flaresolverr {};
+        flaresolverr = pkgsrpi.callPackage ./packages/flaresolverr {};
         htpdate = pkgsrpi.callPackage ./packages/htpdate {};
       };
     };
