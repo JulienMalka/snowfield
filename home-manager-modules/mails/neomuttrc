@@ -54,7 +54,7 @@ bind index \CO sidebar-open
 bind pager \CP sidebar-prev
 bind pager \CN sidebar-next
 bind pager \CO sidebar-open
-bind pager <Backspace> previous-line
+bind pager \CK previous-line
 set nm_default_url = "notmuch:///home/julien/Maildir"
 
 macro index \\ "<vfolder-from-query>"

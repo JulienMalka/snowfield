@@ -80,11 +80,22 @@ query = subject:/\[Chef.fe.s\]/
 tags = +chefs
 message = chefs
 
+[Filter.17]
+query = subject:/\[BC\]/
+tags = +bc
+message = bc
+
+[Filter.18]
+query = subject:/\[>Pouët-Pouêt<\]/
+tags = +fanfare
+message = fanfare
+
+
 
 [InboxFilter]
 
 [MailMover]
 folders = ens/Inbox ens/DG
 rename = True
-ens/Inbox = 'tag:dg':ens/DG 'tag:COF':ens/COF 'tag:fanfare':ens/Fanfare 'tag:kfet':ens/K-Fet 'tag:chefs':ens/K-Fet/Chefs 
+ens/Inbox = 'tag:bc':ens/Bilan-Carbone 'tag:dg':ens/DG 'tag:COF':ens/COF 'tag:fanfare':ens/Fanfare 'tag:kfet':ens/K-Fet 'tag:chefs':ens/K-Fet/Chefs 
 ens/DG = 'tag:externement':ens/DG/Externements 'tag:malle':ens/DG/Malles 'tag:thurnage':ens/DG/Thurnages 'tag:situation':ens/DG/Situations 'tag:fermeture':ens/DG/Fermeture
