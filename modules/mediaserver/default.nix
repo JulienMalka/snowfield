@@ -34,7 +34,7 @@ in
 
       luj.flaresolverr.enable = true;
 
-      luj.transmission = {
+      luj.deluge = {
         enable = true;
         user = "mediaserver";
         group = "mediaserver";
@@ -87,7 +87,7 @@ in
           user = "mediaserver";
           group = "mediaserver";
           nginx.enable = true;
-          nginx.subdomain = "music";
+          nginx.subdomain = "musique";
         };
 
 
