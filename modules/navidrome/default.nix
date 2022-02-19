@@ -29,11 +29,14 @@ in
         apply = recursiveUpdate default;
         default = {
           Address = "127.0.0.1";
-          Port = 4533;
+          Port = port;
           MusicFolder = "/home/mediaserver/music";
           EnableGravatar = true;
-          LastFM.Enabled = false;
           ListenBrainz.Enabled = false;
+          LastFM.Language = "fr";
+          Spotify.ID = "34b7b2f28ac0490bb320073ac3123cd0";
+          Spotify.Secret = "4a5ee0a0f4524f25b8645018f8aee48e";
+          DefaultTheme = "Spotify-ish";
         };
         example = {
           MusicFolder = "/mnt/music";
@@ -57,38 +60,15 @@ in
         after = [ "network.target" ];
         wantedBy = [ "multi-user.target" ];
         serviceConfig = {
-          User = cfg.user;
-          Group = cfg.group;
+#          User = cfg.user;
+#          Group = cfg.group;
           ExecStart = ''
             ${pkgs.navidrome}/bin/navidrome --configfile ${settingsFormat.generate "navidrome.json" cfg.settings}
           '';
-          DynamicUser = true;
           StateDirectory = "navidrome";
           WorkingDirectory = "/var/lib/navidrome";
-          RuntimeDirectory = "navidrome";
-          RootDirectory = "/run/navidrome";
-          ReadWritePaths = "";
-          BindReadOnlyPaths = [
-            builtins.storeDir
-          ] ++ lib.optional (cfg.settings ? MusicFolder) cfg.settings.MusicFolder;
-          CapabilityBoundingSet = "";
-          RestrictAddressFamilies = [ "AF_UNIX" "AF_INET" "AF_INET6" ];
-          RestrictNamespaces = true;
-          PrivateDevices = true;
-          PrivateUsers = true;
-          ProtectClock = true;
-          ProtectControlGroups = true;
-          #ProtectHome = true;
-          ProtectKernelLogs = true;
-          ProtectKernelModules = true;
-          ProtectKernelTunables = true;
-          SystemCallArchitectures = "native";
-          SystemCallFilter = [ "@system-service" "~@privileged" "~@resources" ];
-          RestrictRealtime = true;
-          LockPersonality = true;
-          MemoryDenyWriteExecute = true;
-          #UMask = "0066";
-          ProtectHostname = true;
+          #RuntimeDirectory = "navidrome";
+          #RootDirectory = "/run/navidrome";
         };
       };
 
@@ -96,9 +76,17 @@ in
 
     }
 
-      (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port))]);
-
-
+    ({
+    services.nginx.virtualHosts."music.julienmalka.me" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        proxyPass = "http://localhost:${toString port}";
+      };
+    };
+})
+   
+]);
 
 
 }
