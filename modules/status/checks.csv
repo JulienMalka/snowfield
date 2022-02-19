@@ -3,7 +3,7 @@ http,   200,  Homepage,               https://julienmalka.me
 http,   200,  CI,                     https://ci.julienmalka.me
 http,   200,  Binary Cache,           https://bin.julienmalka.me/nix-cache-info
 http,   200,  Jellyfin,               https://tv.julienmalka.me
-http,   401,  Transmission,           https://downloads.julienmalka.me
+http,   200,  Deluge,                 https://downloads.julienmalka.me
 http,   200,  Sonarr,                 https://series.julienmalka.me
 http,   200,  Radarr,                 https://films.julienmalka.me
 http,   200,  Jackett,                https://jackett.julienmalka.me/UI/Dashboard
