@@ -2,7 +2,7 @@
 {
 
 
-  imports = [ ./users/status.nix ];
+  imports = [ ../../users/status.nix ];
   # NixOS wants to enable GRUB by default
   boot.loader.grub.enable = false;
 
