@@ -52,5 +52,7 @@ in
     };
   };
 
+  luj = import ./luj.nix final;
+
 }
 

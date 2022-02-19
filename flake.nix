@@ -8,6 +8,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    dns = {
+      url = "github:kirelagin/dns.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     neovim-nightly-overlay = {
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "unstable";
@@ -36,7 +41,7 @@
   outputs = { self, home-manager, nixpkgs, unstable, sops-nix, neovim-nightly-overlay, nur, ... }@inputs:
     let
       pkgs = import nixpkgs { system = "x86_64-linux"; };
-      pkgsrpi = import nixpkgs { system = "aarch64-linux";};
+      pkgsrpi = import nixpkgs { system = "aarch64-linux"; };
       lib = nixpkgs.lib.extend (import ./lib inputs);
     in
     with lib;
@@ -48,19 +53,18 @@
         })
         (builtins.attrNames (builtins.readDir ./modules)));
 
-        nixosConfigurations = builtins.mapAttrs (name: value: (mkMachine {host=name; host-config=value; modules=self.nixosModules;})) (importConfig ./machines) //
-        {"lambda" = mkMachine { host = "lambda"; host-config = import ./rpi.nix; modules=self.nixosModules; system="aarch64-linux";};};
+      nixosConfigurations = builtins.mapAttrs (name: value: (mkMachine { host = name; host-config = value; modules = self.nixosModules; system = luj.machines.${name}.arch; })) (importConfig ./machines);
       packages."x86_64-linux" = {
         tinystatus = import ./packages/tinystatus { inherit pkgs; };
-        mosh = pkgs.callPackage ./packages/mosh {};
-        flaresolverr = pkgs.callPackage ./packages/flaresolverr {};
-        htpdate = pkgs.callPackage ./packages/htpdate {};
+        mosh = pkgs.callPackage ./packages/mosh { };
+        flaresolverr = pkgs.callPackage ./packages/flaresolverr { };
+        htpdate = pkgs.callPackage ./packages/htpdate { };
       };
       packages."aarch64-linux" = {
         tinystatus = import ./packages/tinystatus { pkgs = pkgsrpi; };
-        mosh = pkgsrpi.callPackage ./packages/mosh {};
-        flaresolverr = pkgsrpi.callPackage ./packages/flaresolverr {};
-        htpdate = pkgsrpi.callPackage ./packages/htpdate {};
+        mosh = pkgsrpi.callPackage ./packages/mosh { };
+        flaresolverr = pkgsrpi.callPackage ./packages/flaresolverr { };
+        htpdate = pkgsrpi.callPackage ./packages/htpdate { };
       };
     };
 }
