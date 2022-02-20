@@ -52,6 +52,22 @@ in
     };
   };
 
+  mkPrivateSubdomain = name: port: {
+    luj.nginx.enable = true;
+    services.nginx.virtualHosts."${name}.julienmalka.me" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://localhost:${toString port}";
+        extraConfig = ''
+          allow 10.100.0.0/24;
+          deny all;
+        '';
+      };
+    };
+  };
+
+
   luj = import ./luj.nix final;
 
 }
