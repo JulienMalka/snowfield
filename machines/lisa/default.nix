@@ -68,7 +68,7 @@
     prefixLength = 120;
   }];
 
-  networking.nameservers = [ "8.8.8.8" ];
+  networking.nameservers = [ "10.100.0.2" ];
   networking.hostId = "fbb334ae";
   services.zfs.autoSnapshot.enable = true;
   services.zfs.autoScrub.enable = true;
@@ -123,7 +123,7 @@
           publicKey = "TAIP4faPBx6gk1cifC6fdfIP6slo1ir+HMVKxQXBejo=";
         }
         {
-          allowedIPs = [ "10.100.0.8" ];
+          allowedIPs = [ "10.100.0.8/32" ];
           publicKey = "EmWRWnZfr60ekm4ZLdwa6gXU6V3p39p6tWOZ03dL+DA=";
         }
       ]; 
