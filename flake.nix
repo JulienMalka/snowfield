@@ -59,6 +59,7 @@
         mosh = pkgs.callPackage ./packages/mosh { };
         flaresolverr = pkgs.callPackage ./packages/flaresolverr { };
         htpdate = pkgs.callPackage ./packages/htpdate { };
+        authelia = pkgs.callPackage ./packages/authelia { };
       };
       packages."aarch64-linux" = {
         tinystatus = import ./packages/tinystatus { pkgs = pkgsrpi; };

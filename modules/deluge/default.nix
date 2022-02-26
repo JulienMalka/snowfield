@@ -54,8 +54,10 @@ in
       };
     }
 
-      (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port))]);
 
+      
+      (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))]);
+ 
 
 
 }
