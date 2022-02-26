@@ -18,6 +18,11 @@ in
       enable = true;
       subdomain = "cloud";
     };
+    paperless = {
+      enable = true;
+      nginx.enable = true;
+      nginx.subdomain = "papers";
+    };
     zfs-mails.enable = true;
     zfs-mails.name = hostName;
     zfs-mails.smart.enable = true;
@@ -32,6 +37,25 @@ in
 
   services.zfs.autoSnapshot.enable = true;
   services.zfs.autoScrub.enable = true;
+
+
+ networking.wireguard.interfaces = {
+    wg0 = {
+      ips = [ "10.100.0.10/24" ];
+      listenPort = 51820;
+      privateKeyFile = "/root/wireguard-keys/private";
+
+      peers = [
+        {
+          allowedIPs = [ "10.100.0.0/24" ];
+          publicKey = "hz+h9Oque5h+Y/WzOUnai3e9UfIfDsvtqmQH0xycIzs=";
+          endpoint = "212.129.40.11:51820";
+          persistentKeepalive = 25;
+        }
+      ];
+    };
+  };
+ 
 
   system.stateVersion = "21.05";
 

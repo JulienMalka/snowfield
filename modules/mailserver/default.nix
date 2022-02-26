@@ -28,6 +28,10 @@ with lib;
           "camille.mondon@ens.school" = {
             hashedPasswordFile = "/run/secrets/ensmailmondon-pw";
           };
+
+          "docs@malka.sh" = {
+            hashedPassword = "$2y$05$NdEncXtSDspL0reJDrm1NubqOrSi2IO.4qVJvsUVFDsAdItVuc2Fa";
+          };
         };
         certificateScheme = 3;
       };

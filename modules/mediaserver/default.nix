@@ -87,7 +87,7 @@ in
           user = "mediaserver";
           group = "mediaserver";
           nginx.enable = true;
-          nginx.subdomain = "musique";
+          nginx.subdomain = "music";
         };
 
 
