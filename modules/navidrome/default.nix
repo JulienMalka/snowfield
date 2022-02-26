@@ -61,17 +61,11 @@ in
 
     }
 
-    ({
-    services.nginx.virtualHosts."music.julienmalka.me" = {
-      forceSSL = true;
-      enableACME = true;
-      locations."/" = {
-        proxyPass = "http://localhost:${toString port}";
-      };
-    };
-})
-   
-]);
 
-
+    
+      (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port))
+      
+      (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))]);
+      
+ 
 }
