@@ -39,8 +39,9 @@ in
     }
 
       (mkIf cfg.nginx.enable (mkPrivateSubdomain cfg.nginx.subdomain port))
-
-    ]);
+      
+      (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))]);
+ 
 
 
 
