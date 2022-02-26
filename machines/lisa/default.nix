@@ -1,5 +1,4 @@
 { config, lib, pkgs, modulesPath, ... }:
-
 {
   imports =
     [
@@ -38,6 +37,7 @@
         subdomain = "docs";
       };
     };
+    homer.enable = true;
     bruit = {
       enable = true;
       nginx = {
@@ -76,8 +76,7 @@
   system.stateVersion = "21.11";
 
 
-    networking.firewall = {
-    allowedTCPPorts = [ ];
+  networking.firewall = {
     allowedUDPPorts = [ 51820 ];
   };
   networking.nat.enable = true;
@@ -126,7 +125,11 @@
           allowedIPs = [ "10.100.0.8/32" ];
           publicKey = "EmWRWnZfr60ekm4ZLdwa6gXU6V3p39p6tWOZ03dL+DA=";
         }
-      ]; 
+        {
+          allowedIPs = [ "10.100.0.9/32" ];
+          publicKey = "z85y4nc+7O7t2I4VqP0SAKJOD46PlkXoEPiuGOBS+SI=";
+        }
+      ];
 
     };
   };
@@ -134,10 +137,13 @@
 
 
 
-
-
-
-
-
+  services.nginx.virtualHosts."jellyfin.mondon.me" = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+      proxyWebsockets = true;
+      proxyPass = "http://10.100.0.4";
+    };
+  };
 
 }
