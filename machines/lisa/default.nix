@@ -129,6 +129,10 @@
           allowedIPs = [ "10.100.0.9/32" ];
           publicKey = "z85y4nc+7O7t2I4VqP0SAKJOD46PlkXoEPiuGOBS+SI=";
         }
+        {
+          allowedIPs = [ "10.100.0.10/32" ];
+          publicKey = "SJ9tflQps1kssFsgVGLhqSSVKNPDspd+5xVMSu/aqk4=";
+        }
       ];
 
     };
