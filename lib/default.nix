@@ -32,6 +32,7 @@ in
               mosh = prev.pkgs.callPackage ../packages/mosh { };
               flaresolverr = prev.pkgs.callPackage ../packages/flaresolverr { };
               htpdate = prev.pkgs.callPackage ../packages/htpdate { };
+              authelia = prev.pkgs.callPackage ../packages/authelia { };
             })
           inputs.neovim-nightly-overlay.overlay
         ];
@@ -51,6 +52,40 @@ in
       };
     };
   };
+
+  mkPrivateSubdomain = name: port: {
+    luj.nginx.enable = true;
+    services.nginx.virtualHosts."${name}.julienmalka.me" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://localhost:${toString port}";
+        extraConfig = ''
+          allow 10.100.0.0/24;
+          deny all;
+        '';
+      };
+    };
+  };
+
+  mkVPNSubdomain = name: port: {
+    luj.nginx.enable = true;
+    services.nginx.virtualHosts."${name}.luj.home" = {
+      sslCertificate = "/etc/nginx/certs/subdomains/cert.pem";
+      sslCertificateKey = "/etc/nginx/certs/subdomains/key.pem";
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://localhost:${toString port}";
+        extraConfig = ''
+          allow 10.100.0.0/24;
+          deny all;
+        '';
+      };
+    };
+  };
+
+
+
 
   luj = import ./luj.nix final;
 

@@ -94,5 +94,5 @@ in
       path = [ pkgs.nixUnstable pkgs.git pkgs.openssh ];
     };
 
-  } (mkSubdomain cfg.subdomain port));
+  } (recursiveUpdate (mkSubdomain cfg.subdomain port) (mkVPNSubdomain cfg.subdomain port)));
 }
