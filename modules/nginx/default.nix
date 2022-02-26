@@ -1,7 +1,8 @@
 { lib, pkgs, config, ... }:
 with lib;
 let cfg = config.luj.nginx;
-in {
+in
+{
 
   options.luj.nginx = {
     enable = mkEnableOption "activate nginx service";
@@ -29,6 +30,16 @@ in {
         server_names_hash_bucket_size 128;
       '';
     };
+
+    services.nginx.virtualHosts."404.julienmalka.me" = {
+      default = true;
+      locations."/" = {
+        root = "${./404}";
+      };
+    };
+
+
+
 
   };
 }
