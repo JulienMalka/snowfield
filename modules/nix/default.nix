@@ -32,6 +32,7 @@ with lib;
           "nixos=${inputs.nixpkgs}"
         ];
         binaryCaches = [
+          "https://cache.nixos.org"
           "https://bin.julienmalka.me"
         ];
         binaryCachePublicKeys = [
