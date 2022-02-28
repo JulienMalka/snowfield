@@ -26,7 +26,6 @@ with lib;
         package = pkgs.unstable.nix;
         extraOptions = ''
           experimental-features = nix-command flakes
-          narinfo-cache-negative-ttl = 0
         '';
         nixPath = [
           "nixpkgs=${inputs.nixpkgs}"
