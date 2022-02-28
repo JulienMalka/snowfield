@@ -24,6 +24,11 @@
   ];
 
   # File systems configuration for using the installer's partition layout
+
+
+ nix.package = lib.mkForce pkgs.nixUnstable; 
+
+
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-label/NIXOS_SD";
