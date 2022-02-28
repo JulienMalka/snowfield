@@ -23,6 +23,7 @@ in
         root = inputs.homepage;
       };
 
+      nix.gcRoots = [ inputs.homepage ];
 
     };
 }
