@@ -33,6 +33,7 @@ in
               flaresolverr = prev.pkgs.callPackage ../packages/flaresolverr { };
               htpdate = prev.pkgs.callPackage ../packages/htpdate { };
               authelia = prev.pkgs.callPackage ../packages/authelia { };
+              paperless-ng = prev.pkgs.callPackage ../packages/paperless-ng { };
             })
           inputs.neovim-nightly-overlay.overlay
         ];
