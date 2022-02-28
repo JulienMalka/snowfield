@@ -15,14 +15,16 @@ with lib;
         path = "/home/julien/.config/ens-mail-passwd";
       };
 
-      sops.secrets.sendinblue-mail-passwd = {};
+      sops.secrets.sendinblue-mail-passwd = { };
       sops.secrets.git-gpg-private-key = {
         owner = "julien";
         mode = "0440";
         group = config.users.groups.keys.name;
       };
-      
-      };
+
+      nix.gcRoots = [ inputs.sops-nix ];
+
+    };
 
 
 }
