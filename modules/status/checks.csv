@@ -3,15 +3,10 @@ http,   200,  Homepage,               https://julienmalka.me
 http,   200,  CI,                     https://ci.julienmalka.me
 http,   200,  Binary Cache,           https://bin.julienmalka.me/nix-cache-info
 http,   200,  Jellyfin,               https://tv.julienmalka.me
-http,   200,  Deluge,                 https://downloads.julienmalka.me
-http,   200,  Sonarr,                 https://series.julienmalka.me
-http,   200,  Radarr,                 https://films.julienmalka.me
-http,   200,  Jackett,                https://jackett.julienmalka.me/UI/Dashboard
 port,     0,  Newton,                 newton.julienmalka.me 45
 http,   200,  Cloud,                  cloud.julienmalka.me
 port,     0,  Mail,                   mail.julienmalka.me 993
 http,   200,  Docs,                   https://docs.julienmalka.me
 http,   200,  Lambda,                 https://nixos.org
-http,   200,  Lidarr,                 https://songs.julienmalka.me
 http,   200,  Navidrome,              https://music.julienmalka.me
 http,   200,  Bruit                   https://bruit.julienmalka.me
