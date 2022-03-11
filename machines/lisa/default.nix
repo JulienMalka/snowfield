@@ -11,6 +11,7 @@
 
 
   luj = {
+    irc.enable = true;
     mediaserver = {
       enable = true;
       tv.enable = true;

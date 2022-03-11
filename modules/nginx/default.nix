@@ -21,11 +21,11 @@ in
 
     services.nginx = {
       enable = true;
-      recommendedOptimisation = true;
-      recommendedTlsSettings = true;
-      recommendedProxySettings = true;
-      clientMaxBodySize = "128m";
 
+      recommendedGzipSettings = true;
+    recommendedOptimisation = true;
+    recommendedProxySettings = true;
+    recommendedTlsSettings = true;
       commonHttpConfig = ''
         server_names_hash_bucket_size 128;
       '';
