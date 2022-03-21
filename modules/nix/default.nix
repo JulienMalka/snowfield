@@ -23,7 +23,7 @@ with lib;
           automatic = true;
           dates = "weekly";
         };
-        package = pkgs.unstable.nix;
+        package = pkgs.nixUnstable;
         extraOptions = ''
           experimental-features = nix-command flakes
         '';
