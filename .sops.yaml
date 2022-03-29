@@ -1,7 +1,7 @@
 keys:
   - &macintosh age1ac9aek30209ppmxxxpfc65wet344u57pdy3zmk3whjlta38m6q9s9m666g
   - &newton age162v5365xrnzm9tlxy4w3e6fqds7k3h029qezvl73z6rs5skcn9hs7vml45
-  - &lisa age15uzmt3utvm3vvmy79yk754cvwdxl0gkhqhjfy05qed0nhrpqjf0q0yh5mj
+  - &lisa age1jgdgl68968cvr002nk5ymnr8wut6n9a6kt666wfdmj9dvpy5kc0sdew7c2
 creation_rules:
   - path_regex: secrets/[^/]+\.yaml$
     key_groups:
