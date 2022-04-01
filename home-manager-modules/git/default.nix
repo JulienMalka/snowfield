@@ -12,7 +12,7 @@ with lib;
     programs.git = {
       enable = true;
       userName = "Julien Malka";
-      userEmail = "julien.malka@me.com";
+      userEmail = "julien@malka.sh";
       signing = {
         signByDefault = true;
         key = "6FC74C847011FD83";
