@@ -36,7 +36,7 @@ with lib;
           "https://bin.julienmalka.me"
         ];
         binaryCachePublicKeys = [
-          "bin.julienmalka.me:y0uADfX8ZQ6Pthofm8Pj7v+hED3m2cY0d+Sg6/Jm+s8="
+          "bin.julienmalka.me:RfXA+kPZt3SsMHGib5fY5mxJQLijfXzPbHjHD52ijyI="
         ];
 
         gcRoots = [ inputs.neovim-nightly-overlay inputs.nixpkgs inputs.unstable inputs.home-manager ];
