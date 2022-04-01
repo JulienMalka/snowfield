@@ -15,16 +15,7 @@ let
 
 
   customizeZfs = zfs:
-    (zfs.override { enableMail = true; }).overrideAttrs (oldAttrs: {
-      patches = oldAttrs.patches ++
-        [
-          (pkgs.fetchpatch {
-            name = "notify-on-unavail-events.patch";
-            url = "https://github.com/openzfs/zfs/commit/f74604f2f0d76ee55b59f7ed332409fb128ec7e5.patch";
-            sha256 = "1v25ydkxxx704j0gdxzrxvw07gfhi7865grcm8b0zgz9kq0w8i8i";
-          })
-        ];
-    });
+    (zfs.override { enableMail = true; });
 
   hostName = cfg.name;
   sendEmailEvent = { event }: ''
