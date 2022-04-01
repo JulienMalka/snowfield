@@ -8,7 +8,7 @@ in
     enable = mkEnableOption "activate nginx service";
     email = mkOption {
       type = types.str;
-      default = "julien.malka@me.com";
+      default = "julien@malka.sh";
     };
   };
 
