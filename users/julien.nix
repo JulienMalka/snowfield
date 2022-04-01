@@ -28,6 +28,7 @@
     mode = "0440";
     group = config.users.groups.keys.name;
     sopsFile = ../secrets/git-gpg-private-key;
+    format = "binary";
   };
 
 
