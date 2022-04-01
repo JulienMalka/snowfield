@@ -15,7 +15,7 @@ with lib;
       userEmail = "julien.malka@me.com";
       signing = {
         signByDefault = true;
-        key = "3C68E13964FEA07F";
+        key = "6FC74C847011FD83";
       };
     };
 
