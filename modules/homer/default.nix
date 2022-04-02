@@ -13,8 +13,8 @@ in
       luj.nginx.enable = true;
 
       services.nginx.virtualHosts."home.luj" = {
-        sslCertificate = "/etc/nginx/certs/subdomains/cert.pem";
-        sslCertificateKey = "/etc/nginx/certs/subdomains/key.pem";
+        sslCertificate = "/etc/nginx/certs/home.luj/cert.pem";
+        sslCertificateKey = "/etc/nginx/certs/home.luj/key.pem";
         forceSSL = true;
         root = "/srv/homer/";
       };
