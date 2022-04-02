@@ -69,7 +69,7 @@ in
 
   mkVPNSubdomain = name: port: {
     luj.nginx.enable = true;
-    services.nginx.virtualHosts."${name}.luj.home" = {
+    services.nginx.virtualHosts."${name}.luj" = {
       sslCertificate = "/etc/nginx/certs/subdomains/cert.pem";
       sslCertificateKey = "/etc/nginx/certs/subdomains/key.pem";
       forceSSL = true;
