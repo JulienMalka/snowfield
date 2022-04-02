@@ -54,24 +54,11 @@ in
     };
   };
 
-  mkPrivateSubdomain = name: port: {
-    luj.nginx.enable = true;
-    services.nginx.virtualHosts."${name}.julienmalka.me" = {
-      locations."/" = {
-        proxyPass = "http://localhost:${toString port}";
-        extraConfig = ''
-          allow 10.100.0.0/24;
-          deny all;
-        '';
-      };
-    };
-  };
-
   mkVPNSubdomain = name: port: {
     luj.nginx.enable = true;
     services.nginx.virtualHosts."${name}.luj" = {
-      sslCertificate = "/etc/nginx/certs/subdomains/cert.pem";
-      sslCertificateKey = "/etc/nginx/certs/subdomains/key.pem";
+      sslCertificate = "/etc/nginx/certs/${name}.luj/cert.pem";
+      sslCertificateKey = "/etc/nginx/certs/${name}.luj/key.pem";
       forceSSL = true;
       locations."/" = {
         proxyPass = "http://localhost:${toString port}";
