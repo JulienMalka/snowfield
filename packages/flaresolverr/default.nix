@@ -4,11 +4,11 @@ with pkgs;
 stdenv.mkDerivation rec {
 
 pname = "flaresolverr";
-version = "2.2.0";
+version = "2.2.2";
 
 src = fetchurl {
-    url = "https://github.com/FlareSolverr/FlareSolverr/releases/download/v2.2.0/flaresolverr-v2.2.0-linux-x64.zip";
-    sha256 = "sha256-n3/pbcbz06rPArKizk8j0vNVoEJan7jSOU4fQq29wxg=";
+    url = "https://github.com/FlareSolverr/FlareSolverr/releases/download/v2.2.2/flaresolverr-v2.2.2-linux-x64.zip";
+    sha256 = "sha256-UM36GOx7DxinWe+jkig8HCyZXWQjsMi+OqZS5gVNP/c=";
   };
 
 
