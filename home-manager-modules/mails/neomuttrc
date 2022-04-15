@@ -33,9 +33,10 @@ set sidebar_short_path = yes
 
 set timeout=10
 set mail_check=10
-virtual-mailboxes "Inbox" "notmuch://?query=tag:inbox and NOT tag:dg and NOT tag:cof and NOT tag:fanfare and NOT tag:kfet and NOT tag:chefs"
+virtual-mailboxes "Inbox" "notmuch://?query=tag:inbox and NOT tag:dg and NOT tag:cof and NOT tag:fanfare and NOT tag:kfet and NOT tag:chefs and NOT tag:bc"
 virtual-mailboxes "K-Fêt" "notmuch://?query=tag:kfet"
 virtual-mailboxes "Chefs" "notmuch://?query=tag:chefs"
+virtual-mailboxes "Bilan Carbone" "notmuch://?query=tag:bc"
 virtual-mailboxes "DG" "notmuch://?query=tag:dg and NOT tag:externement and NOT tag:fermeture and NOT tag:malle and NOT tag:situation and NOT tag:thurnage"
 virtual-mailboxes "Externements" "notmuch://?query=tag:externement"
 virtual-mailboxes "Fermeture" "notmuch://?query=tag:fermeture"
