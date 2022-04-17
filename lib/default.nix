@@ -29,6 +29,7 @@ in
           (final: prev:
             {
               tinystatus = prev.pkgs.callPackage ../packages/tinystatus { };
+              radarr = prev.unstable.radarr;
               mosh = prev.pkgs.callPackage ../packages/mosh { };
               flaresolverr = prev.pkgs.callPackage ../packages/flaresolverr { };
               htpdate = prev.pkgs.callPackage ../packages/htpdate { };
