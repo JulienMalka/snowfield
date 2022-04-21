@@ -50,6 +50,9 @@
 
   };
 
+  services.tailscale.enable = true;
+  environment.systemPackages = with pkgs; [ tailscale ];
+
 
   nix.maxJobs = lib.mkDefault 4;
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
@@ -78,7 +81,7 @@
 
 
   networking.firewall = {
-    allowedUDPPorts = [ 51820 ];
+    allowedUDPPorts = [ 51820 41641 ];
   };
   networking.nat.enable = true;
   networking.nat.externalInterface = "ens20";

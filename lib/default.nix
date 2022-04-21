@@ -65,6 +65,7 @@ in
         proxyPass = "http://localhost:${toString port}";
         extraConfig = ''
           allow 10.100.0.0/24;
+          allow 100.10.10.0/8;
           deny all;
         '';
       };
