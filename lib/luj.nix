@@ -21,6 +21,7 @@ lib: with lib; let
         _module.freeformType = with types; attrs;
 
         domain = "julienmalka.me";
+        internalDomain = "luj";
 
         machines = {
           lisa = {
