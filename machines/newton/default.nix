@@ -38,10 +38,18 @@ in
   services.zfs.autoSnapshot.enable = true;
   services.zfs.autoScrub.enable = true;
 
-environment.systemPackages = [ pkgs.tailscale ];
+  environment.systemPackages = [ pkgs.tailscale ];
 
   # enable the tailscale service
   services.tailscale.enable = true;
+  networking.nameservers = [ "100.127.245.71" "9.9.9.9" ];
+  environment.etc."resolv.conf" = with lib; with pkgs; {
+    source = writeText "resolv.conf" ''
+      ${concatStringsSep "\n" (map (ns: "nameserver ${ns}") config.networking.nameservers)}
+      options edns0
+    '';
+  };
+
 
 
 
