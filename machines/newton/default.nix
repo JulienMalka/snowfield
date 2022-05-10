@@ -38,25 +38,15 @@ in
   services.zfs.autoSnapshot.enable = true;
   services.zfs.autoScrub.enable = true;
 
+environment.systemPackages = [ pkgs.tailscale ];
 
- networking.wireguard.interfaces = {
-    wg0 = {
-      ips = [ "10.100.0.10/24" ];
-      listenPort = 51820;
-      privateKeyFile = "/root/wireguard-keys/private";
+  # enable the tailscale service
+  services.tailscale.enable = true;
 
-      peers = [
-        {
-          allowedIPs = [ "10.100.0.0/24" ];
-          publicKey = "oYsN1Qy+a7dwVOKapN5s5KJOmhSflLHZqh+GLMeNpHw=";
-          endpoint = "212.129.40.11:51820";
-          persistentKeepalive = 25;
-        }
-      ];
-    };
-  };
- 
+
 
   system.stateVersion = "21.05";
+
+
 
 }
