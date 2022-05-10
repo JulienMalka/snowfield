@@ -35,6 +35,7 @@ in
               htpdate = prev.pkgs.callPackage ../packages/htpdate { };
               authelia = prev.pkgs.callPackage ../packages/authelia { };
               paperless-ng = prev.pkgs.callPackage ../packages/paperless-ng { };
+              tailscale = prev.unstable.tailscale;
             })
           inputs.neovim-nightly-overlay.overlay
         ];
@@ -57,14 +58,13 @@ in
 
   mkVPNSubdomain = name: port: {
     luj.nginx.enable = true;
+    security.acme.certs."${name}.luj".server = "https://ca.luj:8443/acme/acme/directory";
     services.nginx.virtualHosts."${name}.luj" = {
-      sslCertificate = "/etc/nginx/certs/${name}.luj/cert.pem";
-      sslCertificateKey = "/etc/nginx/certs/${name}.luj/key.pem";
       forceSSL = true;
+      enableACME = true;
       locations."/" = {
         proxyPass = "http://localhost:${toString port}";
         extraConfig = ''
-          allow 10.100.0.0/24;
           allow 100.10.10.0/8;
           deny all;
         '';
