@@ -12,9 +12,10 @@ in
     {
       luj.nginx.enable = true;
 
+      security.acme.certs."home.luj".server = "https://ca.luj:8443/acme/acme/directory";
+
       services.nginx.virtualHosts."home.luj" = {
-        sslCertificate = "/etc/nginx/certs/home.luj/cert.pem";
-        sslCertificateKey = "/etc/nginx/certs/home.luj/key.pem";
+        enableACME = true;
         forceSSL = true;
         root = "/srv/homer/";
       };
