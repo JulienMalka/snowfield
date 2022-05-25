@@ -2,32 +2,32 @@
 with lib;
 let
   cfg = config.luj.irc;
-  port = 2042;
+  port = 9000;
 in
 {
 
   options.luj.irc = {
-    enable = mkEnableOption "activate weechat service";
-  };
+    enable = mkEnableOption "activate irc service";
 
-  config = mkIf cfg.enable {
-
-    services.weechat.enable = true;
-    services.nginx.virtualHosts."irc.julienmalka.me" = {
-      forceSSL = true;
-      enableACME = true;
-      locations."^~ /weechat" = {
-        proxyPass = "http://127.0.0.1:${builtins.toString port}";
-        proxyWebsockets = true;
-      };
-      locations."/" = {
-        root = pkgs.glowing-bear;
-      };
+    nginx.enable = mkEnableOption "activate nginx";
+    nginx.subdomain = mkOption {
+      type = types.str;
     };
 
   };
+
+  config = mkIf cfg.enable (
+    mkMerge [{
+      services.thelounge = {
+        enable = true;
+      };
+
+    }
+   
+      (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port))
+      (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))]);
+ 
+
+
+
 }
-    
-
-
-

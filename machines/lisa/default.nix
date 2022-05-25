@@ -51,7 +51,6 @@
   };
 
 
-
   # make the tailscale command usable to users
   environment.systemPackages = [ pkgs.tailscale ];
 
@@ -59,7 +58,7 @@
   services.tailscale.enable = true;
 
 
-  nix.maxJobs = lib.mkDefault 4;
+  nix.maxJobs = lib.mkDefault 6;
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   services.fail2ban.enable = true;
@@ -89,17 +88,36 @@
   services.zfs.autoSnapshot.enable = true;
   services.zfs.autoScrub.enable = true;
 
-  system.stateVersion = "21.11";
+  networking.wireguard.interfaces = {
+    wg0 = {
+      ips = [ "fd85:27e8:fc9::6/128" ];
+      listenPort = 51820;
+      privateKeyFile = "/root/wg-private";
+
+      peers = [
+        {
+          allowedIPs = [ "fd85:27e8:fc9::/48" ];
+          publicKey = "ZO8j0AwssAERtyJQO+o11pWAFKzkxTI5hmqHsfEy5Bo=";
+          endpoint = "core01.rz.ens.wtf:51820";
+          persistentKeepalive = 25;
+        }
+      ];
+    };
+  };
 
 
-
+  networking.firewall.allowedTCPPorts = [ 51821 ];
+  networking.firewall.allowedUDPPorts = [ 51821 ];
   services.nginx.virtualHosts."jellyfin.mondon.me" = {
     enableACME = true;
     forceSSL = true;
     locations."/" = {
       proxyWebsockets = true;
-      proxyPass = "http://100.74.49.77";
+      proxyPass = "https://100.74.49.77";
     };
   };
+
+  system.stateVersion = "21.11";
+
 
 }
