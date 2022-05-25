@@ -11,7 +11,13 @@
 
 
   luj = {
-    irc.enable = true;
+    irc = {
+      enable = true;
+      nginx = {
+        enable = true;
+        subdomain = "irc";
+      };
+    };
     mediaserver = {
       enable = true;
       tv.enable = true;
