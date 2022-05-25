@@ -36,6 +36,7 @@ in
               authelia = prev.pkgs.callPackage ../packages/authelia { };
               paperless-ng = prev.pkgs.callPackage ../packages/paperless-ng { };
               tailscale = prev.unstable.tailscale;
+              nodePackages = prev.unstable.nodePackages;
             })
           inputs.neovim-nightly-overlay.overlay
         ];
