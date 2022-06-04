@@ -24,7 +24,7 @@ in
 
   config = mkIf cfg.enable (
     mkMerge [{
-      services.paperless-ng = {
+      services.paperless = {
         enable = true;
         user = cfg.user;
         mediaDir = "/home/julien/papers";

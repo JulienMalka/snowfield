@@ -30,6 +30,8 @@
 
   environment.variables.EDITOR = "nvim";
 
+  networking.firewall.checkReversePath = "loose";
+
 
 
   security.pki.certificates = [
