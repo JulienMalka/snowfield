@@ -15,7 +15,7 @@ in
   config = mkIf cfg.enable {
 
     networking.firewall.allowedTCPPorts = [ 80 443 ];
-    security.acme.email = "${cfg.email}";
+    security.acme.defaults.email = "${cfg.email}";
     security.acme.acceptTerms = true;
     users.groups.nginx = { name = "nginx"; };
 
