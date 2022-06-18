@@ -60,7 +60,7 @@ in
 
   mkVPNSubdomain = name: port: {
     luj.nginx.enable = true;
-    security.acme.certs."${name}.luj".server = "https://ca.luj:8443/acme/acme/directory";
+    security.acme.certs."${name}.luj".server = "https://ca.luj:8444/acme/acme/directory";
     services.nginx.virtualHosts."${name}.luj" = {
       forceSSL = true;
       enableACME = true;
