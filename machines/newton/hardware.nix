@@ -21,7 +21,7 @@
       authorizedKeys = lib.splitString "\n" 
     (builtins.readFile (pkgs.fetchurl {
       url = "https://github.com/JulienMalka.keys";
-      sha256 = "sha256-/i6WOEWBfXnRln9r6GCznoc47UzN+jInkWjTSqNafHI=";
+      sha256 = "sha256-ZTQpJO5/z/RIzvNpLBHv2GyCn8cvWsN5Hx3pd6s7RYY=";
     }));
 
     };
