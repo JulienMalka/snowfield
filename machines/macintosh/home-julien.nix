@@ -41,7 +41,6 @@
       htop
       evince
       brightnessctl
-      wireguard
       mosh
       signal-desktop
       flameshot
