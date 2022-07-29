@@ -112,10 +112,10 @@
   };
 
   services.openssh.extraConfig = ''
-  HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
-  HostKey /etc/ssh/ssh_host_ed25519_key
-  TrustedUserCAKeys /etc/ssh/ssh_user_key.pub
-  MaxAuthTries 20
+    HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
+    HostKey /etc/ssh/ssh_host_ed25519_key
+    TrustedUserCAKeys /etc/ssh/ssh_user_key.pub
+    MaxAuthTries 20
   '';
 
 
@@ -127,6 +127,23 @@
     locations."/" = {
       proxyWebsockets = true;
       proxyPass = "https://100.74.49.77";
+    };
+  };
+  services.nginx.virtualHosts."link.julienmalka.me" = {
+    forceSSL = true;
+    enableACME = true;
+    locations."/" = {
+      proxyWebsockets = true;
+      proxyPass = "https://100.127.245.71";
+    };
+  };
+
+  services.nginx.virtualHosts."crypto.saumon.network" = {
+    forceSSL = true;
+    enableACME = true;
+    locations."/" = {
+      proxyWebsockets = true;
+      proxyPass = "https://100.127.245.71";
     };
   };
 
