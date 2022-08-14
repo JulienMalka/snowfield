@@ -56,6 +56,22 @@
 
   };
 
+  services.polr = {
+    enable = true;
+    adminpassFile = "/root/polradminpw";
+    database = {
+      createLocally = true;
+      dbpassFile = "/root/polrdbpw";
+    };
+    config = {
+      address = "link.julienmalka.me";
+      appkeyFile = "/root/polrappkey";
+    };
+    extraConfig = ''
+      SETTING_PSEUDORANDOM_ENDING=true
+    '';
+  };
+
 
   # make the tailscale command usable to users
   environment.systemPackages = [ pkgs.tailscale ];
@@ -121,31 +137,6 @@
 
   networking.firewall.allowedTCPPorts = [ 51821 ];
   networking.firewall.allowedUDPPorts = [ 51821 ];
-  services.nginx.virtualHosts."jellyfin.mondon.me" = {
-    enableACME = true;
-    forceSSL = true;
-    locations."/" = {
-      proxyWebsockets = true;
-      proxyPass = "https://100.74.49.77";
-    };
-  };
-  services.nginx.virtualHosts."link.julienmalka.me" = {
-    forceSSL = true;
-    enableACME = true;
-    locations."/" = {
-      proxyWebsockets = true;
-      proxyPass = "https://100.127.245.71";
-    };
-  };
-
-  services.nginx.virtualHosts."crypto.saumon.network" = {
-    forceSSL = true;
-    enableACME = true;
-    locations."/" = {
-      proxyWebsockets = true;
-      proxyPass = "https://100.127.245.71";
-    };
-  };
 
   system.stateVersion = "21.11";
 
