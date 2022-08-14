@@ -55,6 +55,7 @@
         flaresolverr = pkgs.callPackage ./packages/flaresolverr { };
         htpdate = pkgs.callPackage ./packages/htpdate { };
         authelia = pkgs.callPackage ./packages/authelia { };
+        polr = pkgs.callPackage ./packages/polr { };
       };
       packages."aarch64-linux" = {
         tinystatus = import ./packages/tinystatus { pkgs = pkgsrpi; };
