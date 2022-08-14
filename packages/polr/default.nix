@@ -1,6 +1,6 @@
-{ lib, stdenv, fetchFromGitHub }:
+{pkgs, lib, stdenv, fetchFromGitHub }:
 let 
-  deps = import ./compose.nix {};
+  deps = import ./compose.nix { inherit pkgs; };
 in 
 
    stdenv.mkDerivation rec {
