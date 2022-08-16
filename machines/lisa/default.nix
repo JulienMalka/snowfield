@@ -62,6 +62,7 @@
     database = {
       createLocally = true;
       dbpassFile = "/root/polrdbpw";
+      dbname = "hello";
     };
     config = {
       address = "link.julienmalka.me";

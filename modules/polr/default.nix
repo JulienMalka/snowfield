@@ -211,6 +211,9 @@ with lib;
       users.groups."polr" = { };
 
 
+      systemd.tmpfiles.rules = [
+       "f /var/lib/polr/.env 740 polr polr"
+        ];
       systemd.services.polr-config = {
         wantedBy = [ "phpfpm-polr.service" ];
         wants = [ "polr-mysql.service" ];
@@ -229,8 +232,7 @@ with lib;
           LoadCredential = [ "dbpw:${cfg.database.dbpassFile}" "adminpw:${cfg.adminpassFile}" "appkey:${cfg.config.appkeyFile}" ];
           Type = "oneshot";
           RemainAfterExit = true;
-          BindPaths = [ "/var/lib/polr/:${pkgs.polr}/storage/" ];
-          BindReadOnlyPaths = [ "/var/lib/polr/.env:${pkgs.polr}/.env" ];
+          BindPaths = [ "/var/lib/polr/:${pkgs.polr}/storage/" "/var/lib/polr/.env:${pkgs.polr}/.env" ];
           ProtectHome = true;
           ProtectSystem = "strict";
           PrivateTmp = true;
@@ -247,10 +249,10 @@ with lib;
           RemoveIPC = true;
           PrivateMounts = true;
           PrivateNetwork = true;
-          UMask = "0027";
+#          UMask = "0027";
         };
         script = ''
-          ${pkgs.rsync}/bin/rsync ${builtins.toFile "env" createEnvFile}  /var/lib/polr/.env 
+          cp -R ${builtins.toFile "env" createEnvFile}  /var/lib/polr/.env 
           mkdir -p /var/lib/polr/app
           mkdir -p /var/lib/polr/logs
           mkdir -p /var/lib/polr/framework
@@ -262,8 +264,11 @@ with lib;
           ADMINPW="$(<"$CREDENTIALS_DIRECTORY/adminpw")";
           APPKEY="$(<"$CREDENTIALS_DIRECTORY/appkey")";
           APPKEY_ESC=$(printf '%s\n' "$APPKEY" | sed -e 's/[\/&]/\\&/g')
-          sed -i "s/{DBPASSWORD}/$DBPW_ESC/g" /var/lib/polr/.env
-          sed -i "s/{APPKEY}/$APPKEY_ESC/g" /var/lib/polr/.env
+          sed  "s/{DBPASSWORD}/$DBPW_ESC/g" ${pkgs.polr}/.env > /var/lib/polr/tmp
+          cat /var/lib/polr/tmp > ${pkgs.polr}/.env
+          sed  "s/{APPKEY}/$APPKEY_ESC/g" ${pkgs.polr}/.env > /var/lib/polr/tmp
+          cat /var/lib/polr/tmp > ${pkgs.polr}/.env
+          rm /var/lib/polr/tmp
           ${pkgs.php74}/bin/php ${pkgs.polr}/artisan migrate --force
           ${pkgs.php74}/bin/php ${pkgs.polr}/artisan init:createsuperuser $ADMINPW
         '';
@@ -290,6 +295,7 @@ with lib;
         wantedBy = [ "polr-config.target" ];
         path = [ pkgs.mariadb ];
         serviceConfig = {
+          Type = "oneshot";
           LoadCredential = [ "dbpw:${cfg.database.dbpassFile}" ];
           User = "mysql";
           ProtectHome = true;
