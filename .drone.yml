@@ -27,14 +27,6 @@ steps:
   commands:
   - nix build -v '.#nixosConfigurations.newton.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
 
-- name: Build macintosh
-  commands:
-  - nix build -v '.#nixosConfigurations.macintosh.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
-
-- name: Build lambda
-  commands:
-  - nix build -v '.#nixosConfigurations.lambda.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
-
 
 trigger:
   branch:
@@ -99,11 +91,6 @@ steps:
   - mv result lisa-old
   - nix build -v '.#nixosConfigurations.newton.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
   - mv result newton-old
-  - nix build -v '.#nixosConfigurations.macintosh.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
-  - mv result macintosh-old
-  - nix build -v '.#nixosConfigurations.lambda.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
-  - mv result lambda-old
-
 
 
 - name: flake update
@@ -134,25 +121,11 @@ steps:
   - nix build -v '.#nixosConfigurations.newton.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
   - mv result newton-new
 
-- name: Build macintosh
-  commands:
-  - nix build -v '.#nixosConfigurations.macintosh.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
-  - mv result macintosh-new
-
-- name: Build lambda
-  commands:
-  - nix build -v '.#nixosConfigurations.lambda.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
-  - mv result lambda-new
-
-
 
 - name: Print report
   commands:
   - echo "lisa:" && nix store diff-closures $(readlink -f lisa-old) $(readlink -f lisa-new)
   - echo "newton:" && nix store diff-closures $(readlink -f newton-old) $(readlink -f newton-new)
-  - echo "macintosh:" && nix store diff-closures $(readlink -f macintosh-old) $(readlink -f macintosh-new)
-  - echo "lambda:" && nix store diff-closures $(readlink -f lambda-old) $(readlink -f lambda-new)
-
 
 
 - name: Push update
