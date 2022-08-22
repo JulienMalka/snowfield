@@ -212,19 +212,13 @@ with lib;
 
 
       systemd.tmpfiles.rules = [
-       "f /var/lib/polr/.env 740 polr polr"
-        ];
+        "f /var/lib/polr/.env 740 polr polr"
+      ];
       systemd.services.polr-config = {
-        wantedBy = [ "phpfpm-polr.service" ];
         wants = [ "polr-mysql.service" ];
         requiredBy = [ "phpfpm-polr.service" ];
         before = [ "phpfpm-polr.service" ];
-        restartTriggers = [
-          (builtins.hashFile "sha256" cfg.adminpassFile)
-          (builtins.hashFile "sha256" cfg.database.dbpassFile)
-          (builtins.hashFile "sha256" cfg.config.appkeyFile)
-        ];
-        serviceConfig = {
+       serviceConfig = {
           User = "polr";
           Group = "polr";
           StateDirectory = "polr";
@@ -249,7 +243,6 @@ with lib;
           RemoveIPC = true;
           PrivateMounts = true;
           PrivateNetwork = true;
-#          UMask = "0027";
         };
         script = ''
           cp -R ${builtins.toFile "env" createEnvFile}  /var/lib/polr/.env 
