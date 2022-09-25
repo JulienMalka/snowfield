@@ -6,7 +6,7 @@
   boot.zfs.requestEncryptionCredentials = true;
   boot.loader.grub.copyKernels = true;
   boot.loader.grub.efiSupport = false;
-  boot.kernelPackages = pkgs.linuxPackages_5_18;
+  boot.kernelPackages = pkgs.linuxPackages_5_15;
 
   boot.loader.grub.mirroredBoots = [
     { path = "/boot-1"; devices = [ "/dev/disk/by-id/ata-WDC_WD20EFRX-68EUZN0_WD-WCC4M1TVUVJV" ]; }
