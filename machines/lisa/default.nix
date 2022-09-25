@@ -56,23 +56,6 @@
 
   };
 
-  services.polr = {
-    enable = true;
-    adminpassFile = "/root/polradminpw";
-    database = {
-      createLocally = true;
-      dbpassFile = "/root/polrdbpw";
-      dbname = "hello";
-    };
-    config = {
-      address = "link.julienmalka.me";
-      appkeyFile = "/root/polrappkey";
-    };
-    extraConfig = ''
-      SETTING_PSEUDORANDOM_ENDING=true
-    '';
-  };
-
 
   # make the tailscale command usable to users
   environment.systemPackages = [ pkgs.tailscale ];
