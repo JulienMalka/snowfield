@@ -15,6 +15,8 @@ with lib;
         fqdn = "mail.julienmalka.me";
         domains = [ "malka.sh" "ens.school" ];
 
+        enableManageSieve = true;
+
         # A list of all login accounts. To create the password hashes, use
         # nix run nixpkgs.apacheHttpd -c htpasswd -nbB "" "super secret password" | cut -d: -f2
         loginAccounts = {
@@ -41,6 +43,5 @@ with lib;
       sops.secrets.ensmailmondon-pw = { };
 
       nix.gcRoots = [ inputs.simple-nixos-mailserver ];
-
     };
 }
