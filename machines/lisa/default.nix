@@ -53,12 +53,13 @@
       };
     };
     mailserver.enable = true;
+    linkal.enable = true;
 
   };
 
 
   # make the tailscale command usable to users
-  environment.systemPackages = [ pkgs.tailscale ];
+  environment.systemPackages = [ pkgs.tailscale pkgs.linkal ];
 
   # enable the tailscale service
   services.tailscale.enable = true;
