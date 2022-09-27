@@ -31,6 +31,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    linkal = {
+      url = "github:JulienMalka/Linkal/main";
+      flake = true;
+    };
+
   };
 
   outputs = { self, home-manager, nixpkgs, unstable, sops-nix, neovim-nightly-overlay, nur, ... }@inputs:

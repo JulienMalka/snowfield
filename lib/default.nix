@@ -38,6 +38,7 @@ in
               paperless-ng = prev.pkgs.callPackage ../packages/paperless-ng { };
               tailscale = prev.unstable.tailscale;
               nodePackages = prev.unstable.nodePackages;
+              linkal = inputs.linkal.defaultPackage."${system}";
             })
           inputs.neovim-nightly-overlay.overlay
         ];
