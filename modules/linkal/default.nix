@@ -2,7 +2,7 @@
 with lib;
 let
   cfg = config.luj.linkal;
-  port = 4145;
+  port = 8443;
 in
 {
 
@@ -25,7 +25,7 @@ in
       enableACME = true;
       forceSSL = true;
       locations."/" = {
-        proxyPass = "http://localhost:${toString port}";
+        proxyPass = "http://localhost:${toString port}/";
       };
     };
 
