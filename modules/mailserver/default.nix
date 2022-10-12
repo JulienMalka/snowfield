@@ -22,7 +22,7 @@ with lib;
         loginAccounts = {
           "julien@malka.sh" = {
             hashedPasswordFile = "/run/secrets/malkash-pw";
-            aliases = [ "postmaster@malka.sh" ];
+            catchAll = [ "malka.sh" ];
           };
           "julien.malka@ens.school" = {
             hashedPasswordFile = "/run/secrets/ensmailmalka-pw";
@@ -31,11 +31,14 @@ with lib;
             hashedPasswordFile = "/run/secrets/ensmailmondon-pw";
           };
 
-          "docs@malka.sh" = {
-            hashedPassword = "$2y$05$NdEncXtSDspL0reJDrm1NubqOrSi2IO.4qVJvsUVFDsAdItVuc2Fa";
-          };
         };
         certificateScheme = 3;
+      };
+
+      services.roundcube = {
+        enable = true;
+        plugins = [ "managesieve" ];
+        hostName = "webmail.julienmalka.me";
       };
 
       sops.secrets.malkash-pw = { };
