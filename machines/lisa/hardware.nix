@@ -8,7 +8,7 @@
   boot.extraModulePackages = [ ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
- fileSystems."/" =
+  fileSystems."/" =
     {
       device = "zroot/root";
       fsType = "zfs";
@@ -19,20 +19,20 @@
       device = "/dev/disk/by-uuid/4E38-3626";
       fsType = "vfat";
     };
-swapDevices = [];
+  swapDevices = [ ];
 
 
-boot.initrd.network = {
+  boot.initrd.network = {
     enable = true;
     ssh = {
       enable = true;
       port = 2222;
       hostKeys = [ /boot/initrd-ssh-key ];
-      authorizedKeys = lib.splitString "\n" 
-    (builtins.readFile (pkgs.fetchurl {
-      url = "https://github.com/JulienMalka.keys";
-      sha256 = "sha256-ZTQpJO5/z/RIzvNpLBHv2GyCn8cvWsN5Hx3pd6s7RYY=";
-    }));
+      authorizedKeys = lib.splitString "\n"
+        (builtins.readFile (pkgs.fetchurl {
+          url = "https://github.com/JulienMalka.keys";
+          sha256 = "sha256-1cbFnmpSt74KKcAthJswmBEFVR6cn9oVClK/Pu33OKQ=";
+        }));
 
     };
     postCommands = ''

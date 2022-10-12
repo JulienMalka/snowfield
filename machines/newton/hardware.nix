@@ -12,17 +12,17 @@
     { path = "/boot-1"; devices = [ "/dev/disk/by-id/ata-WDC_WD20EFRX-68EUZN0_WD-WCC4M1TVUVJV" ]; }
     { path = "/boot-2"; devices = [ "/dev/disk/by-id/ata-WDC_WD20EFRX-68EUZN0_WD-WCC4M7UDRLSK" ]; }
   ];
- boot.initrd.network = {
+  boot.initrd.network = {
     enable = true;
     ssh = {
       enable = true;
       port = 2222;
       hostKeys = [ /boot-1/initrd-ssh-key /boot-2/initrd-ssh-key ];
-      authorizedKeys = lib.splitString "\n" 
-    (builtins.readFile (pkgs.fetchurl {
-      url = "https://github.com/JulienMalka.keys";
-      sha256 = "sha256-ZTQpJO5/z/RIzvNpLBHv2GyCn8cvWsN5Hx3pd6s7RYY=";
-    }));
+      authorizedKeys = lib.splitString "\n"
+        (builtins.readFile (pkgs.fetchurl {
+          url = "https://github.com/JulienMalka.keys";
+          sha256 = "sha256-1cbFnmpSt74KKcAthJswmBEFVR6cn9oVClK/Pu33OKQ=";
+        }));
 
     };
     postCommands = ''

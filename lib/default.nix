@@ -40,7 +40,6 @@ in
               nodePackages = prev.unstable.nodePackages;
               linkal = inputs.linkal.defaultPackage."${system}";
             })
-          inputs.neovim-nightly-overlay.overlay
         ];
       }
     ];
