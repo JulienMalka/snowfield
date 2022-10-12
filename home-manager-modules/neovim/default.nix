@@ -1,13 +1,25 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, home, lib, config, ... }:
 let
   cfg = config.luj.programs.neovim;
-  dusk-vim = pkgs.vimUtils.buildVimPlugin {
-    name = "dusk-vim";
+  onedarker = pkgs.vimUtils.buildVimPlugin {
+    pname = "onedarker";
+    version = "1.0.0";
     src = pkgs.fetchFromGitHub {
-      owner = "notusknot";
-      repo = "dusk-vim";
-      rev = "8eb71f092ebfa173a6568befbe522a56e8382756";
-      sha256 = "09l4hda5jnyigc2hhlirv1rc8hsnsc4zgcv4sa4br8fryi73nf4g";
+      owner = "lunarvim";
+      repo = "onedarker.nvim";
+      rev = "2d02768b6801d0acdef7f6e1ac8db0929581d5bc";
+      sha256 = "sha256-admAB4ybJpN/4+MtZd9CEQKZEq8nBZJsLiB6gUUylrc=";
+    };
+  };
+
+  coc-sql = pkgs.vimUtils.buildVimPlugin {
+    pname = "coq-sql";
+    version = "1.0.0";
+    src = pkgs.fetchFromGitHub {
+      owner = "fannheyward";
+      repo = "coc-sql";
+      rev = "0ac7d35200bda0abcc1b0f91ad5cb08eb44b1eca";
+      sha256 = "sha256-admAB4ybJpN/4+MtZd9CEQKZEq8nBZJsLiB6gUUylrc=";
     };
   };
 
@@ -19,55 +31,80 @@ with lib;
   };
 
   config = mkIf cfg.enable {
+
+    home.packages = with pkgs; [ nixfmt git nodejs ripgrep ];
+
     programs.neovim = {
       enable = true;
-      package = pkgs.neovim-unwrapped;
-      plugins = with pkgs.vimPlugins; [
-        # File tree
-        nvim-web-devicons
-        nvim-tree-lua
+      package = pkgs.unstable.neovim-unwrapped;
+      viAlias = true;
+      vimAlias = true;
+      vimdiffAlias = true;
+
+      coc = {
+        enable = true;
+        settings = {
+          coc.preferences.formatOnSaveFiletypes = [ "nix" "rust" "sql" ];
+          languageserver = {
+            nix = {
+              command = "rnix-lsp";
+              filetypes = [
+                "nix"
+              ];
+            };
+          };
+        };
+      };
+
+      withPython3 = true;
+      plugins = with pkgs.unstable.vimPlugins; [
+        #theme
+        onedarker
+
         # LSP
         nvim-lspconfig
-        # Languages
-        vim-nix
 
-        # Eyecandy 
-        nvim-treesitter
-        bufferline-nvim
-        galaxyline-nvim
-        nvim-colorizer-lua
-        pears-nvim
-        dusk-vim
+        plenary-nvim
 
-        # Lsp and completion
-        nvim-lspconfig
-        nvim-compe
-
-        # Telescope
+        #Telescope
         telescope-nvim
 
-        # Indent lines
-        #indent-blankline-nvim
+        nvim-web-devicons
+
+
+        (nvim-treesitter.withPlugins (ps: with ps; [
+          tree-sitter-nix
+          tree-sitter-python
+        ]))
+
+
+        bufferline-nvim
+        nvim-colorizer-lua
+        pears-nvim
+        nvim-tree-lua
+
+        vim-lastplace
+        vim-nix
+        vim-nixhash
+        vim-yaml
+        vim-toml
+        vim-airline
+        vim-devicons
+        zig-vim
+        vim-scriptease
+        semshi
+        coc-sql
+        coc-prettier
+        coc-rust-analyzer
+        rust-vim
       ];
-      extraPackages = with pkgs; [
-        gcc
-        rnix-lsp
-        tree-sitter
-        sumneko-lua-language-server
-        ripgrep
-      ];
+
+      extraPackages = with pkgs; [ rust-analyzer rnix-lsp ];
+
       extraConfig = ''
-        luafile ${./lua}/lsp.lua
-        luafile ${./lua}/nvim-tree.lua
-        luafile ${./lua}/galaxyline.lua
-        luafile ${./lua}/settings.lua
+        luafile ${./settings.lua}
       '';
     };
   };
-
 }
-
-
-
-
 
