@@ -66,7 +66,6 @@
 
 
   nix.maxJobs = lib.mkDefault 6;
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   services.fail2ban.enable = true;
 
