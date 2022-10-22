@@ -12,17 +12,6 @@ let
     };
   };
 
-  coc-sql = pkgs.vimUtils.buildVimPlugin {
-    pname = "coq-sql";
-    version = "1.0.0";
-    src = pkgs.fetchFromGitHub {
-      owner = "fannheyward";
-      repo = "coc-sql";
-      rev = "0ac7d35200bda0abcc1b0f91ad5cb08eb44b1eca";
-      sha256 = "sha256-admAB4ybJpN/4+MtZd9CEQKZEq8nBZJsLiB6gUUylrc=";
-    };
-  };
-
 in
 with lib;
 {
@@ -93,7 +82,6 @@ with lib;
         zig-vim
         vim-scriptease
         semshi
-        coc-sql
         coc-prettier
         coc-rust-analyzer
         rust-vim
