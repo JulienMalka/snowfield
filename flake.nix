@@ -56,14 +56,12 @@
       nixosConfigurations = builtins.mapAttrs (name: value: (mkMachine { host = name; host-config = value; modules = self.nixosModules; system = luj.machines.${name}.arch; })) (importConfig ./machines);
       packages."x86_64-linux" = {
         tinystatus = import ./packages/tinystatus { inherit pkgs; };
-        mosh = pkgs.callPackage ./packages/mosh { };
         flaresolverr = pkgs.callPackage ./packages/flaresolverr { };
         htpdate = pkgs.callPackage ./packages/htpdate { };
         authelia = pkgs.callPackage ./packages/authelia { };
       };
       packages."aarch64-linux" = {
         tinystatus = import ./packages/tinystatus { pkgs = pkgsrpi; };
-        mosh = pkgsrpi.callPackage ./packages/mosh { };
         flaresolverr = pkgsrpi.callPackage ./packages/flaresolverr { };
         htpdate = pkgsrpi.callPackage ./packages/htpdate { };
       };
