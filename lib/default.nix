@@ -22,7 +22,6 @@ in
       home-manager.nixosModules.home-manager
       simple-nixos-mailserver.nixosModule
       {
-        home-manager.useUserPackages = true;
         home-manager.useGlobalPkgs = true;
         nixpkgs.overlays = [
           overlay-unstable
@@ -31,7 +30,6 @@ in
               tinystatus = prev.pkgs.callPackage ../packages/tinystatus { };
               jackett = prev.unstable.jackett;
               radarr = prev.unstable.radarr;
-              mosh = prev.pkgs.callPackage ../packages/mosh { };
               flaresolverr = prev.pkgs.callPackage ../packages/flaresolverr { };
               htpdate = prev.pkgs.callPackage ../packages/htpdate { };
               authelia = prev.pkgs.callPackage ../packages/authelia { };
@@ -39,6 +37,7 @@ in
               tailscale = prev.unstable.tailscale;
               nodePackages = prev.unstable.nodePackages;
               linkal = inputs.linkal.defaultPackage."${system}";
+              mosh = prev.unstable.mosh;
             })
         ];
       }
