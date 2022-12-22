@@ -57,7 +57,6 @@
     };
 
 
-    fonts.fontconfig.enable = true;
 
     xsession.enable = true;
 
