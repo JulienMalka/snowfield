@@ -51,10 +51,6 @@ steps:
   commands:
   - nix build .#tinystatus
 
-- name: Build mosh
-  commands:
-  - nix build .#mosh
-
 - name: Build htpdate
   commands:
   - nix build .#htpdate
