@@ -45,6 +45,5 @@ with lib;
       sops.secrets.ensmailmalka-pw = { };
       sops.secrets.ensmailmondon-pw = { };
 
-      nix.gcRoots = [ inputs.simple-nixos-mailserver ];
     };
 }

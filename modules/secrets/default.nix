@@ -24,7 +24,6 @@ with lib;
         format = "binary";
       };
 
-      nix.gcRoots = [ inputs.sops-nix ];
 
     };
 
