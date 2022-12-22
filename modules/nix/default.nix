@@ -8,21 +8,11 @@ with lib;
     enable = mkEnableOption "Enable nix experimental";
   };
 
-  options.nix.gcRoots = mkOption {
-    description = "A list of garbage collector roots.";
-    type = with types; listOf path;
-    default = [];
-  };
-
   config = mkIf cfg.enable
     {
       nixpkgs.config.allowUnfree = true;
       nix = {
         autoOptimiseStore = true;
-        gc = {
-          automatic = true;
-          dates = "weekly";
-        };
         package = pkgs.unstable.nix;
         extraOptions = ''
           experimental-features = nix-command flakes
@@ -39,9 +29,7 @@ with lib;
           "bin.julienmalka.me:RfXA+kPZt3SsMHGib5fY5mxJQLijfXzPbHjHD52ijyI="
         ];
 
-        gcRoots = [ inputs.neovim-nightly-overlay inputs.nixpkgs inputs.unstable inputs.home-manager ];
       };
-    environment.etc.gc-roots.text = concatMapStrings (x: x + "\n") config.nix.gcRoots;
 
     };
 }
