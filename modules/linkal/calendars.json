@@ -40,38 +40,31 @@
       "name": "Club Inutile ☔",
       "initial": false
     },
-    "https://cloud.eleves.ens.fr/remote.php/dav/public-calendars/Ekjb4kDqMMqwJXZF": {
-      "name": "Rentrée des départements",
-      "short_name": "Dpt"
-    },
-    "https://cloud.eleves.ens.fr/remote.php/dav/public-calendars/8SKP62tQJP65K8EW": {
-      "name": "Conférences de recherche",
-      "short_name": "Conf"
-    },
-    "https://cloud.eleves.ens.fr/remote.php/dav/public-calendars/PnRXqeq4SsSC33FM": {
-      "name": "Visites de bibliothèques",
-      "short_name": "Bibli",
-      "initial": false
-    },
-    "https://cloud.eleves.ens.fr/remote.php/dav/public-calendars/NWPtiEiz62LTtjo2": {
-      "name": "Amphis de rentrée",
-      "short_name": "Prés. de rentrée"
-    },
-    "https://cloud.eleves.ens.fr/remote.php/dav/public-calendars/JiRt58aJXay9kfyk": {
-      "name": "Réunions de rentrée des Masters",
-      "short_name": "Masters"
-    },
-    "https://cloud.eleves.ens.fr/remote.php/dav/public-calendars/5Rb4bRjCDcsFjDdQ": {
-      "name": "Activités pour les étudiants internationaux",
-      "short_name": "Internationaux"
-    },
-    "https://cloud.eleves.ens.fr/remote.php/dav/public-calendars/62wKfQRrLNz2WXjt": {
-      "name": "Divers"
-    },
     "https://cloud.eleves.ens.fr/remote.php/dav/public-calendars/TFjE83ASCMK9rfRi": {
       "name": "BandarrêtdurgENS",
       "short_name": "Banda"
     },
+    "https://cloud.eleves.ens.fr/remote.php/dav/public-calendars/r4yJZDHjwNtH8wkR": {
+      "name": "Évènements (BdA)"
+    },
+    "https://cloud.eleves.ens.fr/remote.php/dav/public-calendars/83AkowSYPnYrjSFr": {
+      "name": "Spectacles du tirage BdA"
+    },
+    "https://cloud.eleves.ens.fr/remote.php/dav/public-calendars/kR8fMzmf4ciop9Je": {
+      "name": "Club Jeux",
+      "color": "#5f9ae0"
+    },
+
+
+
+    "https://framagenda.org/remote.php/dav/public-calendars/iXGysEGxo7EsKjwG": {
+	    "name": "Ambassadeur·rice·s santé",
+	    "color": "#f5a142"
+    },
+     "https://framagenda.org/remote.php/dav/public-calendars/AYNpoC674yAjEmRy": {
+	    "name": "L'Hômonerie"
+    },
+
     "https://cloud.eleves.ens.fr/remote.php/dav/public-calendars/TyMrLaPPDzT7yAGC": {
       "name": "BDS"
     },
@@ -80,7 +73,7 @@
       "default_location": "Cave d'hackENS"
     },
     "https://nuage.beta.rz.ens.wtf/remote.php/dav/public-calendars/TFEAKjAgNFQZpNjo": {
-      "name": "hackENS",
+      "name": "HackENS",
       "default_location": "Cave d'hackENS"
     },
     "https://framagenda.org/remote.php/dav/public-calendars/TFjE83ASCMK9rfRi": {
