@@ -19,7 +19,7 @@ in
   config = mkIf cfg.enable (
     mkMerge [{
       services.grafana.enable = true;
-      services.grafana.port = port;
+      services.grafana.settings.server.http_port = port;
       luj.influxdb.enable = true;
       luj.influxdb.nginx = {
         enable = true;
