@@ -20,7 +20,7 @@ in
     mkMerge [{
       services.hedgedoc = {
         enable = true;
-        configuration = {
+        settings = {
           port = port;
           db = {
             dialect = "postgres";
@@ -48,9 +48,9 @@ in
 
 
       (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port))
-      
+
       (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))]);
- 
+
 
 
 
