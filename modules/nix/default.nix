@@ -21,13 +21,16 @@ with lib;
           "nixpkgs=${inputs.nixpkgs}"
           "nixos=${inputs.nixpkgs}"
         ];
-        binaryCaches = [
-          "https://cache.nixos.org"
-          "https://bin.julienmalka.me"
-        ];
-        binaryCachePublicKeys = [
-          "bin.julienmalka.me:RfXA+kPZt3SsMHGib5fY5mxJQLijfXzPbHjHD52ijyI="
-        ];
+        settings =
+          {
+            substituters = [
+              "https://cache.nixos.org"
+              "https://bin.julienmalka.me"
+            ];
+            trusted-public-keys = [
+              "bin.julienmalka.me:RfXA+kPZt3SsMHGib5fY5mxJQLijfXzPbHjHD52ijyI="
+            ];
+          };
 
       };
 

@@ -65,7 +65,7 @@
   services.tailscale.enable = true;
 
 
-  nix.maxJobs = lib.mkDefault 6;
+  nix.settings.max-jobs = lib.mkDefault 6;
 
   services.fail2ban.enable = true;
 
