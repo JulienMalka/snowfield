@@ -18,7 +18,7 @@ with lib;
       users.users.nix-serve = {
         isSystemUser = true;
       };
-      nix.allowedUsers = [ "nix-serve" ];
+      nix.settings.allowed-users = [ "nix-serve" ];
       users.users.nix-serve.group = "nix-serve";
       users.groups.nix-serve = { };
 
@@ -32,5 +32,6 @@ with lib;
         port = port;
       };
 
-    } (mkSubdomain cfg.subdomain port));
+    }
+    (mkSubdomain cfg.subdomain port));
 }
