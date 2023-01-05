@@ -13,5 +13,5 @@
     ];
   };
 
-  nix.allowedUsers = [ "status" ];
+  nix.settings.allowed-users = [ "status" ];
 } 

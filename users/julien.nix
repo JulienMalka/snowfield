@@ -10,7 +10,7 @@
     passwordFile = config.sops.secrets.user-julien-password.path;
   };
 
-  nix.allowedUsers = [ "julien" ];
+  nix.settings.allowed-users = [ "julien" ];
   sops.secrets.ens-mail-passwd = {
     owner = "julien";
     path = "/home/julien/.config/ens-mail-passwd";
