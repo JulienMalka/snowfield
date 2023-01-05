@@ -12,7 +12,6 @@ with lib;
     {
       nixpkgs.config.allowUnfree = true;
       nix = {
-        autoOptimiseStore = true;
         package = pkgs.unstable.nix;
         extraOptions = ''
           experimental-features = nix-command flakes
@@ -23,6 +22,7 @@ with lib;
         ];
         settings =
           {
+            auto-optimise-store = true;
             substituters = [
               "https://cache.nixos.org"
               "https://bin.julienmalka.me"
