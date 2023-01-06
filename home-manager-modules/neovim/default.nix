@@ -21,11 +21,11 @@ with lib;
 
   config = mkIf cfg.enable {
 
-    home.packages = with pkgs; [ nixfmt git nodejs ripgrep ];
+    home.packages = with pkgs; [ nixfmt git nodejs ripgrep gcc ];
 
     programs.neovim = {
       enable = true;
-      package = pkgs.unstable.neovim-unwrapped;
+      package = pkgs.neovim-unwrapped;
       viAlias = true;
       vimAlias = true;
       vimdiffAlias = true;
@@ -46,10 +46,9 @@ with lib;
       };
 
       withPython3 = true;
-      plugins = with pkgs.unstable.vimPlugins; [
+      plugins = with pkgs.vimPlugins; [
         #theme
         onedarker
-
         # LSP
         nvim-lspconfig
 
@@ -60,17 +59,16 @@ with lib;
 
         nvim-web-devicons
 
+        pkgs.unstable.vimPlugins.bufferline-nvim
+        nvim-colorizer-lua
+        pears-nvim
+        nvim-tree-lua
 
         (nvim-treesitter.withPlugins (ps: with ps; [
           tree-sitter-nix
           tree-sitter-python
         ]))
 
-
-        bufferline-nvim
-        nvim-colorizer-lua
-        pears-nvim
-        nvim-tree-lua
 
         vim-lastplace
         vim-nix
@@ -83,7 +81,6 @@ with lib;
         vim-scriptease
         semshi
         coc-prettier
-        coc-rust-analyzer
         rust-vim
       ];
 
