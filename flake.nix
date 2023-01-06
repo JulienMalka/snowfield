@@ -1,17 +1,14 @@
 {
   description = "A flake for my personnal configurations";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
+
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-22.05";
+      url = "github:nix-community/home-manager/release-22.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    neovim-nightly-overlay = {
-      url = "github:nix-community/neovim-nightly-overlay";
-      inputs.nixpkgs.follows = "unstable";
-    };
     homepage = {
       url = "github:JulienMalka/homepage";
       flake = false;
@@ -38,7 +35,7 @@
 
   };
 
-  outputs = { self, home-manager, nixpkgs, unstable, sops-nix, neovim-nightly-overlay, nur, ... }@inputs:
+  outputs = { self, home-manager, nixpkgs, unstable,  sops-nix, nur, ... }@inputs:
     let
       pkgs = import nixpkgs { system = "x86_64-linux"; };
       pkgsrpi = import nixpkgs { system = "aarch64-linux"; };
