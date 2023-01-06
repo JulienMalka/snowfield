@@ -7,8 +7,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "lunarvim";
       repo = "onedarker.nvim";
-      rev = "2d02768b6801d0acdef7f6e1ac8db0929581d5bc";
-      sha256 = "sha256-admAB4ybJpN/4+MtZd9CEQKZEq8nBZJsLiB6gUUylrc=";
+      rev = "b4f92f073ed7cdf0358ad005cee0484411232b1b";
+      sha256 = "sha256-DJGrRkELm3QkH7tZXNNfo/4IXLr7r0vnevzPGG/1K4g=";
     };
   };
 
