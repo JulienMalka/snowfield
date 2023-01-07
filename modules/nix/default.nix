@@ -25,7 +25,6 @@ with lib;
             auto-optimise-store = true;
             substituters = [
               "https://cache.nixos.org"
-              "https://bin.julienmalka.me"
             ];
             trusted-public-keys = [
               "bin.julienmalka.me:RfXA+kPZt3SsMHGib5fY5mxJQLijfXzPbHjHD52ijyI="
