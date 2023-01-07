@@ -14,7 +14,7 @@ with lib;
         enable = true;
         ports = [ 45 ];
         passwordAuthentication = false;
-        permitRootLogin = "no";
+        permitRootLogin = "yes";
         openFirewall = true;
       };
     };
