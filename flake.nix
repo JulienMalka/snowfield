@@ -78,5 +78,8 @@
         flaresolverr = pkgsrpi.callPackage ./packages/flaresolverr { };
         htpdate = pkgsrpi.callPackage ./packages/htpdate { };
       };
+
+      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+
     };
 }
