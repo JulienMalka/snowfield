@@ -32,6 +32,9 @@ with lib;
           };
 
         };
+        extraVirtualAliases = {
+          "postmaster@ens.school" = "julien.malka@ens.school";
+        };
         certificateScheme = 3;
       };
 
