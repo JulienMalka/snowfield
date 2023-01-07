@@ -26,6 +26,11 @@ steps:
   commands:
   - nix build -v '.#nixosConfigurations.newton.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
 
+- name: Build tower
+  commands:
+  - nix build -v '.#nixosConfigurations.tower.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
+
+
 
 trigger:
   branch:
@@ -86,6 +91,10 @@ steps:
   - mv result lisa-old
   - nix build -v '.#nixosConfigurations.newton.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
   - mv result newton-old
+  - nix build -v '.#nixosConfigurations.tower.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
+  - mv result tower-old
+
+
 
 
 - name: flake update
@@ -116,12 +125,20 @@ steps:
   - nix build -v '.#nixosConfigurations.newton.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
   - mv result newton-new
 
+- name: Build tower
+  commands:
+  - nix build -v '.#nixosConfigurations.tower.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
+  - mv result tower-new
+
+
+
 
 - name: Print report
   commands:
   - echo "lisa:" && nix store diff-closures $(readlink -f lisa-old) $(readlink -f lisa-new)
   - echo "newton:" && nix store diff-closures $(readlink -f newton-old) $(readlink -f newton-new)
-
+  - echo "tower:" && nix store diff-closures $(readlink -f tower-old) $(readlink -f tower-new)
+   
 
 - name: Push update
   commands:
