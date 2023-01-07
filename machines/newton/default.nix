@@ -51,10 +51,10 @@ in
   };
 
   services.openssh.extraConfig = ''
-  HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
-  HostKey /etc/ssh/ssh_host_ed25519_key
-  TrustedUserCAKeys /etc/ssh/ssh_user_key.pub
-  MaxAuthTries 20
+    HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
+    HostKey /etc/ssh/ssh_host_ed25519_key
+    TrustedUserCAKeys /etc/ssh/ssh_user_key.pub
+    MaxAuthTries 20
   '';
 
 
