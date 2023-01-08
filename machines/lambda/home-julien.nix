@@ -1,9 +1,6 @@
 { pkgs, lib, config, ... }:
 {
-
-
   luj.hmgr.julien = {
-    home.packages = with pkgs; [ unstable.deploy-rs ];
     home.stateVersion = "22.11";
     luj.programs.neovim.enable = true;
     luj.programs.ssh-client.enable = true;
