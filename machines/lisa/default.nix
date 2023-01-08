@@ -64,8 +64,7 @@
   # enable the tailscale service
   services.tailscale.enable = true;
 
-
-  nix.settings.max-jobs = lib.mkDefault 6;
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   services.fail2ban.enable = true;
 
