@@ -3,8 +3,8 @@ inputs: final: prev:
 with builtins; with inputs;
 
 let
-  overlay-unstable = final: prev: {
-    unstable = unstable.legacyPackages.x86_64-linux;
+  overlay-unstable = arch: final: prev: {
+    unstable = unstable.legacyPackages."${arch}";
   };
 in
 {
@@ -24,7 +24,7 @@ in
       {
         home-manager.useGlobalPkgs = true;
         nixpkgs.overlays = [
-          overlay-unstable
+          (overlay-unstable system)
           (final: prev:
             {
               tinystatus = prev.pkgs.callPackage ../packages/tinystatus { };

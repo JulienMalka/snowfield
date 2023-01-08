@@ -14,7 +14,7 @@ lib: with lib; let
             };
           };
         }));
-        default = {};
+        default = { };
       };
 
       config = {
@@ -36,9 +36,14 @@ lib: with lib; let
           lambda = {
             arch = "aarch64-linux";
           };
+          tower = {
+            arch = "x86_64-linux";
+          };
+
         };
       };
     }
   ];
-in (evalModules { inherit modules; }).config
+in
+(evalModules { inherit modules; }).config
 
