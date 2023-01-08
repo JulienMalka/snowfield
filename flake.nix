@@ -72,8 +72,7 @@
           sshUser = "root";
           sshOpts = [ "-p" "45" ];
           remoteBuild = true;
-          fastConnection = true;
-          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.newton;
+          path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.lambda;
         };
       };
 
@@ -90,8 +89,6 @@
         flaresolverr = pkgsrpi.callPackage ./packages/flaresolverr { };
         htpdate = pkgsrpi.callPackage ./packages/htpdate { };
       };
-
-      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
 
     };
 }
