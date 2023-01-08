@@ -30,6 +30,9 @@ steps:
   commands:
   - nix build -v '.#nixosConfigurations.tower.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
 
+- name: Build lambda
+  commands:
+  - nix build -v '.#nixosConfigurations.lambda.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
 
 
 trigger:
@@ -93,6 +96,9 @@ steps:
   - mv result newton-old
   - nix build -v '.#nixosConfigurations.tower.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
   - mv result tower-old
+  - nix build -v '.#nixosConfigurations.lambda.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
+  - mv result lambda-old
+
 
 
 
@@ -125,10 +131,16 @@ steps:
   - nix build -v '.#nixosConfigurations.newton.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
   - mv result newton-new
 
-- name: Build tower
+- name: build tower
   commands:
-  - nix build -v '.#nixosConfigurations.tower.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
+  - nix build -v '.#nixosconfigurations.tower.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
   - mv result tower-new
+
+- name: build lambda
+  commands:
+  - nix build -v '.#nixosconfigurations.lambda.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
+  - mv result lambda-new
+
 
 
 
@@ -138,7 +150,8 @@ steps:
   - echo "lisa:" && nix store diff-closures $(readlink -f lisa-old) $(readlink -f lisa-new)
   - echo "newton:" && nix store diff-closures $(readlink -f newton-old) $(readlink -f newton-new)
   - echo "tower:" && nix store diff-closures $(readlink -f tower-old) $(readlink -f tower-new)
-   
+  - echo "lambda:" && nix store diff-closures $(readlink -f lambda-old) $(readlink -f lambda-new)
+ 
 
 - name: Push update
   commands:
