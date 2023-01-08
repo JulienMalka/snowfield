@@ -32,8 +32,8 @@ with lib;
           user = "jmalka";
         };
         lambda = {
-          hostname = "status.julienmalka.me";
-          user = "status";
+          hostname = "lambda.julienmalka.me";
+          user = "root";
           port = 45;
         };
       };
