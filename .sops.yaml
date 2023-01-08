@@ -3,6 +3,7 @@ keys:
   - &newton age162v5365xrnzm9tlxy4w3e6fqds7k3h029qezvl73z6rs5skcn9hs7vml45
   - &lisa age1m6efmv7zr9kks4h3w2su74sda5keshghwtw57mzn4sl7kvr7j5sqhs7mdc
   - &tower age1qlwzeg37fwwn2l6fm3quvkn787nn0m89xrjtrhgf9uedtfv2kqlqnec976
+  - &lambda age1z5n73rq83mjt6xsmanvgylks5gpmawhqfcz6dtwkc5cu0rlje5js4zzy9s
 creation_rules:
   - path_regex: secrets/[^/]+\.yaml$
     key_groups:
@@ -11,9 +12,11 @@ creation_rules:
       - *newton
       - *lisa
       - *tower
+      - *lambda 
   - key_groups: 
     - age:
       - *macintosh
       - *newton
       - *lisa
       - *tower
+      - *lambda
