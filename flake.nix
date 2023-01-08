@@ -66,6 +66,17 @@
         };
       };
 
+      deploy.nodes.lambda = {
+        hostname = "lambda.julienmalka.me";
+        profiles.system = {
+          sshUser = "root";
+          sshOpts = [ "-p" "45" ];
+          remoteBuild = true;
+          fastConnection = true;
+          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.newton;
+        };
+      };
+
 
       packages."x86_64-linux" = {
         tinystatus = import ./packages/tinystatus { inherit pkgs; };
@@ -73,6 +84,7 @@
         htpdate = pkgs.callPackage ./packages/htpdate { };
         authelia = pkgs.callPackage ./packages/authelia { };
       };
+
       packages."aarch64-linux" = {
         tinystatus = import ./packages/tinystatus { pkgs = pkgsrpi; };
         flaresolverr = pkgsrpi.callPackage ./packages/flaresolverr { };
