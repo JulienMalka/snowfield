@@ -24,18 +24,9 @@
       music.enable = true;
     };
     homepage.enable = true;
-    bincache = {
-      enable = true;
-      subdomain = "bin";
-    };
     drone = {
       enable = true;
       subdomain = "ci";
-    };
-    zfs-mails = {
-      enable = false;
-      name = "lisa";
-      smart.enable = false;
     };
     docs = {
       enable = true;
@@ -45,13 +36,6 @@
       };
     };
     homer.enable = true;
-    bruit = {
-      enable = true;
-      nginx = {
-        enable = true;
-        subdomain = "bruit";
-      };
-    };
     mailserver.enable = true;
     linkal.enable = true;
 
