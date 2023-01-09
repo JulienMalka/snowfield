@@ -133,12 +133,12 @@ steps:
 
 - name: build tower
   commands:
-  - nix build -v '.#nixosconfigurations.tower.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
+  - nix build -v '.#nixosConfigurations.tower.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
   - mv result tower-new
 
 - name: build lambda
   commands:
-  - nix build -v '.#nixosconfigurations.lambda.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
+  - nix build -v '.#nixosConfigurations.lambda.config.system.build.toplevel' --option binary-caches "https://cache.nixos.org"
   - mv result lambda-new
 
 
