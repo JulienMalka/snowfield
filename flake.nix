@@ -72,9 +72,21 @@
           sshUser = "root";
           sshOpts = [ "-p" "45" ];
           remoteBuild = true;
+          fastConnection = true;
           path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.lambda;
         };
       };
+
+      deploy.nodes.lisa = {
+        hostname = "lisa.julienmalka.me";
+        profiles.system = {
+          sshUser = "root";
+          sshOpts = [ "-p" "45" ];
+          fastConnection = true;
+          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.lisa;
+        };
+      };
+
 
 
       packages."x86_64-linux" = {
