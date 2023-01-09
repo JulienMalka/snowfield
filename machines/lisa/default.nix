@@ -72,9 +72,7 @@
   networking.interfaces.ens20.useDHCP = false;
   networking.interfaces.ens20.mtu = 1420;
   networking.interfaces.ens20.ipv4.addresses = [{ address = "212.129.40.11"; prefixLength = 32; }];
-  networking.localCommands = ''
-    ip r del default || ip r add default dev ens20 || ip link set dev ens20 mtu 1420 
-  '';
+  networking.defaultGateway.interface = "ens20";
   networking.interfaces.ens18.useDHCP = true;
   networking.interfaces.ens19.useDHCP = false;
   networking.interfaces.ens19.ipv6.addresses = [{
