@@ -69,11 +69,13 @@
   services.fail2ban.enable = true;
 
   networking.hostName = "lisa";
+  networking.useDHCP = false;
   networking.interfaces.ens20.useDHCP = false;
   networking.interfaces.ens20.mtu = 1420;
   networking.interfaces.ens20.ipv4.addresses = [{ address = "212.129.40.11"; prefixLength = 32; }];
-  networking.defaultGateway.interface = "ens20";
   networking.interfaces.ens18.useDHCP = true;
+  networking.defaultGateway.interface = "ens20";
+  networking.defaultGateway.address = "212.129.40.11";
   networking.interfaces.ens19.useDHCP = false;
   networking.interfaces.ens19.ipv6.addresses = [{
     address = "2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb";
