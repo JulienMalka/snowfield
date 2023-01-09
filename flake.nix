@@ -4,9 +4,12 @@
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
 
+    flake-utils.url = "github:numtide/flake-utils";
+
     home-manager = {
       url = "github:nix-community/home-manager/release-22.11";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "unstable";
+      inputs.utils.follows = "flake-utils";
     };
 
     homepage = {
@@ -20,26 +23,32 @@
 
     deploy-rs = {
       url = "github:serokell/deploy-rs";
+      inputs.utils.follows = "flake-utils";
+      inputs.nixpkgs.follows = "unstable";
     };
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs-stable.follows = "nixpkgs";
     };
 
     simple-nixos-mailserver = {
-      url = "gitlab:simple-nixos-mailserver/nixos-mailserver/master";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-22.11";
+      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs-22_11.follows = "nixpkgs";
+      inputs.utils.follows = "flake-utils";
     };
 
     linkal = {
       url = "github:JulienMalka/Linkal/main";
-      flake = true;
+      inputs.flake-utils.follows = "flake-utils";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
   };
 
-  outputs = { self, home-manager, nixpkgs, unstable, deploy-rs, sops-nix, nur, ... }@inputs:
+  outputs = { self, home-manager, nixpkgs, unstable, deploy-rs, sops-nix, ... }@inputs:
     let
       pkgs = import nixpkgs { system = "x86_64-linux"; };
       pkgsrpi = import nixpkgs { system = "aarch64-linux"; };
