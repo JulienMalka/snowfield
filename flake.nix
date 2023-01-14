@@ -102,7 +102,7 @@
         profiles.system = {
           sshUser = "root";
           sshOpts = [ "-p" "45" ];
-          fastConnection = true;
+          magicRollback = false;
           path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.tower;
         };
       };
