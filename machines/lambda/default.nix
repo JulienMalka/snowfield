@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports =
@@ -69,6 +69,44 @@
       proxyWebsockets = true;
     };
   };
+
+  networking.nameservers = [ "100.127.245.71" "9.9.9.9" ];
+  environment.etc."resolv.conf" = with lib; with pkgs; {
+    source = writeText "resolv.conf" ''
+      ${concatStringsSep "\n" (map (ns: "nameserver ${ns}") config.networking.nameservers)}
+      options edns0
+    '';
+  };
+
+
+
+  services.grafana.enable = true;
+  services.grafana.settings.server.http_port = 3000;
+  services.victoriametrics.enable = true;
+
+  services.nginx.virtualHosts."monitoring.julienmalka.me" = {
+    forceSSL = true;
+    enableACME = true;
+    locations."/" = {
+      proxyPass = "http://localhost:3000";
+      proxyWebsockets = true;
+    };
+  };
+
+
+  security.acme.certs."prometheus.luj".server = "https://ca.luj:8444/acme/acme/directory";
+  services.nginx.virtualHosts."prometheus.luj" = {
+    forceSSL = true;
+    enableACME = true;
+    locations."/" = {
+      proxyPass = "http://localhost:8428";
+      extraConfig = ''
+         allow 100.10.10.0/8;
+        deny all;
+      '';
+    };
+  };
+
 
 
 
