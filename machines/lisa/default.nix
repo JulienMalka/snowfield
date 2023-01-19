@@ -24,10 +24,6 @@
       music.enable = true;
     };
     homepage.enable = true;
-    drone = {
-      enable = true;
-      subdomain = "ci";
-    };
     docs = {
       enable = true;
       nginx = {
