@@ -154,7 +154,7 @@ VfXtULncAiEA2gmqdr+ugFz5tvPdKwanroTiMTUMhhCRYVlQlyTApyQ=
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGa+7n7kNzb86pTqaMn554KiPrkHRGeTJ0asY1NjSbpr julien@tower"
   ];
 
-  networking.firewall.allowedTCPPorts = [ 443 80 ];
-  networking.firewall.allowedUDPPorts = [ 443 80 ];
+  networking.firewall.allowedTCPPorts = [ 443 80 8428 ];
+  networking.firewall.allowedUDPPorts = [ 443 80 8428 ];
   system.stateVersion = "22.11";
 }
