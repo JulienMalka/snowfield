@@ -228,9 +228,10 @@ def nix_update_flake_config(
         steps.Git(
             repourl=url_with_secret,
             alwaysUseLatest=True,
-            method="clean",
+            method="clobber",
             submodules=True,
             haltOnFailure=True,
+            branch="update_flake_lock",
         )
     )
     factory.addStep(
@@ -259,7 +260,6 @@ def nix_update_flake_config(
             command=[
                 "git",
                 "push",
-                "--force",
                 "origin",
                 "HEAD:refs/heads/update_flake_lock",
             ],
