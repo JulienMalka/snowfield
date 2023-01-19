@@ -33,7 +33,7 @@ with lib;
       coc = {
         enable = true;
         settings = {
-          coc.preferences.formatOnSaveFiletypes = [ "nix" "rust" "sql" ];
+          coc.preferences.formatOnSaveFiletypes = [ "nix" "rust" "sql" "python" ];
           languageserver = {
             nix = {
               command = "rnix-lsp";
