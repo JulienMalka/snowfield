@@ -82,6 +82,7 @@ in
 
     services.nginx.virtualHosts."buildbot.julienmalka.me" =
       {
+        extraConfig = "ssl_session_timeout 1440m;";
         locations."/".proxyPass = "http://127.0.0.1:1810/";
         locations."/sse" = {
           proxyPass = "http://127.0.0.1:1810/sse/";
