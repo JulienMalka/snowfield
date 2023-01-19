@@ -23,9 +23,9 @@ in
       enable = true;
 
       recommendedGzipSettings = true;
-    recommendedOptimisation = true;
-    recommendedProxySettings = true;
-    recommendedTlsSettings = true;
+      recommendedOptimisation = true;
+      recommendedProxySettings = true;
+      recommendedTlsSettings = true;
       commonHttpConfig = ''
         server_names_hash_bucket_size 128;
       '';
