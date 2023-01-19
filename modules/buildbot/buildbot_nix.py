@@ -331,7 +331,6 @@ def nix_eval_config(
 
     factory.addStep(
         NixEvalCommand(
-            logEnviron = False,
             env={},
             name="Eval flake",
             command=[

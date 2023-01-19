@@ -44,7 +44,7 @@ in
         GITHUB_ORG = "JulienMalka";
         GITHUB_REPO = "nix-config";
 
-        BUILDBOT_URL = "https://buildbot.julienmalka.me/";
+        BUILDBOT_URL = "https://ci.julienmalka.me/";
         BUILDBOT_GITHUB_USER = "JulienMalka";
         # comma seperated list of users that are allowed to login to buildbot and do stuff
         GITHUB_ADMINS = "JulienMalka";
@@ -80,7 +80,7 @@ in
       };
     };
 
-    services.nginx.virtualHosts."buildbot.julienmalka.me" =
+    services.nginx.virtualHosts."ci.julienmalka.me" =
       {
         extraConfig = "ssl_session_timeout 1440m;";
         locations."/".proxyPass = "http://127.0.0.1:1810/";
