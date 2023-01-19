@@ -107,6 +107,8 @@
         };
       };
 
+      hydraJobs.test.x86_64-linux = self.nixosConfigurations.lisa.config.system.build.toplevel;
+
       packages."x86_64-linux" = {
         tinystatus = import ./packages/tinystatus { inherit pkgs; };
         flaresolverr = pkgs.callPackage ./packages/flaresolverr { };
