@@ -107,6 +107,8 @@
         };
       };
 
+      hydraJobs."lol"."x86_64-linux" = nixosConfigurations.tower.config.system.build.toplevel;
+
       packages."x86_64-linux" = {
         tinystatus = import ./packages/tinystatus { inherit pkgs; };
         flaresolverr = pkgs.callPackage ./packages/flaresolverr { };
