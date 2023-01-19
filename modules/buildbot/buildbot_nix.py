@@ -103,7 +103,7 @@ class NixEvalCommand(buildstep.ShellMixin, steps.BuildStep):
         kwargs = self.setupShellMixin(kwargs)
         super().__init__(**kwargs)
         self.observer = logobserver.BufferLogObserver()
-        self.addLogObserver("stdio", self.observer)
+        self.addLogObserver("Eval trace", self.observer)
 
     @defer.inlineCallbacks
     def run(self) -> Generator[Any, object, Any]:
@@ -158,6 +158,7 @@ class NixBuildCommand(buildstep.ShellMixin, steps.BuildStep):
         super().__init__(**kwargs)
         self.observer = logobserver.BufferLogObserver()
         self.addLogObserver("stdio", self.observer)
+        self.logEnviron = False
 
     @defer.inlineCallbacks
     def run(self) -> Generator[Any, object, Any]:
