@@ -3,7 +3,7 @@ with lib;
 let
   cfg = config.luj.navidrome;
   port = 4533;
-  settingsFormat = pkgs.formats.json {};
+  settingsFormat = pkgs.formats.json { };
 in
 {
 
@@ -33,7 +33,7 @@ in
   config = mkIf cfg.enable (
     mkMerge [{
 
-  sops.secrets."navidrome.json" = {
+      sops.secrets."navidrome.json" = {
         owner = cfg.user;
         format = "binary";
         sopsFile = ../../secrets/navidrome-config;
@@ -42,7 +42,7 @@ in
 
 
       systemd.services.navidrome = {
-        
+
         description = "Navidrome Media Server";
         after = [ "network.target" ];
         wantedBy = [ "multi-user.target" ];
@@ -62,10 +62,10 @@ in
     }
 
 
-    
+
       (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port))
-      
+
       (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))]);
-      
- 
+
+
 }
