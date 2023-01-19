@@ -49,7 +49,8 @@
   services.tailscale.enable = true;
 
   nix.extraOptions = ''
-    experimental-features = nix-command flakes
+    allow-import-from-derivation = true
+      experimental-features = nix-command flakes
   '';
 
   services.openssh.extraConfig = ''

@@ -107,7 +107,9 @@
         };
       };
 
-      hydraJobs.test = self.nixosConfigurations.tower.config.system.build.toplevel;
+
+      hydraJobs.tower = self.nixosConfigurations.tower.config.system.build.toplevel;
+      hydraJobs.lisa = self.nixosConfigurations.lisa.config.system.build.toplevel;
 
       packages."x86_64-linux" = {
         tinystatus = import ./packages/tinystatus { inherit pkgs; };

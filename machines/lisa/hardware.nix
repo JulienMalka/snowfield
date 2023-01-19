@@ -28,12 +28,6 @@
       enable = true;
       port = 2222;
       hostKeys = [ /boot/initrd-ssh-key ];
-      authorizedKeys = lib.splitString "\n"
-        (builtins.readFile (pkgs.fetchurl {
-          url = "https://github.com/JulienMalka.keys";
-          sha256 = "sha256-Dl/KYUQ8OJeBlG3iqQZxVIadN/Y14cEJZufWI3iRcq8=";
-        }));
-
     };
     postCommands = ''
       zpool import zroot
