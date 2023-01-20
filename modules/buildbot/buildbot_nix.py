@@ -103,8 +103,7 @@ class NixEvalCommand(buildstep.ShellMixin, steps.BuildStep):
         kwargs = self.setupShellMixin(kwargs)
         super().__init__(**kwargs)
         self.observer = logobserver.BufferLogObserver()
-        self.addLogObserver("Eval trace", self.observer)
-        self.logEnviron = False
+        self.addLogObserver("stdio", self.observer)
 
     @defer.inlineCallbacks
     def run(self) -> Generator[Any, object, Any]:
@@ -114,7 +113,6 @@ class NixEvalCommand(buildstep.ShellMixin, steps.BuildStep):
 
         # if the command passes extract the list of stages
         result = cmd.results()
-        print(f"RESULT: {result}")
         if result == util.SUCCESS:
             # create a ShellCommand for each stage and add them to the build
             jobs = []
@@ -323,6 +321,7 @@ def nix_eval_config(
 
     factory.addStep(
         NixEvalCommand(
+            logEnviron = False,
             env={},
             name="Eval flake",
             command=[

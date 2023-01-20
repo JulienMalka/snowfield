@@ -110,9 +110,6 @@ def build_config() -> dict[str, Any]:
 
     credentials = os.environ.get("CREDENTIALS_DIRECTORY", ".")
 
-    has_cachix_auth_token = False
-    has_cachix_signing_key = False 
-
     systemd_secrets = secrets.SecretInAFile(dirname=credentials)
     c["secretsProviders"] = [systemd_secrets]
     c["workers"] = []
@@ -130,9 +127,8 @@ def build_config() -> dict[str, Any]:
         nix_eval_config(
             [worker_names[0]],
             github_token_secret="github-token",
-            automerge_users=[BUILDBOT_GITHUB_USER],
         ),
-        nix_build_config(worker_names, has_cachix_auth_token, has_cachix_signing_key),
+        nix_build_config(worker_names),
         nix_update_flake_config(
             worker_names,
             f"{ORG}/{REPO}",
