@@ -149,7 +149,7 @@ def build_config() -> dict[str, Any]:
     c["www"] = {
         "avatar_methods": [util.AvatarGitHub()],
         "port": int(os.environ.get("PORT", "1810")),
-        "auth": util.UserPasswordAuth({"JulienMalka": "hello"}),        
+        "auth": util.GitHubAuth("bba3e144501aa5b8a5dd", str(read_secret_file("github-oauth-secret")).strip()),        
         "authz": util.Authz(
             roleMatchers=[
                 util.RolesFromUsername(roles=["admin"], usernames=github_admins)
