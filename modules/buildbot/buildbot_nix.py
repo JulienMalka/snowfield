@@ -114,6 +114,7 @@ class NixEvalCommand(buildstep.ShellMixin, steps.BuildStep):
 
         # if the command passes extract the list of stages
         result = cmd.results()
+        print(f"RESULT: {result}")
         if result == util.SUCCESS:
             # create a ShellCommand for each stage and add them to the build
             jobs = []
@@ -295,18 +296,9 @@ def nix_update_flake_config(
         properties=dict(virtual_builder_name="nix-update-flake"),
     )
 
-
-class Machine:
-    def __init__(self, hostname: str, attr_name: str) -> None:
-        self.hostname = hostname
-        self.attr_name = attr_name
-
-
 def nix_eval_config(
     worker_names: list[str],
     github_token_secret: str,
-    automerge_users: List[str] = [],
-    machines: list[Machine] = [],
 ) -> util.BuilderConfig:
     """
     Uses nix-eval-jobs to evaluate hydraJobs from flake.nix in parallel.
@@ -360,8 +352,6 @@ def nix_eval_config(
 
 def nix_build_config(
     worker_names: list[str],
-    has_cachix_auth_token: bool = False,
-    has_cachix_signing_key: bool = False,
 ) -> util.BuilderConfig:
     """
     Builds one nix flake attribute.
