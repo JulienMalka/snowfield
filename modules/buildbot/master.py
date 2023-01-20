@@ -89,7 +89,6 @@ def build_config() -> dict[str, Any]:
             builderNames=["nix-update-flake"],
             hour=3,
             minute=0,
-            dayOfWeek=6,
         ),
     ]
 
