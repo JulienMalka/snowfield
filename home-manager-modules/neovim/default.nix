@@ -34,14 +34,20 @@ with lib;
         enable = true;
         settings = {
           coc.preferences.formatOnSaveFiletypes = [ "nix" "rust" "sql" "python" ];
-          languageserver = {
-            nix = {
-              command = "rnix-lsp";
-              filetypes = [
-                "nix"
-              ];
+          languageserver =
+            {
+              python = {
+                command = "pyright";
+                filetypes = [ "py" "python" ];
+              };
+
+              nix = {
+                command = "rnix-lsp";
+                filetypes = [
+                  "nix"
+                ];
+              };
             };
-          };
         };
       };
 
@@ -81,6 +87,7 @@ with lib;
         vim-scriptease
         semshi
         coc-prettier
+        coc-pyright
         rust-vim
       ];
 
