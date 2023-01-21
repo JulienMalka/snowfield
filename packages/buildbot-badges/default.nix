@@ -1,11 +1,14 @@
-{ pkgs, lib, buildPythonPackage, cairosvg, klein, jinja2 }:
-buildPythonPackage rec {
+{ pkgs, lib, python3 }:
+
+with python3.pkgs;
+
+python3.pkgs.buildPythonPackage rec {
   pname = "buildbot-badges";
   inherit (buildbot-pkg) version;
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "sha256-H0Dn+uTtFyZgyqbk3QQEc5t7CJovyzU+XuCoTe4Ajug=";
+    sha256 = "sha256-2hNf+IT5a+ZQ1186tCwahnpdjZjF3UCsyWWXtT+DuuU=";
   };
 
   buildInputs = [ buildbot-pkg ];
@@ -20,3 +23,4 @@ buildPythonPackage rec {
     maintainers = with maintainers; [ julienmalka ];
     license = licenses.gpl2;
   };
+}
