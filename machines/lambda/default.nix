@@ -31,6 +31,8 @@
     NODE_EXTRA_CA_CERTS = "/etc/ssl/certs/ca-certificates.crt";
   };
 
+  systemd.services.uptime-kuma.path = [ pkgs.unixtools.ping ];
+
   services.ntfy-sh.enable = true;
   services.ntfy-sh.settings = {
     listen-http = ":8080";
