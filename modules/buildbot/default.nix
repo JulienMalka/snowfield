@@ -32,6 +32,7 @@ in
         ps.treq
         ps.psycopg2
         ps.buildbot-worker
+        pkgs.buildbot-badges
       ];
     };
 
