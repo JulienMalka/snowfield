@@ -150,7 +150,7 @@ def build_config() -> dict[str, Any]:
                 util.AnyControlEndpointMatcher(role="admins"),
             ],
         ),
-        "plugins": dict(waterfall_view={}, console_view={}, grid_view={}, badges ={
+        "plugins": dict(console_view={}, badges ={
     "left_pad"  : 5,
     "left_text": "Build Status",  # text on the left part of the image
     "left_color": "#555",  # color of the left part of the image
@@ -173,8 +173,8 @@ def build_config() -> dict[str, Any]:
         }),
         "change_hook_dialects": dict(
             github={
-                "secret": "hello",
-                "strict": False,
+                "secret": str(read_secret_file("github-webhook-secret")).strip(),
+                "strict": True,
                 "token": github_api_token,
                 "github_property_whitelist": "*",
             }
