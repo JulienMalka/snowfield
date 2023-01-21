@@ -1,8 +1,8 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, stdenv, ... }:
 
 pkgs.stdenv.mkDerivation rec {
   name = "hydrasect";
-  src = stdenv.fetchGit {
+  src = builtins.fetchGit {
     url = "https://git.qyliss.net/hydrasect/";
     ref = "main";
     rev = "e8ac7c351122f1a8fc3dbf0cd4805cf2e83d14da";

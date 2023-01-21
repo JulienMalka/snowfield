@@ -36,6 +36,8 @@ in
               paperless-ng = prev.pkgs.callPackage ../packages/paperless-ng { };
               tailscale = prev.unstable.tailscale;
               nodePackages = prev.unstable.nodePackages;
+              hydrasect = prev.pkgs.callPackage ../packages/hydrasect { };
+              buildbot-badges = prev.pkgs.callPackage ../packages/buildbot-badges { };
               linkal = inputs.linkal.defaultPackage."${system}";
               mosh = prev.unstable.mosh;
             })
