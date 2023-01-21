@@ -174,7 +174,7 @@ def build_config() -> dict[str, Any]:
 
     c["protocols"] = {"pb": {"port": "tcp:9989:interface=\\:\\:"}}
     c["buildbotURL"] = BUILDBOT_URL
-    c["mergeRequests"] = False
+    c["collapseRequests"] = False
 
     return c
 
