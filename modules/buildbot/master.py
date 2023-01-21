@@ -159,7 +159,7 @@ def build_config() -> dict[str, Any]:
                 util.AnyControlEndpointMatcher(role="admins"),
             ],
         ),
-        "plugins": dict(waterfall_view={}, console_view={}, grid_view={}),
+        "plugins": dict(waterfall_view={}, console_view={}, grid_view={}, badges={}),
         "change_hook_dialects": dict(
             github={
                 "secret": "hello",
