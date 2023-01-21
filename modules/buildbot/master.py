@@ -159,7 +159,27 @@ def build_config() -> dict[str, Any]:
                 util.AnyControlEndpointMatcher(role="admins"),
             ],
         ),
-        "plugins": dict(waterfall_view={}, console_view={}, grid_view={}, badges={}),
+        "plugins": dict(waterfall_view={}, console_view={}, grid_view={}, badges ={
+    "left_pad"  : 5,
+    "left_text": "Build Status",  # text on the left part of the image
+    "left_color": "#555",  # color of the left part of the image
+    "right_pad" : 5,
+    "border_radius" : 5, # Border Radius on flat and plastic badges
+    # style of the template availables are "flat", "flat-square", "plastic"
+    "template_name": "flat.svg.j2",  # name of the template
+    "font_face": "DejaVu Sans",
+    "font_size": 11,
+    "color_scheme": {  # color to be used for right part of the image
+        "exception": "#007ec6",  # blue
+        "failure": "#e05d44",    # red
+        "retry": "#007ec6",      # blue
+        "running": "#007ec6",    # blue
+        "skipped": "a4a61d",     # yellowgreen
+        "success": "#4c1",       # brightgreen
+        "unknown": "#9f9f9f",    # lightgrey
+        "warnings": "#dfb317"    # yellow
+        } 
+        }),
         "change_hook_dialects": dict(
             github={
                 "secret": "hello",
