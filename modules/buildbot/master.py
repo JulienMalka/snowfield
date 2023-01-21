@@ -114,7 +114,6 @@ def build_config() -> dict[str, Any]:
     c["workers"] = []
     worker_names = []
     for item in worker_config:
-        print(f"WORKER : {item}")
         cores = item.get("cores", 0)
         for i in range(cores):
             worker_name = f"{item['name']}-{i}"
@@ -137,14 +136,6 @@ def build_config() -> dict[str, Any]:
     ]
 
     github_admins = os.environ.get("GITHUB_ADMINS", "").split(",")
-
-    print(github_admins)
-
-    print(os.environ.get("GITHUB_OAUTH_ID"))
-    print(read_secret_file("github-oauth-secret"))
-    print("lol")
-    print(read_secret_file("github-webhook-secret"))
-    print(github_api_token)
 
     c["www"] = {
         "avatar_methods": [util.AvatarGitHub()],
