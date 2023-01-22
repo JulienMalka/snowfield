@@ -53,9 +53,18 @@
       pkgs = import nixpkgs { system = "x86_64-linux"; };
       pkgsrpi = import nixpkgs { system = "aarch64-linux"; };
       lib = nixpkgs.lib.extend (import ./lib inputs);
+      machines_plats = lib.mapAttrsToList (name: value: value.arch) lib.luj.machines;
+
+      nixpkgs_plats = builtins.listToAttrs (builtins.map
+        (plat: {
+          name = plat;
+          value = import nixpkgs { system = plat; };
+        })
+        machines_plats);
+
     in
     with lib;
-    {
+    rec {
       nixosModules = builtins.listToAttrs (map
         (x: {
           name = x;
@@ -107,23 +116,26 @@
         };
       };
 
+      packages = builtins.listToAttrs
+        (builtins.map
+          (plat: {
+            name = plat;
+            value =
+              (builtins.listToAttrs (builtins.map
+                (e: {
+                  name = e;
+                  value = nixpkgs_plats.${plat}.callPackage (./packages + "/${e}") { };
+                })
+                (builtins.attrNames (builtins.readDir ./packages))));
+          })
+          machines_plats);
 
-      hydraJobs.tower = self.nixosConfigurations.tower.config.system.build.toplevel;
-      hydraJobs.lisa = self.nixosConfigurations.lisa.config.system.build.toplevel;
-      hydraJobs.newton = self.nixosConfigurations.newton.config.system.build.toplevel;
 
-      packages."x86_64-linux" = {
-        tinystatus = import ./packages/tinystatus { inherit pkgs; };
-        flaresolverr = pkgs.callPackage ./packages/flaresolverr { };
-        htpdate = pkgs.callPackage ./packages/htpdate { };
-        authelia = pkgs.callPackage ./packages/authelia { };
-      };
-
-      packages."aarch64-linux" = {
-        tinystatus = import ./packages/tinystatus { pkgs = pkgsrpi; };
-        flaresolverr = pkgsrpi.callPackage ./packages/flaresolverr { };
-        htpdate = pkgsrpi.callPackage ./packages/htpdate { };
-      };
+      hydraJobs = {
+        tower = self.nixosConfigurations.tower.config.system.build.toplevel;
+        lisa = self.nixosConfigurations.lisa.config.system.build.toplevel;
+        newton = self.nixosConfigurations.newton.config.system.build.toplevel;
+      } // (packages.x86_64-linux);
 
     };
 }
