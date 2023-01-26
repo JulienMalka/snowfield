@@ -44,8 +44,6 @@
   # enable the tailscale service
   services.tailscale.enable = true;
 
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-
   services.fail2ban.enable = true;
 
   networking.hostName = "lisa";
