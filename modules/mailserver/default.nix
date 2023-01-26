@@ -23,6 +23,15 @@ with lib;
           "julien@malka.sh" = {
             hashedPasswordFile = "/run/secrets/malkash-pw";
             catchAll = [ "malka.sh" ];
+            sieveScript = ''
+              require ["variables", "fileinto", "envelope", "subaddress", "mailbox"];
+
+              if envelope :matches :user "to" "*" {
+                # you can prefix with INBOX/ or INBOX. if necessary
+                # remove :create if you want to permit only existing mailboxes
+                fileinto :create "''${1}";
+              }
+            '';
           };
           "julien.malka@ens.school" = {
             hashedPasswordFile = "/run/secrets/ensmailmalka-pw";
