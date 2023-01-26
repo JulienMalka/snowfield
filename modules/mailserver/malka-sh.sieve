@@ -38,10 +38,12 @@ if allof (header :contains "from" "netdata")
 #rule:[Lol]
 if header :matches "X-Original-To" "*@malka.sh" {
     set :lower "name" "${1}";
-  }
-
-  if string :is "${name}" "" {
-    fileinto "INBOX";
-  } else {
-    fileinto :create "INBOX.${name}";
-  }
+    if string :is "${name}" "" {
+    	fileinto "INBOX";
+    } 
+    elsif string :is "${name}" "julien" {
+	fileinto "INBOX";
+    } else {
+    	fileinto :create "INBOX.${name}";
+    }
+}
