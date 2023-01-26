@@ -22,16 +22,8 @@ with lib;
         loginAccounts = {
           "julien@malka.sh" = {
             hashedPasswordFile = "/run/secrets/malkash-pw";
-            catchAll = [ "malka.sh" ];
-            sieveScript = ''
-              require ["variables", "fileinto", "envelope", "subaddress", "mailbox"];
-
-              if envelope :matches :user "to" "*" {
-                # you can prefix with INBOX/ or INBOX. if necessary
-                # remove :create if you want to permit only existing mailboxes
-                fileinto :create "''${1}";
-              }
-            '';
+            aliases = [ "@malka.sh" ];
+            sieveScript = builtins.readFile ./malka-sh.sieve;
           };
           "julien.malka@ens.school" = {
             hashedPasswordFile = "/run/secrets/ensmailmalka-pw";
@@ -49,7 +41,6 @@ with lib;
 
       services.roundcube = {
         enable = true;
-        plugins = [ "managesieve" ];
         hostName = "webmail.julienmalka.me";
       };
 
