@@ -3,7 +3,7 @@ require ["variables", "fileinto", "envelope", "subaddress", "mailbox"];
 # rule:[FRnOG]
 if allof (header :contains "subject" "[FRnOG]")
 {
-	fileinto "INBOX.FRnOG";
+	fileinto "INBOX.frnog";
 }
 # rule:[dn42]
 if allof (header :contains "subject" "[dn42]")
@@ -13,31 +13,31 @@ if allof (header :contains "subject" "[dn42]")
 # rule:[Lobsters]
 if allof (header :is "to" "lobsters-hQ3nfqM88Q@lobste.rs")
 {
-	fileinto "INBOX.Lobsters";
+	fileinto "INBOX.lobsters";
 }
 # rule:[Fosdem]
 if allof (header :contains "subject" "[devroom-managers]")
 {
-	fileinto "INBOX.FOSDEM";
+	fileinto "INBOX.fosdem";
 }
 # rule:[Promox]
 if allof (header :contains "subject" "[pve-devel]")
 {
-	fileinto "INBOX.Proxmox";
+	fileinto "INBOX.proxmox";
 }
 # rule:[Github]
 if allof (header :contains "from" "notifications@github.com")
 {
-	fileinto "INBOX.Github";
+	fileinto "INBOX.github";
 }
 # rule:[Netdata]
 if allof (header :contains "from" "netdata")
 {
-	fileinto "INBOX.Netdata";
+	fileinto "INBOX.netdata";
 }
 #rule:[Lol]
 if header :matches "X-Original-To" "*@malka.sh" {
-    set "name" "${1}";
+    set :lower "name" "${1}";
   }
 
   if string :is "${name}" "" {
