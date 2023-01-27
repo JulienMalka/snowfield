@@ -44,19 +44,12 @@ class BuildTrigger(Trigger):
 
     def getSchedulersAndProperties(self):
         build_props = self.build.getProperties()
-        repo_name = build_props.getProperty(
-            "github.base.repo.full_name",
-            build_props.getProperty("github.repository.full_name"),
-        )
-
         sch = self.schedulerNames[0]
         triggered_schedulers = []
         for job in self.jobs:
 
             attr = job.get("attr", "eval-error")
             name = attr
-            if repo_name is not None:
-                name = f"{repo_name}: {name}"
             drv_path = job.get("drvPath")
             error = job.get("error")
             out_path = job.get("outputs", {}).get("out")
