@@ -99,7 +99,7 @@ def build_config() -> dict[str, Any]:
             # Since we dynamically create build steps,
             # we use `virtual_builder_name` in the webinterface
             # so that we distinguish what has beeing build
-            context=Interpolate("buildbot/%(prop:virtual_builder_name)s"),
+            context=Interpolate("%(prop:virtual_builder_name)s"),
         ),
     ]
 
