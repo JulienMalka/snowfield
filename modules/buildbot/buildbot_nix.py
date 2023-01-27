@@ -235,12 +235,12 @@ def nix_update_flake_config(
     )
     factory.addStep(
         steps.ShellCommand(
-            name="Update flakes",
+            name="Update flake",
             env=dict(
                 GIT_AUTHOR_NAME=github_bot_user,
-                GIT_AUTHOR_EMAIL=f"{github_bot_user}@users.noreply.github.com",
-                GIT_COMMITTER_NAME=github_bot_user,
-                GIT_COMMITTER_EMAIL=f"{github_bot_user}@users.noreply.github.com",
+                GIT_AUTHOR_EMAIL="julien@malka.sh",
+                GIT_COMMITTER_NAME="Julien Malka",
+                GIT_COMMITTER_EMAIL="julien@malka.sh",
             ),
             command=[
                 "nix",
@@ -255,7 +255,7 @@ def nix_update_flake_config(
     )
     factory.addStep(
         steps.ShellCommand(
-            name="Force-Push to update_flake_lock branch",
+            name="Push to the update_flake_lock branch",
             command=[
                 "git",
                 "push",
@@ -323,7 +323,7 @@ def nix_eval_config(
         NixEvalCommand(
             logEnviron = False,
             env={},
-            name="Eval flake",
+            name="Evaluation of hydraJobs",
             command=[
                 "nix-eval-jobs",
                 "--workers",
@@ -360,7 +360,7 @@ def nix_build_config(
         NixBuildCommand(
             logEnviron = False,
             env={},
-            name="Build flake attr",
+            name="Build of flake attribute",
             command=[
                 "nix-build",
                 "--option",
