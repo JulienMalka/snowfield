@@ -290,6 +290,7 @@ def nix_update_flake_config(
 
 def nix_eval_config(
     worker_names: list[str],
+    repo: str,
     github_token_secret: str,
 ) -> util.BuilderConfig:
     """
@@ -336,10 +337,10 @@ def nix_eval_config(
     )
 
     return util.BuilderConfig(
-        name="nix-eval",
+        name=f"nix-eval-{repo}",
         workernames=worker_names,
         factory=factory,
-        properties=dict(virtual_builder_name="nix-eval"),
+        properties=dict(virtual_builder_name=f"nix-eval-{repo}"),
     )
 
 
