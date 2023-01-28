@@ -121,11 +121,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1674866641,
-        "narHash": "sha256-QAMtjsruP41XpP23iGCQ80ClleycRCsRkN9Z2LESI7s=",
+        "lastModified": 1674868452,
+        "narHash": "sha256-KBMiiyZ8iai+SXp7EdWYnT2kLHzGYKiEDLzVaKtMVSs=",
         "owner": "JulienMalka",
         "repo": "Linkal",
-        "rev": "4b9bb5e4f2e068ca838b9c141d049589a2ee92f9",
+        "rev": "5464bfa6388119f09d15630861504fd1e4f6bee7",
         "type": "github"
       },
       "original": {
