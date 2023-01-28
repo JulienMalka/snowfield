@@ -46,30 +46,41 @@ def build_config() -> dict[str, Any]:
     c["schedulers"] = [
         # build all pushes to default branch
         schedulers.SingleBranchScheduler(
-            name="main",
+            name="main-nix-config",
             change_filter=util.ChangeFilter(
-                repository=f"https://github.com/{ORG}/{REPO}",
+                repository=f"https://github.com/JulienMalka/nix-config",
                 filter_fn=lambda c: c.branch
                 == c.properties.getProperty("github.repository.default_branch"),
             ),
             builderNames=["nix-eval"],
         ),
+        schedulers.SingleBranchScheduler(
+            name="main-linkal",
+            change_filter=util.ChangeFilter(
+                repository=f"https://github.com/JulienMalka/Linkal",
+                filter_fn=lambda c: c.branch
+                == c.properties.getProperty("github.repository.default_branch"),
+            ),
+            builderNames=["nix-eval"],
+        ),
+
         # build all pull requests
         schedulers.SingleBranchScheduler(
-            name="prs",
+            name="prs-nix-config",
             change_filter=util.ChangeFilter(
                 repository=f"https://github.com/{ORG}/{REPO}", category="pull"
             ),
             builderNames=["nix-eval"],
         ),
+
         schedulers.SingleBranchScheduler(
-            name="flake-sources",
+            name="prs-linkal",
             change_filter=util.ChangeFilter(
-                repository=f"https://github.com/{ORG}/nixpkgs", branch="main"
+                repository=f"https://github.com/JulienMalka/Linkal", category="pull"
             ),
-            treeStableTimer=20,
-            builderNames=["nix-update-flake"],
+            builderNames=["nix-eval"],
         ),
+ 
         # this is triggered from `nix-eval`
         schedulers.Triggerable(
             name="nix-build",
@@ -79,17 +90,31 @@ def build_config() -> dict[str, Any]:
         schedulers.ForceScheduler(name="force", builderNames=["nix-eval"]),
         # allow to manually update flakes
         schedulers.ForceScheduler(
-            name="update-flake",
-            builderNames=["nix-update-flake"],
+            name="update-flake-nix-config",
+            builderNames=["nix-update-flake-linkal"],
             buttonName="Update flakes",
         ),
+        schedulers.ForceScheduler(
+            name="update-flake-linkal",
+            builderNames=["nix-update-flake-nix-config"],
+            buttonName="Update flakes",
+        ),
+
         # updates flakes once a weeek
         schedulers.Nightly(
-            name="update-flake-daily",
-            builderNames=["nix-update-flake"],
+            name="update-flake-daily-nix-config",
+            builderNames=["nix-update-flake-nix-config"],
             hour=2,
             minute=0,
         ),
+        schedulers.Nightly(
+            name="update-flake-daily-linkal",
+            builderNames=["nix-update-flake-linkal"],
+            dayOfWeek=6,
+            hour=2,
+            minute=0,
+        ),
+
     ]
 
     github_api_token = read_secret_file("github-token")
@@ -103,8 +128,6 @@ def build_config() -> dict[str, Any]:
         ),
     ]
 
-    # Shape of this file:
-    # [ { "name": "<worker-name>", "pass": "<worker-password>", "cores": "<cpu-cores>" } ]
     worker_config = json.loads(read_secret_file("buildbot-nix-workers"))
 
     credentials = os.environ.get("CREDENTIALS_DIRECTORY", ".")
@@ -129,10 +152,19 @@ def build_config() -> dict[str, Any]:
         nix_build_config(worker_names),
         nix_update_flake_config(
             worker_names,
+            "nix-config",
             f"{ORG}/{REPO}",
             github_token_secret="github-token",
             github_bot_user=BUILDBOT_GITHUB_USER,
         ),
+        nix_update_flake_config(
+            worker_names,
+            "linkal",
+            f"JulienMalka/Linkal",
+            github_token_secret="github-token",
+            github_bot_user=BUILDBOT_GITHUB_USER,
+        ),
+
     ]
 
     github_admins = os.environ.get("GITHUB_ADMINS", "").split(",")
@@ -150,7 +182,7 @@ def build_config() -> dict[str, Any]:
                 util.AnyControlEndpointMatcher(role="admins"),
             ],
         ),
-        "plugins": dict(console_view={}, badges ={
+        "plugins": dict(console_view={}, badges = {
     "left_pad"  : 5,
     "left_text": "Build Status",  # text on the left part of the image
     "left_color": "#555",  # color of the left part of the image
@@ -161,14 +193,14 @@ def build_config() -> dict[str, Any]:
     "font_face": "DejaVu Sans",
     "font_size": 11,
     "color_scheme": {  # color to be used for right part of the image
-        "exception": "#007ec6",  # blue
-        "failure": "#e05d44",    # red
-        "retry": "#007ec6",      # blue
-        "running": "#007ec6",    # blue
-        "skipped": "a4a61d",     # yellowgreen
-        "success": "#4c1",       # brightgreen
-        "unknown": "#9f9f9f",    # lightgrey
-        "warnings": "#dfb317"    # yellow
+        "exception": "#007ec6", 
+        "failure": "#e05d44",    
+        "retry": "#007ec6",      
+        "running": "#007ec6",   
+        "skipped": "a4a61d",   
+        "success": "#4c1",      
+        "unknown": "#9f9f9f",   
+        "warnings": "#dfb317"   
         } 
         }),
         "change_hook_dialects": dict(
