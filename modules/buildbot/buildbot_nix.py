@@ -58,7 +58,7 @@ class BuildTrigger(Trigger):
             build_props.setProperty(f"{attr}-drv_path", drv_path, "nix-eval")
 
             props = Properties()
-            props.setProperty("virtual_builder_name", name, "nix-eval")
+            props.setProperty("virtual_builder_name", name, "jobs evaluation")
             props.setProperty("virtual_builder_tags", "", "nix-eval")
             props.setProperty("attr", attr, "nix-eval")
             props.setProperty("drv_path", drv_path, "nix-eval")
@@ -205,6 +205,7 @@ class CreatePr(steps.ShellCommand):
 
 def nix_update_flake_config(
     worker_names: list[str],
+    repo: str,
     projectname: str,
     github_token_secret: str,
     github_bot_user: str,
@@ -281,10 +282,10 @@ def nix_update_flake_config(
         )
     )
     return util.BuilderConfig(
-        name="nix-update-flake",
+        name=f"nix-update-flake-{repo}",
         workernames=worker_names,
         factory=factory,
-        properties=dict(virtual_builder_name="nix-update-flake"),
+        properties=dict(virtual_builder_name=f"nix-update-flake-{repo}"),
     )
 
 def nix_eval_config(
