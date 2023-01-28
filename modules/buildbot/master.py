@@ -52,7 +52,7 @@ def build_config() -> dict[str, Any]:
                 filter_fn=lambda c: c.branch
                 == c.properties.getProperty("github.repository.default_branch"),
             ),
-            builderNames=["nix-eval"],
+            builderNames=["nix-eval-nix-config"],
         ),
         schedulers.SingleBranchScheduler(
             name="main-linkal",
@@ -61,7 +61,7 @@ def build_config() -> dict[str, Any]:
                 filter_fn=lambda c: c.branch
                 == c.properties.getProperty("github.repository.default_branch"),
             ),
-            builderNames=["nix-eval"],
+            builderNames=["nix-eval-linkal"],
         ),
 
         # build all pull requests
@@ -70,7 +70,7 @@ def build_config() -> dict[str, Any]:
             change_filter=util.ChangeFilter(
                 repository=f"https://github.com/{ORG}/{REPO}", category="pull"
             ),
-            builderNames=["nix-eval"],
+            builderNames=["nix-eval-nix-config"],
         ),
 
         schedulers.SingleBranchScheduler(
@@ -78,7 +78,7 @@ def build_config() -> dict[str, Any]:
             change_filter=util.ChangeFilter(
                 repository=f"https://github.com/JulienMalka/Linkal", category="pull"
             ),
-            builderNames=["nix-eval"],
+            builderNames=["nix-eval-linkal"],
         ),
  
         # this is triggered from `nix-eval`
@@ -87,7 +87,7 @@ def build_config() -> dict[str, Any]:
             builderNames=["nix-build"],
         ),
         # allow to manually trigger a nix-build
-        schedulers.ForceScheduler(name="force", builderNames=["nix-eval"]),
+        schedulers.ForceScheduler(name="force", builderNames=["nix-eval-nix-config"]),
         # allow to manually update flakes
         schedulers.ForceScheduler(
             name="update-flake-nix-config",
@@ -147,8 +147,15 @@ def build_config() -> dict[str, Any]:
         # This should prevent exessive memory usage.
         nix_eval_config(
             [worker_names[0]],
+            "nix-config",
             github_token_secret="github-token",
         ),
+        nix_eval_config(
+            [worker_names[0]],
+            "linkal",
+            github_token_secret="github-token",
+        ),
+
         nix_build_config(worker_names),
         nix_update_flake_config(
             worker_names,
