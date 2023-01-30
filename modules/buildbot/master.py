@@ -111,7 +111,7 @@ def build_config() -> dict[str, Any]:
             name="update-flake-daily-linkal",
             builderNames=["nix-update-flake-linkal"],
             dayOfWeek=6,
-            hour=2,
+            hour=1,
             minute=0,
         ),
 
