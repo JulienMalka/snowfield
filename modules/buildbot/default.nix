@@ -83,7 +83,10 @@ in
 
     services.nginx.virtualHosts."ci.julienmalka.me" =
       {
-        extraConfig = "ssl_session_timeout 1440m;";
+        extraConfig = ''
+          ssl_session_timeout 1440m;         
+          ssl_session_cache shared:SSL:10m;
+        '';
         locations."/".proxyPass = "http://127.0.0.1:1810/";
         locations."/sse" = {
           proxyPass = "http://127.0.0.1:1810/sse/";
