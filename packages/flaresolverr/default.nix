@@ -1,69 +1,45 @@
-{ pkgs, stdenv }:
+{ pkgs, lib, stdenv, python3 }:
 with pkgs;
+let
+  python_env = pkgs.python3.withPackages
+    (p: with p; [ bottle waitress selenium func-timeout requests websockets xvfbwrapper ]);
 
-stdenv.mkDerivation rec {
+in
+stdenv.mkDerivation
+rec {
 
   pname = "flaresolverr";
-  version = "2.2.10";
+  version = "3.0.2";
 
-  src = fetchurl {
-    url = "https://github.com/FlareSolverr/FlareSolverr/releases/download/v2.2.10/flaresolverr-v2.2.10-linux-x64.zip";
-    sha256 = "sha256-VZj7CkL1ef+Gfd90PCGUxMCuayzMkqVlGhJrM4Lmacs=";
+
+  src = fetchFromGitHub {
+    owner = pname;
+    repo = pname;
+    rev = "v${version}";
+    sha256 = "sha256-zpeJf1CaQ4bsncZz44sH+tFKddYrZf7YdNYL50d9GA4=";
   };
 
+  buildInputs = [ pkgs.makeWrapper ];
+  nativeBuildInputs = [ chromedriver ];
+  patches = [ ./flaresolverr.patch ];
 
-  nativeBuildInputs = [
-    unzip
-  ];
-
-  buildInputs = [ gcc stdenv.cc.cc.lib firefox ];
-
-  preFixup =
-    let
-      libPath = lib.makeLibraryPath [ stdenv.cc.cc ];
-    in
-    ''
-      orig_size=$(stat --printf=%s $out/bin/flaresolverr)
-      patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" $out/bin/flaresolverr
-      patchelf --set-rpath ${libPath} $out/bin/flaresolverr
-      chmod +x $out/bin/flaresolverr
-      new_size=$(stat --printf=%s $out/bin/flaresolverr)
-      ###### zeit-pkg fixing starts here.
-      # we're replacing plaintext js code that looks like
-      # PAYLOAD_POSITION = '1234                  ' | 0
-      # [...]
-      # PRELUDE_POSITION = '1234                  ' | 0
-      # ^-----20-chars-----^^------22-chars------^
-      # ^-- grep points here
-          #
-      # var_* are as described above
-      # shift_by seems to be safe so long as all patchelf adjustments occur 
-      # before any locations pointed to by hardcoded offsets
-      var_skip=20
-      var_select=22
-      shift_by=$(expr $new_size - $orig_size)
-      function fix_offset {
-        # $1 = name of variable to adjust
-        location=$(grep -obUam1 "$1" $out/bin/flaresolverr | cut -d: -f1)
-        location=$(expr $location + $var_skip)
-        value=$(dd if=$out/bin/flaresolverr iflag=count_bytes,skip_bytes skip=$location \
-                   bs=1 count=$var_select status=none)
-        value=$(expr $shift_by + $value)
-        echo -n $value | dd of=$out/bin/flaresolverr bs=1 seek=$location conv=notrunc
-      }
-      fix_offset PAYLOAD_POSITION
-      fix_offset PRELUDE_POSITION
-    '';
-
-
-  installPhase = ''
-    mkdir -p $out/bin
-    cp flaresolverr $out/bin/
-    mkdir -p $out/bin/firefox
-    ln -s ${pkgs.firefox}/bin/firefox $out/bin/firefox/firefox
+  postPatch = ''
+    substituteInPlace src/utils.py \
+    --replace "CHANGEME" "${pkgs.chromedriver}/bin/chromedriver"
   '';
 
-  dontStrip = true;
+  installPhase = ''
+    mkdir -p $out/share
+    cp -r . $out/share
+
+  '';
+
+  postFixup = ''
+    makeWrapper ${python_env}/bin/python $out/bin/flaresolverr \
+      --prefix PATH : ${lib.makeBinPath [ pkgs.chromium pkgs.xvfb-run xorg.xorgserver pkgs.chromedriver ]} \
+      --add-flags $out/share/src/flaresolverr.py \
+      --chdir $out/share/
+  '';
 
 
 
