@@ -308,7 +308,7 @@ def nix_eval_config(
         steps.Git(
             logEnviron = False,
             repourl=url_with_secret,
-            method="clean",
+            method="clobber",
             submodules=True,
             haltOnFailure=True,
         )
