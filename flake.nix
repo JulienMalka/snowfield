@@ -46,9 +46,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixos-apple-silicon = {
+      url = "github:tpwrules/nixos-apple-silicon";
+    };
+
+
   };
 
-  outputs = { self, home-manager, nixpkgs, unstable, deploy-rs, sops-nix, ... }@inputs:
+  outputs = { self, home-manager, nixpkgs, unstable, deploy-rs, sops-nix, nixos-apple-silicon, ... }@inputs:
     let
       pkgs = import nixpkgs { system = "x86_64-linux"; };
       pkgsrpi = import nixpkgs { system = "aarch64-linux"; };
@@ -61,7 +66,6 @@
           value = import nixpkgs { system = plat; };
         })
         machines_plats);
-
     in
     with lib;
     rec {
@@ -72,7 +76,7 @@
         })
         (builtins.attrNames (builtins.readDir ./modules)));
 
-      nixosConfigurations = builtins.mapAttrs (name: value: (mkMachine { host = name; host-config = value; modules = self.nixosModules; system = luj.machines.${name}.arch; })) (importConfig ./machines);
+      nixosConfigurations = builtins.mapAttrs (name: value: (lib.mkMachine { host = name; host-config = value; modules = self.nixosModules; nixpkgs = inputs.${lib.luj.machines.${name}.nixpkgs_version}; system = lib.luj.machines.${name}.arch; })) (lib.importConfig ./machines);
 
       deploy.nodes.newton = {
         hostname = "newton.julienmalka.me";
