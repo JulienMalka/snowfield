@@ -1,15 +1,15 @@
 inputs: final: prev:
 
-with builtins; with inputs;
+with builtins;
 
 let
   overlay-unstable = arch: final: prev: {
-    unstable = unstable.legacyPackages."${arch}";
+    unstable = inputs.unstable.legacyPackages."${arch}";
   };
 in
 {
 
-  mkMachine = { host, host-config, modules, system ? "x86_64-linux" }: nixpkgs.lib.nixosSystem {
+  mkMachine = { host, host-config, modules, nixpkgs ? inputs.nixpkgs, system ? "x86_64-linux" }: nixpkgs.lib.nixosSystem {
     lib = final;
     system = system;
     specialArgs = {
@@ -17,10 +17,10 @@ in
     };
     modules = builtins.attrValues modules ++ [
       ../base.nix
-      sops-nix.nixosModules.sops
+      inputs.sops-nix.nixosModules.sops
       host-config
-      home-manager.nixosModules.home-manager
-      simple-nixos-mailserver.nixosModule
+      inputs.home-manager.nixosModules.home-manager
+      inputs.simple-nixos-mailserver.nixosModule
       {
         home-manager.useGlobalPkgs = true;
         nixpkgs.overlays = [
