@@ -31,7 +31,8 @@ lib: with lib; let
             arch = "x86_64-linux";
           };
           macintosh = {
-            arch = "x86_64-linux";
+            arch = "aarch64-linux";
+            nixpkgs_version = "unstable";
           };
           lambda = {
             arch = "aarch64-linux";
