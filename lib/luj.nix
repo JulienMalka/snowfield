@@ -26,9 +26,11 @@ lib: with lib; let
         machines = {
           lisa = {
             arch = "x86_64-linux";
+            nixpkgs_version = "nixpkgs";
           };
           newton = {
             arch = "x86_64-linux";
+            nixpkgs_version = "nixpkgs";
           };
           macintosh = {
             arch = "aarch64-linux";
@@ -36,9 +38,11 @@ lib: with lib; let
           };
           lambda = {
             arch = "aarch64-linux";
+            nixpkgs_version = "nixpkgs";
           };
           tower = {
             arch = "x86_64-linux";
+            nixpkgs_version = "nixpkgs";
           };
 
         };
