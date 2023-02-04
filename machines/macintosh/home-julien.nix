@@ -4,6 +4,7 @@ let
   terminal = "alacritty";
 in
 {
+
   sops.secrets.ssh-macintosh-pub = {
     owner = "julien";
     path = "/home/julien/.ssh/id_ed25519.pub";
@@ -20,7 +21,6 @@ in
     sopsFile = ../../secrets/ssh-macintosh-priv;
   };
 
-
   luj.hmgr.julien =
     {
       home.stateVersion = "22.11";
@@ -28,6 +28,7 @@ in
       luj.programs.ssh-client.enable = true;
       luj.programs.git.enable = true;
       luj.programs.gtk.enable = true;
+      luj.programs.alacritty.enable = true;
 
       wayland.windowManager.sway = {
         enable = true;
@@ -96,20 +97,21 @@ in
 
       services.swayidle.enable = true;
 
-      programs.alacritty =
-        {
+
+      home.pointerCursor = {
+        name = "Adwaita";
+        package = pkgs.gnome.adwaita-icon-theme;
+        size = 15;
+        x11 = {
           enable = true;
-          settings = {
-            window.dimensions = {
-              lines = 3;
-              columns = 200;
-            };
-          };
+          defaultCursor = "Adwaita";
         };
+      };
 
       home.packages = with pkgs;
         [
           unstable.rofi
+          fira-code
           unstable.firefox
           feh
           meld
@@ -117,7 +119,6 @@ in
           nerdfonts
           font-awesome
           nodejs
-          fira-code
           neomutt
           htop
           evince
@@ -128,6 +129,7 @@ in
         ];
 
       fonts.fontconfig.enable = true;
+
       xsession.enable = true;
 
       home.keyboard = {
