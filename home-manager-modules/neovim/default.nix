@@ -1,16 +1,6 @@
 { pkgs, home, lib, config, ... }:
 let
   cfg = config.luj.programs.neovim;
-  onedarker = pkgs.vimUtils.buildVimPlugin {
-    pname = "onedarker";
-    version = "1.0.0";
-    src = pkgs.fetchFromGitHub {
-      owner = "lunarvim";
-      repo = "onedarker.nvim";
-      rev = "b4f92f073ed7cdf0358ad005cee0484411232b1b";
-      sha256 = "sha256-DJGrRkELm3QkH7tZXNNfo/4IXLr7r0vnevzPGG/1K4g=";
-    };
-  };
 
 in
 with lib;
@@ -53,8 +43,6 @@ with lib;
 
       withPython3 = true;
       plugins = with pkgs.vimPlugins; [
-        #theme
-        onedarker
         # LSP
         nvim-lspconfig
 
@@ -64,6 +52,8 @@ with lib;
         telescope-nvim
 
         nvim-web-devicons
+
+        catppuccin-nvim
 
         pkgs.unstable.vimPlugins.bufferline-nvim
         nvim-colorizer-lua
