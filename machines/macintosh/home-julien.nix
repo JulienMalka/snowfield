@@ -28,7 +28,6 @@ in
       luj.programs.ssh-client.enable = true;
       luj.programs.git.enable = true;
       luj.programs.gtk.enable = true;
-      luj.polybar.enable = true;
 
       wayland.windowManager.sway.enable = true;
       wayland.windowManager.sway.config.terminal = terminal;
