@@ -53,6 +53,8 @@
 
   security.polkit.enable = true;
 
+  services.tlp.enable = true;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.julien = {
     isNormalUser = true;
