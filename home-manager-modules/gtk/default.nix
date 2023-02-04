@@ -12,8 +12,11 @@ with lib;
     gtk = {
       enable = true;
       theme = {
-        name = "Nordic";
-        package = pkgs.nordic;
+        name = "Catppuccin-Macchiato-Standard-Pink-Dark";
+        package = pkgs.catppuccin-gtk.override {
+          accents = [ "pink" ];
+          variant = "macchiato";
+        };
       };
     };
     qt = {
