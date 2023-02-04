@@ -25,6 +25,7 @@
 
   hardware.asahi.addEdgeKernelConfig = true;
   hardware.asahi.useExperimentalGPUDriver = true;
+  hardware.asahi.pkgs = lib.mkDefault pkgs;
 
   hardware.video.hidpi.enable = true;
 
@@ -49,7 +50,6 @@
 
   hardware.opengl.enable = true;
   hardware.opengl.driSupport = true;
-  hardware.opengl.extraPackages = [ pkgs.mesa ];
 
   programs.dconf.enable = true;
 
