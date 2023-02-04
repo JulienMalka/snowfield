@@ -41,30 +41,36 @@
   };
 
   hardware.asahi.peripheralFirmwareDirectory = ./firmware;
+  # Enable the X11 windowing system.
+  services.xserver.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.displayManager.gdm.wayland = true;
+  services.xserver.layout = "fr";
 
-  services.xserver.libinput = {
-    enable = true;
-    naturalScrolling = true;
-  };
+  services.xserver.libinput.enable = true;
 
   hardware.opengl.enable = true;
   hardware.opengl.driSupport = true;
-  hardware.opengl.extraPackages = [ pkgs.mesa ];
 
   programs.dconf.enable = true;
 
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-  };
+  programs.sway.enable = true;
 
   security.polkit.enable = true;
 
-  services.tlp.enable = true;
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.julien = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    packages = with pkgs; [
+      firefox
+      thunderbird
+    ];
+  };
 
+  # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
     tailscale
-    brightnessctl
   ];
 
   system.stateVersion = "23.05"; # Did you read the comment?
