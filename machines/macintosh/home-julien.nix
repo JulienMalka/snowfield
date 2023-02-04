@@ -27,6 +27,15 @@
       luj.programs.alacritty.enable = true;
       luj.programs.sway.enable = true;
 
+      programs.rofi = {
+        enable = true;
+        package = pkgs.rofi-wayland;
+        font = "Fira Font";
+        theme = "DarkBlue";
+      };
+
+
+
       home.pointerCursor = {
         name = "Adwaita";
         package = pkgs.gnome.adwaita-icon-theme;
@@ -39,7 +48,6 @@
 
       home.packages = with pkgs;
         [
-          unstable.rofi
           fira-code
           unstable.firefox
           feh
