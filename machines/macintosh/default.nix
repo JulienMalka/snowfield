@@ -29,6 +29,15 @@
 
   hardware.video.hidpi.enable = true;
 
+  programs.fish.shellInit = ''
+    if test -z (pgrep ssh-agent)
+    eval (ssh-agent -c) > /dev/null
+    set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
+    set -Ux SSH_AGENT_PID $SSH_AGENT_PID
+    set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
+    end
+  '';
+
   services.tailscale.enable = true;
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
