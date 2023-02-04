@@ -36,6 +36,20 @@ with lib;
           user = "root";
           port = 45;
         };
+        tower = {
+          hostname = "tower.julienmalka.me";
+          user = "julien";
+          port = 45;
+        };
+        saumon = {
+          hostname = "saumon.julienmalka.me";
+          user = "julien";
+        };
+        stockly = {
+          hostname = "charybdis.stockly.ai";
+          user = "julien_malka";
+          port = 23;
+        };
       };
     };
   };
