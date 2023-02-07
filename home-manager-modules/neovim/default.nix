@@ -81,7 +81,7 @@ with lib;
         rust-vim
       ];
 
-      extraPackages = with pkgs; [ rust-analyzer rnix-lsp ];
+      extraPackages = with pkgs; [ rust-analyzer rnix-lsp pyright ];
 
       extraConfig = ''
         luafile ${./settings.lua}
