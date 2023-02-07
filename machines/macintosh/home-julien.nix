@@ -34,6 +34,12 @@
         theme = "DarkBlue";
       };
 
+      programs.direnv = {
+        enable = true;
+        enableFishIntegration = true;
+        nix-direnv.enable = true;
+      };
+
 
 
       home.pointerCursor = {
