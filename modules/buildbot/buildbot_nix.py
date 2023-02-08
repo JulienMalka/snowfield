@@ -15,6 +15,7 @@ from buildbot.process.properties import Properties
 from buildbot.process.results import ALL_RESULTS, statusToString
 from buildbot.steps.trigger import Trigger
 from twisted.internet import defer
+from buildbot.steps.source.github import GitHub
 
 
 class BuildTrigger(Trigger):
@@ -304,8 +305,9 @@ def nix_eval_config(
     url_with_secret = util.Interpolate(
         f"https://git:%(secret:{github_token_secret})s@github.com/%(prop:project)s"
     )
+    factory.addStep(steps.ShellCommand(command=["echo", "test"]))
     factory.addStep(
-        steps.Git(
+        GitHub(
             logEnviron = False,
             repourl=url_with_secret,
             method="clobber",
@@ -353,7 +355,6 @@ def nix_build_config(
     factory = util.BuildFactory()
     factory.addStep(
         NixBuildCommand(
-            logEnviron = False,
             env={},
             name="Build of flake attribute",
             command=[
