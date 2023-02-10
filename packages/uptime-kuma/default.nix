@@ -13,11 +13,15 @@ buildNpmPackage rec {
 
   npmDepsHash = "sha256-lVMPxUe+W/FlFQS2L+/UfpC21pIKJE89clmJywSv7w4=";
 
-  patches = [ ./fix-database-permissions.patch ];
+  patches = [
+    # Fixes the permissions of the database being not set correctly
+    # See https://github.com/louislam/uptime-kuma/pull/2119
+    ./fix-database-permissions.patch
+  ];
 
   nativeBuildInputs = [ python3 ];
 
-  CYPRESS_INSTALL_BINARY = 0;
+  CYPRESS_INSTALL_BINARY = 0; # Stops Cypress from trying to download binaries
 
   postInstall = ''
     cp -r dist $out/lib/node_modules/uptime-kuma/
