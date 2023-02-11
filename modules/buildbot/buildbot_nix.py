@@ -16,7 +16,13 @@ from buildbot.process.results import ALL_RESULTS, statusToString
 from buildbot.steps.trigger import Trigger
 from twisted.internet import defer
 from buildbot.steps.source.github import GitHub
+from buildbot.process.results import FAILURE
+from buildbot.steps.master import SetProperty
 
+def failure(step):
+   if step.getProperty("GitFailed"):
+      return True
+   return False
 
 class BuildTrigger(Trigger):
     """
@@ -224,10 +230,38 @@ def nix_update_flake_config(
             alwaysUseLatest=True,
             method="clobber",
             submodules=True,
-            haltOnFailure=True,
             branch="update_flake_lock",
+            haltOnFailure=False
         )
     )
+
+    factory.addStep(SetProperty(property="GitFailed", value="failed", doStepIf=(lambda step: step.build.results == FAILURE)))
+
+    factory.addStep(
+            steps.Git(
+            repourl=url_with_secret,
+            alwaysUseLatest=True,
+            method="clobber",
+            submodules=True,
+            haltOnFailure=True,
+            branch="main",
+            doStepIf=failure
+        )
+    )
+    factory.addStep(steps.ShellCommand(
+            name="Creating branch",
+            command=[
+                "git",
+                "checkout",
+                "-b",
+                "update_flake_lock"
+            ],
+            haltOnFailure=True,
+            doStepIf=failure
+        )
+
+    )
+
     factory.addStep(
         steps.ShellCommand(
             name="Update flake",
@@ -305,7 +339,6 @@ def nix_eval_config(
     url_with_secret = util.Interpolate(
         f"https://git:%(secret:{github_token_secret})s@github.com/%(prop:project)s"
     )
-    factory.addStep(steps.ShellCommand(command=["echo", "test"]))
     factory.addStep(
         GitHub(
             logEnviron = False,
