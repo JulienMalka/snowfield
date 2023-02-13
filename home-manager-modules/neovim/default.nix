@@ -24,11 +24,19 @@ with lib;
         enable = true;
         settings = {
           coc.preferences.formatOnSaveFiletypes = [ "nix" "rust" "sql" "python" ];
+          rust-analyzer.enable = true;
+          rust-analyzer.cargo.allFeatures = true;
+          rust-analyzer.checkOnSave.allTargets = true;
           languageserver =
             {
               python = {
                 command = "pyright";
                 filetypes = [ "py" "python" ];
+              };
+
+              haskell = {
+                command = "haskell-language-server";
+                filetypes = [ "hs" ];
               };
 
               nix = {
@@ -78,10 +86,11 @@ with lib;
         semshi
         coc-prettier
         coc-pyright
+        coc-rust-analyzer
         rust-vim
       ];
 
-      extraPackages = with pkgs; [ rust-analyzer rnix-lsp pyright ];
+      extraPackages = with pkgs; [ rust-analyzer rnix-lsp pyright haskell-language-server ];
 
       extraConfig = ''
         luafile ${./settings.lua}
