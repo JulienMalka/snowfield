@@ -41,8 +41,4 @@ buildNpmPackage rec {
     license = licenses.mit;
     maintainers = with maintainers; [ julienmalka ];
   };
-
-
 }
-
-
