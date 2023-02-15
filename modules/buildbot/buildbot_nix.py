@@ -244,6 +244,7 @@ def nix_update_flake_config(
             method="clobber",
             submodules=True,
             haltOnFailure=True,
+            mode="full",
             branch="main",
             doStepIf=failure
         )
