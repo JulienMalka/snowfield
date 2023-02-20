@@ -46,7 +46,7 @@ with lib;
           user = "julien";
         };
         stockly = {
-          hostname = "charybdis.stockly.ai";
+          hostname = "charybdis.stockly.tech";
           user = "julien_malka";
           port = 23;
         };
