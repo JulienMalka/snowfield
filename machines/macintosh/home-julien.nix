@@ -40,8 +40,6 @@
         nix-direnv.enable = true;
       };
 
-
-
       home.pointerCursor = {
         name = "Adwaita";
         package = pkgs.gnome.adwaita-icon-theme;
@@ -69,6 +67,15 @@
           flameshot
           networkmanagerapplet
           sops
+          coq
+          coqPackages.coqide
+          (why3.withProvers
+            [
+              alt-ergo
+              cvc5
+              cvc4
+              z3
+            ])
         ];
 
       fonts.fontconfig.enable = true;
@@ -76,6 +83,7 @@
       home.keyboard = {
         layout = "fr";
       };
+
 
 
     };
