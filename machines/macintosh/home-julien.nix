@@ -68,12 +68,12 @@
           networkmanagerapplet
           sops
           coq
+          cvc5
           coqPackages.coqide
           (why3.withProvers
             [
+              unstable.cvc4
               alt-ergo
-              cvc5
-              cvc4
               z3
             ])
         ];
