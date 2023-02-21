@@ -58,6 +58,7 @@
           meld
           vlc
           nerdfonts
+          libreoffice
           font-awesome
           nodejs
           neomutt
