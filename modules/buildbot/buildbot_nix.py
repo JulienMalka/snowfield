@@ -233,7 +233,7 @@ def nix_update_flake_config(
         )
     )
 
-    factory.addStep(SetProperty(property="GitFailed", value="failed", doStepIf=(lambda step: step.build.results == FAILURE)))
+    factory.addStep(SetProperty(property="GitFailed", value="failed", hideStepIf=True, doStepIf=(lambda step: step.build.results == FAILURE)))
 
     factory.addStep(
             steps.Git(
@@ -245,7 +245,7 @@ def nix_update_flake_config(
             mode="full",
             branch="main",
             doStepIf=failure,
-            hideStepIf=lambda x: not(failure(x))
+            hideStepIf=lambda _, x: not(failure(x))
         )
     )
     factory.addStep(steps.ShellCommand(
@@ -258,7 +258,7 @@ def nix_update_flake_config(
             ],
             haltOnFailure=True,
             doStepIf=failure,
-            hideStepIf=lambda x: not(failure(x))
+            hideStepIf=lambda _, x: not(failure(x))
         )
 
     )
