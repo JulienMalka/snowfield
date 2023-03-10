@@ -229,7 +229,8 @@ def nix_update_flake_config(
             method="clobber",
             submodules=True,
             branch="update_flake_lock",
-            haltOnFailure=False
+            haltOnFailure=False,
+            warnOnFailure=True
         )
     )
 
