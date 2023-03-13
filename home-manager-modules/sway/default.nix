@@ -74,9 +74,14 @@ with lib;
           "XF86MonBrightnessDown" = "exec brightnessctl s 10-";
         };
       };
+      extraConfig = ''
+        exec_always nm-applet --indicator
+      '';
+
     };
 
     services.swayidle.enable = true;
+    programs.waybar.enable = true;
 
 
   };
