@@ -65,6 +65,7 @@
           htop
           evince
           mosh
+          obsidian
           flameshot
           networkmanagerapplet
           sops
