@@ -52,6 +52,9 @@
 
       home.packages = with pkgs;
         [
+          du-dust
+          jq
+          lazygit
           fira-code
           unstable.firefox
           feh
@@ -67,6 +70,7 @@
           mosh
           obsidian
           flameshot
+          kitty
           networkmanagerapplet
           sops
           coq
