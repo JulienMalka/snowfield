@@ -40,6 +40,7 @@
 
   services.tailscale.enable = true;
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
+  networking.networkmanager.unmanaged = [ "tailscale0" ];
 
   time.timeZone = "Europe/Paris";
 
@@ -75,6 +76,12 @@
     tailscale
     brightnessctl
   ];
+
+  services.printing.enable = true;
+  services.avahi.enable = true;
+  services.avahi.nssmdns = true;
+  # for a WiFi printer
+  services.avahi.openFirewall = true;
 
   system.stateVersion = "23.05"; # Did you read the comment?
 
