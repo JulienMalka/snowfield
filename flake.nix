@@ -78,16 +78,6 @@
 
       nixosConfigurations = builtins.mapAttrs (name: value: (lib.mkMachine { host = name; host-config = value; modules = self.nixosModules; nixpkgs = inputs.${lib.luj.machines.${name}.nixpkgs_version}; system = lib.luj.machines.${name}.arch; })) (lib.importConfig ./machines);
 
-      deploy.nodes.newton = {
-        hostname = "newton.julienmalka.me";
-        profiles.system = {
-          sshUser = "root";
-          sshOpts = [ "-p" "45" ];
-          fastConnection = true;
-          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.newton;
-        };
-      };
-
       deploy.nodes.lambda = {
         hostname = "lambda.julienmalka.me";
         profiles.system = {
