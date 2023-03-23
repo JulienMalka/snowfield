@@ -32,6 +32,7 @@
 
   networking.firewall.checkReversePath = "loose";
 
+  networking.networkmanager.unmanaged = [ "tailscale0" ];
 
 
   security.pki.certificates = [
