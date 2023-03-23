@@ -40,7 +40,6 @@
 
   services.tailscale.enable = true;
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
-  networking.networkmanager.unmanaged = [ "tailscale0" ];
 
   time.timeZone = "Europe/Paris";
 
