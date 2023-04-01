@@ -34,7 +34,7 @@ lib: with lib; let
           };
           macintosh = {
             arch = "aarch64-linux";
-            nixpkgs_version = "unstable";
+            nixpkgs_version = "nixos-apple-silicon.inputs";
           };
           lambda = {
             arch = "aarch64-linux";

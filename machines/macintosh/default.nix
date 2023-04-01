@@ -29,8 +29,7 @@
 
 
   programs.hyprland.enable = true;
-
-
+  programs.hyprland.package = pkgs.hyprland;
 
   programs.fish.shellInit = ''
     if test -z (pgrep ssh-agent)
