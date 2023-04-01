@@ -27,6 +27,7 @@
       luj.programs.alacritty.enable = true;
       luj.programs.hyprland.enable = true;
       luj.programs.waybar.enable = true;
+      luj.programs.kitty.enable = true;
 
       programs.rofi = {
         enable = true;
