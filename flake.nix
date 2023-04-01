@@ -7,7 +7,7 @@
     flake-utils.url = "github:numtide/flake-utils";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-22.11";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "unstable";
       inputs.utils.follows = "flake-utils";
     };
@@ -48,6 +48,10 @@
 
     nixos-apple-silicon = {
       url = "github:tpwrules/nixos-apple-silicon";
+    };
+
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
     };
 
 
