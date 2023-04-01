@@ -54,6 +54,9 @@
       url = "github:hyprwm/Hyprland";
     };
 
+    hyprpaper = {
+      url = "github:JulienMalka/hyprpaper";
+    };
 
   };
 
