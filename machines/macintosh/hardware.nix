@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "usb_storage" "sdhci_pci" ];
@@ -14,12 +15,14 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/d01369d1-b6ad-4fef-b73e-d1d56ec249ca";
+    {
+      device = "/dev/disk/by-uuid/d01369d1-b6ad-4fef-b73e-d1d56ec249ca";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/1070-1613";
+    {
+      device = "/dev/disk/by-uuid/1070-1613";
       fsType = "vfat";
     };
 
@@ -34,6 +37,4 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
-  # high-resolution display
-  hardware.video.hidpi.enable = lib.mkDefault true;
 }
