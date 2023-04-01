@@ -16,11 +16,10 @@ with lib;
           layer = "top";
           modules-left = [ "custom/arch" "wlr/workspaces" ];
           modules-center = [ "clock" ];
-          modules-right = [ "backlight" "pulseaudio" "network" "battery" ];
-          "custom/arch" = {
+          modules-right = [ "backlight" "network" "battery" ];
+          "custom/nixos" = {
             format = " ❄ ";
             tooltip = false;
-            on-click = "sh $HOME/.config/rofi/bin/powermenu";
           };
           "wlr/workspaces" = {
             format = "{name}";
@@ -67,7 +66,7 @@ with lib;
         };
       };
       style = ''
-              * {
+        * {
           border: none;
           font-family: 'Fira Code', 'Symbols Nerd Font Mono';
           font-size: 12px;
@@ -80,14 +79,14 @@ with lib;
         }
 
         #custom-arch, #workspaces {
-          border-radius: 10px;
+          border-radius: 8px;
           background-color: #11111b;
-          color: #cba6f7;
+          color: #7eb9e3;
           margin-top: 15px;
         	margin-right: 15px;
           padding-top: 1px;
-          padding-left: 10px;
-          padding-right: 10px;
+          padding-left: 5px;
+          padding-right: 5px;
         }
 
         #custom-arch {

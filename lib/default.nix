@@ -51,6 +51,7 @@ in
               buildbot-badges = prev.pkgs.callPackage ../packages/buildbot-badges { };
               linkal = inputs.linkal.defaultPackage."${system}";
               mosh = prev.unstable.mosh;
+              hyprpaper = inputs.hyprpaper.packages.${system}.default;
             })
         ];
       }

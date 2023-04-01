@@ -17,9 +17,12 @@ with lib;
         package = pkgs.hyprland;
 
       };
+
+      home.packages = [ pkgs.hyprpaper ];
+
       xdg.configFile."hypr/hyprland.conf".text = ''
                 exec-once=${pkgs.dbus}/bin/dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP && systemctl --user start hyprland-session.target
-                exec-once = waybar
+                exec-once = waybar & hyprpaper
                 # Monitors
                 monitor = eDP-1, preferred, auto, auto
     
@@ -166,7 +169,6 @@ with lib;
                 bind = SUPER SHIFT, F, exec, $files
                 bind = SUPER SHIFT, B, exec, $browser
                 bind = SUPER, SPACE, exec, $launcher
-                bind = SUPER, E, exec, $emoji
                 bind = SUPER, X, exec, power-menu
     
                 # Function keys
@@ -187,7 +189,7 @@ with lib;
                 bind = SUPER, Q, killactive,
                 bind = SUPER, M, exit,
                 bind = SUPER, F, fullscreen,
-                bind = SUPER, Space, togglefloating,
+                bind = SUPER, D, togglefloating,
                 bind = SUPER, P, pseudo, # dwindle
                 bind = SUPER, J, togglesplit, # dwindle
     
@@ -225,6 +227,10 @@ with lib;
                 bindm = SUPER, mouse:273, resizewindow
                 bind = SUPER, mouse_down, workspace, e+1
                 bind = SUPER, mouse_up, workspace, e-1
+      '';
+      xdg.configFile."hypr/hyprpaper.conf".text = ''
+        preload = ${../../machines/macintosh/wallpaper.jpg}
+        wallpaper = ,${../../machines/macintosh/wallpaper.jpg}
       '';
 
     };
