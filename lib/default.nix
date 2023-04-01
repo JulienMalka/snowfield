@@ -21,6 +21,7 @@ in
       host-config
       inputs.home-manager.nixosModules.home-manager
       inputs.simple-nixos-mailserver.nixosModule
+      inputs.hyprland.nixosModules.default
       {
         home-manager.useGlobalPkgs = true;
         nixpkgs.overlays = [

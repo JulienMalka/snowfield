@@ -28,6 +28,8 @@
   hardware.asahi.pkgs = lib.mkDefault pkgs;
 
 
+  programs.hyprland.enable = true;
+
 
 
   programs.fish.shellInit = ''
