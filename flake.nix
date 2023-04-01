@@ -80,7 +80,7 @@
         })
         (builtins.attrNames (builtins.readDir ./modules)));
 
-      nixosConfigurations = builtins.mapAttrs (name: value: (lib.mkMachine { host = name; host-config = value; modules = self.nixosModules; nixpkgs = inputs.${lib.luj.machines.${name}.nixpkgs_version}; system = lib.luj.machines.${name}.arch; })) (lib.importConfig ./machines);
+      nixosConfigurations = builtins.mapAttrs (name: value: (lib.mkMachine { host = name; host-config = value; modules = self.nixosModules; nixpkgs = inputs.nixos-apple-silicon.inputs.nixpkgs; system = lib.luj.machines.${name}.arch; })) (lib.importConfig ./machines);
 
       deploy.nodes.lambda = {
         hostname = "lambda.julienmalka.me";

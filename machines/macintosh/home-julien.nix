@@ -25,7 +25,8 @@
       luj.programs.git.enable = true;
       luj.programs.gtk.enable = true;
       luj.programs.alacritty.enable = true;
-      luj.programs.sway.enable = true;
+      luj.programs.hyprland.enable = true;
+      luj.programs.waybar.enable = true;
 
       programs.rofi = {
         enable = true;
@@ -53,6 +54,7 @@
       home.packages = with pkgs;
         [
           du-dust
+          kitty
           jq
           lazygit
           fira-code

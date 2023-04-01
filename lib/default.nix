@@ -28,6 +28,15 @@ in
           (overlay-unstable system)
           (final: prev:
             {
+              hyprland = inputs.hyprland.packages.${system}.default.override {
+                enableXWayland = true;
+                hidpiXWayland = true;
+                nvidiaPatches = false;
+                legacyRenderer = true;
+              };
+              waybar = prev.waybar.overrideAttrs (oldAttrs: {
+                mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
+              });
               tinystatus = prev.pkgs.callPackage ../packages/tinystatus { };
               jackett = prev.unstable.jackett;
               radarr = prev.unstable.radarr;
