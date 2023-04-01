@@ -27,7 +27,8 @@
   hardware.asahi.useExperimentalGPUDriver = true;
   hardware.asahi.pkgs = lib.mkDefault pkgs;
 
-  hardware.video.hidpi.enable = true;
+
+
 
   programs.fish.shellInit = ''
     if test -z (pgrep ssh-agent)
