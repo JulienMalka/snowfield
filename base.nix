@@ -32,7 +32,7 @@
 
   networking.firewall.checkReversePath = "loose";
 
-  networking.networkmanager.unmanaged = [ "tailscale0" ];
+  systemd.services.NetworkManager-wait-online.enable = false;
 
 
   security.pki.certificates = [
