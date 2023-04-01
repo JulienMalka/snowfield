@@ -78,7 +78,7 @@ with lib;
           background: transparent;
         }
 
-        #custom-arch, #workspaces {
+        #custom-nixos, #workspaces {
           border-radius: 8px;
           background-color: #11111b;
           color: #7eb9e3;
@@ -89,7 +89,7 @@ with lib;
           padding-right: 5px;
         }
 
-        #custom-arch {
+        #custom-nixos {
           font-size: 20px;
         	margin-left: 15px;
         }
