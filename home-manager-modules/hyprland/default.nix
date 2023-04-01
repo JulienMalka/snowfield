@@ -32,7 +32,6 @@ with lib;
                   kb_variant = mac
                   follow_mouse = 1
                   touchpad {
-                      disable_while_typing = false
                       natural_scroll = true
                       tap-to-click = true
                   }
@@ -164,7 +163,7 @@ with lib;
                 $launcher = ${menu}
     
                 # Apps
-                bind = SUPER, RETURN, exec, $term
+                bind = SUPER, RETURN, exec, MESA_GL_VERSION_OVERRIDE=3.3 MESA_GLSL_VERSION_OVERRIDE=330 kitty
                 bind = SUPER SHIFT, E, exec, $editor
                 bind = SUPER SHIFT, F, exec, $files
                 bind = SUPER SHIFT, B, exec, $browser

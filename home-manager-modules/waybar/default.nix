@@ -14,7 +14,7 @@ with lib;
       settings = {
         mainBar = {
           layer = "top";
-          modules-left = [ "custom/arch" "wlr/workspaces" ];
+          modules-left = [ "custom/nixos" "wlr/workspaces" ];
           modules-center = [ "clock" ];
           modules-right = [ "backlight" "network" "battery" ];
           "custom/nixos" = {
