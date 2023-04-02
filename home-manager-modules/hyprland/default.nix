@@ -18,14 +18,12 @@ with lib;
 
       };
 
-      home.packages = [ pkgs.hyprpaper ];
-
       xdg.configFile."hypr/hyprland.conf".text = ''
-                exec-once=${pkgs.dbus}/bin/dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP && systemctl --user start hyprland-session.target
                 exec-once = waybar & hyprpaper
+                exec-once=dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY
                 # Monitors
                 monitor = eDP-1, preferred, auto, auto
-    
+      
                 # Input
                 input {
                   kb_layout = fr
@@ -33,20 +31,20 @@ with lib;
                   follow_mouse = 1
                   touchpad {
                       natural_scroll = true
-                      tap-to-click = true
+                      tap-to-click = false
                   }
                   sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
                 }
     
                 # General
                 general {
-            gaps_in = 7.5
-            gaps_out = 15
+            gaps_in = 4
+            gaps_out = 8
             border_size = 2
             col.active_border = rgb(11111b)
             col.inactive_border = rgb(11111b)
             cursor_inactive_timeout = 1
-            layout = master
+            layout = dwindle
         }
     
                 # Misc
@@ -57,46 +55,17 @@ with lib;
     
                 # Decorations
                 decoration {
-                  # Opacity
-                  active_opacity = 1.0
-                  inactive_opacity = 1.0
+                      rounding = 5
+                      active_opacity = 0.9
+                      blur_new_optimizations = on
+                      blur_size = 8
+                      blur_passes = 10
+                      blur = false
+
+                                  }
     
-                  # Blur
-                  blur = false
-                  blur_size = 10
-                  blur_passes = 4
-                  blur_new_optimizations = true
-    
-                  # Shadow
-                  drop_shadow = true
-                  shadow_ignore_window = true
-                  shadow_offset = 2 2
-                  shadow_range = 4
-                  shadow_render_power = 2
-                  col.shadow = 0x66000000
-                }
-    
-                # Blurring layerSurfaces
-                blurls = gtk-layer-shell
-                blurls = lockscreen
-    
-                # Animations
                 animations {
                   enabled = true
-    
-                  # bezier curve
-                  bezier = overshot, 0.05, 0.9, 0.1, 1.05
-                  bezier = smoothOut, 0.36, 0, 0.66, -0.56
-                  bezier = smoothIn, 0.25, 1, 0.5, 1
-    
-                  # animation list
-                  animation = windows, 1, 5, overshot, slide
-                  animation = windowsOut, 1, 4, smoothOut, slide
-                  animation = windowsMove, 1, 4, default
-                  animation = border, 1, 10, default
-                  animation = fade, 1, 10, smoothIn
-                  animation = fadeDim, 1, 10, smoothIn
-                  animation = workspaces, 1, 6, overshot, slidevert
                 }
     
                 # Gestures
@@ -105,55 +74,6 @@ with lib;
                   workspace_swipe_fingers = 3
                 }
     
-                # Layouts
-                dwindle {
-                  no_gaps_when_only = true
-                  pseudotile = true # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
-                  preserve_split = true # you probably want this
-                }
-    
-                # Window rules
-                windowrule = float, file_progress
-                windowrule = float, confirm
-                windowrule = float, dialog
-                windowrule = float, download
-                windowrule = float, notification
-                windowrule = float, error
-                windowrule = float, splash
-                windowrule = float, confirmreset
-                windowrule = float, title:Open File
-                windowrule = float, title:branchdialog
-                windowrule = float, zoom
-                windowrule = float, vlc
-                windowrule = float, Lxappearance
-                windowrule = float, ncmpcpp
-                windowrule = float, Rofi
-                windowrule = animation none, Rofi
-                windowrule = float, viewnior
-                windowrule = float, pavucontrol-qt
-                windowrule = float, gucharmap
-                windowrule = float, gnome-font
-                windowrule = float, org.gnome.Settings
-                windowrule = float, file-roller
-                windowrule = float, nautilus
-                windowrule = float, nemo
-                windowrule = float, thunar
-                windowrule = float, wdisplays
-                windowrule = fullscreen, wlogout
-                windowrule = float, title:wlogout
-                windowrule = fullscreen, title:wlogout
-                windowrule = float, pavucontrol-qt
-                windowrule = float, keepassxc
-                windowrule = idleinhibit focus, mpv
-                windowrule = idleinhibit fullscreen, firefox
-                windowrule = float, title:^(Media viewer)$
-                windowrule = float, title:^(Transmission)$
-                windowrule = float, title:^(Volume Control)$
-                windowrule = float, title:^(Picture-in-Picture)$
-                windowrule = float, title:^(Firefox — Sharing Indicator)$
-                windowrule = move 0 0, title:^(Firefox — Sharing Indicator)$
-                windowrule = size 800 600, title:^(Volume Control)$
-                windowrule = move 75 44%, title:^(Volume Control)$
     
                 # Variables
                 $term = ${terminal}
@@ -163,7 +83,7 @@ with lib;
                 $launcher = ${menu}
     
                 # Apps
-                bind = SUPER, RETURN, exec, MESA_GL_VERSION_OVERRIDE=3.3 MESA_GLSL_VERSION_OVERRIDE=330 kitty
+                bind = SUPER, RETURN, exec, alacritty
                 bind = SUPER SHIFT, E, exec, $editor
                 bind = SUPER SHIFT, F, exec, $files
                 bind = SUPER SHIFT, B, exec, $browser
@@ -231,6 +151,8 @@ with lib;
         preload = ${../../machines/macintosh/wallpaper.jpg}
         wallpaper = ,${../../machines/macintosh/wallpaper.jpg}
       '';
+
+      home.packages = with pkgs; [ qt6.qtwayland libsForQt5.qt5.qtwayland hyprpaper ];
 
     };
 }

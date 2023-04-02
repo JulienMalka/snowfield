@@ -30,6 +30,9 @@
 
   programs.hyprland.enable = true;
   programs.hyprland.package = pkgs.hyprland;
+  environment.sessionVariables = {
+    LIBSEAT_BACKEND = "logind";
+  };
 
   programs.fish.shellInit = ''
     if test -z (pgrep ssh-agent)
@@ -63,11 +66,6 @@
   hardware.opengl.driSupport = true;
 
   programs.dconf.enable = true;
-
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-  };
 
   security.polkit.enable = true;
 
