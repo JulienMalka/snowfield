@@ -69,9 +69,9 @@ with lib;
         * {
           border: none;
           font-family: 'Fira Code', 'Symbols Nerd Font Mono';
-          font-size: 12px;
+          font-size: 9px;
           font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
-          min-height: 12px;
+          min-height: 2px;
         }
 
         window#waybar {
@@ -82,16 +82,21 @@ with lib;
           border-radius: 8px;
           background-color: #11111b;
           color: #7eb9e3;
-          margin-top: 15px;
-        	margin-right: 15px;
+          margin-top: 6px;
+          margin-right: 15px;
           padding-top: 1px;
-          padding-left: 5px;
-          padding-right: 5px;
+          padding-left: 4px;
+          padding-right: 4px;
+        }
+
+        #workspaces {
+          padding-left: 1px;
+          padding-right: 1px;
         }
 
         #custom-nixos {
-          font-size: 20px;
-        	margin-left: 15px;
+          font-size: 15px;
+          margin-left: 15px;
         }
 
         #workspaces button {
@@ -107,7 +112,7 @@ with lib;
           border-radius: 10px;
           background-color: #11111b;
           color: #cdd6f4;
-          margin-top: 15px;
+          margin-top: 6px;
           padding-left: 10px;
           padding-right: 10px;
           margin-right: 15px;
