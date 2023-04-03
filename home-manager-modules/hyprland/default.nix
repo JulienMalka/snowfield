@@ -141,7 +141,9 @@ with lib;
                 # Switch workspaces
                 bind = SUPER, ampersand, workspace, 1
                 bind = SUPER, eacute, workspace, 2
-                bind = SUPER, quotedbl, workspace, 
+                bind = SUPER, quotedbl, workspace, 3 
+                bind = SUPER, apostrophe, workspace, 4 
+                bind = SUPER, parenleft, workspace, 5 
                 bindm = SUPER, mouse:272, movewindow
                 bindm = SUPER, mouse:273, resizewindow
                 bind = SUPER, mouse_down, workspace, e+1
