@@ -148,6 +148,13 @@ with lib;
                 bindm = SUPER, mouse:273, resizewindow
                 bind = SUPER, mouse_down, workspace, e+1
                 bind = SUPER, mouse_up, workspace, e-1
+
+                bind = SUPER SHIFT, ampersand, movetoworkspace, 1
+                bind = SUPER SHIFT, eacute, movetoworkspace, 2
+                bind = SUPER SHIFT, quotedbl, movetoworkspace, 3 
+                bind = SUPER SHIFT, apostrophe, movetoworkspace, 4 
+                bind = SUPER, parenleft, movetoworkspace, 5 
+
       '';
       xdg.configFile."hypr/hyprpaper.conf".text = ''
         preload = ${../../machines/macintosh/wallpaper.jpg}
