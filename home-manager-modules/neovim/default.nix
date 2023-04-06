@@ -55,9 +55,6 @@ with lib;
 
       withPython3 = true;
       plugins = with pkgs.vimPlugins; [
-        # LSP
-        nvim-lspconfig
-
         plenary-nvim
 
         #Telescope
@@ -94,7 +91,7 @@ with lib;
         rust-vim
       ];
 
-      extraPackages = with pkgs; [ rust-analyzer nil pyright haskell-language-server nixpkgs-fmt ];
+      extraPackages = with pkgs; [ rust-analyzer pkgs.unstable.nil pyright haskell-language-server nixpkgs-fmt ];
 
       extraConfig = ''
         luafile ${./settings.lua}
