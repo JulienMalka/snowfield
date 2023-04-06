@@ -60,10 +60,8 @@
 
   };
 
-  outputs = { self, home-manager, nixpkgs, unstable, deploy-rs, sops-nix, nixos-apple-silicon, ... }@inputs:
+  outputs = { self, nixpkgs, deploy-rs, ... }@inputs:
     let
-      pkgs = import nixpkgs { system = "x86_64-linux"; };
-      pkgsrpi = import nixpkgs { system = "aarch64-linux"; };
       lib = nixpkgs.lib.extend (import ./lib inputs);
       machines_plats = lib.mapAttrsToList (name: value: value.arch) lib.luj.machines;
 
@@ -74,7 +72,6 @@
         })
         machines_plats);
     in
-    with lib;
     rec {
       nixosModules = builtins.listToAttrs (map
         (x: {
