@@ -40,10 +40,14 @@ with lib;
               };
 
               nix = {
-                command = "rnix-lsp";
-                filetypes = [
-                  "nix"
-                ];
+                command = "nil";
+                filetypes = [ "nix" ];
+                rootPatterns = [ "flake.nix" ];
+                settings = {
+                  nil = {
+                    formatting = { command = [ "nixpkgs-fmt" ]; };
+                  };
+                };
               };
             };
         };
@@ -90,7 +94,7 @@ with lib;
         rust-vim
       ];
 
-      extraPackages = with pkgs; [ rust-analyzer rnix-lsp pyright haskell-language-server ];
+      extraPackages = with pkgs; [ rust-analyzer nil pyright haskell-language-server nixpkgs-fmt ];
 
       extraConfig = ''
         luafile ${./settings.lua}
