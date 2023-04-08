@@ -9,14 +9,14 @@ stdenv.mkDerivation
 rec {
 
   pname = "flaresolverr";
-  version = "3.0.2";
+  version = "3.1.2";
 
 
   src = fetchFromGitHub {
     owner = pname;
     repo = pname;
     rev = "v${version}";
-    sha256 = "sha256-zpeJf1CaQ4bsncZz44sH+tFKddYrZf7YdNYL50d9GA4=";
+    sha256 = "sha256-36ILIyMTzm9pK9aakfZHfsHWy9xHtFez8QGZuIJ04vM=";
   };
 
   buildInputs = [ pkgs.makeWrapper ];
