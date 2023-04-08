@@ -230,7 +230,7 @@ def nix_update_flake_config(
             submodules=True,
             branch="update_flake_lock",
             haltOnFailure=False,
-            warnOnFailure=True
+            warnOnFailure=True,
         )
     )
 
@@ -316,6 +316,7 @@ def nix_update_flake_config(
                 "main",
             ],
             haltOnFailure = True
+            flunkOnFailure = False
         )
     )
     return util.BuilderConfig(
@@ -403,6 +404,7 @@ def nix_build_config(
                 util.Property("drv_path"),
             ],
             haltOnFailure=True,
+            warnOnFailure=True,
         )
     )
 
