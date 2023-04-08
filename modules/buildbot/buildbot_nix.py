@@ -315,8 +315,8 @@ def nix_update_flake_config(
                 "--base",
                 "main",
             ],
-            haltOnFailure = True
-            flunkOnFailure = False
+            haltOnFailure = True,
+            flunkOnFailure = False,
         )
     )
     return util.BuilderConfig(
