@@ -1,19 +1,21 @@
 diff --git a/src/utils.py b/src/utils.py
-index ceff7ec..06623bb 100644
+index eee8868..4b0d226 100644
 --- a/src/utils.py
 +++ b/src/utils.py
-@@ -69,13 +69,10 @@ def get_webdriver() -> WebDriver:
+@@ -80,14 +80,10 @@ def get_webdriver() -> WebDriver:
  
      # downloads and patches the chromedriver
      # if we don't set driver_executable_path it downloads, patches, and deletes the driver each time
--    driver = uc.Chrome(options=options, driver_executable_path=driver_exe_path, version_main=version_main,
-+    driver = uc.Chrome(options=options, driver_executable_path="CHANGEME",
-                        windows_headless=windows_headless)
+-    driver = uc.Chrome(options=options, browser_executable_path=browser_executable_path,
+-                       driver_executable_path=driver_exe_path, version_main=version_main,
+-                       windows_headless=windows_headless)
++    driver = uc.Chrome(options=options, driver_executable_path="CHANGEME", windows_headless=windows_headless)
  
      # save the patched driver to avoid re-downloads
 -    if driver_exe_path is None:
 -        PATCHED_DRIVER_PATH = os.path.join(driver.patcher.data_path, driver.patcher.exe_name)
 -        shutil.copy(driver.patcher.executable_path, PATCHED_DRIVER_PATH)
++
  
      # selenium vanilla
      # options = webdriver.ChromeOptions()
