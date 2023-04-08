@@ -1,4 +1,4 @@
-lib: with lib; let
+inputs: lib: with lib; let
   modules = [
     {
       options.machines = mkOption {
@@ -26,23 +26,23 @@ lib: with lib; let
         machines = {
           lisa = {
             arch = "x86_64-linux";
-            nixpkgs_version = "nixpkgs";
+            nixpkgs_version = inputs.nixpkgs;
           };
           newton = {
             arch = "x86_64-linux";
-            nixpkgs_version = "nixpkgs";
+            nixpkgs_version = inputs.nixpkgs;
           };
           macintosh = {
             arch = "aarch64-linux";
-            nixpkgs_version = "nixos-apple-silicon.inputs";
+            nixpkgs_version = inputs.nixos-apple-silicon.inputs.nixpkgs;
           };
           lambda = {
             arch = "aarch64-linux";
-            nixpkgs_version = "nixpkgs";
+            nixpkgs_version = inputs.nixpkgs;
           };
           tower = {
             arch = "x86_64-linux";
-            nixpkgs_version = "nixpkgs";
+            nixpkgs_version = inputs.nixpkgs;
           };
 
         };
