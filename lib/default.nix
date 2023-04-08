@@ -90,7 +90,7 @@ in
 
 
 
-  luj = import ./luj.nix final;
+  luj = import ./luj.nix inputs final;
 
 }
 

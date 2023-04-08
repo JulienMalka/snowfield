@@ -62,6 +62,13 @@
 
   outputs = { self, nixpkgs, deploy-rs, ... }@inputs:
     let
+      remotePatches = [
+        {
+          meta.description = "pkgs: fix buildbot";
+          url = "https://github.com/NixOS/nixpkgs/pull/142273.diff";
+          sha256 = "sha256-ZCDQ7SpGhH8JvAwWzdcyrc68RFEWHxxAj0M2+AvEzIg=";
+        }
+      ];
       lib = nixpkgs.lib.extend (import ./lib inputs);
       machines_plats = lib.mapAttrsToList (name: value: value.arch) lib.luj.machines;
 
@@ -80,7 +87,15 @@
         })
         (builtins.attrNames (builtins.readDir ./modules)));
 
-      nixosConfigurations = builtins.mapAttrs (name: value: (lib.mkMachine { host = name; host-config = value; modules = self.nixosModules; nixpkgs = inputs.nixos-apple-silicon.inputs.nixpkgs; system = lib.luj.machines.${name}.arch; })) (lib.importConfig ./machines);
+      nixosConfigurations = builtins.mapAttrs
+        (name: value: (lib.mkMachine {
+          host = name;
+          host-config = value;
+          modules = self.nixosModules;
+          nixpkgs = lib.luj.machines.${name}.nixpkgs_version;
+          system = lib.luj.machines.${name}.arch;
+        }))
+        (lib.importConfig ./machines);
 
       deploy.nodes.lambda = {
         hostname = "lambda.julienmalka.me";
