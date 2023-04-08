@@ -33,15 +33,19 @@
 
   systemd.services.uptime-kuma.path = [ pkgs.unixtools.ping ];
 
-  services.ntfy-sh.enable = true;
-  services.ntfy-sh.settings = {
-    listen-http = ":8080";
-    behind-proxy = true;
-    upstream-base-url = "https://ntfy.sh";
-    base-url = "https://notifications.julienmalka.me";
-    auth-file = "/srv/ntfy/user.db";
-    auth-default-access = "deny-all";
-  };
+  services.ntfy-sh =
+    {
+      enable = true;
+      package = pkgs.unstable.ntfy-sh;
+      settings = {
+        listen-http = ":8080";
+        behind-proxy = true;
+        upstream-base-url = "https://ntfy.sh";
+        base-url = "https://notifications.julienmalka.me";
+        auth-file = "/srv/ntfy/user.db";
+        auth-default-access = "deny-all";
+      };
+    };
 
   services.nginx.virtualHosts."status.julienmalka.me" = {
     forceSSL = true;
