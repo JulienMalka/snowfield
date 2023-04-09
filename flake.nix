@@ -140,7 +140,6 @@
       hydraJobs = {
         tower = self.nixosConfigurations.tower.config.system.build.toplevel;
         lisa = self.nixosConfigurations.lisa.config.system.build.toplevel;
-        newton = self.nixosConfigurations.newton.config.system.build.toplevel;
       } // (packages.x86_64-linux);
 
     };
