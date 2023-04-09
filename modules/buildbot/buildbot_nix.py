@@ -111,20 +111,25 @@ class NixEvalCommand(buildstep.ShellMixin, steps.BuildStep):
 
         # if the command passes extract the list of stages
         result = cmd.results()
+        failures = 0
         if result == util.SUCCESS:
             # create a ShellCommand for each stage and add them to the build
             jobs = []
-
             for line in self.observer.getStdout().split("\n"):
                 if line != "":
                     job = json.loads(line)
                     if "error" not in job.keys():
                         jobs.append(job)
+                    else: 
+                        failures +=1
             self.build.addStepsAfterCurrentStep(
                 [BuildTrigger(scheduler="nix-build", name="nix-build", jobs=jobs)]
             )
 
-        return result
+        if failures > 0:
+            return util.FAILURE
+        else:
+            return result
 
 
 class RetryCounter:
