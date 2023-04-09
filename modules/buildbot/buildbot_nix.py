@@ -118,7 +118,7 @@ class NixEvalCommand(buildstep.ShellMixin, steps.BuildStep):
             for line in self.observer.getStdout().split("\n"):
                 if line != "":
                     job = json.loads(line)
-                    if "error" in job.keys():
+                    if "error" not in job.keys():
                         jobs.append(job)
             self.build.addStepsAfterCurrentStep(
                 [BuildTrigger(scheduler="nix-build", name="nix-build", jobs=jobs)]
