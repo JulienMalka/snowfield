@@ -62,13 +62,6 @@
 
   outputs = { self, nixpkgs, deploy-rs, ... }@inputs:
     let
-      remotePatches = [
-        {
-          meta.description = "pkgs: fix buildbot";
-          url = "https://github.com/NixOS/nixpkgs/pull/142273.diff";
-          sha256 = "sha256-ZCDQ7SpGhH8JvAwWzdcyrc68RFEWHxxAj0M2+AvEzIg=";
-        }
-      ];
       lib = nixpkgs.lib.extend (import ./lib inputs);
       machines_plats = lib.mapAttrsToList (name: value: value.arch) lib.luj.machines;
 
