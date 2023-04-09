@@ -55,7 +55,7 @@
     };
 
     hyprpaper = {
-      url = "github:JulienMalka/hyprpaper";
+      url = "github:hyprwm/hyprpaper";
     };
 
   };
