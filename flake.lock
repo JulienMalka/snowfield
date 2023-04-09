@@ -158,15 +158,15 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1680381117,
-        "narHash": "sha256-/Kz4Qy+jx1+bfSq6e2W3MbyODkhs6GqKiiybNtqzvbc=",
-        "owner": "JulienMalka",
+        "lastModified": 1680695861,
+        "narHash": "sha256-LqvhYx1Gu+rlkF4pA1NYZzwRQwz3FeWBqXqmQq86m8o=",
+        "owner": "hyprwm",
         "repo": "hyprpaper",
-        "rev": "61fd6d3965ae0e1509602dd0b6e2d2c4ebb2e460",
+        "rev": "9182de9ffc8c76fbf24d16dec0ea7a9430597a06",
         "type": "github"
       },
       "original": {
-        "owner": "JulienMalka",
+        "owner": "hyprwm",
         "repo": "hyprpaper",
         "type": "github"
       }
