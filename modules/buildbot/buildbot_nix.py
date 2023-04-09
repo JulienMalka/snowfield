@@ -376,7 +376,7 @@ def nix_eval_config(
                 "--flake",
                 ".#hydraJobs",
             ],
-            haltOnFailure=True,
+            haltOnFailure=False,
         )
     )
 
