@@ -237,6 +237,7 @@ def nix_update_flake_config(
             branch="update_flake_lock",
             haltOnFailure=False,
             warnOnFailure=True,
+            flunkOnFailure=False,
         )
     )
 
