@@ -21,6 +21,7 @@ with lib;
       xdg.configFile."hypr/hyprland.conf".text = ''
                 exec-once = waybar & hyprpaper
                 exec-once=dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY
+                exec-once = nm-applet --indicator 
                 # Monitors
                 monitor = eDP-1, preferred, auto, auto
       
@@ -71,7 +72,7 @@ with lib;
                 # Gestures
                 gestures {
                   workspace_swipe = true
-                  workspace_swipe_fingers = 3
+                  workspace_swipe_fingers = 4
                 }
     
     
@@ -161,7 +162,9 @@ with lib;
         wallpaper = ,${../../machines/macintosh/wallpaper.jpg}
       '';
 
-      home.packages = with pkgs; [ qt6.qtwayland libsForQt5.qt5.qtwayland hyprpaper ];
+
+
+      home.packages = with pkgs; [ qt6.qtwayland libsForQt5.qt5.qtwayland hyprpaper swaylock ];
 
     };
 }
