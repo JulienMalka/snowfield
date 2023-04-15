@@ -5,7 +5,7 @@
   users.users.julien = {
     isNormalUser = true;
     home = "/home/julien";
-    extraGroups = [ "wheel" config.users.groups.keys.name "filerun" "networkmanager" ];
+    extraGroups = [ "wheel" config.users.groups.keys.name "filerun" "networkmanager" "davfs2" ];
     shell = pkgs.fish;
     passwordFile = config.sops.secrets.user-julien-password.path;
   };
