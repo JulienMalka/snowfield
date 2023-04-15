@@ -82,8 +82,29 @@
   # for a WiFi printer
   services.avahi.openFirewall = true;
 
+  services.davfs2 = {
+    enable = true;
+  };
+
+  security.pam.services.swaylock = { };
+
+  services.autofs = {
+    enable = true;
+    debug = true;
+    autoMaster =
+      let
+        mapConf = pkgs.writeText "auto" ''
+          nuage -fstype=davfs,uid=1000,file_mode=600,dir_mode=700,conf=/home/julien/.davfs2/davfs2.conf,rw :https\://nuage.malka.family/remote.php/webdav/
+        '';
+      in
+      ''
+        /home/julien/clouds file:${mapConf}
+      '';
+  };
+
   system.stateVersion = "23.05"; # Did you read the comment?
 
 }
+
 
 
