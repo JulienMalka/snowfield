@@ -38,6 +38,7 @@ in
                 mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
               });
               tinystatus = prev.pkgs.callPackage ../packages/tinystatus { };
+              zotero = prev.pkgs.callPackage ../packages/zotero { };
               jackett = prev.unstable.jackett;
               radarr = prev.unstable.radarr;
               flaresolverr = prev.pkgs.callPackage ../packages/flaresolverr { };
