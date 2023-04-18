@@ -72,6 +72,7 @@
           evince
           mosh
           obsidian
+          zotero
           flameshot
           kitty
           networkmanagerapplet
