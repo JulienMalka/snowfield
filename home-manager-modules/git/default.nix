@@ -17,14 +17,15 @@ with lib;
         signByDefault = true;
         key = "6FC74C847011FD83";
       };
+      extraConfig.init.defaultBranch = "main";
     };
 
     home.extraActivationPath = [ pkgs.gnupg ];
-    home.activation = 
-        {
-          myActivationAction = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    home.activation =
+      {
+        myActivationAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
           gpg --import /run/secrets/git-gpg-private-key
-          '';
-        };
+        '';
+      };
   };
 }
