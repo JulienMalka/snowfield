@@ -23,7 +23,7 @@ with lib;
       coc = {
         enable = true;
         settings = {
-          coc.preferences.formatOnSaveFiletypes = [ "nix" "rust" "sql" "python" ];
+          coc.preferences.formatOnSaveFiletypes = [ "nix" "rust" "sql" "python" "haskell" ];
           rust-analyzer.enable = true;
           rust-analyzer.cargo.allFeatures = true;
           rust-analyzer.checkOnSave.allTargets = true;
@@ -35,8 +35,23 @@ with lib;
               };
 
               haskell = {
-                command = "haskell-language-server";
-                filetypes = [ "hs" ];
+                command = "haskell-language-server-wrapper";
+                args = [ "--lsp" ];
+                rootPatterns = [
+                  "*.cabal"
+                  "cabal.project"
+                  "hie.yaml"
+                  ".stack.yaml"
+                ];
+                filetypes = [ "haskell" "lhaskell" "hs" "lhs" ];
+                settings = {
+                  haskell = {
+                    checkParents = "CheckOnSave";
+                    checkProject = true;
+                    maxCompletions = 40;
+                    formattingProvider = "ormolu";
+                  };
+                };
               };
 
               nix = {
@@ -46,6 +61,17 @@ with lib;
                 settings = {
                   nil = {
                     formatting = { command = [ "nixpkgs-fmt" ]; };
+                  };
+                };
+              };
+
+              ccls = {
+                command = "ccls";
+                filetypes = [ "c" "cpp" "objc" "objcpp" ];
+                rootPatterns = [ ".ccls" "compile_commands.json" ".vim/" ".git/" ".hg/" ];
+                initializationOptions = {
+                  cache = {
+                    directory = "/tmp/ccls";
                   };
                 };
               };
@@ -91,7 +117,7 @@ with lib;
         rust-vim
       ];
 
-      extraPackages = with pkgs; [ rust-analyzer pkgs.unstable.nil pyright haskell-language-server nixpkgs-fmt ];
+      extraPackages = with pkgs; [ rust-analyzer pkgs.unstable.nil pyright nixpkgs-fmt ormolu ccls ];
 
       extraConfig = ''
         luafile ${./settings.lua}
