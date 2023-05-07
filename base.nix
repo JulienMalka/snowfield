@@ -26,6 +26,7 @@
     rxvt_unicode
     xorg.xbacklight
     neovim
+    comma
   ];
 
   environment.variables.EDITOR = "nvim";
