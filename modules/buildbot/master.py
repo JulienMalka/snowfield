@@ -64,6 +64,17 @@ def build_config() -> dict[str, Any]:
             builderNames=["nix-eval-linkal"],
         ),
 
+        schedulers.SingleBranchScheduler(
+            name="main-nixos-proxmox",
+            change_filter=util.ChangeFilter(
+                repository=f"https://github.com/JulienMalka/nixos-proxmox",
+                filter_fn=lambda c: c.branch
+                == c.properties.getProperty("github.repository.default_branch"),
+            ),
+            builderNames=["nix-eval-nixos-proxmox"],
+        ),
+
+
         # build all pull requests
         schedulers.SingleBranchScheduler(
             name="prs-nix-config",
@@ -80,7 +91,15 @@ def build_config() -> dict[str, Any]:
             ),
             builderNames=["nix-eval-linkal"],
         ),
- 
+
+        schedulers.SingleBranchScheduler(
+            name="prs-nixos-proxmox",
+            change_filter=util.ChangeFilter(
+                repository=f"https://github.com/JulienMalka/nixos-proxmox", category="pull"
+            ),
+            builderNames=["nix-eval-nixos-proxmox"],
+        ),
+
         # this is triggered from `nix-eval`
         schedulers.Triggerable(
             name="nix-build",
@@ -99,6 +118,12 @@ def build_config() -> dict[str, Any]:
             builderNames=["nix-update-flake-nix-config"],
             buttonName="Update flakes",
         ),
+        schedulers.ForceScheduler(
+            name="update-flake-nixos-proxmox",
+            builderNames=["nix-update-flake-nixos-proxmox"],
+            buttonName="Update flakes",
+        ),
+
 
         # updates flakes once a weeek
         schedulers.Nightly(
@@ -114,6 +139,14 @@ def build_config() -> dict[str, Any]:
             hour=1,
             minute=0,
         ),
+        schedulers.Nightly(
+            name="update-flake-daily-nixos-proxmox",
+            builderNames=["nix-update-flake-nixos-proxmox"],
+            dayOfWeek=5,
+            hour=1,
+            minute=0,
+        ),
+
 
     ]
 
@@ -155,6 +188,12 @@ def build_config() -> dict[str, Any]:
             "linkal",
             github_token_secret="github-token",
         ),
+        nix_eval_config(
+            [worker_names[0]],
+            "nixos-proxmox",
+            github_token_secret="github-token",
+        ),
+
 
         nix_build_config(worker_names),
         nix_update_flake_config(
@@ -171,6 +210,14 @@ def build_config() -> dict[str, Any]:
             github_token_secret="github-token",
             github_bot_user=BUILDBOT_GITHUB_USER,
         ),
+        nix_update_flake_config(
+            worker_names,
+            "nixos-proxmox",
+            f"JulienMalka/nixos-proxmox",
+            github_token_secret="github-token",
+            github_bot_user=BUILDBOT_GITHUB_USER,
+        ),
+
 
     ]
 
