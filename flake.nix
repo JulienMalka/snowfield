@@ -11,6 +11,11 @@
       inputs.nixpkgs.follows = "unstable";
     };
 
+    home-manager-unstable = {
+      url = "github:nix-community/home-manager/master";
+      inputs.nixpkgs.follows = "unstable";
+    };
+
     homepage = {
       url = "github:JulienMalka/homepage";
       flake = false;
@@ -86,6 +91,7 @@
           modules = self.nixosModules;
           nixpkgs = lib.luj.machines.${name}.nixpkgs_version;
           system = lib.luj.machines.${name}.arch;
+          home-manager = lib.luj.machines.${name}.hm_version;
         }))
         (lib.importConfig ./machines);
 

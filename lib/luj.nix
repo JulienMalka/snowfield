@@ -27,22 +27,27 @@ inputs: lib: with lib; let
           lisa = {
             arch = "x86_64-linux";
             nixpkgs_version = inputs.nixpkgs;
+            hm_version = inputs.home-manager;
           };
           newton = {
             arch = "x86_64-linux";
             nixpkgs_version = inputs.nixpkgs;
+            hm_version = inputs.home-manager;
           };
           macintosh = {
             arch = "aarch64-linux";
             nixpkgs_version = inputs.nixos-apple-silicon.inputs.nixpkgs;
+            hm_version = inputs.home-manager-unstable;
           };
           lambda = {
             arch = "aarch64-linux";
             nixpkgs_version = inputs.nixpkgs;
+            hm_version = inputs.home-manager;
           };
           tower = {
             arch = "x86_64-linux";
             nixpkgs_version = inputs.nixpkgs;
+            hm_version = inputs.home-manager;
           };
 
         };

@@ -9,7 +9,7 @@ let
 in
 {
 
-  mkMachine = { host, host-config, modules, nixpkgs ? inputs.nixpkgs, system ? "x86_64-linux" }: nixpkgs.lib.nixosSystem {
+  mkMachine = { host, host-config, modules, nixpkgs ? inputs.nixpkgs, system ? "x86_64-linux", home-manager ? inputs.home-manager }: nixpkgs.lib.nixosSystem {
     lib = final;
     system = system;
     specialArgs = {
@@ -19,7 +19,7 @@ in
       ../base.nix
       inputs.sops-nix.nixosModules.sops
       host-config
-      inputs.home-manager.nixosModules.home-manager
+      home-manager.nixosModules.home-manager
       inputs.simple-nixos-mailserver.nixosModule
       inputs.hyprland.nixosModules.default
       {
