@@ -54,6 +54,15 @@ with lib;
                 };
               };
 
+              go = {
+                command = "gopls";
+                rootPatterns = [ "go.work" "go.mod" ".vim/" ".git/" ".hg/" ];
+                filetypes = [ "go" ];
+                initializationOptions = {
+                  usePlaceholders = true;
+                };
+              };
+
               nix = {
                 command = "nil";
                 filetypes = [ "nix" ];
@@ -117,7 +126,7 @@ with lib;
         rust-vim
       ];
 
-      extraPackages = with pkgs; [ rust-analyzer pkgs.unstable.nil pyright nixpkgs-fmt ormolu ccls ];
+      extraPackages = with pkgs; [ rust-analyzer pkgs.unstable.nil pyright nixpkgs-fmt ormolu ccls gopls ];
 
       extraConfig = ''
         luafile ${./settings.lua}
