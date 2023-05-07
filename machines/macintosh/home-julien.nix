@@ -76,6 +76,8 @@
           flameshot
           kitty
           networkmanagerapplet
+          element-desktop
+          xdg-utils
           sops
           coq
           cvc5
@@ -94,6 +96,9 @@
         layout = "fr";
       };
 
+      services.dunst = {
+        enable = true;
+      };
 
 
     };
