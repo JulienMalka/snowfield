@@ -20,7 +20,7 @@ from buildbot.process.results import FAILURE
 from buildbot.steps.master import SetProperty
 
 def failure(step):
-   return step.getProperty("GitFailed")
+   return (step.getProperty("GitFailed")=="failed")
 
 class BuildTrigger(Trigger):
     """
@@ -236,12 +236,11 @@ def nix_update_flake_config(
             submodules=True,
             branch="update_flake_lock",
             haltOnFailure=False,
-            warnOnFailure=True,
-            flunkOnFailure=False,
+            #flunkOnFailure=False,
         )
     )
 
-    factory.addStep(SetProperty(property="GitFailed", value="failed", hideStepIf=True, doStepIf=(lambda step: step.build.results == FAILURE)))
+    factory.addStep(SetProperty(property="GitFailed", value="failed", doStepIf=(lambda step: step.build.results == FAILURE)))
 
     factory.addStep(
             steps.Git(
@@ -253,7 +252,6 @@ def nix_update_flake_config(
             mode="full",
             branch="main",
             doStepIf=failure,
-            hideStepIf=lambda _, x: not(failure(x))
         )
     )
     factory.addStep(steps.ShellCommand(
@@ -266,7 +264,6 @@ def nix_update_flake_config(
             ],
             haltOnFailure=True,
             doStepIf=failure,
-            hideStepIf=lambda _, x: not(failure(x))
         )
 
     )
