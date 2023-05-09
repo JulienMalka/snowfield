@@ -88,7 +88,7 @@
 
   security.pam.services.swaylock = { };
 
-  services.gnome.gnome-keyring.enable = true;
+  services.gnome3.gnome-keyring.enable = true;
   security.pam.services.login.enableGnomeKeyring = true;
   programs.ssh.startAgent = true;
 
