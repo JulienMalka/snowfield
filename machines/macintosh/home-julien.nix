@@ -63,7 +63,7 @@
           feh
           meld
           vlc
-          nerdfonts
+          stable.nerdfonts
           libreoffice
           font-awesome
           nodejs
