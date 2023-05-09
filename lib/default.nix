@@ -5,6 +5,7 @@ with builtins;
 let
   overlay-unstable = arch: final: prev: {
     unstable = inputs.unstable.legacyPackages."${arch}";
+    stable = inputs.nixpkgs.legacyPackages."${arch}";
   };
 in
 {
