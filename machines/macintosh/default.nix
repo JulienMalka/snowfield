@@ -88,6 +88,15 @@
 
   security.pam.services.swaylock = { };
 
+  services.gnome3.gnome-keyring.enable = true;
+  security.pam.services.login.enableGnomeKeyring = true;
+  programs.ssh.startAgent = true;
+
+  programs.adb.enable = true;
+  services.udev.packages = [
+    pkgs.android-udev-rules
+  ];
+
   services.autofs = {
     enable = true;
     debug = true;
