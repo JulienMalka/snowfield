@@ -363,6 +363,7 @@ def nix_eval_config(
             name="Evaluation of hydraJobs",
             command=[
                 "nix-eval-jobs",
+                "--force-recurse",
                 "--workers",
                 8,
                 "--option",
@@ -373,6 +374,7 @@ def nix_eval_config(
                 "/var/lib/buildbot-worker/gcroot",
                 "--flake",
                 ".#hydraJobs",
+                "--impure",
             ],
             haltOnFailure=False,
         )
