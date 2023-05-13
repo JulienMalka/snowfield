@@ -132,12 +132,13 @@
           (plat: {
             name = plat;
             value =
-              (builtins.listToAttrs (builtins.map
-                (e: {
-                  name = e;
-                  value = nixpkgs_plats.${plat}.callPackage (./packages + "/${e}") { };
-                })
-                (builtins.attrNames (builtins.readDir ./packages))));
+              (lib.filterAttrs (name: value: (!lib.hasAttrByPath [ "meta" "platforms" ] value) || builtins.elem plat value.meta.platforms)
+                (builtins.listToAttrs (builtins.map
+                  (e: {
+                    name = e;
+                    value = nixpkgs_plats.${plat}.callPackage (./packages + "/${e}") { };
+                  })
+                  (builtins.attrNames (builtins.readDir ./packages)))));
           })
           machines_plats);
 
