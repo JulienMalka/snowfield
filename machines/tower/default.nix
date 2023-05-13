@@ -110,6 +110,28 @@
 
   boot.binfmt.emulatedSystems = [ "i686-linux" ];
 
+
+  nix = {
+    distributedBuilds = true;
+    buildMachines = [
+      {
+        hostName = "lambda";
+        maxJobs = 4;
+        systems = [ "aarch64-linux" ];
+        supportedFeatures = [ "big-parallel" ];
+      }
+    ];
+  };
+
+  programs.ssh.extraConfig = ''
+    Host lambda
+      IdentityFile /home/julien/.ssh/id_ed25519
+      HostName lambda.julienmalka.me
+      User root
+      Port 45
+  '';
+
+
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 80 443 1810 ];
   networking.firewall.allowedUDPPorts = [ 80 443 1810 ];
