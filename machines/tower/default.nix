@@ -108,6 +108,8 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
+  boot.binfmt.emulatedSystems = [ "i686-linux" ];
+
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 80 443 1810 ];
   networking.firewall.allowedUDPPorts = [ 80 443 1810 ];
