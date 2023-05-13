@@ -41,6 +41,6 @@ rec {
       --chdir $out/share/
   '';
 
-
+  meta.platforms = [ "x86_64-linux" ];
 
 }
