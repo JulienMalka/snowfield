@@ -145,7 +145,8 @@
       hydraJobs = {
         tower = self.nixosConfigurations.tower.config.system.build.toplevel;
         lisa = self.nixosConfigurations.lisa.config.system.build.toplevel;
-      } // (packages.x86_64-linux);
+        macintosh = self.nixosConfigurations.macintosh.config.system.build.toplevel;
+      } // (packages.x86_64-linux) // packages.aarch64-linux;
 
     };
 }
