@@ -12,7 +12,7 @@
     };
 
     home-manager-unstable = {
-      url = "github:nix-community/home-manager/master";
+      url = "github:nix-community/home-manager/17198cf5ae27af5b647c7dac58d935a7d0dbd189";
       inputs.nixpkgs.follows = "unstable";
     };
 
@@ -51,7 +51,7 @@
     };
 
     nixos-apple-silicon = {
-      url = "github:JulienMalka/nixos-apple-silicon";
+      url = "github:tpwrules/nixos-apple-silicon/";
     };
 
     hyprland = {
