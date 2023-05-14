@@ -62,6 +62,13 @@
       url = "github:hyprwm/hyprpaper";
     };
 
+    attic = {
+      url = "github:zhaofengli/attic";
+      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs-stable.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+
   };
 
   outputs = { self, nixpkgs, deploy-rs, ... }@inputs:
