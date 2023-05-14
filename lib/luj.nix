@@ -50,6 +50,12 @@ inputs: lib: with lib; let
             hm_version = inputs.home-manager;
           };
 
+          bin-cache = {
+            arch = "x86_64-linux";
+            nixpkgs_version = inputs.nixpkgs;
+            hm_version = inputs.home-manager;
+          };
+
         };
       };
     }
