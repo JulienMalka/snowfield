@@ -124,12 +124,12 @@
       };
 
       deploy.nodes.bin-cache = {
-        hostname = "bin-cache.julienmalka.me";
+        hostname = "100.100.45.22";
         profiles.system = {
           sshUser = "root";
           sshOpts = [ "-p" "45" ];
           fastConnection = true;
-          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.lisa;
+          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.bin-cache;
         };
       };
 
