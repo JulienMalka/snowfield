@@ -4,6 +4,7 @@
   imports =
     [
       ./hardware.nix
+      ./home-julien.nix
       ../../users/julien.nix
       ../../users/default.nix
     ];
