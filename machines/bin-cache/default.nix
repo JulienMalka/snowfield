@@ -29,8 +29,6 @@
   services.nginx.recommendedTlsSettings = true;
 
   services.nginx.virtualHosts."cache.julienmalka.me" = {
-    forceSSL = true;
-    enableACME = true;
     locations."/" = {
       proxyPass = "http://localhost:8080";
       proxyWebsockets = true;
