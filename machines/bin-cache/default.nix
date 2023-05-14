@@ -44,6 +44,12 @@
   };
 
 
+  sops.secrets.attic-secret = {
+    owner = "root";
+    path = "/etc/atticd.env";
+    format = "binary";
+    sopsFile = ../../secrets/attic-secret;
+  };
 
   services.atticd = {
     enable = true;
