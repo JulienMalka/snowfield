@@ -23,6 +23,7 @@ in
       home-manager.nixosModules.home-manager
       inputs.simple-nixos-mailserver.nixosModule
       inputs.hyprland.nixosModules.default
+      inputs.attic.nixosModules.atticd
       {
         home-manager.useGlobalPkgs = true;
         nixpkgs.overlays = [
