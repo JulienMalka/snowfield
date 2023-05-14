@@ -32,18 +32,7 @@
     forceSSL = true;
     enableACME = true;
     locations."/" = {
-      proxyPass = "http://localhost:3001";
-      proxyWebsockets = true;
-    };
-  };
-
-  security.acme.certs."uptime.luj".server = "https://ca.luj:8444/acme/acme/directory";
-
-  services.nginx.virtualHosts."uptime.luj" = {
-    forceSSL = true;
-    enableACME = true;
-    locations."/" = {
-      proxyPass = "http://localhost:3001";
+      proxyPass = "http://localhost:8080";
       proxyWebsockets = true;
     };
   };
