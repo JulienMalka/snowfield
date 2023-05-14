@@ -4,6 +4,7 @@ keys:
   - &lisa age1m6efmv7zr9kks4h3w2su74sda5keshghwtw57mzn4sl7kvr7j5sqhs7mdc
   - &tower age1qlwzeg37fwwn2l6fm3quvkn787nn0m89xrjtrhgf9uedtfv2kqlqnec976
   - &lambda age1z5n73rq83mjt6xsmanvgylks5gpmawhqfcz6dtwkc5cu0rlje5js4zzy9s
+  - &bin-cache age10d49ptrmad2n7rke6helvmmm86gf06gj9gtfxsh334f3hfr0eewqqa2a7w
 creation_rules:
   - path_regex: secrets/[^/]+\.yaml$
     key_groups:
@@ -13,6 +14,7 @@ creation_rules:
       - *lisa
       - *tower
       - *lambda 
+      - *bin-cache
   - key_groups: 
     - age:
       - *macintosh
@@ -20,3 +22,4 @@ creation_rules:
       - *lisa
       - *tower
       - *lambda
+      - *bin-cache
