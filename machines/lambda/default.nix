@@ -147,6 +147,46 @@ VfXtULncAiEA2gmqdr+ugFz5tvPdKwanroTiMTUMhhCRYVlQlyTApyQ=
   ];
 
 
+  services.headscale = {
+    logLevel = "debug";
+    enable = true;
+    address = "127.0.0.1";
+    settings = {
+      dns_config = {
+        override_local_dns = false;
+        magic_dns = false;
+        nameservers = [
+          "1.1.1.1"
+        ];
+        #domains = [ "kms" "julienmalka.me" "luj" ];
+        restricted_nameservers = {
+          "kms" = [ "100.100.45.5" ];
+          "julienmalka.me" = [ "100.100.45.5" ];
+          "luj" = [ "100.100.45.5" ];
+          "saumon" = [ "100.100.45.5" ];
+        };
+      };
+      server_url = "https://vpn.saumon.network";
+      ip_prefixes = [
+        "100.100.45.0/24"
+        "fd7a:115c:a1e0::/48"
+      ];
+    };
+  };
+
+  services.nginx.virtualHosts = {
+    "vpn.saumon.network" = {
+      forceSSL = true;
+      enableACME = true;
+      locations = {
+        "/" = {
+          proxyPass = "http://localhost:${toString config.services.headscale.port}";
+          proxyWebsockets = true;
+        };
+      };
+    };
+  };
+
   services.openssh = {
     enable = true;
     ports = [ 45 ];
