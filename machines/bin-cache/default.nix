@@ -18,7 +18,7 @@
 
   time.timeZone = "Europe/Paris";
 
-  environment.systemPackages = [ pkgs.tailscale ];
+  environment.systemPackages = [ pkgs.tailscale pkgs.attic ];
   services.tailscale.enable = true;
   networking.firewall.checkReversePath = "loose";
 
@@ -83,8 +83,6 @@
       };
     };
   };
-
-
 
   security.acme.acceptTerms = true;
   security.acme.defaults.email = "julien@malka.sh";
