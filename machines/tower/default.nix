@@ -43,7 +43,7 @@
   luj.buildbot.enable = true;
   luj.nginx.enable = true;
 
-  environment.systemPackages = [ pkgs.tailscale ];
+  environment.systemPackages = [ pkgs.tailscale pkgs.attic ];
 
   # enable the tailscale service
   services.tailscale.enable = true;
