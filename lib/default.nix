@@ -56,6 +56,7 @@ in
               mosh = prev.unstable.mosh;
               hyprpaper = inputs.hyprpaper.packages.${system}.default;
               attic = inputs.attic.packages.${system}.default;
+              nil = inputs.nil.packages.${system}.default;
             })
         ];
       }

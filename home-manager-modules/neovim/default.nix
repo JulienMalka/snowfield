@@ -126,7 +126,7 @@ with lib;
         rust-vim
       ];
 
-      extraPackages = with pkgs; [ rust-analyzer pkgs.unstable.nil pyright nixpkgs-fmt ormolu ccls gopls ];
+      extraPackages = with pkgs; [ rust-analyzer pkgs.nil pyright nixpkgs-fmt ormolu ccls gopls ];
 
       extraConfig = ''
         luafile ${./settings.lua}
