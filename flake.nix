@@ -12,7 +12,7 @@
     };
 
     home-manager-unstable = {
-      url = "github:nix-community/home-manager/17198cf5ae27af5b647c7dac58d935a7d0dbd189";
+      url = "github:nix-community/home-manager/75f4f362e1b5ebdc4076fcbdb4188b4fd736187c";
       inputs.nixpkgs.follows = "unstable";
     };
 
@@ -69,6 +69,12 @@
       inputs.flake-utils.follows = "flake-utils";
     };
 
+    nil = {
+      url = "github:oxalica/nil";
+      inputs.flake-utils.follows = "flake-utils";
+      inputs.nixpkgs.follows = "unstable";
+    };
+
   };
 
   outputs = { self, nixpkgs, deploy-rs, ... }@inputs:
@@ -120,6 +126,7 @@
           sshOpts = [ "-p" "45" ];
           fastConnection = true;
           path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.lisa;
+          magicRollback = false;
         };
       };
 
@@ -132,6 +139,17 @@
           path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.bin-cache;
         };
       };
+
+      deploy.nodes.core-security = {
+        hostname = "192.168.1.49";
+        profiles.system = {
+          sshUser = "root";
+          sshOpts = [ "-p" "45" ];
+          fastConnection = true;
+          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.core-security;
+        };
+      };
+
 
 
       deploy.nodes.tower = {
