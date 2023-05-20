@@ -38,7 +38,7 @@
       enable = true;
       package = pkgs.unstable.ntfy-sh;
       settings = {
-        listen-http = ":8080";
+        listen-http = ":8081";
         behind-proxy = true;
         upstream-base-url = "https://ntfy.sh";
         base-url = "https://notifications.julienmalka.me";
@@ -71,12 +71,12 @@
     forceSSL = true;
     enableACME = true;
     locations."/" = {
-      proxyPass = "http://localhost:8080";
+      proxyPass = "http://localhost:8081";
       proxyWebsockets = true;
     };
   };
 
-  networking.nameservers = [ "100.100.45.5" "9.9.9.9" ];
+  networking.nameservers = [ "9.9.9.9" ];
   environment.etc."resolv.conf" = with lib; with pkgs; {
     source = writeText "resolv.conf" ''
       ${concatStringsSep "\n" (map (ns: "nameserver ${ns}") config.networking.nameservers)}
