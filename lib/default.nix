@@ -57,6 +57,7 @@ in
               hyprpaper = inputs.hyprpaper.packages.${system}.default;
               attic = inputs.attic.packages.${system}.default;
               nil = inputs.nil.packages.${system}.default;
+              keycloak-keywind = prev.pkgs.callPackage ../packages/keycloak-keywind { };
             })
         ];
       }
