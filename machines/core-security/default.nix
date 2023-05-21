@@ -126,6 +126,7 @@ VfXtULncAiEA2gmqdr+ugFz5tvPdKwanroTiMTUMhhCRYVlQlyTApyQ=
       hostname-strict-backchannel = true;
       proxy = "edge";
     };
+    themes = { keywind = pkgs.keycloak-keywind; };
   };
 
   services.nginx.virtualHosts."auth.julienmalka.me" = {
