@@ -116,6 +116,37 @@ VfXtULncAiEA2gmqdr+ugFz5tvPdKwanroTiMTUMhhCRYVlQlyTApyQ=
     environmentFile = "/var/lib/vaultwarden.env";
   };
 
+  services.keycloak = {
+    enable = true;
+    database.createLocally = true;
+    database.passwordFile = "/run/secrets/keycloak";
+    settings = {
+      hostname = "auth.julienmalka.me";
+      http-port = 8080;
+      hostname-strict-backchannel = true;
+      proxy = "edge";
+    };
+  };
+
+  services.nginx.virtualHosts."auth.julienmalka.me" = {
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:8080";
+      extraConfig = '' 
+      proxy_buffer_size   128k;
+      proxy_buffers   4 256k;
+      proxy_busy_buffers_size   256k;
+      '';
+    };
+  };
+
+
+  sops.secrets.keycloak = {
+    owner = "root";
+    sopsFile = ../../secrets/keycloak-db;
+    format = "binary";
+  };
+
+
   system.stateVersion = "22.11"; # Did you read the comment?
 
 }
