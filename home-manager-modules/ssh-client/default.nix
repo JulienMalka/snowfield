@@ -53,6 +53,7 @@ with lib;
         curry = {
           hostname = "vms.julienmalka.me";
           user = "julien";
+          port = 60;
         };
         mails = {
           hostname = "192.168.1.78";
