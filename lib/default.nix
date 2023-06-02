@@ -58,6 +58,7 @@ in
               attic = inputs.attic.packages.${system}.default;
               nil = inputs.nil.packages.${system}.default;
               keycloak-keywind = prev.pkgs.callPackage ../packages/keycloak-keywind { };
+              nix-rfc-92 = inputs.nix-rfc-92.packages.${system}.default;
             })
         ];
       }
