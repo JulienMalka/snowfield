@@ -66,7 +66,12 @@
 
   boot.binfmt.emulatedSystems = [ "i686-linux" ];
 
+  programs.ssh.knownHosts."darwin-build-box.winter.cafe".publicKey =
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0io9E0eXiDIEHvsibXOxOPveSjUPIr1RnNKbUkw3fD";
+
+
   nix = {
+    package = lib.mkForce pkgs.nix;
     distributedBuilds = true;
     buildMachines = [
       {
@@ -74,6 +79,13 @@
         maxJobs = 4;
         systems = [ "aarch64-linux" ];
         supportedFeatures = [ "big-parallel" ];
+      }
+      {
+        hostName = "darwin-build-box.winter.cafe";
+        maxJobs = 4;
+        sshKey = "/home/julien/.ssh/id_ed25519";
+        sshUser = "julienmalka";
+        systems = [ "aarch64-darwin" "x86_64-darwin" ];
       }
     ];
   };
@@ -85,6 +97,8 @@
       User root
       Port 45
   '';
+
+
 
   networking.firewall.allowedTCPPorts = [ 80 443 1810 ];
   networking.firewall.allowedUDPPorts = [ 80 443 1810 ];
