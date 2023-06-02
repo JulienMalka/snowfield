@@ -75,6 +75,8 @@
       inputs.nixpkgs.follows = "unstable";
     };
 
+    nix-rfc-92.url = "github:obsidiansystems/nix/dynamic-drvs";
+
   };
 
   outputs = { self, nixpkgs, deploy-rs, ... }@inputs:
@@ -176,6 +178,8 @@
                   (builtins.attrNames (builtins.readDir ./packages)))));
           })
           machines_plats);
+
+      lol = import ./lol.nix nixpkgs_plats.x86_64-linux nixosConfigurations.lisa.config.system.build.toplevel.drvPath;
 
 
       hydraJobs = {
