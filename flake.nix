@@ -225,7 +225,7 @@
               });
             };
 
-          getDomains = machine: with self.nixosConfigurations.${machine}.config; attrNames services.nginx.virtualHosts ++ optional services.tailscale.enable "${machine}.saumon";
+          getDomains = machine: with self.nixosConfigurations.${machine}.config; attrNames services.nginx.virtualHosts ++ optional services.tailscale.enable "${machine}.luj";
 
           recursiveUpdateManyAttrs = foldl recursiveUpdate { };
         in
