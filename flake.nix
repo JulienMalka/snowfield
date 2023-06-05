@@ -184,9 +184,10 @@
       dnsRecords = with nixpkgs.lib;
         let
           machineInfo = {
-            router = { vpn = "100.100.45.1"; public = "78.192.168.230"; };
-            verso = { vpn = "100.100.45.5"; public = "78.192.168.230"; };
-            saumon = { vpn = "100.100.45.10"; public = "78.192.168.230"; };
+            lisa = { vpn = "100.100.45.12"; public = "212.129.40.11"; };
+            lambda = { vpn = "100.100.45.5"; public = "141.145.197.219"; };
+            tower = { vpn = "100.100.45.9"; public = "78.192.168.230"; };
+            core-security = { vpn = "100.100.45.14"; public = "78.192.168.230"; };
           };
 
           splitSuffix = len: sep: string:
