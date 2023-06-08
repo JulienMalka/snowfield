@@ -184,8 +184,9 @@
       machines = {
         lisa = { tld = "luj"; ipv4 = { vpn = "100.100.45.12"; public = "212.129.40.11"; }; ipv6 = { public = "2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb"; }; };
         lambda = { tld = "luj"; ipv4 = { vpn = "100.100.45.13"; public = "141.145.197.219"; }; ipv6 = { }; };
-        tower = { tld = "luj"; ipv4 = { vpn = "100.100.45.9"; public = "78.192.168.230"; }; ipv6 = { }; };
-        core-security = { tld = "luj"; ipv4 = { vpn = "100.100.45.14"; public = "78.192.168.230"; }; ipv6 = { }; };
+        tower = { tld = "luj"; ipv4 = { vpn = "100.100.45.9"; public = "78.194.168.230"; }; ipv6 = { public = "2a01:e34:ec2a:8e60:8ec7:b5d2:f663:a67a"; }; };
+        core-security = { tld = "luj"; ipv4 = { vpn = "100.100.45.14"; public = "78.194.168.230"; }; ipv6 = { public = "2a01:e34:ec2a:8e60:c63:4165:1b0f:db14"; }; };
+        nuage = { tld = "luj"; ipv4 = { public = "78.194.168.230"; }; ipv6 = { public = "2a01:e34:ec2a:8e60:4ab8:c3d0:a0fe:525f"; }; };
       };
 
 
