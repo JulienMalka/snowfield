@@ -181,56 +181,12 @@
 
       lol = import ./lol.nix nixpkgs_plats.x86_64-linux nixosConfigurations.lisa.config.system.build.toplevel.drvPath;
 
-      dnsRecords = with nixpkgs.lib;
-        let
-          machineInfo = {
-            lisa = { vpn = "100.100.45.12"; public = "212.129.40.11"; };
-            lambda = { vpn = "100.100.45.13"; public = "141.145.197.219"; };
-            tower = { vpn = "100.100.45.9"; public = "78.192.168.230"; };
-            core-security = { vpn = "100.100.45.14"; public = "78.192.168.230"; };
-          };
-
-          splitSuffix = len: sep: string:
-            let l = splitString sep string;
-            in
-            [ (concatStringsSep sep (drop (length l - len) l)) (concatStringsSep sep (take (length l - len) l)) ];
-
-          isVPN = x: hasSuffix "luj" x || hasSuffix "kms" x || hasSuffix "saumon" x;
-
-          extractDomain = x:
-            if (isVPN x) then (splitSuffix 1 "." x) else
-            splitSuffix 2 "." x;
-
-          domainToRecord = machine: x:
-            if !(hasInfix "." x) then { } else
-            let
-              zone = head (extractDomain x);
-              subdomain = last (extractDomain x);
-            in
-            {
-              ${zone} = {
-                TTL = 60 * 60;
-                NS = [ "@" ];
-                SOA = {
-                  nameServer = "@";
-                  adminEmail = "dns@saumon.network";
-                  serial = 0;
-                };
-              } //
-              (if (subdomain == "") then {
-                A = with machineInfo.${machine};
-                  (if isVPN x then [ vpn ] else [ public ]);
-              } else {
-                subdomains.${subdomain}.A = with machineInfo.${machine}; if isVPN x then [ vpn ] else [ public ];
-              });
-            };
-
-          getDomains = machine: with self.nixosConfigurations.${machine}.config; attrNames services.nginx.virtualHosts ++ optional services.tailscale.enable "${machine}.luj";
-
-          recursiveUpdateManyAttrs = foldl recursiveUpdate { };
-        in
-        recursiveUpdateManyAttrs (concatMap (machine: map (domainToRecord machine) (getDomains machine)) (attrNames machineInfo));
-
+      machines = {
+        lisa = { tld = "luj"; ipv4 = { vpn = "100.100.45.12"; public = "212.129.40.11"; }; ipv6 = { public = "2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb"; }; };
+        lambda = { tld = "luj"; ipv4 = { vpn = "100.100.45.13"; public = "141.145.197.219"; }; ipv6 = { }; };
+        tower = { tld = "luj"; ipv4 = { vpn = "100.100.45.9"; public = "78.192.168.230"; }; ipv6 = { }; };
+        core-security = { tld = "luj"; ipv4 = { vpn = "100.100.45.14"; public = "78.192.168.230"; }; ipv6 = { }; };
+      };
 
 
       hydraJobs = {
