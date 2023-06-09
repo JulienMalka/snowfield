@@ -32,7 +32,7 @@
   luj.buildbot.enable = true;
   luj.nginx.enable = true;
 
-  environment.systemPackages = [ pkgs.tailscale pkgs.attic ];
+  environment.systemPackages = [ pkgs.tailscale ];
 
   services.tailscale.enable = true;
 
@@ -74,6 +74,14 @@
     package = lib.mkForce pkgs.nix;
     distributedBuilds = true;
     buildMachines = [
+      {
+        hostName = "epyc.infra.newtype.fr";
+        maxJobs = 100;
+        systems = [ "x86_64-linux" ];
+        sshUser = "root";
+        sshKey = "/home/julien/.ssh/id_ed25519";
+        speedFactor = 2;
+      }
       {
         hostName = "lambda";
         maxJobs = 4;
