@@ -15,13 +15,7 @@
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
 
-  networking.nameservers = [ "100.100.45.5" "9.9.9.9" ];
-  environment.etc."resolv.conf" = with lib; with pkgs; {
-    source = writeText "resolv.conf" ''
-      ${concatStringsSep "\n" (map (ns: "nameserver ${ns}") config.networking.nameservers)}
-      options edns0
-    '';
-  };
+  networking.nameservers = [ "9.9.9.9" ];
 
   networking.hostName = "tower"; # Define your hostname.
 
