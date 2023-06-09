@@ -186,7 +186,7 @@
         lambda = { tld = "luj"; ipv4 = { vpn = "100.100.45.13"; public = "141.145.197.219"; }; ipv6 = { vpn = "fd7a:115c:a1e0::d"; }; };
         tower = { tld = "luj"; ipv4 = { vpn = "100.100.45.9"; public = "78.194.168.230"; }; ipv6 = { public = "2a01:e34:ec2a:8e60:8ec7:b5d2:f663:a67a"; vpn = "fd7a:115c:a1e0::9"; }; };
         core-security = { tld = "luj"; ipv4 = { vpn = "100.100.45.14"; public = "78.194.168.230"; }; ipv6 = { public = "2a01:e34:ec2a:8e60:cc40:3ca:a541:4ca7"; vpn = "fd7a:115c:a1e0::e"; }; };
-        nuage = { tld = "luj"; ipv4 = { public = "78.194.168.230"; }; ipv6 = { public = "2a01:e34:ec2a:8e60:4ab8:c3d0:a0fe:525f"; }; };
+        nuage = { tld = "luj"; ipv4 = { public = "78.194.168.230"; }; ipv6 = { public = "2a01:e34:ec2a:8e60:4ab8:c3d0:a0fe:525f"; subdomains = [ "nuage.malka.family" ]; }; };
       };
 
 
