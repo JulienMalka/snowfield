@@ -83,6 +83,8 @@ in
 
     services.nginx.virtualHosts."ci.julienmalka.me" =
       {
+        forceSSL = true;
+        enableACME = true;
         extraConfig = ''
           ssl_session_timeout 1440m;         
           ssl_session_cache shared:SSL:10m;
