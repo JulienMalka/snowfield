@@ -111,7 +111,7 @@
         (lib.importConfig ./machines);
 
       deploy.nodes.lambda = {
-        hostname = "lambda.julienmalka.me";
+        hostname = "lambda.luj";
         profiles.system = {
           sshUser = "root";
           sshOpts = [ "-p" "45" ];
@@ -182,10 +182,10 @@
       lol = import ./lol.nix nixpkgs_plats.x86_64-linux nixosConfigurations.lisa.config.system.build.toplevel.drvPath;
 
       machines = {
-        lisa = { tld = "luj"; ipv4 = { vpn = "100.100.45.12"; public = "212.129.40.11"; }; ipv6 = { public = "2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb"; }; };
-        lambda = { tld = "luj"; ipv4 = { vpn = "100.100.45.13"; public = "141.145.197.219"; }; ipv6 = { }; };
-        tower = { tld = "luj"; ipv4 = { vpn = "100.100.45.9"; public = "78.194.168.230"; }; ipv6 = { public = "2a01:e34:ec2a:8e60:8ec7:b5d2:f663:a67a"; }; };
-        core-security = { tld = "luj"; ipv4 = { vpn = "100.100.45.14"; public = "78.194.168.230"; }; ipv6 = { public = "2a01:e34:ec2a:8e60:cc40:3ca:a541:4ca7"; }; };
+        lisa = { tld = "luj"; ipv4 = { vpn = "100.100.45.12"; public = "212.129.40.11"; }; ipv6 = { public = "2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb"; vpn = "fd7a:115c:a1e0::c"; }; };
+        lambda = { tld = "luj"; ipv4 = { vpn = "100.100.45.13"; public = "141.145.197.219"; }; ipv6 = { vpn = "fd7a:115c:a1e0::d"; }; };
+        tower = { tld = "luj"; ipv4 = { vpn = "100.100.45.9"; public = "78.194.168.230"; }; ipv6 = { public = "2a01:e34:ec2a:8e60:8ec7:b5d2:f663:a67a"; vpn = "fd7a:115c:a1e0::9"; }; };
+        core-security = { tld = "luj"; ipv4 = { vpn = "100.100.45.14"; public = "78.194.168.230"; }; ipv6 = { public = "2a01:e34:ec2a:8e60:cc40:3ca:a541:4ca7"; vpn = "fd7a:115c:a1e0::e"; }; };
         nuage = { tld = "luj"; ipv4 = { public = "78.194.168.230"; }; ipv6 = { public = "2a01:e34:ec2a:8e60:4ab8:c3d0:a0fe:525f"; }; };
       };
 
