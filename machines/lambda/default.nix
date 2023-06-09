@@ -77,14 +77,6 @@
   };
 
   networking.nameservers = [ "9.9.9.9" ];
-  environment.etc."resolv.conf" = with lib; with pkgs; {
-    source = writeText "resolv.conf" ''
-      ${concatStringsSep "\n" (map (ns: "nameserver ${ns}") config.networking.nameservers)}
-      options edns0
-    '';
-  };
-
-
 
   services.grafana.enable = true;
   services.grafana.settings.server.http_port = 3000;
