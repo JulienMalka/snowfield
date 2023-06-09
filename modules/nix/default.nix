@@ -22,6 +22,7 @@ with lib;
         ];
         settings =
           {
+            builders-use-substitutes = true;
             auto-optimise-store = true;
             substituters = [
               "https://cache.nixos.org"
