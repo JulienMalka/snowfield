@@ -94,7 +94,7 @@
   programs.ssh.extraConfig = ''
     Host lambda
       IdentityFile /home/julien/.ssh/id_ed25519
-      HostName lambda.julienmalka.me
+      HostName lambda.luj
       User root
       Port 45
   '';
