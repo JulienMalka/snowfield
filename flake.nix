@@ -240,7 +240,6 @@
         machines.lisa = self.nixosConfigurations.lisa.config.system.build.toplevel;
         machines.macintosh = self.nixosConfigurations.macintosh.config.system.build.toplevel;
         machines.lambda = self.nixosConfigurations.lambda.config.system.build.toplevel;
-        machines.bin-cache = self.nixosConfigurations.bin-cache.config.system.build.toplevel;
         packages.x86_64-linux = packages.x86_64-linux;
         packages.aarch64-linux = packages.aarch64-linux;
       };
