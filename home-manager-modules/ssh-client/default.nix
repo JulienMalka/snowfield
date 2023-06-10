@@ -50,15 +50,15 @@ with lib;
           user = "julien_malka";
           port = 23;
         };
-        curry = {
+        router = {
           hostname = "vms.julienmalka.me";
           user = "julien";
-          port = 60;
         };
-        mails = {
-          hostname = "192.168.1.78";
+        core-security = {
+          hostname = "192.168.0.175";
           user = "julien";
-          proxyJump = "curry";
+          proxyJump = "router";
+          port = 45;
         };
       };
     };
