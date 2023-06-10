@@ -32,7 +32,7 @@ with lib;
           user = "jmalka";
         };
         lambda = {
-          hostname = "lambda.julienmalka.me";
+          hostname = "lambda.luj";
           user = "root";
           port = 45;
         };
