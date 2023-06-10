@@ -181,13 +181,57 @@
 
       lol = import ./lol.nix nixpkgs_plats.x86_64-linux nixosConfigurations.lisa.config.system.build.toplevel.drvPath;
 
-      machines = {
-        lisa = { tld = "luj"; ipv4 = { vpn = "100.100.45.12"; public = "212.129.40.11"; }; ipv6 = { public = "2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb"; vpn = "fd7a:115c:a1e0::c"; }; };
-        lambda = { tld = "luj"; ipv4 = { vpn = "100.100.45.13"; public = "141.145.197.219"; }; ipv6 = { vpn = "fd7a:115c:a1e0::d"; }; };
-        tower = { tld = "luj"; ipv4 = { vpn = "100.100.45.9"; public = "78.194.168.230"; }; ipv6 = { public = "2a01:e34:ec2a:8e60:8ec7:b5d2:f663:a67a"; vpn = "fd7a:115c:a1e0::9"; }; };
-        core-security = { tld = "luj"; ipv4 = { vpn = "100.100.45.14"; public = "78.194.168.230"; }; ipv6 = { public = "2a01:e34:ec2a:8e60:cc40:3ca:a541:4ca7"; vpn = "fd7a:115c:a1e0::e"; }; };
-        nuage = { tld = "luj"; ipv4 = { public = "78.194.168.230"; }; ipv6 = { public = "2a01:e34:ec2a:8e60:4ab8:c3d0:a0fe:525f"; subdomains = [ "nuage.malka.family" ]; }; };
-      };
+      machines =
+        let tld = "luj";
+        in {
+          lisa = {
+            inherit tld;
+            ipv4 = { public = "212.129.40.11"; vpn = "100.100.45.12"; };
+            ipv6 = { public = "2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb"; vpn = "fd7a:115c:a1e0::c"; };
+          };
+          lambda = {
+            inherit tld;
+            ipv4 = { public = "141.145.197.219"; vpn = "100.100.45.13"; };
+            ipv6 = { vpn = "fd7a:115c:a1e0::d"; };
+          };
+          tower = {
+            inherit tld;
+            ipv4 = { public = "78.194.168.230"; local = "192.168.0.103"; vpn = "100.100.45.9"; };
+            ipv6 = { public = "2a01:e34:ec2a:8e60:8ec7:b5d2:f663:a67a"; vpn = "fd7a:115c:a1e0::9"; };
+          };
+          core-security = {
+            inherit tld;
+            subdomains = [ "ca.luj" ];
+            ipv4 = { public = "78.194.168.230"; local = "192.168.0.175"; vpn = "100.100.45.14"; };
+            ipv6 = { public = "2a01:e34:ec2a:8e60:cc40:3ca:a541:4ca7"; vpn = "fd7a:115c:a1e0::e"; };
+          };
+          nuage = {
+            inherit tld;
+            subdomains = [ "nuage.malka.family" ];
+            ipv4 = { public = "78.194.168.230"; local = "192.168.0.101"; };
+            ipv6 = { public = "2a01:e34:ec2a:8e60:4ab8:c3d0:a0fe:525f"; };
+          };
+          pve1 = {
+            inherit tld;
+            ipv4 = { public = "78.194.168.230"; local = "192.168.1.1"; vpn = "192.168.45.3"; };
+            ipv6 = { public = "2a01:e34:ec2a:8e60:d250:99ff:fefa:b62"; vpn = "fd7a:115c:a1e0::3"; };
+          };
+          pve2 = {
+            inherit tld;
+            ipv4 = { public = "78.194.168.230"; local = "192.168.1.2"; vpn = "192.168.45.15"; };
+            ipv6 = { public = "2a01:e34:ec2a:8e60:aaa1:59ff:fec7:1d6"; vpn = "fd7a:115c:a1e0::f"; };
+          };
+          pve3 = {
+            inherit tld;
+            ipv4 = { public = "78.194.168.230"; local = "192.168.1.3"; vpn = "192.168.45.16"; };
+            ipv6 = { public = "2a01:e34:ec2a:8e60:aaa1:59ff:fec1:aa10"; vpn = "fd7a:115c:a1e0::10"; };
+          };
+          pve4 = {
+            inherit tld;
+            ipv4 = { public = "78.194.168.230"; local = "192.168.1.4"; vpn = "192.168.45.17"; };
+            ipv6 = { public = "2a01:e34:ec2a:8e60:d250:99ff:fefa:b76"; vpn = "fd7a:115c:a1e0::11"; };
+          };
+        };
 
 
       hydraJobs = {
