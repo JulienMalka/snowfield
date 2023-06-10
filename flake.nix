@@ -70,6 +70,12 @@
       inputs.nixpkgs.follows = "unstable";
     };
 
+    nix-index-database =
+      {
+        url = "github:Mic92/nix-index-database";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+
     nix-rfc-92.url = "github:obsidiansystems/nix/dynamic-drvs";
 
   };
