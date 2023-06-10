@@ -118,7 +118,7 @@ VfXtULncAiEA2gmqdr+ugFz5tvPdKwanroTiMTUMhhCRYVlQlyTApyQ=
   services.openssh = {
     enable = true;
     ports = [ 45 ];
-    permitRootLogin = "yes";
+    settings.PermitRootLogin = "yes";
     openFirewall = true;
   };
 
