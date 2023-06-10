@@ -15,8 +15,7 @@
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
 
-  networking.nameservers = [ "9.9.9.9" ];
-
+  services.resolved.enable = true;
   networking.hostName = "tower"; # Define your hostname.
 
   networking.networkmanager.enable = true;
