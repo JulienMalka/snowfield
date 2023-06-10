@@ -26,10 +26,12 @@
     rxvt_unicode
     xorg.xbacklight
     neovim
-    comma
   ];
 
   environment.variables.EDITOR = "nvim";
+
+  programs.command-not-found.enable = false;
+  programs.nix-index-database.comma.enable = true;
 
   networking.firewall.checkReversePath = "loose";
 
