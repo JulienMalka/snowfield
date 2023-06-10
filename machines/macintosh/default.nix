@@ -29,8 +29,17 @@
     LIBSEAT_BACKEND = "logind";
   };
 
-  services.xserver.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
+  services.xserver = {
+    enable = true;
+    layout = "fr";
+    displayManager.gdm.enable = true;
+    libinput = {
+      enable = true;
+      naturalScrolling = true;
+    };
+  };
+
+
   services.tailscale.enable = true;
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
@@ -48,11 +57,6 @@
   };
 
   hardware.asahi.peripheralFirmwareDirectory = ./firmware;
-
-  services.xserver.libinput = {
-    enable = true;
-    naturalScrolling = true;
-  };
 
   hardware.opengl.enable = true;
   hardware.opengl.driSupport = true;
