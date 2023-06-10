@@ -68,6 +68,89 @@
   networking.firewall.checkReversePath = "loose";
 
 
+  networking.nameservers = [ "9.9.9.9" ];
+
+  services.nginx.enable = true;
+  services.nginx.virtualHosts."vaults.malka.family" = {
+    forceSSL = true;
+    enableACME = true;
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT}";
+    };
+  };
+
+  services.tailscale.enable = true;
+
+  services.vaultwarden = {
+    enable = true;
+    config = {
+      DOMAIN = "https://vaults.malka.family";
+      ROCKET_PORT = "8223";
+      SIGNUPS_ALLOWED = false;
+    };
+    environmentFile = "/var/lib/vaultwarden.env";
+  };
+
+  services.keycloak = {
+    enable = true;
+    database.createLocally = true;
+    database.passwordFile = "/run/secrets/keycloak";
+    settings = {
+      hostname = "auth.julienmalka.me";
+      hostname-admin-url = "https://auth.julienmalka.me";
+      http-port = 8080;
+      hostname-strict-backchannel = true;
+      proxy = "edge";
+    };
+    themes = { keywind = pkgs.keycloak-keywind; };
+  };
+
+  services.nginx.virtualHosts."auth.julienmalka.me" = {
+    forceSSL = true;
+    enableACME = true;
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:8080";
+      extraConfig = '' 
+      proxy_buffer_size   128k;
+      proxy_buffers   4 256k;
+      proxy_busy_buffers_size   256k;
+      '';
+    };
+  };
+
+
+  sops.secrets.keycloak = {
+    owner = "root";
+    sopsFile = ../../secrets/keycloak-db;
+    format = "binary";
+  };
+
+
+
+  services.openssh.extraConfig = ''
+    HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
+    HostKey /etc/ssh/ssh_host_ed25519_key
+    TrustedUserCAKeys /etc/ssh/ssh_user_key.pub
+    MaxAuthTries 20
+  '';
+
+
+
+  services.step-ca.enable = true;
+  services.step-ca.intermediatePasswordFile = "/root/capw";
+  services.step-ca.address = "100.100.45.14";
+  services.step-ca.port = 8444;
+  services.step-ca.openFirewall = true;
+  services.step-ca.settings = builtins.fromJSON ''
+    {}
+  '';
+
+  systemd.services."step-ca".serviceConfig.ExecStart = [
+    "" # override upstream
+    "${pkgs.step-ca}/bin/step-ca /etc/smallstep/ca_prod.json --password-file \${CREDENTIALS_DIRECTORY}/intermediate_password"
+  ];
+
+
   security.pki.certificates = [
     ''-----BEGIN CERTIFICATE-----
 MIIByzCCAXKgAwIBAgIQAcJCOR+99m5v3dHWQw5m9jAKBggqhkjOPQQDAjAwMRIw
@@ -94,58 +177,6 @@ VfXtULncAiEA2gmqdr+ugFz5tvPdKwanroTiMTUMhhCRYVlQlyTApyQ=
 -----END CERTIFICATE-----''
   ];
 
-
-  networking.nameservers = [ "9.9.9.9" ];
-
-  services.nginx.enable = true;
-  services.nginx.virtualHosts."vaults.malka.family" = {
-    locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT}";
-    };
-  };
-
-  services.tailscale.enable = true;
-
-  services.vaultwarden = {
-    enable = true;
-    config = {
-      DOMAIN = "https://vaults.malka.family";
-      ROCKET_PORT = "8223";
-      SIGNUPS_ALLOWED = false;
-    };
-    environmentFile = "/var/lib/vaultwarden.env";
-  };
-
-  services.keycloak = {
-    enable = true;
-    database.createLocally = true;
-    database.passwordFile = "/run/secrets/keycloak";
-    settings = {
-      hostname = "auth.julienmalka.me";
-      http-port = 8080;
-      hostname-strict-backchannel = true;
-      proxy = "edge";
-    };
-    themes = { keywind = pkgs.keycloak-keywind; };
-  };
-
-  services.nginx.virtualHosts."auth.julienmalka.me" = {
-    locations."/" = {
-      proxyPass = "http://127.0.0.1:8080";
-      extraConfig = '' 
-      proxy_buffer_size   128k;
-      proxy_buffers   4 256k;
-      proxy_busy_buffers_size   256k;
-      '';
-    };
-  };
-
-
-  sops.secrets.keycloak = {
-    owner = "root";
-    sopsFile = ../../secrets/keycloak-db;
-    format = "binary";
-  };
 
 
   system.stateVersion = "22.11"; # Did you read the comment?
