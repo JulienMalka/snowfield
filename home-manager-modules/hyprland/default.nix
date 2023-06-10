@@ -21,6 +21,12 @@ with lib;
       xdg.configFile."hypr/hyprland.conf".text = ''
                 exec-once = waybar & hyprpaper
                 exec-once=dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY
+                exec swayidle -w \
+                  timeout 300 'swaylock -f -c 000000' \
+                  timeout 600 'swaymsg "output * dpms off"' \
+                  resume 'swaymsg "output * dpms on"' \
+                  before-sleep 'swaylock -f -c 000000'
+
                 exec-once = nm-applet --indicator 
                 # Monitors
                 monitor = eDP-1, preferred, auto, auto
@@ -164,7 +170,7 @@ with lib;
 
 
 
-      home.packages = with pkgs; [ qt6.qtwayland libsForQt5.qt5.qtwayland hyprpaper swaylock ];
+      home.packages = with pkgs; [ qt6.qtwayland libsForQt5.qt5.qtwayland hyprpaper swaylock swayidle ];
 
     };
 }

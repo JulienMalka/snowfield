@@ -37,7 +37,7 @@ inputs: lib: with lib; let
           macintosh = {
             arch = "aarch64-linux";
             nixpkgs_version = inputs.nixos-apple-silicon.inputs.nixpkgs;
-            hm_version = inputs.home-manager-unstable;
+            hm_version = inputs.home-manager;
           };
           lambda = {
             arch = "aarch64-linux";

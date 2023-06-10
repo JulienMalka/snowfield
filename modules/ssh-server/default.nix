@@ -13,8 +13,8 @@ with lib;
       services.openssh = {
         enable = true;
         ports = [ 45 ];
-        passwordAuthentication = false;
-        permitRootLogin = "yes";
+        settings.PasswordAuthentication = false;
+        settings.PermitRootLogin = "yes";
         openFirewall = true;
       };
     };

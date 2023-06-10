@@ -12,21 +12,6 @@ with lib;
     programs.ssh = {
       enable = true;
       matchBlocks = {
-        newton = {
-          hostname = "newton.julienmalka.me";
-          user = "julien";
-          port = 45;
-        };
-        lisa = {
-          hostname = "lisa.julienmalka.me";
-          user = "julien";
-          port = 45;
-        };
-        newton-init = {
-          hostname = "newton.julienmalka.me";
-          user = "root";
-          port = 2222;
-        };
         sas = {
           hostname = "sas.eleves.ens.fr";
           user = "jmalka";
@@ -35,30 +20,6 @@ with lib;
           hostname = "lambda.luj";
           user = "root";
           port = 45;
-        };
-        tower = {
-          hostname = "tower.julienmalka.me";
-          user = "julien";
-          port = 45;
-        };
-        saumon = {
-          hostname = "saumon.julienmalka.me";
-          user = "julien";
-        };
-        stockly = {
-          hostname = "charybdis.stockly.tech";
-          user = "julien_malka";
-          port = 23;
-        };
-        curry = {
-          hostname = "vms.julienmalka.me";
-          user = "julien";
-          port = 60;
-        };
-        mails = {
-          hostname = "192.168.1.78";
-          user = "julien";
-          proxyJump = "curry";
         };
       };
     };
