@@ -2,17 +2,10 @@
   description = "A flake for my personnal configurations";
   inputs = {
 
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
-
-    flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-22.11";
-      inputs.nixpkgs.follows = "unstable";
-    };
-
-    home-manager-unstable = {
-      url = "github:nix-community/home-manager/75f4f362e1b5ebdc4076fcbdb4188b4fd736187c";
+      url = "github:nix-community/home-manager/release-23.05";
       inputs.nixpkgs.follows = "unstable";
     };
 
@@ -25,10 +18,12 @@
       url = "github:NixOS/nixpkgs/nixos-unstable";
     };
 
+    flake-utils.url = "github:numtide/flake-utils";
+
     deploy-rs = {
       url = "github:serokell/deploy-rs";
-      inputs.utils.follows = "flake-utils";
       inputs.nixpkgs.follows = "unstable";
+      inputs.utils.follows = "flake-utils";
     };
 
     sops-nix = {
