@@ -21,6 +21,14 @@ with lib;
           user = "root";
           port = 45;
         };
+        router = {
+          hostname = "ci.julienmalka.me";
+        };
+        mails = {
+          hostname = "192.168.0.76";
+          proxyJump = "router";
+        };
+
       };
     };
   };
