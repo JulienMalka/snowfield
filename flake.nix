@@ -214,22 +214,22 @@
           };
           pve1 = {
             inherit tld;
-            ipv4 = { public = "78.194.168.230"; local = "192.168.1.1"; vpn = "192.168.45.3"; };
+            ipv4 = { public = "78.194.168.230"; local = "192.168.1.1"; vpn = "100.100.45.3"; };
             ipv6 = { public = "2a01:e34:ec2a:8e60:d250:99ff:fefa:b62"; vpn = "fd7a:115c:a1e0::3"; };
           };
           pve2 = {
             inherit tld;
-            ipv4 = { public = "78.194.168.230"; local = "192.168.1.2"; vpn = "192.168.45.15"; };
+            ipv4 = { public = "78.194.168.230"; local = "192.168.1.2"; vpn = "100.100.45.15"; };
             ipv6 = { public = "2a01:e34:ec2a:8e60:aaa1:59ff:fec7:1d6"; vpn = "fd7a:115c:a1e0::f"; };
           };
           pve3 = {
             inherit tld;
-            ipv4 = { public = "78.194.168.230"; local = "192.168.1.3"; vpn = "192.168.45.16"; };
+            ipv4 = { public = "78.194.168.230"; local = "192.168.1.3"; vpn = "100.100.45.16"; };
             ipv6 = { public = "2a01:e34:ec2a:8e60:aaa1:59ff:fec1:aa10"; vpn = "fd7a:115c:a1e0::10"; };
           };
           pve4 = {
             inherit tld;
-            ipv4 = { public = "78.194.168.230"; local = "192.168.1.4"; vpn = "192.168.45.17"; };
+            ipv4 = { public = "78.194.168.230"; local = "192.168.1.4"; vpn = "100.100.45.17"; };
             ipv6 = { public = "2a01:e34:ec2a:8e60:d250:99ff:fefa:b76"; vpn = "fd7a:115c:a1e0::11"; };
           };
         };
