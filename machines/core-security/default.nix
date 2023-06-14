@@ -140,7 +140,6 @@
   services.step-ca.intermediatePasswordFile = "/root/capw";
   services.step-ca.address = "100.100.45.14";
   services.step-ca.port = 8444;
-  services.step-ca.openFirewall = true;
   services.step-ca.settings = builtins.fromJSON ''
     {}
   '';
@@ -150,6 +149,18 @@
     "${pkgs.step-ca}/bin/step-ca /etc/smallstep/ca_prod.json --password-file \${CREDENTIALS_DIRECTORY}/intermediate_password"
   ];
 
+  services.nginx.virtualHosts."ca.luj" = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+      proxyPass = "https://127.0.0.1:8444";
+    };
+  };
+
+
+  security.acme.certs."ca.luj".server = "https://127.0.0.1:8444/acme/acme/directory";
+
+  systemd.services."step-ca".after = [ "keycloak.service" ];
 
   security.pki.certificates = [
     ''-----BEGIN CERTIFICATE-----
