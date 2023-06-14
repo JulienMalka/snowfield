@@ -123,7 +123,7 @@
       };
 
       deploy.nodes.lisa = {
-        hostname = "lisa.julienmalka.me";
+        hostname = "lisa.luj";
         profiles.system = {
           sshUser = "root";
           sshOpts = [ "-p" "45" ];
@@ -202,7 +202,6 @@
           };
           core-security = {
             inherit tld;
-            subdomains = [ "ca.luj" ];
             ipv4 = { public = "78.194.168.230"; local = "192.168.0.175"; vpn = "100.100.45.14"; };
             ipv6 = { public = "2a01:e34:ec2a:8e60:cc40:3ca:a541:4ca7"; vpn = "fd7a:115c:a1e0::e"; };
           };
@@ -232,6 +231,13 @@
             ipv4 = { public = "78.194.168.230"; local = "192.168.1.4"; vpn = "100.100.45.17"; };
             ipv6 = { public = "2a01:e34:ec2a:8e60:d250:99ff:fefa:b76"; vpn = "fd7a:115c:a1e0::11"; };
           };
+          saves = {
+            inherit tld;
+            subdomains = [ "saves.luj" ];
+            ipv4 = { public = "78.194.168.230"; local = "192.168.4.5"; vpn = "100.100.45.4"; };
+            ipv6 = { public = "2a01:e34:ec2a:8e60:3af3:abff:fe6a:1f54"; vpn = "fd7a:115c:a1e0::4"; };
+          };
+
         };
 
 
