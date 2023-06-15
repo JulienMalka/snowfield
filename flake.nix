@@ -193,7 +193,7 @@
           lambda = {
             inherit tld;
             ipv4 = { public = "141.145.197.219"; vpn = "100.100.45.13"; };
-            ipv6 = { vpn = "fd7a:115c:a1e0::d"; };
+            ipv6 = { public = "2603:c027:c001:89aa:aad9:34b3:f3c9:924f"; vpn = "fd7a:115c:a1e0::d"; };
           };
           tower = {
             inherit tld;
