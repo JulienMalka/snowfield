@@ -18,8 +18,21 @@
 
   networking.hostName = "core-security"; # Define your hostname.
 
-  # Enable networking
-  networking.networkmanager.enable = true;
+  systemd.network.enable = true;
+
+
+  systemd.network.networks."10-wan" = {
+    matchConfig.Name = "ens18";
+    networkConfig = {
+      # start a DHCP Client for IPv4 Addressing/Routing
+      DHCP = "ipv4";
+      # accept Router Advertisements for Stateless IPv6 Autoconfiguraton (SLAAC)
+      IPv6AcceptRA = true;
+    };
+    # make routing on this interface a dependency for network-online.target
+    linkConfig.RequiredForOnline = "routable";
+  };
+
 
   # Set your time zone.
   time.timeZone = "Europe/Paris";
@@ -46,13 +59,6 @@
 
   console.keyMap = "fr";
 
-  users.users.julien = {
-    isNormalUser = true;
-    description = "julien";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = [ ];
-  };
-
   security.acme.acceptTerms = true;
 
   environment.systemPackages = with pkgs; [
@@ -67,8 +73,6 @@
 
   networking.firewall.checkReversePath = "loose";
 
-
-  networking.nameservers = [ "9.9.9.9" ];
 
   services.nginx.enable = true;
   services.nginx.virtualHosts."vaults.malka.family" = {
@@ -189,7 +193,6 @@ VfXtULncAiEA2gmqdr+ugFz5tvPdKwanroTiMTUMhhCRYVlQlyTApyQ=
   ];
 
 
-
-  system.stateVersion = "22.11"; # Did you read the comment?
+  system.stateVersion = "22.11";
 
 }
