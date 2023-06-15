@@ -52,7 +52,6 @@ in
               nodePackages = prev.unstable.nodePackages;
               hydrasect = prev.pkgs.callPackage ../packages/hydrasect { };
               uptime-kuma = prev.pkgs.callPackage ../packages/uptime-kuma { };
-              buildbot-badges = prev.pkgs.callPackage ../packages/buildbot-badges { };
               linkal = inputs.linkal.defaultPackage."${system}";
               mosh = prev.unstable.mosh;
               hyprpaper = inputs.hyprpaper.packages.${system}.default;

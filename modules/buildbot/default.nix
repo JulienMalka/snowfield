@@ -3,7 +3,7 @@ with lib;
 let
   cfg = config.luj.buildbot;
   port = "1810";
-  package = pkgs.python3Packages.buildbot-worker;
+  package = pkgs.buildbot-worker;
   python = package.pythonModule;
   home = "/var/lib/buildbot-worker";
   buildbotDir = "${home}/worker";
@@ -31,8 +31,8 @@ in
         ps.requests
         ps.treq
         ps.psycopg2
-        ps.buildbot-worker
-        pkgs.buildbot-badges
+        pkgs.buildbot-worker
+        pkgs.buildbot-plugins.badges
       ];
     };
 
