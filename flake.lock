@@ -209,11 +209,11 @@
         "xdph": "xdph"
       },
       "locked": {
-        "lastModified": 1687289754,
-        "narHash": "sha256-KChqnNE37OLUAHGgeQKrDT7ZnE46UY2zBUYO/QefYGk=",
+        "lastModified": 1687375226,
+        "narHash": "sha256-y4l7tZELvVNmMZNdLmLdEZkApBWn1p7+MuGAxY0s47s=",
         "owner": "hyprwm",
         "repo": "Hyprland",
-        "rev": "cabdf38ce41f628f6c81e1ac05d3788d8f30b101",
+        "rev": "fc59cef1ee573a950c5d5f3bacf1b51142fd56db",
         "type": "github"
       },
       "original": {
@@ -312,11 +312,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1686859977,
-        "narHash": "sha256-Wo9KLT2tkkSw8Cqo9MsQxyAXuf9YoO7/rHGbqnhS8YY=",
+        "lastModified": 1687315041,
+        "narHash": "sha256-GSpmr6kyGrMwn9EHLH9TFic5m+AzXMT4G9ObtmgFOCM=",
         "owner": "oxalica",
         "repo": "nil",
-        "rev": "dbf26d6bc240790a533f7d54c01cea7ce952edec",
+        "rev": "c91a9a9aa27ee5d7fcc7f23926c50a2a475bf782",
         "type": "github"
       },
       "original": {
@@ -468,11 +468,11 @@
     },
     "nixpkgs_5": {
       "locked": {
-        "lastModified": 1687193290,
-        "narHash": "sha256-3bknptEbd9LLlCiFRFkMwmciHB+QXET41gH/RX+Nr1A=",
+        "lastModified": 1687288566,
+        "narHash": "sha256-VckkiJ88Gzdc2cstm0z5eFcrHbvkm4VjxavHBGssvZI=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "ad157fe26e74211e7dde0456cb3fd9ab78b6e552",
+        "rev": "b6c73c5fe53bb3afbf65e870541e0645e9145171",
         "type": "github"
       },
       "original": {
