@@ -233,7 +233,7 @@
           };
           saves = {
             inherit tld;
-            subdomains = [ "saves.luj" ];
+            subdomains = [ "saves-paris.luj" ];
             ipv4 = { public = "78.194.168.230"; local = "192.168.4.5"; vpn = "100.100.45.4"; };
             ipv6 = { public = "2a01:e34:ec2a:8e60:3af3:abff:fe6a:1f54"; vpn = "fd7a:115c:a1e0::4"; };
           };
