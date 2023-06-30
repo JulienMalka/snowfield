@@ -231,7 +231,7 @@
             ipv4 = { public = "78.194.168.230"; local = "192.168.1.4"; vpn = "100.100.45.17"; };
             ipv6 = { public = "2a01:e34:ec2a:8e60:d250:99ff:fefa:b76"; vpn = "fd7a:115c:a1e0::11"; };
           };
-          saves = {
+          saves-paris = {
             inherit tld;
             subdomains = [ "saves-paris.luj" ];
             ipv4 = { public = "78.194.168.230"; local = "192.168.4.5"; vpn = "100.100.45.4"; };
