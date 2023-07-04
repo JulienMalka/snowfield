@@ -238,6 +238,13 @@
             ipv6 = { public = "2a01:e34:ec2a:8e60:3af3:abff:fe6a:1f54"; vpn = "fd7a:115c:a1e0::4"; };
           };
 
+          saves-lyon = {
+            inherit tld;
+            subdomains = [ "saves-lyon.luj" ];
+            ipv4 = { vpn = "100.100.45.20"; };
+            ipv6 = { vpn = "fd7a:115c:a1e0::14"; };
+          };
+
         };
 
 
