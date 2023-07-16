@@ -102,7 +102,8 @@
 
   services.grafana.enable = true;
   services.grafana.settings.server.http_port = 3000;
-  services.victoriametrics.enable = true;
+  services.prometheus.enable = true;
+  services.prometheus.pushgateway.enable = true;
 
   services.nginx.virtualHosts."data.julienmalka.me" = {
     forceSSL = true;
@@ -118,10 +119,17 @@
     forceSSL = true;
     enableACME = true;
     locations."/" = {
-      proxyPass = "http://localhost:8428";
+      proxyPass = "http://localhost:9090";
     };
   };
 
+  services.nginx.virtualHosts."push.julienmalka.me" = {
+    forceSSL = true;
+    enableACME = true;
+    locations."/" = {
+      proxyPass = "http://localhost:9090";
+    };
+  };
 
 
 
