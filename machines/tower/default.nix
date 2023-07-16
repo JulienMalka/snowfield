@@ -100,6 +100,30 @@
   '';
 
 
+  services.grafana.enable = true;
+  services.grafana.settings.server.http_port = 3000;
+  services.victoriametrics.enable = true;
+
+  services.nginx.virtualHosts."data.julienmalka.me" = {
+    forceSSL = true;
+    enableACME = true;
+    locations."/" = {
+      proxyPass = "http://localhost:3000";
+      proxyWebsockets = true;
+    };
+  };
+
+
+  services.nginx.virtualHosts."prometheus.julienmalka.me" = {
+    forceSSL = true;
+    enableACME = true;
+    locations."/" = {
+      proxyPass = "http://localhost:8428";
+    };
+  };
+
+
+
 
   networking.firewall.allowedTCPPorts = [ 80 443 1810 ];
   networking.firewall.allowedUDPPorts = [ 80 443 1810 ];
