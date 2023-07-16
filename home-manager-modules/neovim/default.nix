@@ -64,12 +64,17 @@ with lib;
               };
 
               nix = {
-                command = "nil";
+                command = "nixd";
                 filetypes = [ "nix" ];
                 rootPatterns = [ "flake.nix" ];
                 settings = {
-                  nil = {
-                    formatting = { command = [ "nixpkgs-fmt" ]; };
+                  nixd = {
+                    formatting = {
+                      command = "nixpkgs-fmt";
+                    };
+                    options = {
+                      enable = true;
+                    };
                   };
                 };
               };
@@ -126,7 +131,7 @@ with lib;
         rust-vim
       ];
 
-      extraPackages = with pkgs; [ rust-analyzer pkgs.nil pyright nixpkgs-fmt ormolu ccls gopls ];
+      extraPackages = with pkgs; [ rust-analyzer pkgs.nixd pyright nixpkgs-fmt ormolu ccls gopls ];
 
       extraConfig = ''
         luafile ${./settings.lua}

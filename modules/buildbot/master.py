@@ -269,7 +269,7 @@ def build_config() -> dict[str, Any]:
 
     c["db"] = {"db_url": os.environ.get("DB_URL", "sqlite:///state.sqlite")}
 
-    c["protocols"] = {"pb": {"port": "tcp:9989:interface=\\:\\:"}}
+    c["protocols"] = {"pb": {"port": "tcp:9989:interface=127.0.0.1"}}
     c["buildbotURL"] = BUILDBOT_URL
     c["collapseRequests"] = False
 

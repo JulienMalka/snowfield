@@ -74,7 +74,7 @@
   networking.firewall.checkReversePath = "loose";
 
 
-  services.nginx.enable = true;
+  luj.nginx.enable = true;
   services.nginx.virtualHosts."vaults.malka.family" = {
     forceSSL = true;
     enableACME = true;
