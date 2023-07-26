@@ -25,7 +25,7 @@
   luj.buildbot.enable = true;
   luj.nginx.enable = true;
 
-  environment.systemPackages = [ pkgs.tailscale ];
+  environment.systemPackages = with pkgs; [ tailscale attic ];
 
   services.tailscale.enable = true;
 
@@ -102,8 +102,18 @@
 
   services.grafana.enable = true;
   services.grafana.settings.server.http_port = 3000;
-  services.prometheus.enable = true;
-  services.prometheus.pushgateway.enable = true;
+  services.prometheus = {
+    enable = true;
+    pushgateway.enable = true;
+    scrapeConfigs = [
+      {
+        job_name = "push";
+        static_configs = [{
+          targets = [ "127.0.0.1:9091" ];
+        }];
+      }
+    ];
+  };
 
   services.nginx.virtualHosts."data.julienmalka.me" = {
     forceSSL = true;
@@ -127,14 +137,14 @@
     forceSSL = true;
     enableACME = true;
     locations."/" = {
-      proxyPass = "http://localhost:9090";
+      proxyPass = "http://localhost:9091";
     };
   };
 
 
 
-  networking.firewall.allowedTCPPorts = [ 80 443 1810 ];
-  networking.firewall.allowedUDPPorts = [ 80 443 1810 ];
+  networking.firewall.allowedTCPPorts = [ 80 443 1810 9989 ];
+  networking.firewall.allowedUDPPorts = [ 80 443 1810 9989 ];
 
   system.stateVersion = "22.11"; # Did you read the comment?
 
