@@ -73,6 +73,8 @@
 
   networking.firewall.checkReversePath = "loose";
 
+  systemd.services.NetworkManager-wait-online.enable = false;
+
 
   luj.nginx.enable = true;
   services.nginx.virtualHosts."vaults.malka.family" = {
