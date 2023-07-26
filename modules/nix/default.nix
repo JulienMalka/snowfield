@@ -26,9 +26,10 @@ with lib;
             auto-optimise-store = true;
             substituters = [
               "https://cache.nixos.org"
+              "https://cache.saumon.network/attic-exec?priority=100"
             ];
             trusted-public-keys = [
-              "bin.julienmalka.me:RfXA+kPZt3SsMHGib5fY5mxJQLijfXzPbHjHD52ijyI="
+              "attic-exec:W1PQ0txRf4qpCIlNLscD/Xw1GwGoBij73JSum/I8Xt4="
             ];
           };
 
