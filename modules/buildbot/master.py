@@ -225,7 +225,7 @@ def build_config() -> dict[str, Any]:
 
     c["www"] = {
         "avatar_methods": [util.AvatarGitHub()],
-        "port": int(os.environ.get("PORT", "1810")),
+        'port': "tcp:1810:interface=\\:\\:",
         "auth": util.GitHubAuth("bba3e144501aa5b8a5dd", str(read_secret_file("github-oauth-secret")).strip()),        
         "authz": util.Authz(
             roleMatchers=[
@@ -269,7 +269,7 @@ def build_config() -> dict[str, Any]:
 
     c["db"] = {"db_url": os.environ.get("DB_URL", "sqlite:///state.sqlite")}
 
-    c["protocols"] = {"pb": {"port": "tcp:9989:interface=127.0.0.1"}}
+    c['protocols'] = {'pb': {'port': "tcp:interface=\\:\\::port=9989"}}
     c["buildbotURL"] = BUILDBOT_URL
     c["collapseRequests"] = False
 

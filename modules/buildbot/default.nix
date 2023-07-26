@@ -88,15 +88,16 @@ in
         extraConfig = ''
           ssl_session_timeout 1440m;         
           ssl_session_cache shared:SSL:10m;
+          proxy_set_header    Upgrade     $http_upgrade;
         '';
-        locations."/".proxyPass = "http://127.0.0.1:1810/";
+        locations."/".proxyPass = "http://[::]:1810/";
         locations."/sse" = {
-          proxyPass = "http://127.0.0.1:1810/sse/";
+          proxyPass = "http://[::]:1810/sse/";
           # proxy buffering will prevent sse to work
           extraConfig = "proxy_buffering off;";
         };
         locations."/ws" = {
-          proxyPass = "http://127.0.0.1:1810/ws";
+          proxyPass = "http://[::]:1810/ws";
           proxyWebsockets = true;
           # raise the proxy timeout for the websocket
           extraConfig = "proxy_read_timeout 6000s;";
