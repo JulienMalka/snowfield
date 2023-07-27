@@ -19,12 +19,6 @@
 
     flake-utils.url = "github:numtide/flake-utils";
 
-    deploy-rs = {
-      url = "github:serokell/deploy-rs";
-      inputs.nixpkgs.follows = "unstable";
-      inputs.utils.follows = "flake-utils";
-    };
-
     colmena.url = "github:zhaofengli/colmena";
 
     sops-nix = {
@@ -76,7 +70,7 @@
   outputs = { self, nixpkgs, ... }@inputs:
     let
       lib = nixpkgs.lib.extend (import ./lib inputs);
-      machines_plats = lib.mapAttrsToList (name: value: value.arch) lib.luj.machines;
+      machines_plats = lib.mapAttrsToList (name: value: value.arch) (lib.filterAttrs (n: v: builtins.hasAttr "arch" v) lib.luj.machines);
 
       nixpkgs_plats = builtins.listToAttrs (builtins.map
         (plat: {
@@ -115,47 +109,6 @@
         };
       } // builtins.mapAttrs (name: value: { imports = value._module.args.modules; }) nixosConfigurations;
 
-      deploy.nodes.lambda = {
-        hostname = "lambda.luj";
-        profiles.system = {
-          sshUser = "root";
-          sshOpts = [ "-p" "45" ];
-          remoteBuild = true;
-          fastConnection = true;
-          path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.lambda;
-        };
-      };
-
-      deploy.nodes.lisa = {
-        hostname = "lisa.luj";
-        profiles.system = {
-          sshUser = "root";
-          sshOpts = [ "-p" "45" ];
-          fastConnection = true;
-          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.lisa;
-          magicRollback = false;
-        };
-      };
-
-      deploy.nodes.core-security = {
-        hostname = "core-security.luj";
-        profiles.system = {
-          sshUser = "root";
-          sshOpts = [ "-p" "45" ];
-          fastConnection = true;
-          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.core-security;
-        };
-      };
-
-      deploy.nodes.tower = {
-        hostname = "tower.julienmalka.me";
-        profiles.system = {
-          sshUser = "root";
-          sshOpts = [ "-p" "45" ];
-          magicRollback = false;
-          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.tower;
-        };
-      };
 
       packages = builtins.listToAttrs
         (builtins.map
