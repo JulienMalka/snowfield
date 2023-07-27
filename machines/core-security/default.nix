@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports =
@@ -13,6 +13,12 @@
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
+
+  deployment = {
+    targetHost = "core-security.luj";
+    targetPort = 45;
+    targetUser = "root";
+  };
 
   security.acme.defaults.email = "julien@malka.sh";
 
@@ -73,7 +79,8 @@
 
   networking.firewall.checkReversePath = "loose";
 
-  systemd.services.NetworkManager-wait-online.enable = false;
+  systemd.services.NetworkManager-wait-online.enable = lib.mkForce false;
+  systemd.services.systemd-networkd-wait-online.enable = lib.mkForce false;
 
 
   luj.nginx.enable = true;
