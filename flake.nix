@@ -172,16 +172,16 @@
           })
           machines_plats);
 
-      machines =
+      machines = lib.luj.machines;
 
-        hydraJobs = {
-      machines.tower = self.nixosConfigurations.tower.config.system.build.toplevel;
-      machines.lisa = self.nixosConfigurations.lisa.config.system.build.toplevel;
-      machines.macintosh = self.nixosConfigurations.macintosh.config.system.build.toplevel;
-      machines.lambda = self.nixosConfigurations.lambda.config.system.build.toplevel;
-      packages.x86_64-linux = packages.x86_64-linux;
-      packages.aarch64-linux = packages.aarch64-linux;
+      hydraJobs = {
+        machines.tower = self.nixosConfigurations.tower.config.system.build.toplevel;
+        machines.lisa = self.nixosConfigurations.lisa.config.system.build.toplevel;
+        machines.macintosh = self.nixosConfigurations.macintosh.config.system.build.toplevel;
+        machines.lambda = self.nixosConfigurations.lambda.config.system.build.toplevel;
+        packages.x86_64-linux = packages.x86_64-linux;
+        packages.aarch64-linux = packages.aarch64-linux;
+      };
+
     };
-
-};
 }
