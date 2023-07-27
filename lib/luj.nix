@@ -17,7 +17,7 @@ inputs: lib: with lib; let
         default = { };
       };
 
-      config = {
+      config = rec {
         _module.freeformType = with types; attrs;
 
         domain = "julienmalka.me";
