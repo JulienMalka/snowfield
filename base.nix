@@ -6,6 +6,7 @@
   #luj.secrets.enable = true;
   luj.ssh-server.enable = true;
   luj.programs.mosh.enable = true;
+  luj.deployment.enable = true;
 
   sops.defaultSopsFile = ./secrets/secrets.yaml;
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];

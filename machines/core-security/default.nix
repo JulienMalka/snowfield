@@ -14,12 +14,6 @@
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
 
-  deployment = {
-    targetHost = "core-security.luj";
-    targetPort = 45;
-    targetUser = "root";
-  };
-
   security.acme.defaults.email = "julien@malka.sh";
 
   networking.hostName = "core-security"; # Define your hostname.

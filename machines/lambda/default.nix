@@ -12,6 +12,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  deployment.buildOnTarget = true;
+
   networking.hostName = "lambda";
 
   time.timeZone = "Europe/Paris";
@@ -56,7 +58,7 @@
     };
   };
 
-  security.acme.certs."uptime.luj".server = "https://ca.luj:8444/acme/acme/directory";
+  security.acme.certs."uptime.luj".server = "https://ca.luj/acme/acme/directory";
 
   services.nginx.virtualHosts."uptime.luj" = {
     forceSSL = true;
@@ -92,7 +94,7 @@
   };
 
 
-  security.acme.certs."prometheus.luj".server = "https://ca.luj:8444/acme/acme/directory";
+  security.acme.certs."prometheus.luj".server = "https://ca.luj/acme/acme/directory";
   services.nginx.virtualHosts."prometheus.luj" = {
     forceSSL = true;
     enableACME = true;
