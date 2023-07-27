@@ -100,14 +100,22 @@
         (lib.importConfig ./machines);
 
 
-      colmena = {
-        meta = {
-          nixpkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
-          nodeNixpkgs = builtins.mapAttrs (name: value: value.pkgs) nixosConfigurations;
-          nodeSpecialArgs = builtins.mapAttrs (name: value: value._module.specialArgs) nixosConfigurations;
-          specialArgs.lib = lib;
-        };
-      } // builtins.mapAttrs (name: value: { imports = value._module.args.modules; }) nixosConfigurations;
+      colmena =
+        let
+          deployableConfigurations = lib.filterAttrs (_: v: builtins.hasAttr "ipv4" lib.luj.machines.${v.config.networking.hostName}) nixosConfigurations;
+        in
+        {
+          meta = {
+            nixpkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
+            nodeNixpkgs = builtins.mapAttrs (_: v: v.pkgs) deployableConfigurations;
+            nodeSpecialArgs = builtins.mapAttrs (_: v: v._module.specialArgs) deployableConfigurations;
+            specialArgs.lib = lib;
+          };
+        } // builtins.mapAttrs
+          (_: v: {
+            imports = v._module.args.modules;
+          })
+          deployableConfigurations;
 
 
       packages = builtins.listToAttrs
@@ -128,13 +136,8 @@
       machines = lib.luj.machines;
 
       hydraJobs = {
-        machines.tower = self.nixosConfigurations.tower.config.system.build.toplevel;
-        machines.lisa = self.nixosConfigurations.lisa.config.system.build.toplevel;
-        machines.macintosh = self.nixosConfigurations.macintosh.config.system.build.toplevel;
-        machines.lambda = self.nixosConfigurations.lambda.config.system.build.toplevel;
-        packages.x86_64-linux = packages.x86_64-linux;
-        packages.aarch64-linux = packages.aarch64-linux;
+        packages = packages;
+        machines = lib.mapAttrs (_: v: v.config.system.build.toplevel) self.nixosConfigurations;
       };
-
     };
 }
