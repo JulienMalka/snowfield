@@ -64,6 +64,7 @@ in
         ];
       }
     ];
+    extraModules = [ inputs.colmena.nixosModules.deploymentOptions ];
   };
 
   importConfig = path: (mapAttrs (name: value: import (path + "/${name}/default.nix")) (readDir path));
