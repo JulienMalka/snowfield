@@ -1,5 +1,6 @@
 {
   description = "A flake for my personnal configurations";
+
   inputs = {
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
@@ -14,9 +15,7 @@
       flake = false;
     };
 
-    unstable = {
-      url = "github:NixOS/nixpkgs/nixos-unstable";
-    };
+    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     flake-utils.url = "github:numtide/flake-utils";
 
@@ -25,6 +24,8 @@
       inputs.nixpkgs.follows = "unstable";
       inputs.utils.follows = "flake-utils";
     };
+
+    colmena.url = "github:zhaofengli/colmena";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -45,17 +46,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-apple-silicon = {
-      url = "github:tpwrules/nixos-apple-silicon/";
-    };
+    nixos-apple-silicon.url = "github:tpwrules/nixos-apple-silicon/";
 
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
-    };
+    hyprland.url = "github:hyprwm/Hyprland";
 
-    hyprpaper = {
-      url = "github:hyprwm/hyprpaper";
-    };
+    hyprpaper.url = "github:hyprwm/hyprpaper";
 
     attic = {
       url = "github:zhaofengli/attic";
@@ -78,7 +73,7 @@
 
   };
 
-  outputs = { self, nixpkgs, deploy-rs, ... }@inputs:
+  outputs = { self, nixpkgs, ... }@inputs:
     let
       lib = nixpkgs.lib.extend (import ./lib inputs);
       machines_plats = lib.mapAttrsToList (name: value: value.arch) lib.luj.machines;
@@ -91,6 +86,7 @@
         machines_plats);
     in
     rec {
+
       nixosModules = builtins.listToAttrs (map
         (x: {
           name = x;
@@ -108,6 +104,16 @@
           home-manager = lib.luj.machines.${name}.hm_version;
         }))
         (lib.importConfig ./machines);
+
+
+      colmena = {
+        meta = {
+          nixpkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
+          nodeNixpkgs = builtins.mapAttrs (name: value: value.pkgs) nixosConfigurations;
+          nodeSpecialArgs = builtins.mapAttrs (name: value: value._module.specialArgs) nixosConfigurations;
+          specialArgs.lib = lib;
+        };
+      } // builtins.mapAttrs (name: value: { imports = value._module.args.modules; }) nixosConfigurations;
 
       deploy.nodes.lambda = {
         hostname = "lambda.luj";
@@ -131,16 +137,6 @@
         };
       };
 
-      deploy.nodes.bin-cache = {
-        hostname = "100.100.45.22";
-        profiles.system = {
-          sshUser = "root";
-          sshOpts = [ "-p" "45" ];
-          fastConnection = true;
-          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.bin-cache;
-        };
-      };
-
       deploy.nodes.core-security = {
         hostname = "core-security.luj";
         profiles.system = {
@@ -150,8 +146,6 @@
           path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.core-security;
         };
       };
-
-
 
       deploy.nodes.tower = {
         hostname = "tower.julienmalka.me";
@@ -178,82 +172,16 @@
           })
           machines_plats);
 
-      lol = import ./lol.nix nixpkgs_plats.x86_64-linux nixosConfigurations.lisa.config.system.build.toplevel.drvPath;
-
       machines =
-        let tld = "luj";
-        in {
-          lisa = {
-            inherit tld;
-            ipv4 = { public = "212.129.40.11"; vpn = "100.100.45.12"; };
-            ipv6 = { public = "2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb"; vpn = "fd7a:115c:a1e0::c"; };
-          };
-          lambda = {
-            inherit tld;
-            ipv4 = { public = "141.145.197.219"; vpn = "100.100.45.13"; };
-            ipv6 = { public = "2603:c027:c001:89aa:aad9:34b3:f3c9:924f"; vpn = "fd7a:115c:a1e0::d"; };
-          };
-          tower = {
-            inherit tld;
-            ipv4 = { public = "78.194.168.230"; local = "192.168.0.103"; vpn = "100.100.45.9"; };
-            ipv6 = { public = "2a01:e34:ec2a:8e60:8ec7:b5d2:f663:a67a"; vpn = "fd7a:115c:a1e0::9"; };
-          };
-          core-security = {
-            inherit tld;
-            ipv4 = { public = "78.194.168.230"; local = "192.168.0.175"; vpn = "100.100.45.14"; };
-            ipv6 = { public = "2a01:e34:ec2a:8e60:40f0:8cff:fe31:3e94"; vpn = "fd7a:115c:a1e0::e"; };
-          };
-          nuage = {
-            inherit tld;
-            subdomains = [ "nuage.malka.family" ];
-            ipv4 = { public = "78.194.168.230"; local = "192.168.0.101"; };
-            ipv6 = { public = "2a01:e34:ec2a:8e60:4ab8:c3d0:a0fe:525f"; };
-          };
-          pve1 = {
-            inherit tld;
-            ipv4 = { public = "78.194.168.230"; local = "192.168.1.1"; vpn = "100.100.45.3"; };
-            ipv6 = { public = "2a01:e34:ec2a:8e60:d250:99ff:fefa:b62"; vpn = "fd7a:115c:a1e0::3"; };
-          };
-          pve2 = {
-            inherit tld;
-            ipv4 = { public = "78.194.168.230"; local = "192.168.1.2"; vpn = "100.100.45.15"; };
-            ipv6 = { public = "2a01:e34:ec2a:8e60:aaa1:59ff:fec7:1d6"; vpn = "fd7a:115c:a1e0::f"; };
-          };
-          pve3 = {
-            inherit tld;
-            ipv4 = { public = "78.194.168.230"; local = "192.168.1.3"; vpn = "100.100.45.16"; };
-            ipv6 = { public = "2a01:e34:ec2a:8e60:aaa1:59ff:fec1:aa10"; vpn = "fd7a:115c:a1e0::10"; };
-          };
-          pve4 = {
-            inherit tld;
-            ipv4 = { public = "78.194.168.230"; local = "192.168.1.4"; vpn = "100.100.45.17"; };
-            ipv6 = { public = "2a01:e34:ec2a:8e60:d250:99ff:fefa:b76"; vpn = "fd7a:115c:a1e0::11"; };
-          };
-          saves-paris = {
-            inherit tld;
-            subdomains = [ "saves-paris.luj" ];
-            ipv4 = { public = "78.194.168.230"; local = "192.168.4.5"; vpn = "100.100.45.4"; };
-            ipv6 = { public = "2a01:e34:ec2a:8e60:3af3:abff:fe6a:1f54"; vpn = "fd7a:115c:a1e0::4"; };
-          };
 
-          saves-lyon = {
-            inherit tld;
-            subdomains = [ "saves-lyon.luj" ];
-            ipv4 = { vpn = "100.100.45.20"; };
-            ipv6 = { vpn = "fd7a:115c:a1e0::14"; };
-          };
-
-        };
-
-
-      hydraJobs = {
-        machines.tower = self.nixosConfigurations.tower.config.system.build.toplevel;
-        machines.lisa = self.nixosConfigurations.lisa.config.system.build.toplevel;
-        machines.macintosh = self.nixosConfigurations.macintosh.config.system.build.toplevel;
-        machines.lambda = self.nixosConfigurations.lambda.config.system.build.toplevel;
-        packages.x86_64-linux = packages.x86_64-linux;
-        packages.aarch64-linux = packages.aarch64-linux;
-      };
-
+        hydraJobs = {
+      machines.tower = self.nixosConfigurations.tower.config.system.build.toplevel;
+      machines.lisa = self.nixosConfigurations.lisa.config.system.build.toplevel;
+      machines.macintosh = self.nixosConfigurations.macintosh.config.system.build.toplevel;
+      machines.lambda = self.nixosConfigurations.lambda.config.system.build.toplevel;
+      packages.x86_64-linux = packages.x86_64-linux;
+      packages.aarch64-linux = packages.aarch64-linux;
     };
+
+};
 }
