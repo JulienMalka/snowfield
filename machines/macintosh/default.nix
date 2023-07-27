@@ -21,7 +21,7 @@
   hardware.asahi.addEdgeKernelConfig = true;
   hardware.asahi.useExperimentalGPUDriver = true;
   hardware.asahi.pkgs = lib.mkDefault pkgs;
-  #hardware.asahi.experimentalGPUInstallMode = "overlay";
+  hardware.asahi.experimentalGPUInstallMode = "overlay";
 
 
   programs.hyprland.enable = true;
@@ -36,10 +36,9 @@
     displayManager.gdm.enable = true;
     libinput = {
       enable = true;
-      naturalScrolling = true;
+      touchpad.naturalScrolling = true;
     };
   };
-
 
   services.tailscale.enable = true;
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
