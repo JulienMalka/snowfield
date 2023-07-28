@@ -11,18 +11,15 @@ with lib;
   config = mkIf cfg.enable {
     programs.ssh = {
       enable = true;
-      matchBlocks = {
+      matchBlocks = lib.mapAttrs
+        (n: v: { hostname = "${n}.${lib.luj.tld}"; user = v.sshUser; port = v.sshPort; })
+        lib.luj.machines // {
         sas = {
           hostname = "sas.eleves.ens.fr";
           user = "jmalka";
         };
-        lambda = {
-          hostname = "lambda.luj";
-          user = "root";
-          port = 45;
-        };
         router = {
-          hostname = "ci.julienmalka.me";
+          hostname = "vpn.saumon.network";
         };
         mails = {
           hostname = "192.168.0.76";
