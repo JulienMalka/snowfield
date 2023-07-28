@@ -17,7 +17,7 @@ in
       inherit inputs;
     };
     modules = builtins.attrValues modules ++ [
-      ../base.nix
+      ../machines/base.nix
       inputs.sops-nix.nixosModules.sops
       host-config
       home-manager.nixosModules.home-manager
@@ -67,7 +67,7 @@ in
     extraModules = [ inputs.colmena.nixosModules.deploymentOptions ];
   };
 
-  importConfig = path: (mapAttrs (name: value: import (path + "/${name}/default.nix")) (readDir path));
+  importConfig = path: (mapAttrs (name: value: import (path + "/${name}/default.nix")) (final.filterAttrs (_: v: v == "directory") (readDir path)));
 
   mkSubdomain = name: port: {
     luj.nginx.enable = true;
