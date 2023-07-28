@@ -12,6 +12,15 @@ inputs: lib: with lib; let
               default = name;
               readOnly = true;
             };
+            sshPort = mkOption {
+              description = "The port for the ssh server of the machine";
+              type = int;
+              default = 45;
+            };
+            sshUser = mkOption {
+              description = "The user for ssh connection to the machine";
+              default = "julien";
+            };
           };
         }));
         default = { };
@@ -77,27 +86,38 @@ inputs: lib: with lib; let
             inherit tld;
             ipv4 = { public = "78.194.168.230"; local = "192.168.1.1"; vpn = "100.100.45.3"; };
             ipv6 = { public = "2a01:e34:ec2a:8e60:d250:99ff:fefa:b62"; vpn = "fd7a:115c:a1e0::3"; };
+            sshPort = 22;
+            sshUser = "root";
           };
           pve2 = {
             inherit tld;
             ipv4 = { public = "78.194.168.230"; local = "192.168.1.2"; vpn = "100.100.45.15"; };
             ipv6 = { public = "2a01:e34:ec2a:8e60:aaa1:59ff:fec7:1d6"; vpn = "fd7a:115c:a1e0::f"; };
+            sshPort = 22;
+            sshUser = "root";
+
           };
           pve3 = {
             inherit tld;
             ipv4 = { public = "78.194.168.230"; local = "192.168.1.3"; vpn = "100.100.45.16"; };
             ipv6 = { public = "2a01:e34:ec2a:8e60:aaa1:59ff:fec1:aa10"; vpn = "fd7a:115c:a1e0::10"; };
+            sshPort = 22;
+            sshUser = "root";
           };
           pve4 = {
             inherit tld;
             ipv4 = { public = "78.194.168.230"; local = "192.168.1.4"; vpn = "100.100.45.17"; };
             ipv6 = { public = "2a01:e34:ec2a:8e60:d250:99ff:fefa:b76"; vpn = "fd7a:115c:a1e0::11"; };
+            sshPort = 22;
+            sshUser = "root";
           };
           saves-paris = {
             inherit tld;
             subdomains = [ "saves-paris.luj" ];
             ipv4 = { public = "78.194.168.230"; local = "192.168.4.5"; vpn = "100.100.45.4"; };
             ipv6 = { public = "2a01:e34:ec2a:8e60:3af3:abff:fe6a:1f54"; vpn = "fd7a:115c:a1e0::4"; };
+            sshPort = 22;
+            sshUser = "root";
           };
 
           saves-lyon = {
@@ -105,6 +125,8 @@ inputs: lib: with lib; let
             subdomains = [ "saves-lyon.luj" ];
             ipv4 = { vpn = "100.100.45.20"; };
             ipv6 = { vpn = "fd7a:115c:a1e0::14"; };
+            sshPort = 22;
+            sshUser = "root";
           };
 
 
