@@ -368,11 +368,11 @@
         "nixpkgs-regression": "nixpkgs-regression"
       },
       "locked": {
-        "lastModified": 1689947426,
-        "narHash": "sha256-acY4dEkac3LfE7ukTeJHWqwM0Jc2n5gAi901gOiNKKA=",
+        "lastModified": 1690822357,
+        "narHash": "sha256-GtV9t+Pe5iLRRAgVgAK8x1eDjnP2jFqgcbUQkZI6Yv4=",
         "owner": "obsidiansystems",
         "repo": "nix",
-        "rev": "a4e676f1e31182234644fde3e3a823e94d02e163",
+        "rev": "1fe9512a42474bed9983c6dfc252961d89c3b75f",
         "type": "github"
       },
       "original": {
@@ -484,11 +484,11 @@
     },
     "nixpkgs_5": {
       "locked": {
-        "lastModified": 1690630041,
-        "narHash": "sha256-gbnvqm5goS9DSKAqGFpq3398aOpwejmq4qWikqmQyRo=",
+        "lastModified": 1690726002,
+        "narHash": "sha256-cACz6jCJZtsZHGCJAN4vMobxzH5s6FCOTZHMrh/Hu0M=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "d57e8c535d4cbb07f441c30988ce52eec69db7a8",
+        "rev": "391e8db1f06c3f74c2d313a73135515023af3993",
         "type": "github"
       },
       "original": {
