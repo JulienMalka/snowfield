@@ -12,7 +12,7 @@ in
     {
       luj.nginx.enable = true;
 
-      security.acme.certs."home.luj".server = "https://ca.luj:8444/acme/acme/directory";
+      security.acme.certs."home.luj".server = "https://ca.luj/acme/acme/directory";
 
       services.nginx.virtualHosts."home.luj" = {
         enableACME = true;
