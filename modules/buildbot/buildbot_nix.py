@@ -413,6 +413,18 @@ def nix_build_config(
             warnOnFailure=True,
         )
     )
+    factory.addStep(
+            steps.ShellCommand(
+                name="Attic push",
+                env={},
+                command=[
+                    "attic",
+                    "push",
+                    "julien",
+                    util.Interpolate("result-%(prop:attr)s"),
+                ],
+            )
+        )
 
     return util.BuilderConfig(
         name="nix-build",
