@@ -25,7 +25,7 @@
   luj.buildbot.enable = true;
   luj.nginx.enable = true;
 
-  environment.systemPackages = with pkgs; [ tailscale attic colmena ];
+  environment.systemPackages = with pkgs; [ tailscale colmena ];
 
   services.tailscale.enable = true;
 

@@ -15,6 +15,7 @@ in
       targetPort = 45;
       targetUser = "root";
       allowLocalDeployment = true;
+      buildOnTarget = true;
     };
 
   };
