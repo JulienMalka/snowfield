@@ -27,6 +27,7 @@
     rxvt_unicode
     xorg.xbacklight
     neovim
+    attic
   ];
 
   environment.variables.EDITOR = "nvim";
