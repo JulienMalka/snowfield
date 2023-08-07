@@ -137,7 +137,7 @@
 
       hydraJobs = {
         packages = packages;
-        machines = lib.mapAttrs (_: v: v.config.system.build.toplevel) self.nixosConfigurations;
+        machines = lib.filterAttrs (n: v: n != "macintosh") (lib.mapAttrs (_: v: v.config.system.build.toplevel) self.nixosConfigurations);
       };
     };
 }
