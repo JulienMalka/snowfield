@@ -34,7 +34,6 @@ with lib;
                 # Input
                 input {
                   kb_layout = fr
-                  kb_variant = mac
                   follow_mouse = 1
                   touchpad {
                       natural_scroll = true
