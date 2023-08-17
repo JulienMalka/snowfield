@@ -12,6 +12,7 @@
       luj.programs.hyprland.enable = true;
       luj.programs.waybar.enable = true;
       luj.programs.kitty.enable = true;
+      luj.emails.enable = true;
 
       programs.rofi = {
         enable = true;
@@ -43,7 +44,6 @@
           jq
           lazygit
           fira-code
-          unstable.firefox
           feh
           meld
           vlc
@@ -66,6 +66,7 @@
           step-cli
           coq
           cvc5
+          signal-desktop
           coqPackages.coqide
           (why3.withProvers
             [
@@ -83,6 +84,24 @@
 
       services.dunst = {
         enable = true;
+      };
+
+      programs.chromium = {
+        enable = true;
+        commandLineArgs = [
+          "--ozone-platform-hint=wayland"
+          "--load-media-router-component-extension=1"
+        ];
+        extensions = [
+          { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # uBlock Origin
+          { id = "ldlghkoiihaelfnggonhjnfiabmaficg"; } # Alt+Q switcher
+          { id = "enjjhajnmggdgofagbokhmifgnaophmh"; } # Resolution Zoom for HiDPI
+          { id = "fihnjjcciajhdojfnbdddfaoknhalnja"; } # I don't care about cookies
+          { id = "ekhagklcjbdpajgpjgmbionohlpdbjgc"; } # Zotero Connector
+          { id = "hlepfoohegkhhmjieoechaddaejaokhf"; } # Refined GitHub
+          { id = "nngceckbapebfimnlniiiahkandclblb"; } # Bitwarden
+          { id = "dcpihecpambacapedldabdbpakmachpb"; updateUrl = "https://raw.githubusercontent.com/iamadamdev/bypass-paywalls-chrome/master/src/updates/updates.xml"; }
+        ];
       };
 
 
