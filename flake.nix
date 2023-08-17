@@ -65,6 +65,11 @@
 
     nix-rfc-92.url = "github:obsidiansystems/nix/dynamic-drvs";
 
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.3.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs = { self, nixpkgs, ... }@inputs:

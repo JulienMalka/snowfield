@@ -10,8 +10,12 @@
       ../../users/default.nix
     ];
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = false;
+  boot.loader.systemd-boot.enable = lib.mkForce false;
+  boot.lanzaboote = {
+    enable = true;
+    pkiBundle = "/etc/secureboot";
+  };
+
   networking.hostName = "x2100";
 
   networking.wireless.enable = false;
@@ -21,6 +25,8 @@
   environment.sessionVariables = {
     LIBSEAT_BACKEND = "logind";
   };
+
+  services.logind.lidSwitch = "suspend";
 
   services.xserver = {
     enable = true;
@@ -56,6 +62,7 @@
   environment.systemPackages = with pkgs; [
     tailscale
     brightnessctl
+    sbctl
   ];
 
   services.printing.enable = true;
