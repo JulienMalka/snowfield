@@ -21,12 +21,6 @@ with lib;
       xdg.configFile."hypr/hyprland.conf".text = ''
                 exec-once = waybar & hyprpaper
                 exec-once=dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY
-                exec swayidle -w \
-                  timeout 300 'swaylock -f -c 000000' \
-                  timeout 600 'swaymsg "output * dpms off"' \
-                  resume 'swaymsg "output * dpms on"' \
-                  before-sleep 'swaylock -f -c 000000'
-
                 exec-once = nm-applet --indicator 
                 # Monitors
                 monitor = eDP-1, preferred, auto, auto
@@ -40,8 +34,8 @@ with lib;
     
                 # General
                 general {
-            gaps_in = 4
-            gaps_out = 8
+            gaps_in = 3
+            gaps_out = 5
             border_size = 2
             col.active_border = rgb(11111b)
             col.inactive_border = rgb(11111b)
@@ -57,18 +51,13 @@ with lib;
     
                 # Decorations
                 decoration {
-                      rounding = 5
-                      active_opacity = 0.9
-                      blur_new_optimizations = on
-                      blur_size = 8
-                      blur_passes = 10
-                      blur = false
-
-                                  }
-    
-                animations {
-                  enabled = true
+                      rounding = 4
                 }
+
+                animations {
+                  enabled = false
+                }
+    
     
                 # Gestures
                 gestures {
@@ -79,13 +68,13 @@ with lib;
     
                 # Variables
                 $term = ${terminal}
-                $browser = firefox
+                $browser = chromium
                 $editor = nvim
                 $files = nemo
                 $launcher = ${menu}
     
                 # Apps
-                bind = SUPER, RETURN, exec, alacritty
+                bind = SUPER, RETURN, exec, kitty
                 bind = SUPER SHIFT, E, exec, $editor
                 bind = SUPER SHIFT, F, exec, $files
                 bind = SUPER SHIFT, B, exec, $browser
@@ -163,9 +152,19 @@ with lib;
         wallpaper = ,${../../machines/macintosh/wallpaper.jpg}
       '';
 
+      services.swayidle = {
+        enable = true;
+        systemdTarget = "hyprland-session.target";
+        events = [
+          { event = "before-sleep"; command = "${pkgs.swaylock}/bin/swaylock"; }
+        ];
+      };
 
 
-      home.packages = with pkgs; [ qt6.qtwayland libsForQt5.qt5.qtwayland hyprpaper swaylock swayidle ];
+
+
+
+      home.packages = with pkgs; [ qt6.qtwayland libsForQt5.qt5.qtwayland hyprpaper swaylock ];
 
     };
 }

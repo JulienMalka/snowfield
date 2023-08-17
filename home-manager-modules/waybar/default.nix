@@ -50,7 +50,7 @@ with lib;
             tooltip-format-enumerate-connected = "{device_alias}   {device_address}";
           };
           "network" = {
-            interface = "wlp1s0f0";
+            interface = "wlp3s0";
             format = "{ifname}";
             format-wifi = "<span color='#cba6f7'> </span>{essid}";
             format-ethernet = "{ipaddr}/{cidr} ";
