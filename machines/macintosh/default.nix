@@ -21,6 +21,7 @@
   hardware.asahi.addEdgeKernelConfig = true;
   hardware.asahi.useExperimentalGPUDriver = true;
   hardware.asahi.pkgs = lib.mkDefault pkgs;
+  hardware.asahi.experimentalGPUInstallMode = "replace";
 
 
   programs.hyprland.enable = true;
