@@ -26,10 +26,6 @@
     enable = true;
     layout = "fr";
     displayManager.gdm.enable = true;
-    libinput = {
-      enable = true;
-      touchpad.naturalScrolling = true;
-    };
   };
 
   services.tailscale.enable = true;
