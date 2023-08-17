@@ -35,10 +35,6 @@ with lib;
                 input {
                   kb_layout = fr
                   follow_mouse = 1
-                  touchpad {
-                      natural_scroll = true
-                      tap-to-click = false
-                  }
                   sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
                 }
     
