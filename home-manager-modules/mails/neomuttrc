@@ -1,8 +1,6 @@
-set from = "julien.malka@ens.fr"
-
+set from = "julien@malka.sh"
 # Nom complet de l'expéditeur
 set realname = "Julien Malka"
-
 # Génération du champs from
 set use_from = yes
 
@@ -12,20 +10,14 @@ set mark_old=no
 set editor = "nvim -c 'set tw=72' -c 'set wrap'"
 #set editor="vim +':set textwidth=0' +':set wrapmargin=0' +':set wrap'"
 #set wrap="72"
-set folder = ~/Maildir/ens
+set folder = ~/Maildir
 
+#set spoolfile=/home/julien/Maildir/ens/Inbox
 set mbox_type=Maildir
 set virtual_spoolfile=yes
 set header_cache=~/.cache/mutt
 set sidebar_visible = yes
-set record = "+Sent\ Messages"
-#mailboxes =Inbox =DG =DG/Malles =DG/Externements =DG/Thurnages =DG/Situations =DG/Fermeture =Sent\ Messages
-#named-mailboxes "Malles" =DG/Malles
-#named-mailboxes "Externements" =DG/Externements
-#named-mailboxes "Thurnages" =DG/Thurnages
-#named-mailboxes "Situations" =DG/Situations
-#named-mailboxes "Fermeture" =DG/Fermeture
-#named-mailboxes "Sent" =Sent\ Messages
+#set record = "+Sent\ Messages"
 set nm_unread_tag = unread
 set mail_check_stats=yes
 set sidebar_short_path = yes
@@ -33,17 +25,32 @@ set sidebar_short_path = yes
 
 set timeout=10
 set mail_check=10
-virtual-mailboxes "Inbox" "notmuch://?query=tag:inbox and NOT tag:dg and NOT tag:cof and NOT tag:fanfare and NOT tag:kfet and NOT tag:chefs and NOT tag:bc"
-virtual-mailboxes "K-Fêt" "notmuch://?query=tag:kfet"
-virtual-mailboxes "Chefs" "notmuch://?query=tag:chefs"
-virtual-mailboxes "Bilan Carbone" "notmuch://?query=tag:bc"
-virtual-mailboxes "DG" "notmuch://?query=tag:dg and NOT tag:externement and NOT tag:fermeture and NOT tag:malle and NOT tag:situation and NOT tag:thurnage"
-virtual-mailboxes "Externements" "notmuch://?query=tag:externement"
-virtual-mailboxes "Fermeture" "notmuch://?query=tag:fermeture"
-virtual-mailboxes "Malles" "notmuch://?query=tag:malle"
-virtual-mailboxes "Situations" "notmuch://?query=tag:situation"
-virtual-mailboxes "Thurnages" "notmuch://?query=tag:thurnage"
-virtual-mailboxes "Fanfare" "notmuch://?query=tag:fanfare"
+named-mailboxes "-----work-----" =sep1
+virtual-mailboxes "inbox" "notmuch://?query=tag:work-inbox
+virtual-mailboxes "dn42" "notmuch://?query=tag:work-dn42
+virtual-mailboxes "fosdem" "notmuch://?query=tag:work-fosdem
+virtual-mailboxes "frnog" "notmuch://?query=tag:work-frnog
+virtual-mailboxes "github" "notmuch://?query=tag:work-github
+virtual-mailboxes "lobsters" "notmuch://?query=tag:work-lobsters
+virtual-mailboxes "netdata" "notmuch://?query=tag:work-netdata
+virtual-mailboxes "nixos-discourse" "notmuch://?query=tag:work-nixos-discourse
+virtual-mailboxes "proxmox" "notmuch://?query=tag:work-proxmox
+
+named-mailboxes "-----ens-----" =sep2
+virtual-mailboxes "inbox" "notmuch://?query=tag:ens-inbox
+virtual-mailboxes "bilan-carbone" "notmuch://?query=tag:ens-bilan-carbone
+virtual-mailboxes "cof" "notmuch://?query=tag:ens-cof
+virtual-mailboxes "dg" "notmuch://?query=tag:ens-dg
+virtual-mailboxes "kfet" "notmuch://?query=tag:ens-kfet
+
+named-mailboxes "---telecom---" =sep3
+virtual-mailboxes "inbox" "notmuch://?query=tag:telecom-inbox
+
+named-mailboxes "----dgnum----" =sep4
+virtual-mailboxes "inbox" "notmuch://?query=tag:dgnum-inbox
+virtual-mailboxes "bureau" "notmuch://?query=tag:dgnum-bureau
+virtual-mailboxes "nixcon" "notmuch://?query=tag:dgnum-nixcon
+
 
 set sidebar_width=15
 set sidebar_divider_char='|'
@@ -61,6 +68,7 @@ set nm_default_url = "notmuch:///home/julien/Maildir"
 macro index \\ "<vfolder-from-query>"
 set metoo=yes
 
+set query_command="notmuch-addrlookup --format=mutt '%s'"
 set text_flowed
 
 set collapse_unread = no
@@ -68,17 +76,39 @@ set collapse_all = yes
 
 bind index - collapse-thread
 
+bind editor <Tab> complete-query
+bind editor ^T complete
+
 
 
 set sort = threads 
 set sort_aux = reverse-last-date-received
 
-folder-hook .  'source /home/julien/dotfiles/profile.default'
-folder-hook "DG"  'source /home/julien/dotfiles/profile.dg'
-folder-hook "K-Fêt" 'source /home/julien/dotfiles/profile.kfet'
-folder-hook "Chefs" 'source /home/julien/dotfiles/profile.chefs'
+
+folder-hook "ens-inbox"  'source ~/.config/neomutt/ens.profile'
+folder-hook "ens-bilan-carbone"  'source ~/.config/neomutt/ens.profile'
+folder-hook "ens-cof"  'source ~/.config/neomutt/ens.profile'
+folder-hook "ens-dg"  'source ~/.config/neomutt/ens.profile'
+folder-hook "ens-kfet"  'source ~/.config/neomutt/ens.profile'
+
+folder-hook "telecom-inbox"  'source ~/.config/neomutt/telecom.profile'
+
+folder-hook "work-nixos-discourse"  'source ~/.config/neomutt/discourse.profile'
+folder-hook "work-dn42"  'source ~/.config/neomutt/work.profile'
+folder-hook "work-frnog"  'source ~/.config/neomutt/work.profile'
+folder-hook "work-inbox"  'source ~/.config/neomutt/work.profile'
+folder-hook "work-github"  'source ~/.config/neomutt/work.profile'
+folder-hook "work-fosdem"  'source ~/.config/neomutt/work.profile'
+folder-hook "work-proxmox"  'source ~/.config/neomutt/work.profile'
+folder-hook "work-netdata"  'source ~/.config/neomutt/work.profile'
+folder-hook "work-lobsters"  'source ~/.config/neomutt/work.profile'
+
+folder-hook "dgnum-inbox"  'source ~/.config/neomutt/dgnum.profile'
+folder-hook "dgnum-bureau"  'source ~/.config/neomutt/dgnum.profile'
+folder-hook "dgnum-nixcon"  'source ~/.config/neomutt/dgnum.profile'
+
 set sidebar_format = '%D%* %?N?(%N)?%*'
 color sidebar_unread yellow default
 
-source ~/dotfiles/dracula.muttrc
+source dracula.muttrc
 set sendmail = "msmtp"
