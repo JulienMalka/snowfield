@@ -63,6 +63,7 @@
           element-desktop
           xdg-utils
           sops
+          step-cli
           coq
           cvc5
           coqPackages.coqide
