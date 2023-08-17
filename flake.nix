@@ -40,7 +40,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-apple-silicon.url = "github:tpwrules/nixos-apple-silicon/";
+    nixos-apple-silicon.url = "github:JulienMalka/nixos-apple-silicon/";
 
     hyprland.url = "github:hyprwm/Hyprland";
 
