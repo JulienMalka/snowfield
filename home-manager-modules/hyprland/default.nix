@@ -156,15 +156,44 @@ with lib;
         enable = true;
         systemdTarget = "hyprland-session.target";
         events = [
-          { event = "before-sleep"; command = "${pkgs.swaylock}/bin/swaylock"; }
+          { event = "before-sleep"; command = "${pkgs.swaylock-effects}/bin/swaylock --config /home/julien/.config/swaylock/config"; }
         ];
       };
 
 
+      programs.swaylock =
+        {
+          enable = true;
+          package = pkgs.swaylock-effects;
+          settings = {
+            screenshots = true;
+            clock = true;
+            indicator = true;
+            indicator-radius = 200;
+            indicator-thickness = 20;
+            grace = 0;
+            grace-no-mouse = true;
+            grace-no-touch = true;
+            line-uses-ring = false;
+            ignore-empty-password = true;
+            show-failed-attempts = false;
+
+            font = "Fira Code";
+            timestr = "%H:%M";
+            datestr = "";
+            effect-blur = "8x5";
+            effect-vignette = "0.5:0.5";
+            color = "00000000";
+
+          };
+
+        };
 
 
 
-      home.packages = with pkgs; [ qt6.qtwayland libsForQt5.qt5.qtwayland hyprpaper swaylock ];
+
+      home.packages = with pkgs;
+        [ qt6.qtwayland libsForQt5.qt5.qtwayland hyprpaper ];
 
     };
 }
