@@ -42,11 +42,6 @@ inputs: lib: with lib; let
             ipv4 = { public = "212.129.40.11"; vpn = "100.100.45.12"; };
             ipv6 = { public = "2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb"; vpn = "fd7a:115c:a1e0::c"; };
           };
-          macintosh = {
-            arch = "aarch64-linux";
-            nixpkgs_version = inputs.nixos-apple-silicon.inputs.nixpkgs;
-            hm_version = inputs.home-manager;
-          };
           x2100 = {
             arch = "x86_64-linux";
             nixpkgs_version = inputs.nixpkgs;
