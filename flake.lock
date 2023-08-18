@@ -483,6 +483,22 @@
         "type": "github"
       }
     },
+    "master": {
+      "locked": {
+        "lastModified": 1692352441,
+        "narHash": "sha256-cRx7uE6BQSW27WvnHqfuR5PIUvRXBftwqCKvRRMQN0w=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "0b1525114a2a9bc8eeee774fec9e7b0f1b1e543c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "0b1525114a2a9bc8eeee774fec9e7b0f1b1e543c",
+        "type": "github"
+      }
+    },
     "nix-index-database": {
       "inputs": {
         "nixpkgs": [
@@ -754,6 +770,7 @@
         "hyprpaper": "hyprpaper",
         "lanzaboote": "lanzaboote",
         "linkal": "linkal",
+        "master": "master",
         "nix-index-database": "nix-index-database",
         "nix-rfc-92": "nix-rfc-92",
         "nixd": "nixd",

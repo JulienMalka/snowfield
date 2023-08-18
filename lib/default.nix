@@ -3,10 +3,19 @@ inputs: final: prev:
 with builtins;
 
 let
-  overlay-unstable = arch: final: prev: {
-    unstable = inputs.unstable.legacyPackages."${arch}";
-    stable = inputs.nixpkgs.legacyPackages."${arch}";
-  };
+  overlay-unstable = arch: final: prev:
+    let
+      master-patched-src = (import inputs.master { system = arch; }).applyPatches {
+        name = "nixpkgs-patches";
+        src = inputs.master;
+        patches = [ ../patches/signal.patch ];
+      };
+    in
+    {
+      unstable = inputs.unstable.legacyPackages."${arch}";
+      master-patched = import master-patched-src { system = arch; };
+      stable = inputs.nixpkgs.legacyPackages."${arch}";
+    };
 in
 {
 

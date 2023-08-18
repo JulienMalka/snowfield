@@ -66,7 +66,7 @@
           step-cli
           coq
           cvc5
-          signal-desktop
+          master-patched.signal-desktop-beta
           coqPackages.coqide
           (why3.withProvers
             [
@@ -74,6 +74,8 @@
               alt-ergo
               z3
             ])
+          libsForQt5.neochat
+
         ];
 
       fonts.fontconfig.enable = true;
