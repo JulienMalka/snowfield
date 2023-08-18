@@ -148,8 +148,8 @@ with lib;
 
       '';
       xdg.configFile."hypr/hyprpaper.conf".text = ''
-        preload = ${../../machines/macintosh/wallpaper.jpg}
-        wallpaper = ,${../../machines/macintosh/wallpaper.jpg}
+        preload = ${../../machines/x2100/wallpaper.jpg}
+        wallpaper = ,${../../machines/x2100/wallpaper.jpg}
       '';
 
       services.swayidle = {
