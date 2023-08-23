@@ -82,8 +82,8 @@ with lib;
                 bind = SUPER, X, exec, power-menu
     
                 # Function keys
-                bind = ,XF86MonBrightnessUp, exec, brightnessctl s +10
-                bind = ,XF86MonBrightnessDown, exec, brightnessctl s 10-
+                bind = ,XF86MonBrightnessUp, exec, brightnessctl s +10%
+                bind = ,XF86MonBrightnessDown, exec, brightnessctl s 10%-
     
                 # Screenshots
                 bind = , Print, exec, $screenshotarea

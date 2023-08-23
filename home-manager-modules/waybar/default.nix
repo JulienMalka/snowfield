@@ -59,8 +59,8 @@ with lib;
           };
           "battery" = {
             format = "<span color='#cba6f7'>{icon}</span> {capacity}%";
-            format-icons = [ "" "" "" "" "" "" "" "" "" "" ];
-            format-charging = "<span color='#cba6f7'></span> {capacity}%";
+            format-icons = [ "" "" "" "" "" ];
+            format-charging = "<span color='#cba6f7'></span> {capacity}%";
             tooltip = false;
           };
         };
