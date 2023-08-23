@@ -75,7 +75,8 @@
               z3
             ])
           libsForQt5.neochat
-
+          scli
+          texlive.combined.scheme-full
         ];
 
       fonts.fontconfig.enable = true;
