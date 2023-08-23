@@ -83,6 +83,7 @@
   services.udev.packages = [
     pkgs.android-udev-rules
   ];
+  services.gnome.gnome-keyring.enable = true;
 
   services.autofs = {
     enable = true;
