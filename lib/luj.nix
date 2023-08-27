@@ -87,6 +87,14 @@ inputs: lib: with lib; let
             ipv4 = { public = "78.194.168.230"; local = "192.168.0.101"; };
             ipv6 = { public = "2a01:e34:ec2a:8e60:4ab8:c3d0:a0fe:525f"; };
           };
+
+          doma-backups = {
+            inherit tld;
+            subdomains = [ "doma-backups.julienmalka.me" ];
+            ipv4 = { public = "78.194.168.230"; local = "192.168.0.250"; };
+            ipv6 = { public = "2a01:e34:ec2a:8e60:6b86:c2c:2141:6702"; };
+          };
+
           pve1 = {
             inherit tld;
             ipv4 = { public = "78.194.168.230"; local = "192.168.1.1"; vpn = "100.100.45.3"; };
