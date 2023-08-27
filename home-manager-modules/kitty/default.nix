@@ -13,7 +13,8 @@ with lib;
     programs.kitty = {
       enable = true;
       extraConfig = ''
-                font_family Noto Color Emoji Regular
+        font_family Noto Color Emoji Regular
+        confirm_os_window_close 0
         font_family Fira Code Regular
         bold_font Fira Code Retina
         font_features FiraCode-Regular +zero +ss01 +ss02 +ss03 +ss04 +ss05 +cv31
@@ -22,6 +23,7 @@ with lib;
         shell_integration no-cursor
         cursor_shape block
         cursor_blink_interval 0
+        window_padding_width 4
 
         # Tab Management
         tab_bar_edge top

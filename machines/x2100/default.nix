@@ -10,8 +10,12 @@
       ../../users/default.nix
     ];
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = false;
+  boot.loader.systemd-boot.enable = lib.mkForce false;
+  boot.lanzaboote = {
+    enable = true;
+    pkiBundle = "/etc/secureboot";
+  };
+
   networking.hostName = "x2100";
 
   networking.wireless.enable = false;
@@ -22,14 +26,12 @@
     LIBSEAT_BACKEND = "logind";
   };
 
+  services.logind.lidSwitch = "suspend";
+
   services.xserver = {
     enable = true;
     layout = "fr";
     displayManager.gdm.enable = true;
-    libinput = {
-      enable = true;
-      touchpad.naturalScrolling = true;
-    };
   };
 
   services.tailscale.enable = true;
@@ -60,6 +62,7 @@
   environment.systemPackages = with pkgs; [
     tailscale
     brightnessctl
+    sbctl
   ];
 
   services.printing.enable = true;
@@ -80,6 +83,7 @@
   services.udev.packages = [
     pkgs.android-udev-rules
   ];
+  services.gnome.gnome-keyring.enable = true;
 
   services.autofs = {
     enable = true;

@@ -1,22 +1,6 @@
 { pkgs, lib, config, ... }:
 {
 
-  sops.secrets.ssh-macintosh-pub = {
-    owner = "julien";
-    path = "/home/julien/.ssh/id_ed25519.pub";
-    mode = "0644";
-    format = "binary";
-    sopsFile = ../../secrets/ssh-macintosh-pub;
-  };
-
-  sops.secrets.ssh-macintosh-priv = {
-    owner = "julien";
-    path = "/home/julien/.ssh/id_ed25519";
-    mode = "0600";
-    format = "binary";
-    sopsFile = ../../secrets/ssh-macintosh-priv;
-  };
-
   luj.hmgr.julien =
     {
       home.stateVersion = "22.11";
@@ -28,6 +12,7 @@
       luj.programs.hyprland.enable = true;
       luj.programs.waybar.enable = true;
       luj.programs.kitty.enable = true;
+      luj.emails.enable = true;
 
       programs.rofi = {
         enable = true;
@@ -59,7 +44,6 @@
           jq
           lazygit
           fira-code
-          unstable.firefox
           feh
           meld
           vlc
@@ -79,8 +63,10 @@
           element-desktop
           xdg-utils
           sops
+          step-cli
           coq
           cvc5
+          master-patched.signal-desktop-beta
           coqPackages.coqide
           (why3.withProvers
             [
@@ -88,6 +74,9 @@
               alt-ergo
               z3
             ])
+          libsForQt5.neochat
+          scli
+          texlive.combined.scheme-full
         ];
 
       fonts.fontconfig.enable = true;
@@ -98,6 +87,24 @@
 
       services.dunst = {
         enable = true;
+      };
+
+      programs.chromium = {
+        enable = true;
+        commandLineArgs = [
+          "--ozone-platform-hint=wayland"
+          "--load-media-router-component-extension=1"
+        ];
+        extensions = [
+          { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # uBlock Origin
+          { id = "ldlghkoiihaelfnggonhjnfiabmaficg"; } # Alt+Q switcher
+          { id = "enjjhajnmggdgofagbokhmifgnaophmh"; } # Resolution Zoom for HiDPI
+          { id = "fihnjjcciajhdojfnbdddfaoknhalnja"; } # I don't care about cookies
+          { id = "ekhagklcjbdpajgpjgmbionohlpdbjgc"; } # Zotero Connector
+          { id = "hlepfoohegkhhmjieoechaddaejaokhf"; } # Refined GitHub
+          { id = "nngceckbapebfimnlniiiahkandclblb"; } # Bitwarden
+          { id = "dcpihecpambacapedldabdbpakmachpb"; updateUrl = "https://raw.githubusercontent.com/iamadamdev/bypass-paywalls-chrome/master/src/updates/updates.xml"; }
+        ];
       };
 
 
