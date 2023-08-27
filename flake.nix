@@ -17,6 +17,8 @@
 
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    master.url = "github:NixOS/nixpkgs/0b1525114a2a9bc8eeee774fec9e7b0f1b1e543c";
+
     flake-utils.url = "github:numtide/flake-utils";
 
     colmena.url = "github:zhaofengli/colmena";
@@ -64,6 +66,11 @@
     };
 
     nix-rfc-92.url = "github:obsidiansystems/nix/dynamic-drvs";
+
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.3.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
   };
 
@@ -137,7 +144,7 @@
 
       hydraJobs = {
         packages = packages;
-        machines = lib.filterAttrs (n: v: n != "macintosh") (lib.mapAttrs (_: v: v.config.system.build.toplevel) self.nixosConfigurations);
+        machines = lib.mapAttrs (_: v: v.config.system.build.toplevel) self.nixosConfigurations;
       };
     };
 }
