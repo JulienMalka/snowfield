@@ -1,0 +1,84 @@
+From e6e285cd201e5de2f36ce7f3efacd224a73c96a0 Mon Sep 17 00:00:00 2001
+From: Linus Heckemann <git@sphalerite.org>
+Date: Wed, 16 Aug 2023 17:02:28 +0200
+Subject: [PATCH 1/2] bcachefs: support unlocking in systemd-based stage1
+
+---
+ nixos/modules/tasks/filesystems/bcachefs.nix | 26 ++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+
+diff --git a/nixos/modules/tasks/filesystems/bcachefs.nix b/nixos/modules/tasks/filesystems/bcachefs.nix
+index 19ef188ce7833..6a45a53e9b1cc 100644
+--- a/nixos/modules/tasks/filesystems/bcachefs.nix
++++ b/nixos/modules/tasks/filesystems/bcachefs.nix
+@@ -70,6 +70,32 @@ in
+         "mount.bcachefs" = "${mountCommand}/bin/mount.bcachefs";
+       };
+ 
++      boot.initrd.systemd.services = lib.mapAttrs' (mountpoint: fileSystem: let
++        mountUnitName =
++          if mountpoint == "/"
++          then "sysroot.mount"
++          else "sysroot-" + (utils.escapeSystemdPath mountpoint) + ".mount";
++        deviceUnit = (utils.escapeSystemdPath fileSystem.device) + ".device";
++      in {
++        name = "unlock-bcachefs-${utils.escapeSystemdPath mountpoint}";
++        value = {
++          requiredBy = [mountUnitName];
++          before = [mountUnitName];
++          after = [deviceUnit];
++          requires = [deviceUnit];
++          serviceConfig.Type = "oneshot";
++          script = ''
++            if ! bcachefs unlock -c ${fileSystem.device}; then
++              exit 0
++            fi
++            passphrase=
++            until bcachefs unlock ${fileSystem.device} <<<"$passphrase"; do
++              passphrase=$(systemd-ask-password "bcachefs passphrase for ${fileSystem.device}")
++            done
++          '';
++        };
++      }) bootFs;
++
+       boot.initrd.extraUtilsCommands = lib.mkIf (!config.boot.initrd.systemd.enable) ''
+         copy_bin_and_libs ${pkgs.bcachefs-tools}/bin/bcachefs
+         copy_bin_and_libs ${mountCommand}/bin/mount.bcachefs
+
+From 6d194a0b0248658f1e2d4fd354ce884bd81d5fa6 Mon Sep 17 00:00:00 2001
+From: Linus Heckemann <git@sphalerite.org>
+Date: Thu, 24 Aug 2023 00:48:52 +0200
+Subject: [PATCH 2/2] nixos/tests/installer: test bcachefs root with systemd
+ stage1
+
+---
+ nixos/tests/installer-systemd-stage-1.nix | 2 ++
+ nixos/tests/installer.nix                 | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/nixos/tests/installer-systemd-stage-1.nix b/nixos/tests/installer-systemd-stage-1.nix
+index 85155a6c682b3..8f10a461d1c6c 100644
+--- a/nixos/tests/installer-systemd-stage-1.nix
++++ b/nixos/tests/installer-systemd-stage-1.nix
+@@ -8,6 +8,8 @@
+   # them when fixed.
+   inherit (import ./installer.nix { inherit system config pkgs; systemdStage1 = true; })
+     # bcache
++    bcachefsSimple
++    bcachefsEncrypted
+     btrfsSimple
+     btrfsSubvolDefault
+     btrfsSubvolEscape
+diff --git a/nixos/tests/installer.nix b/nixos/tests/installer.nix
+index 56ba85b76e6f5..3ad36f22f3a95 100644
+--- a/nixos/tests/installer.nix
++++ b/nixos/tests/installer.nix
+@@ -918,7 +918,7 @@ in {
+     enableOCR = true;
+     preBootCommands = ''
+       machine.start()
+-      machine.wait_for_text("enter passphrase for ")
++      machine.wait_for_text("passphrase for ")
+       machine.send_chars("password\n")
+     '';
+ 
