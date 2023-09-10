@@ -26,6 +26,28 @@ with lib;
           proxyJump = "router";
         };
 
+        proxy-telecom = {
+          hostname = "ssh.enst.fr";
+          user = "jmalka";
+        };
+
+        lame24 = {
+          hostname = "lame24.enst.fr";
+          user = "jmalka";
+          proxyJump = "proxy-telecom";
+        };
+
+        epyc = {
+          hostname = "epyc.infra.newtype.fr";
+          user = "luj";
+          proxyJump = "tower";
+        };
+
+        exps = {
+          hostname = "192.168.0.240";
+          proxyJump = "router";
+        };
+
       };
     };
   };
