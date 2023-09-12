@@ -72,7 +72,7 @@ inputs: lib: with lib; let
             nixpkgs_version = inputs.nixpkgs;
             hm_version = inputs.home-manager;
             ipv4 = { public = "78.194.168.230"; local = "192.168.0.175"; vpn = "100.100.45.14"; };
-            ipv6 = { public = "2a01:e34:ec2a:8e60:40f0:8cff:fe31:3e94"; vpn = "fd7a:115c:a1e0::e"; };
+            ipv6 = { public = "2a01:e34:ec2a:8e60:b5a1:b209:367:8d32"; vpn = "fd7a:115c:a1e0::e"; };
 
           };
 
