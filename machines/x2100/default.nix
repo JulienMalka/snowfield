@@ -1,20 +1,42 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, nixpkgs-patched, ... }:
 
 {
   imports =
     [
-      # Include the results of the hardware scan.
       ./hardware.nix
       ./home-julien.nix
       ../../users/julien.nix
       ../../users/default.nix
+      #    "${nixpkgs-patched}/nixos/modules/system/boot/systemd/initrd.nix"
     ];
+
+
+  #disabledModules = [ "system/boot/systemd/initrd.nix" ];
+
 
   boot.loader.systemd-boot.enable = lib.mkForce false;
   boot.lanzaboote = {
     enable = true;
     pkiBundle = "/etc/secureboot";
   };
+  #boot.initrd.systemd.enable = true;
+  sound.enable = true;
+  #hardware.pulseaudio.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    # If you want to use JACK applications, uncomment this
+    #jack.enable = true;
+
+    # use the example session manager (no others are packaged yet so this is enabled by default,
+    # no need to redefine it in your config for now)
+    #media-session.enable = true;
+    wireplumber.enable = true;
+
+  };
+
 
   networking.hostName = "x2100";
 
@@ -63,6 +85,7 @@
     tailscale
     brightnessctl
     sbctl
+    wl-mirror
   ];
 
   services.printing.enable = true;
