@@ -47,6 +47,7 @@
           feh
           meld
           vlc
+          jftui
           stable.nerdfonts
           libreoffice
           font-awesome
@@ -66,7 +67,7 @@
           step-cli
           coq
           cvc5
-          master-patched.signal-desktop-beta
+          nixpkgs-patched.signal-desktop-beta
           coqPackages.coqide
           (why3.withProvers
             [
