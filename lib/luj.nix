@@ -47,6 +47,11 @@ inputs: lib: with lib; let
             nixpkgs_version = inputs.nixpkgs;
             hm_version = inputs.home-manager;
           };
+	  enigma = {
+		arch = "aarch64-linux";
+		nixpkgs_version = inputs.nixpkgs;
+                hm_version = inputs.home-manager;
+		};
           lambda = {
             inherit tld;
             arch = "aarch64-linux";
