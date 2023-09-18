@@ -14,6 +14,8 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
 
+  services.gnome.gnome-browser-connector.enable = true;
+
   services.tailscale.enable = true;
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
@@ -21,20 +23,20 @@
   services.resolved.enable = true;
 
 
-services.xserver.enable = true;
+  services.xserver.enable = true;
 
-services.xserver.displayManager.gdm.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
 
-# Enable OpenGL
+  # Enable OpenGL
   hardware.opengl = {
     enable = true;
     driSupport = true;
-#    driSupport32Bit = true;
+    #    driSupport32Bit = true;
   };
 
   # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
 
@@ -57,7 +59,7 @@ services.xserver.displayManager.gdm.enable = true;
     open = true;
 
     # Enable the Nvidia settings menu,
-	# accessible via `nvidia-settings`.
+    # accessible via `nvidia-settings`.
     nvidiaSettings = true;
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
@@ -65,8 +67,23 @@ services.xserver.displayManager.gdm.enable = true;
   };
 
 
-boot.initrd.kernelModules = [ "nvidia" ];
-boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+  boot.initrd.kernelModules = [ "nvidia" ];
+  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+
+  services.spotifyd = {
+    enable = true;
+    settings = {
+      global = {
+        username = "julienmalka@icloud.com";
+        password_cmd = "cat /root/spotify_pw";
+        use_mpris = false;
+      };
+    };
+  };
+
+  systemd.services.spotifyd.serviceConfig.DynamicUser = lib.mkForce false;
+
+  programs.xwayland.enable = true;
 
   time.timeZone = "Europe/Paris";
 
@@ -86,6 +103,7 @@ boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
     tailscale
     brightnessctl
     sbctl
+    ddcutil
   ];
 
   services.printing.enable = true;
