@@ -98,6 +98,22 @@
 
   security.polkit.enable = true;
 
+  nix = {
+    package = lib.mkForce pkgs.nix;
+    distributedBuilds = true;
+    buildMachines = [
+      {
+        hostName = "epyc.infra.newtype.fr";
+        maxJobs = 100;
+        systems = [ "x86_64-linux" ];
+        sshUser = "root";
+        sshKey = "/home/julien/.ssh/id_ed25519";
+        speedFactor = 2;
+      }
+    ];
+  };
+
+
 
   environment.systemPackages = with pkgs; [
     tailscale
