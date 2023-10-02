@@ -23,6 +23,14 @@
   services.resolved.enable = true;
 
 
+  security.pam.loginLimits = [{
+    domain = "*";
+    type = "-";
+    item = "nofile";
+    value = "262144";
+  }];
+
+
   services.xserver.enable = true;
 
   services.xserver.displayManager.gdm.enable = true;
