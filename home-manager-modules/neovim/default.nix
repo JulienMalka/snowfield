@@ -66,17 +66,6 @@ with lib;
               nix = {
                 command = "nixd";
                 filetypes = [ "nix" ];
-                rootPatterns = [ "flake.nix" ];
-                settings = {
-                  nixd = {
-                    formatting = {
-                      command = "nixpkgs-fmt";
-                    };
-                    options = {
-                      enable = true;
-                    };
-                  };
-                };
               };
 
               ccls = {
