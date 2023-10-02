@@ -68,7 +68,6 @@ in
                 tailscale = prev.unstable.tailscale;
                 nodePackages = prev.unstable.nodePackages;
                 hydrasect = prev.pkgs.callPackage ../packages/hydrasect { };
-                uptime-kuma = prev.pkgs.callPackage ../packages/uptime-kuma { };
                 linkal = inputs.linkal.defaultPackage."${system}";
                 mosh = prev.unstable.mosh;
                 hyprpaper = inputs.hyprpaper.packages.${system}.default;
