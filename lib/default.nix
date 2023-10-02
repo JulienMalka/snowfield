@@ -8,7 +8,7 @@ let
       nixpkgs-patched-src = (import inputs.nixpkgs { system = arch; }).applyPatches {
         name = "nixpkgs-patches";
         src = inputs.nixpkgs;
-        patches = [ ../patches/signal.patch ../patches/bcachefs-systemd-stage-1.patch ];
+        patches = [ ../patches/bcachefs-systemd-stage-1.patch ];
       };
     in
     {
@@ -24,7 +24,7 @@ in
       nixpkgs-patched-src = (import nixpkgs { inherit system; }).applyPatches {
         name = "nixpkgs-patched";
         src = nixpkgs;
-        patches = [ ../patches/signal.patch ../patches/bcachefs-systemd-stage-1.patch ];
+        patches = [ ../patches/bcachefs-systemd-stage-1.patch ];
       };
     in
     nixpkgs.lib.nixosSystem {
