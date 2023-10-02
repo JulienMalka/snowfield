@@ -66,6 +66,8 @@
           sops
           step-cli
           coq
+          gh
+          gh-dash
           cvc5
           nixpkgs-patched.signal-desktop-beta
           coqPackages.coqide
