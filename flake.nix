@@ -17,8 +17,6 @@
 
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    master.url = "github:NixOS/nixpkgs/0b1525114a2a9bc8eeee774fec9e7b0f1b1e543c";
-
     flake-utils.url = "github:numtide/flake-utils";
 
     colmena.url = "github:zhaofengli/colmena";
@@ -64,8 +62,6 @@
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nix-rfc-92.url = "github:obsidiansystems/nix/dynamic-drvs";
 
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.3.0";

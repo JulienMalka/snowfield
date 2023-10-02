@@ -1,20 +1,44 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, nixpkgs-patched, ... }:
 
 {
   imports =
     [
-      # Include the results of the hardware scan.
       ./hardware.nix
       ./home-julien.nix
       ../../users/julien.nix
       ../../users/default.nix
+      "${nixpkgs-patched}/nixos/modules/tasks/filesystems/bcachefs.nix"
     ];
+
+
+  disabledModules = [ "tasks/filesystems/bcachefs.nix" ];
+
+  boot.initrd.systemd.enable = true;
+
 
   boot.loader.systemd-boot.enable = lib.mkForce false;
   boot.lanzaboote = {
     enable = true;
     pkiBundle = "/etc/secureboot";
   };
+  #boot.initrd.systemd.enable = true;
+  sound.enable = true;
+  #hardware.pulseaudio.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    # If you want to use JACK applications, uncomment this
+    #jack.enable = true;
+
+    # use the example session manager (no others are packaged yet so this is enabled by default,
+    # no need to redefine it in your config for now)
+    #media-session.enable = true;
+    wireplumber.enable = true;
+
+  };
+
 
   networking.hostName = "x2100";
 
@@ -59,10 +83,18 @@
 
   services.tlp.enable = true;
 
+  security.tpm2.enable = true;
+  security.tpm2.pkcs11.enable = true; # expose /run/current-system/sw/lib/libtpm2_pkcs11.so
+  security.tpm2.tctiEnvironment.enable = true; # TPM2TOOLS_TCTI and TPM2_PKCS11_TCTI env variables
+  users.users.julien.extraGroups = [ "tss" ]; # tss group has access to TPM devices
+
+  hardware.bluetooth.enable = true;
+
   environment.systemPackages = with pkgs; [
     tailscale
     brightnessctl
     sbctl
+    wl-mirror
   ];
 
   services.printing.enable = true;
