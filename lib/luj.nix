@@ -98,8 +98,8 @@ inputs: lib: with lib; let
           doma-zulip = {
             inherit tld;
             subdomains = [ "zulip.julienmalka.me" ];
-            ipv4 = { public = "78.194.168.230"; local = "192.168.0.250"; };
-            ipv6 = { public = "2a01:e34:ec2a:8e60:14cb:fdff:feb7:be98"; };
+            ipv4 = { public = "78.194.168.230"; local = "192.168.0.248"; };
+            ipv6 = { public = "2a01:e34:ec2a:8e60:98de:9dff:fe0f:160b"; };
           };
 
           pve1 = {
