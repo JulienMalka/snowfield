@@ -47,11 +47,11 @@ inputs: lib: with lib; let
             nixpkgs_version = inputs.nixpkgs;
             hm_version = inputs.home-manager;
           };
-	  enigma = {
-		arch = "aarch64-linux";
-		nixpkgs_version = inputs.nixpkgs;
-                hm_version = inputs.home-manager;
-		};
+          enigma = {
+            arch = "aarch64-linux";
+            nixpkgs_version = inputs.nixpkgs;
+            hm_version = inputs.home-manager;
+          };
           lambda = {
             inherit tld;
             arch = "aarch64-linux";
@@ -93,6 +93,12 @@ inputs: lib: with lib; let
             subdomains = [ "doma-backups.julienmalka.me" ];
             ipv4 = { public = "78.194.168.230"; local = "192.168.0.250"; };
             ipv6 = { public = "2a01:e34:ec2a:8e60:6b86:c2c:2141:6702"; };
+          };
+
+          doma-zulip = {
+            inherit tld;
+            subdomains = [ "zulip.julienmalka.me" ];
+            ipv4 = { local = "192.168.0.250"; };
           };
 
           pve1 = {
