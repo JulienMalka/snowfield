@@ -28,12 +28,13 @@
   services.nginx.recommendedProxySettings = true;
   services.nginx.recommendedTlsSettings = true;
 
-  services.uptime-kuma.enable = true;
-  services.uptime-kuma.settings = {
-    NODE_EXTRA_CA_CERTS = "/etc/ssl/certs/ca-certificates.crt";
+  services.uptime-kuma = {
+    enable = true;
+    package = pkgs.unstable.uptime-kuma;
+    settings = {
+      NODE_EXTRA_CA_CERTS = "/etc/ssl/certs/ca-certificates.crt";
+    };
   };
-
-  systemd.services.uptime-kuma.path = [ pkgs.unixtools.ping ];
 
   services.ntfy-sh =
     {
