@@ -32,8 +32,6 @@ in
         nginx.subdomain = "jackett";
       };
 
-      luj.flaresolverr.enable = true;
-
       luj.deluge = {
         enable = true;
         user = "mediaserver";
