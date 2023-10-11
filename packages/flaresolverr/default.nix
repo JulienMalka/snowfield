@@ -19,6 +19,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ chromedriver ];
 
   patches = [
+    ./is_patched.patch
     (substituteAll {
       src = ./chromedriver_path.patch;
       chromedriver_path = "${chromedriver}/bin/chromedriver";
