@@ -39,6 +39,7 @@
 
   };
 
+  services.postgresql.enable = true;
 
   networking.hostName = "x2100";
 
