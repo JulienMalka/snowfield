@@ -7,13 +7,8 @@
       ./home-julien.nix
       ../../users/julien.nix
       ../../users/default.nix
-      "${nixpkgs-patched}/nixos/modules/tasks/filesystems/bcachefs.nix"
     ];
 
-
-  disabledModules = [ "tasks/filesystems/bcachefs.nix" ];
-
-  boot.initrd.systemd.enable = true;
 
 
   boot.loader.systemd-boot.enable = lib.mkForce false;
