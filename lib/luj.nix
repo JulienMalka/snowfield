@@ -67,7 +67,7 @@ inputs: lib: with lib; let
             nixpkgs_version = inputs.nixpkgs;
             hm_version = inputs.home-manager;
             ipv4 = { public = "82.67.34.230"; local = "192.168.0.103"; vpn = "100.100.45.9"; };
-            ipv6 = { public = "2a01:e0a:de4:a0e0:8ec7:b5d2:f663:a67a"; vpn = "fd7a:115c:a1e0::9"; };
+            ipv6 = { public = "2a01:e0a:de4:a0e1:8ec7:b5d2:f663:a67a"; vpn = "fd7a:115c:a1e0::9"; };
 
           };
 
@@ -77,7 +77,7 @@ inputs: lib: with lib; let
             nixpkgs_version = inputs.nixpkgs;
             hm_version = inputs.home-manager;
             ipv4 = { public = "82.67.34.230"; local = "192.168.0.175"; vpn = "100.100.45.14"; };
-            ipv6 = { public = "2a01:e0a:de4:a0e0:40f0:8cff:fe31:3e94"; vpn = "fd7a:115c:a1e0::e"; };
+            ipv6 = { public = "2a01:e0a:de4:a0e1:40f0:8cff:fe31:3e94"; vpn = "fd7a:115c:a1e0::e"; };
 
           };
 
@@ -85,34 +85,34 @@ inputs: lib: with lib; let
             inherit tld;
             subdomains = [ "nuage.malka.family" ];
             ipv4 = { public = "82.67.34.230"; local = "192.168.0.101"; };
-            ipv6 = { public = "2a01:e0a:de4:a0e0:4ab8:c3d0:a0fe:525f"; };
+            ipv6 = { public = "2a01:e0a:de4:a0e1:4ab8:c3d0:a0fe:525f"; };
           };
 
           doma-backups = {
             inherit tld;
             subdomains = [ "doma-backups.julienmalka.me" ];
             ipv4 = { public = "82.67.34.230"; local = "192.168.0.250"; };
-            ipv6 = { public = "2a01:e0a:de4:a0e0:6b86:c2c:2141:6702"; };
+            ipv6 = { public = "2a01:e0a:de4:a0e1:6b86:c2c:2141:6702"; };
           };
 
           doma-zulip = {
             inherit tld;
             subdomains = [ "zulip.julienmalka.me" ];
             ipv4 = { public = "82.67.34.230"; local = "192.168.0.187"; };
-            ipv6 = { public = "2a01:e0a:de4:a0e0:6830:ddff:fe52:a444"; };
+            ipv6 = { public = "2a01:e0a:de4:a0e1:6830:ddff:fe52:a444"; };
           };
 
           pve1 = {
             inherit tld;
             ipv4 = { public = "82.67.34.230"; local = "192.168.1.1"; vpn = "100.100.45.3"; };
-            ipv6 = { public = "2a01:e0a:de4:a0e0:d250:99ff:fefa:b62"; vpn = "fd7a:115c:a1e0::3"; };
+            ipv6 = { public = "2a01:e0a:de4:a0e1:d250:99ff:fefa:b62"; vpn = "fd7a:115c:a1e0::3"; };
             sshPort = 22;
             sshUser = "root";
           };
           pve2 = {
             inherit tld;
             ipv4 = { public = "82.67.34.230"; local = "192.168.1.2"; vpn = "100.100.45.15"; };
-            ipv6 = { public = "2a01:e0a:de4:a0e0:aaa1:59ff:fec7:1d6"; vpn = "fd7a:115c:a1e0::f"; };
+            ipv6 = { public = "2a01:e0a:de4:a0e1:aaa1:59ff:fec7:1d6"; vpn = "fd7a:115c:a1e0::f"; };
             sshPort = 22;
             sshUser = "root";
 
@@ -120,14 +120,14 @@ inputs: lib: with lib; let
           pve3 = {
             inherit tld;
             ipv4 = { public = "82.67.34.230"; local = "192.168.1.3"; vpn = "100.100.45.16"; };
-            ipv6 = { public = "2a01:e0a:de4:a0e0:aaa1:59ff:fec1:aa10"; vpn = "fd7a:115c:a1e0::10"; };
+            ipv6 = { public = "2a01:e0a:de4:a0e1:aaa1:59ff:fec1:aa10"; vpn = "fd7a:115c:a1e0::10"; };
             sshPort = 22;
             sshUser = "root";
           };
           pve4 = {
             inherit tld;
             ipv4 = { public = "82.67.34.230"; local = "192.168.1.4"; vpn = "100.100.45.17"; };
-            ipv6 = { public = "2a01:e0a:de4:a0e0:d250:99ff:fefa:b76"; vpn = "fd7a:115c:a1e0::11"; };
+            ipv6 = { public = "2a01:e0a:de4:a0e1:d250:99ff:fefa:b76"; vpn = "fd7a:115c:a1e0::11"; };
             sshPort = 22;
             sshUser = "root";
           };
@@ -135,7 +135,7 @@ inputs: lib: with lib; let
             inherit tld;
             subdomains = [ "saves-paris.luj" ];
             ipv4 = { public = "82.67.34.230"; local = "192.168.4.5"; vpn = "100.100.45.4"; };
-            ipv6 = { public = "2a01:e0a:de4:a0e0:3af3:abff:fe6a:1f54"; vpn = "fd7a:115c:a1e0::4"; };
+            ipv6 = { public = "2a01:e0a:de4:a0e1:3af3:abff:fe6a:1f54"; vpn = "fd7a:115c:a1e0::4"; };
             sshPort = 22;
             sshUser = "root";
           };
