@@ -85,7 +85,7 @@ inputs: lib: with lib; let
             inherit tld;
             subdomains = [ "nuage.malka.family" ];
             ipv4 = { public = "82.67.34.230"; local = "192.168.0.101"; };
-            ipv6 = { public = "2a01:e0a:de4:a0e1:4ab8:c3d0:a0fe:525f"; };
+            ipv6 = { public = "2a01:e0a:de4:a0e1:95c9:b2e2:e999:1a45"; };
           };
 
           doma-backups = {
