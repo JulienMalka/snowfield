@@ -11,7 +11,12 @@
 
 
 
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable = lib.mkForce false;
+  boot.lanzaboote = {
+    enable = true;
+    pkiBundle = "/etc/secureboot";
+  };
+
   boot.initrd.systemd.enable = true;
   sound.enable = true;
   #hardware.pulseaudio.enable = true;
@@ -47,6 +52,7 @@
     layout = "fr";
     displayManager.gdm.enable = true;
   };
+
 
   services.tailscale.enable = true;
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
@@ -103,6 +109,15 @@
     pkgs.android-udev-rules
   ];
   services.gnome.gnome-keyring.enable = true;
+
+  services.openssh.extraConfig = ''
+    HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
+    HostKey /etc/ssh/ssh_host_ed25519_key
+    TrustedUserCAKeys /etc/ssh/ssh_user_key.pub
+    MaxAuthTries 20
+  '';
+
+
 
   system.stateVersion = "23.05";
 
