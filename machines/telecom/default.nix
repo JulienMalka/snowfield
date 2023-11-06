@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, nixpkgs-patched, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 {
   imports =
@@ -41,8 +41,6 @@
 
   networking.wireless.enable = false;
 
-  programs.hyprland.enable = true;
-  programs.hyprland.package = pkgs.hyprland;
   environment.sessionVariables = {
     LIBSEAT_BACKEND = "logind";
   };
@@ -51,8 +49,14 @@
     enable = true;
     layout = "fr";
     displayManager.gdm.enable = true;
+    displayManager.gdm.wayland = true;
   };
 
+  programs.sway.enable = true;
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "zotero-6.0.27"
+  ];
 
   services.tailscale.enable = true;
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
@@ -60,13 +64,20 @@
   networking.networkmanager.dns = "systemd-resolved";
   services.resolved.enable = true;
 
+  boot.initrd.clevis = {
+    enable = true;
+    devices."cryptroot".secretFile = ./root.jwe;
+  };
+
+  boot.initrd.systemd.enableTpm2 = true;
+
+
 
   time.timeZone = "Europe/Paris";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
-    font = "Lat2-Terminus16";
     useXkbConfig = true; # use xkbOptions in tty.
   };
 

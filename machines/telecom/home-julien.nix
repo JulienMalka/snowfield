@@ -9,7 +9,7 @@
       luj.programs.git.enable = true;
       luj.programs.gtk.enable = true;
       luj.programs.alacritty.enable = true;
-      luj.programs.hyprland.enable = true;
+      luj.programs.sway.enable = true;
       luj.programs.waybar.enable = true;
       luj.programs.kitty.enable = true;
       luj.emails.enable = true;
@@ -37,6 +37,8 @@
         };
       };
 
+      xsession.enable = true;
+
       home.packages = with pkgs;
         [
           du-dust
@@ -48,7 +50,7 @@
           meld
           vlc
           jftui
-          stable.nerdfonts
+          nerdfonts
           libreoffice
           font-awesome
           nodejs
