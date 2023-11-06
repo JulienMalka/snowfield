@@ -14,7 +14,7 @@ with lib;
       lib.mapAttrs
         (name: value:
           {
-            imports = with builtins; (map (x: ../../home-manager-modules + "/${x}/default.nix") (attrNames (readDir ../../home-manager-modules))) ++ [ inputs.hyprland.homeManagerModules.default ];
+            imports = with builtins; (map (x: ../../home-manager-modules + "/${x}/default.nix") (attrNames (readDir ../../home-manager-modules)));
             home.username = "${name}";
             home.homeDirectory = "/home/${name}";
             home.stateVersion = "21.05";
