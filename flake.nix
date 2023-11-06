@@ -7,7 +7,11 @@
 
     home-manager = {
       url = "github:nix-community/home-manager/release-23.05";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    home-manager-unstable = {
+      url = "github:nix-community/home-manager/master";
     };
 
     homepage = {
@@ -16,6 +20,8 @@
     };
 
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    unstable-plus-patches.url = "github:JulienMalka/nixpkgs/unstable-plus-patches";
 
     flake-utils.url = "github:numtide/flake-utils";
 
@@ -73,6 +79,7 @@
     let
       lib = nixpkgs.lib.extend (import ./lib inputs);
       machines_plats = lib.mapAttrsToList (name: value: value.arch) (lib.filterAttrs (n: v: builtins.hasAttr "arch" v) lib.luj.machines);
+      mkMachine = import ./lib/mkmachine.nix inputs lib;
 
       nixpkgs_plats = builtins.listToAttrs (builtins.map
         (plat: {
@@ -91,7 +98,7 @@
         (builtins.attrNames (builtins.readDir ./modules)));
 
       nixosConfigurations = builtins.mapAttrs
-        (name: value: (lib.mkMachine {
+        (name: value: (mkMachine {
           host = name;
           host-config = value;
           modules = self.nixosModules;

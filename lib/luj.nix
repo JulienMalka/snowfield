@@ -48,9 +48,9 @@ inputs: lib: with lib; let
             hm_version = inputs.home-manager;
           };
           telecom = {
-          arch = "x86_64-linux";
-          nixpkgs_version = inputs.nixpkgs;
-          hm_version = inputs.home-manager;
+            arch = "x86_64-linux";
+            nixpkgs_version = inputs.unstable-plus-patches;
+            hm_version = inputs.home-manager-unstable;
           };
           enigma = {
             arch = "aarch64-linux";
