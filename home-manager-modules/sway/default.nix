@@ -1,8 +1,8 @@
 { config, pkgs, lib, ... }:
 let
   cfg = config.luj.programs.sway;
-  modifier = "Mod4";
-  terminal = "alacritty";
+  modifier = "Mod1";
+  terminal = "kitty";
 in
 with lib;
 {
@@ -13,13 +13,13 @@ with lib;
   config = mkIf cfg.enable {
     wayland.windowManager.sway = {
       enable = true;
+      package = pkgs.swayfx;
       config = {
         terminal = terminal;
         modifier = modifier;
         input = {
           "*" = {
             xkb_layout = "fr";
-            xkb_variant = "mac";
           };
         };
 
@@ -31,6 +31,7 @@ with lib;
           inner = 7;
         };
 
+        bars = [ ];
         keybindings = lib.mkOptionDefault {
           "${modifier}+ampersand" = "workspace 1";
           "${modifier}+eacute" = "workspace 2";
@@ -72,16 +73,46 @@ with lib;
 
           "XF86MonBrightnessUp" = "exec brightnessctl s +10";
           "XF86MonBrightnessDown" = "exec brightnessctl s 10-";
+          "${modifier}+w" = "exec swaylock";
         };
       };
       extraConfig = ''
-        exec_always nm-applet --indicator
+        set $laptop eDP-1
+        bindswitch lid:on output $laptop disable
+        bindswitch lid:off output $laptop enable
       '';
-
+      extraOptions = [ "--unsupported-gpu" ];
     };
 
-    services.swayidle.enable = true;
-    programs.waybar.enable = true;
+    programs.swaylock =
+      {
+        enable = true;
+        package = pkgs.swaylock-effects;
+        settings = {
+          screenshots = true;
+          clock = true;
+          indicator = true;
+          indicator-radius = 200;
+          indicator-thickness = 20;
+          grace = 0;
+          grace-no-mouse = true;
+          grace-no-touch = true;
+          line-uses-ring = false;
+          ignore-empty-password = true;
+          show-failed-attempts = false;
+
+          font = "Fira Code";
+          timestr = "%H:%M";
+          datestr = "";
+          effect-blur = "8x5";
+          effect-vignette = "0.5:0.5";
+          color = "00000000";
+
+        };
+
+      };
+
+
 
 
   };
