@@ -6,22 +6,26 @@ with lib;
 {
   options.luj.programs.waybar = {
     enable = mkEnableOption "Enable waybar";
+    interfaceName = mkOption {
+      type = lib.types.string;
+    };
   };
 
   config = mkIf cfg.enable {
     programs.waybar = {
       enable = true;
+      systemd.enable = true;
       settings = {
         mainBar = {
           layer = "top";
-          modules-left = [ "custom/nixos" "wlr/workspaces" ];
+          modules-left = [ "custom/nixos" "sway/workspaces" ];
           modules-center = [ "clock" ];
-          modules-right = [ "backlight" "network" "battery" ];
+          modules-right = [ "network" "battery" ];
           "custom/nixos" = {
             format = " ❄ ";
             tooltip = false;
           };
-          "wlr/workspaces" = {
+          "sway/workspaces" = {
             format = "{name}";
             tooltip = false;
             all-outputs = true;
@@ -50,7 +54,7 @@ with lib;
             tooltip-format-enumerate-connected = "{device_alias}   {device_address}";
           };
           "network" = {
-            interface = "wlp3s0";
+            interface = cfg.interfaceName;
             format = "{ifname}";
             format-wifi = "<span color='#cba6f7'> </span>{essid}";
             format-ethernet = "{ipaddr}/{cidr} ";
@@ -102,6 +106,8 @@ with lib;
         #workspaces button {
           background: #11111b;
           color: #cdd6f4;
+          min-width: 0;
+
         }
 
         #workspaces button.active {
@@ -123,12 +129,6 @@ with lib;
           border-bottom-right-radius: 0;
           padding-right: 5px;
           margin-right: 0
-        }
-
-        #pulseaudio, #network {
-          border-top-left-radius: 0;
-          border-bottom-left-radius: 0;
-          padding-left: 5px;
         }
 
         #clock {
