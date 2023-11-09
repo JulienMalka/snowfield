@@ -11,6 +11,7 @@
       luj.programs.alacritty.enable = true;
       luj.programs.sway.enable = true;
       luj.programs.waybar.enable = true;
+      luj.programs.waybar.interfaceName = "enp0s13f0u1u4u4";
       luj.programs.kitty.enable = true;
       luj.emails.enable = true;
 
@@ -38,6 +39,8 @@
       };
 
       xsession.enable = true;
+      xsession.windowManager.command = "${pkgs.swayfx}/bin/sway";
+
 
       home.packages = with pkgs;
         [
