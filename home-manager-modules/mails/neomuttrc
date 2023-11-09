@@ -68,7 +68,7 @@ set nm_default_url = "notmuch:///home/julien/Maildir"
 macro index \\ "<vfolder-from-query>"
 set metoo=yes
 
-set query_command="notmuch-addrlookup --format=mutt '%s'"
+set query_command="notmuch-addrlookup --config /home/julien/.config/notmuch/default/config --format=mutt '%s'"
 set text_flowed
 
 set collapse_unread = no

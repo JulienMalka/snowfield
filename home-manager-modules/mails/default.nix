@@ -10,6 +10,7 @@ with lib;
 
 
   config = mkIf cfg.enable {
+    home.packages = [ pkgs.notmuch-addrlookup ];
     programs.mbsync.enable = true;
     programs.neomutt.enable = true;
     programs.msmtp.enable = true;
