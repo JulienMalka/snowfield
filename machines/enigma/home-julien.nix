@@ -48,7 +48,6 @@
           htop
           evince
           mosh
-          obsidian
           zotero
           flameshot
           albert
