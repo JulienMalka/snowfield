@@ -40,8 +40,6 @@
 
   networking.wireless.enable = false;
 
-  programs.hyprland.enable = true;
-  programs.hyprland.package = pkgs.hyprland;
   environment.sessionVariables = {
     LIBSEAT_BACKEND = "logind";
   };

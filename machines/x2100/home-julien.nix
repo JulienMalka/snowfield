@@ -9,7 +9,6 @@
       luj.programs.git.enable = true;
       luj.programs.gtk.enable = true;
       luj.programs.alacritty.enable = true;
-      luj.programs.hyprland.enable = true;
       luj.programs.waybar.enable = true;
       luj.programs.kitty.enable = true;
       luj.emails.enable = true;
