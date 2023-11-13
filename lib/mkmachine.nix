@@ -30,7 +30,6 @@ nixpkgs.lib.nixosSystem {
     host-config
     home-manager.nixosModules.home-manager
     inputs.simple-nixos-mailserver.nixosModule
-    inputs.hyprland.nixosModules.default
     inputs.attic.nixosModules.atticd
     inputs.lanzaboote.nixosModules.lanzaboote
     inputs.nix-index-database.nixosModules.nix-index
