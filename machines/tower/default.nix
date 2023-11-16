@@ -100,6 +100,21 @@
   '';
 
 
+  services.nix-gitlab-runner = {
+    enable = true;
+    registrationConfigFile = "/var/lib/gitlab-runner/gitlab_runner";
+    packages = with pkgs; [ coreutils su bash git ];
+  };
+
+
+
+  services.nginx.virtualHosts."phd.julienmalka.me" = {
+    enableACME = true;
+    forceSSL = true;
+    root = "/home/gitlab-runner/artifacts";
+  };
+
+
   services.grafana.enable = true;
   services.grafana.settings.server.http_port = 3000;
   services.prometheus = {
