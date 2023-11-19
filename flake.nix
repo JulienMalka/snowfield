@@ -73,6 +73,16 @@
       url = "github:nix-community/lanzaboote/master";
     };
 
+    nix-straight = {
+      url = "github:codingkoi/nix-straight.el?ref=codingkoi/apply-librephoenixs-fix";
+      flake = false;
+    };
+    nix-doom-emacs = {
+      url = "github:nix-community/nix-doom-emacs";
+      inputs = {
+        nix-straight.follows = "nix-straight";
+      };
+    };
   };
 
   outputs = { self, nixpkgs, ... }@inputs:

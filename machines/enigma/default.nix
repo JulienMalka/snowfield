@@ -39,10 +39,9 @@
   # Enable OpenGL
   hardware.opengl = {
     enable = true;
-    driSupport = true;
-    #    driSupport32Bit = true;
   };
 
+  boot.kernelParams = [ "nvidia-drm.modeset=1" "module_blacklist=nouveau" ];
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = [ "nvidia" ];
 
@@ -70,9 +69,11 @@
     # accessible via `nvidia-settings`.
     nvidiaSettings = true;
 
+
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
     package = config.boot.kernelPackages.nvidiaPackages.beta;
   };
+
 
 
   boot.initrd.kernelModules = [ "nvidia" ];
@@ -93,6 +94,10 @@
 
   programs.xwayland.enable = true;
 
+  nixpkgs.config.permittedInsecurePackages = [
+    "zotero-6.0.26"
+  ];
+
   time.timeZone = "Europe/Paris";
 
   # Select internationalisation properties.
@@ -103,6 +108,10 @@
   };
 
   programs.dconf.enable = true;
+  services.emacs = {
+    enable = true;
+    package = pkgs.emacs29;
+  };
 
   security.polkit.enable = true;
 
@@ -115,6 +124,7 @@
         maxJobs = 100;
         systems = [ "x86_64-linux" ];
         sshUser = "root";
+        supportedFeatures = [ "kvm" "nixos-test" ];
         sshKey = "/home/julien/.ssh/id_ed25519";
         speedFactor = 2;
       }

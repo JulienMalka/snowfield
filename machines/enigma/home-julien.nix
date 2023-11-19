@@ -9,6 +9,7 @@
       luj.programs.git.enable = true;
       luj.programs.gtk.enable = true;
       luj.programs.kitty.enable = true;
+      luj.programs.emacs.enable = true;
       luj.emails.enable = true;
 
       programs.rofi = {
@@ -30,6 +31,14 @@
           xkb-options = [ ];
         };
       };
+
+
+      programs.obs-studio = {
+        enable = true;
+        plugins = with pkgs; [ obs-studio-plugins.obs-vkcapture ];
+      };
+
+
       home.packages = with pkgs;
         [
           du-dust
