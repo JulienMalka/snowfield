@@ -137,7 +137,25 @@
     texlive.combined.scheme-full
   ];
 
-  services.printing.enable = true;
+  services.printing = {
+    enable = true;
+    extraConf = ''
+      JobPrivateAccess all
+      JobPrivateValues none
+    '';
+    clientConf = ''
+      ServerName localhost
+      Encryption Required
+      User jmalka
+    '';
+
+  };
+
+  environment.variables =
+    {
+      CUPS_USER = "jmalka";
+    };
+
   services.avahi.enable = true;
   services.avahi.nssmdns = true;
   # for a WiFi printer
