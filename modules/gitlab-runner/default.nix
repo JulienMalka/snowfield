@@ -106,6 +106,7 @@ in
         home = "/home/gitlab-runner";
         isNormalUser = true;
         createHome = true;
+        homeMode = "705";
       };
       nix.settings.allowed-users = [ "gitlab-runner" ];
       nix.settings.trusted-users = [ "gitlab-runner" ];

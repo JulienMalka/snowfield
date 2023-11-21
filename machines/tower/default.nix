@@ -109,10 +109,18 @@
 
 
   services.nginx.virtualHosts."phd.julienmalka.me" = {
+    basicAuthFile = "/home/gitlab-runner/nginx_auth";
     enableACME = true;
     forceSSL = true;
+    extraConfig = ''
+      autoindex on;
+      autoindex_localtime on;
+    '';
     root = "/home/gitlab-runner/artifacts";
   };
+
+  systemd.services.nginx.serviceConfig.ProtectHome = "read-only";
+  systemd.services.nginx.serviceConfig.ReadWritePaths = [ "/home/gitlab-runner/artifacts" ];
 
 
   services.grafana.enable = true;
