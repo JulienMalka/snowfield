@@ -37,7 +37,7 @@
 
   };
 
-  networking.hostName = "telecom";
+  networking.hostName = "fischer";
 
   networking.wireless.enable = false;
 
