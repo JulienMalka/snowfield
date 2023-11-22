@@ -37,7 +37,7 @@
 
   };
 
-  networking.hostName = "telecom";
+  networking.hostName = "fischer";
 
   networking.wireless.enable = false;
 
@@ -128,6 +128,26 @@
 
   hardware.bluetooth.enable = true;
 
+  services.syncthing = {
+    enable = true;
+    user = "julien";
+    group = "users";
+    settings.options.urAccepted = -1;
+    overrideDevices = true;
+    overrideFolders = true;
+    devices = {
+      "tower" = { id = "XEPZZIP-GX73OKE-KNGZA47-XWWGI5G-LNXPU57-BMLXK5M-VNGS5UQ-ZFIZSAK"; };
+    };
+    folders = {
+      "dev" = {
+        path = "/home/julien/dev";
+        devices = [ "tower" ];
+      };
+    };
+  };
+
+  systemd.services.syncthing.serviceConfig.StateDirectory = "syncthing";
+
   environment.systemPackages = with pkgs; [
     tailscale
     brightnessctl
@@ -137,7 +157,25 @@
     texlive.combined.scheme-full
   ];
 
-  services.printing.enable = true;
+  services.printing = {
+    enable = true;
+    extraConf = ''
+      JobPrivateAccess all
+      JobPrivateValues none
+    '';
+    clientConf = ''
+      ServerName localhost
+      Encryption Required
+      User jmalka
+    '';
+
+  };
+
+  environment.variables =
+    {
+      CUPS_USER = "jmalka";
+    };
+
   services.avahi.enable = true;
   services.avahi.nssmdns = true;
   # for a WiFi printer

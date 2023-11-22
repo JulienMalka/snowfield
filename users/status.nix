@@ -4,7 +4,6 @@
     isNormalUser = true;
     home = "/home/status";
     extraGroups = [ "wheel" ];
-    shell = pkgs.fish;
     openssh.authorizedKeys.keyFiles = [
       (pkgs.fetchurl {
         url = "https://github.com/JulienMalka.keys";

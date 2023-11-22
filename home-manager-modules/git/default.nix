@@ -17,7 +17,18 @@ with lib;
         signByDefault = true;
         key = "6FC74C847011FD83";
       };
-      extraConfig.init.defaultBranch = "main";
+      delta.enable = true;
+      ignores = [
+        ".direnv"
+      ];
+      extraConfig = {
+        init.defaultBranch = "main";
+        diff.colorMoved = "zebra";
+        pull.rebase = true;
+        fetch.prune = true;
+        rebase.autoStash = true;
+        push.autoSetupRemote = true;
+      };
     };
 
     home.extraActivationPath = [ pkgs.gnupg ];
