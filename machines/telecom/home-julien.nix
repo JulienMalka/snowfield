@@ -13,6 +13,7 @@
       luj.programs.waybar.enable = true;
       luj.programs.waybar.interfaceName = "enp0s13f0u1u4u4";
       luj.programs.kitty.enable = true;
+      luj.programs.zsh.enable = true;
       luj.emails.enable = true;
 
       programs.rofi = {
@@ -22,11 +23,6 @@
         theme = "DarkBlue";
       };
 
-      programs.direnv = {
-        enable = true;
-        enableFishIntegration = true;
-        nix-direnv.enable = true;
-      };
 
       home.pointerCursor = {
         name = "Adwaita";
