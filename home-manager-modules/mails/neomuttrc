@@ -45,6 +45,10 @@ virtual-mailboxes "kfet" "notmuch://?query=tag:ens-kfet
 
 named-mailboxes "---telecom---" =sep3
 virtual-mailboxes "inbox" "notmuch://?query=tag:telecom-inbox
+virtual-mailboxes "gdr-gpl" "notmuch://?query=tag:telecom-gdr-gpl
+virtual-mailboxes "gdr-sec" "notmuch://?query=tag:telecom-gdr-sec
+virtual-mailboxes "tous" "notmuch://?query=tag:telecom-tous
+virtual-mailboxes "infres-tous" "notmuch://?query=tag:telecom-infres-tous
 
 named-mailboxes "----dgnum----" =sep4
 virtual-mailboxes "inbox" "notmuch://?query=tag:dgnum-inbox
@@ -92,6 +96,10 @@ folder-hook "ens-dg"  'source ~/.config/neomutt/ens.profile'
 folder-hook "ens-kfet"  'source ~/.config/neomutt/ens.profile'
 
 folder-hook "telecom-inbox"  'source ~/.config/neomutt/telecom.profile'
+folder-hook "telecom-gdr-gpl"  'source ~/.config/neomutt/telecom.profile'
+folder-hook "telecom-gdr-sec"  'source ~/.config/neomutt/telecom.profile'
+folder-hook "telecom-infres-tous"  'source ~/.config/neomutt/telecom.profile'
+folder-hook "telecom-tous"  'source ~/.config/neomutt/telecom.profile'
 
 folder-hook "work-nixos-discourse"  'source ~/.config/neomutt/discourse.profile'
 folder-hook "work-dn42"  'source ~/.config/neomutt/work.profile'

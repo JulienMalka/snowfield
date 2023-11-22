@@ -1,0 +1,6 @@
+[notifymuch]
+query = is:unread and (tag:work-inbox or tag:ens-inbox or tag:telecom-inbox or tag:dgnum-inbox or tag:dgnum-bureau)
+mail_client = kitty -x neomutt -y
+recency_interval_hours = 48
+hidden_tags = inbox unread attachment replied sent encrypted signed
+

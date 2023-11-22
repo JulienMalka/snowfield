@@ -20,7 +20,7 @@ with lib;
           layer = "top";
           modules-left = [ "custom/nixos" "sway/workspaces" ];
           modules-center = [ "clock" ];
-          modules-right = [ "network" "battery" ];
+          modules-right = [ "custom/mails" "network" "battery" ];
           "custom/nixos" = {
             format = " ❄ ";
             tooltip = false;
@@ -66,6 +66,11 @@ with lib;
             format-icons = [ "" "" "" "" "" ];
             format-charging = "<span color='#cba6f7'></span> {capacity}%";
             tooltip = false;
+          };
+          "custom/mails" = {
+            format = "<span color='#cba6f7'></span> {}";
+            exec = "${pkgs.notmuch}/bin/notmuch count 'tag:unread and (tag:dgnum-inbox or tag:ens-inbox or tag:work-inbox or tag:telecom-inbox or tag:dgnum-bureau)'";
+            interval = 10;
           };
         };
       };
@@ -114,7 +119,7 @@ with lib;
           color: #cba6f7;
         }
 
-        #clock, #backlight, #pulseaudio, #bluetooth, #network, #battery{
+        #clock, #backlight, #pulseaudio, #bluetooth, #network, #battery, #custom-mails{
           border-radius: 10px;
           background-color: #11111b;
           color: #cdd6f4;

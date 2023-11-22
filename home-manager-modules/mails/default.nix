@@ -132,12 +132,18 @@ with lib;
 
 
         #julien.malka@telecom-paris.fr
-        notmuch tag +telecom-inbox path:telecom/Inbox/**
+        notmuch tag +telecom-inbox -- folder:telecom/Inbox
+        notmuch tag +telecom-gdr-gpl -- folder:telecom/Inbox/gdr-gpl
+        notmuch tag +telecom-gdr-sec -- folder:telecom/Inbox/gdr-sec
+        notmuch tag +telecom-infres-tous -- folder:telecom/Inbox/infres-tous
+        notmuch tag +telecom-tous -- folder:telecom/Inbox/telecom-tous
 
         #luj@dgnum.eu
         notmuch tag +dgnum-inbox path:dgnum/Inbox/**
         notmuch tag +dgnum-bureau -dgnum-inbox -- path:dgnum/Inbox/Bureau/**
         notmuch tag +dgnum-nixcon -dgnum-inbox -- path:dgnum/Inbox/NixCon/**
+
+        ${pkgs.notifymuch}/bin/notifymuch
 
       '';
     };
@@ -150,6 +156,7 @@ with lib;
       "neomutt/work.profile".source = lib.mkForce ./work.profile;
       "neomutt/discourse.profile".source = lib.mkForce ./discourse.profile;
       "neomutt/dgnum.profile".source = lib.mkForce ./dgnum.profile;
+      "notifymuch/notifymuch.cfg".source = lib.mkForce ./notifymuch;
     };
 
 
