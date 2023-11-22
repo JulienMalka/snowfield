@@ -178,6 +178,6 @@ with lib;
     # Misc
     programs.lesspipe.enable = true;
 
-    home.packages = with pkgs; [ eza python3 libnotify ];
+    home.packages = with pkgs; [ unstable.eza python3 libnotify ];
   };
 }
