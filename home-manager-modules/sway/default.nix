@@ -1,13 +1,20 @@
 { config, pkgs, lib, ... }:
 let
   cfg = config.luj.programs.sway;
-  modifier = "Mod1";
+  modifier = cfg.modifier;
   terminal = "kitty";
 in
 with lib;
 {
   options.luj.programs.sway = {
     enable = mkEnableOption "Enable SwayWM";
+    modifier = mkOption {
+      type = lib.types.str;
+      default = "Mod1";
+    };
+    background = mkOption {
+      type = types.path;
+    };
   };
 
   config = mkIf cfg.enable {
@@ -16,7 +23,13 @@ with lib;
       package = pkgs.swayfx;
       config = {
         terminal = terminal;
-        modifier = modifier;
+        output =
+          {
+            eDP-1 = {
+              bg = builtins.toString cfg.background + " fit";
+            };
+          };
+        modifier = cfg.modifier;
         input = {
           "*" = {
             xkb_layout = "fr";
