@@ -55,7 +55,7 @@
           meld
           vlc
           jftui
-          stable.nerdfonts
+          nerdfonts
           libreoffice
           font-awesome
           nodejs

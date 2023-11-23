@@ -10,28 +10,21 @@
     ];
 
 
-
   boot.loader.systemd-boot.enable = lib.mkForce false;
   boot.lanzaboote = {
     enable = true;
     pkiBundle = "/etc/secureboot";
   };
-  #boot.initrd.systemd.enable = true;
+
+  boot.initrd.systemd.enable = true;
   sound.enable = true;
-  #hardware.pulseaudio.enable = true;
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
     wireplumber.enable = true;
-
   };
 
   services.postgresql.enable = true;
@@ -58,7 +51,6 @@
   networking.networkmanager.dns = "systemd-resolved";
   services.resolved.enable = true;
 
-
   time.timeZone = "Europe/Paris";
 
   # Select internationalisation properties.
@@ -82,7 +74,6 @@
   security.tpm2.tctiEnvironment.enable = true; # TPM2TOOLS_TCTI and TPM2_PKCS11_TCTI env variables
   users.users.julien.extraGroups = [ "tss" ]; # tss group has access to TPM devices
 
-  hardware.bluetooth.enable = true;
 
   environment.systemPackages = with pkgs; [
     tailscale
@@ -104,12 +95,13 @@
   security.pam.services.swaylock = { };
 
   programs.ssh.startAgent = true;
+  programs.sway.enable = true;
 
-  programs.adb.enable = true;
-  services.udev.packages = [
-    pkgs.android-udev-rules
-  ];
   services.gnome.gnome-keyring.enable = true;
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-24.8.6"
+  ];
 
   services.autofs = {
     enable = true;
