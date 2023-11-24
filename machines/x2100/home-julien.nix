@@ -10,6 +10,7 @@
       luj.programs.gtk.enable = true;
       luj.programs.alacritty.enable = true;
       luj.programs.waybar.enable = true;
+      luj.programs.waybar.interfaceName = "wlp3s0";
       luj.programs.kitty.enable = true;
       luj.emails.enable = true;
 
