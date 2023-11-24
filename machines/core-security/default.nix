@@ -101,7 +101,7 @@
   services.keycloak = {
     enable = true;
     database.createLocally = true;
-    database.hashedPasswordFile = "/run/secrets/keycloak";
+    database.passwordFile = "/run/secrets/keycloak";
     settings = {
       hostname = "auth.julienmalka.me";
       hostname-admin-url = "https://auth.julienmalka.me";
