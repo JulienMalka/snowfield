@@ -33,6 +33,9 @@ nixpkgs.lib.nixosSystem {
     inputs.attic.nixosModules.atticd
     inputs.lanzaboote.nixosModules.lanzaboote
     inputs.nix-index-database.nixosModules.nix-index
+    inputs.buildbot-nix.nixosModules.buildbot-master
+    inputs.buildbot-nix.nixosModules.buildbot-worker
+
     {
       home-manager.useGlobalPkgs = true;
       nixpkgs.overlays = [

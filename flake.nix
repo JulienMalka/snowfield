@@ -83,6 +83,8 @@
         nix-straight.follows = "nix-straight";
       };
     };
+
+    buildbot-nix.url = "github:Mic92/buildbot-nix";
   };
 
   outputs = { self, nixpkgs, ... }@inputs:
