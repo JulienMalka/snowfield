@@ -24,7 +24,7 @@ in
         tokenFile = config.sops.secrets.github-token.path;
         webhookSecretFile = config.sops.secrets.github-webhook-secret.path;
         oauthSecretFile = config.sops.secrets.github-oauth-secret.path;
-        oauthId = "355493f668a8e1aa10cf";
+        oauthId = "bba3e144501aa5b8a5dd";
         user = "JulienMalka";
         admins = [ "JulienMalka" ];
         topic = "nix-ci";

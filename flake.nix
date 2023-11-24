@@ -156,7 +156,7 @@
 
       machines = lib.luj.machines;
 
-      hydraJobs = {
+      checks = {
         packages = packages;
         machines = lib.mapAttrs (_: v: v.config.system.build.toplevel) self.nixosConfigurations;
       };
