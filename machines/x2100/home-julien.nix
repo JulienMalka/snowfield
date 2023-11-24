@@ -69,7 +69,7 @@
           gh
           gh-dash
           cvc5
-          nixpkgs-patched.signal-desktop-beta
+          signal-desktop-beta
           coqPackages.coqide
           (why3.withProvers
             [

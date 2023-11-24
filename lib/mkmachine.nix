@@ -6,7 +6,7 @@ let
       nixpkgs-patched-src = (import inputs.nixpkgs { system = arch; }).applyPatches {
         name = "nixpkgs-patches";
         src = inputs.nixpkgs;
-        patches = [ ../patches/bcachefs-systemd-stage-1.patch ];
+        patches = [ ];
       };
     in
     {
