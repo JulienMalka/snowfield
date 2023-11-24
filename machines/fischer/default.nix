@@ -133,13 +133,15 @@
     settings.options.urAccepted = -1;
     overrideDevices = true;
     overrideFolders = true;
-    devices = {
-      "tower" = { id = "XEPZZIP-GX73OKE-KNGZA47-XWWGI5G-LNXPU57-BMLXK5M-VNGS5UQ-ZFIZSAK"; };
-    };
-    folders = {
-      "dev" = {
-        path = "/home/julien/dev";
-        devices = [ "tower" ];
+    settings = {
+      devices = {
+        "tower" = { id = "XEPZZIP-GX73OKE-KNGZA47-XWWGI5G-LNXPU57-BMLXK5M-VNGS5UQ-ZFIZSAK"; };
+      };
+      folders = {
+        "dev" = {
+          path = "/home/julien/dev";
+          devices = [ "tower" ];
+        };
       };
     };
   };

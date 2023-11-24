@@ -22,7 +22,7 @@ in
         createHome = true;
         home = "/home/drone";
         extraGroups = [ drone config.users.groups.keys.name ];
-        passwordFile = config.sops.secrets.user-julien-password.path;
+        hashedPasswordFile = config.sops.secrets.user-julien-password.path;
       };
       users.groups.drone = { };
       luj.hmgr.drone.luj.programs.git.enable = true;

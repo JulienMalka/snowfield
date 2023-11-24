@@ -12,7 +12,7 @@
     home = "/root";
     shell = lib.mkForce config.users.defaultUserShell;
     group = "root";
-    passwordFile = config.sops.secrets.user-root-password.path;
+    hashedPasswordFile = config.sops.secrets.user-root-password.path;
     openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGa+7n7kNzb86pTqaMn554KiPrkHRGeTJ0asY1NjSbpr julien@tower" ];
   };
 

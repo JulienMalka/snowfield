@@ -171,14 +171,16 @@
     group = "users";
     overrideDevices = true;
     overrideFolders = true;
-    devices = {
-      "fischer" = { id = "MHV2PGN-GAHQMV5-ITXGNQS-IRJC3XL-OQIHVUX-JVKBZ6Z-33XHE7H-NC6H5AE"; };
-    };
-    folders = {
-      "dev" = {
-        # Name of folder in Syncthing, also the folder ID
-        path = "/home/julien/dev"; # Which folder to add to Syncthing
-        devices = [ "fischer" ]; # Which devices to share the folder with
+    settings = {
+      devices = {
+        "fischer" = { id = "MHV2PGN-GAHQMV5-ITXGNQS-IRJC3XL-OQIHVUX-JVKBZ6Z-33XHE7H-NC6H5AE"; };
+      };
+      folders = {
+        "dev" = {
+          # Name of folder in Syncthing, also the folder ID
+          path = "/home/julien/dev"; # Which folder to add to Syncthing
+          devices = [ "fischer" ]; # Which devices to share the folder with
+        };
       };
     };
   };

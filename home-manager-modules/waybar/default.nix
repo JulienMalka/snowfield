@@ -7,7 +7,7 @@ with lib;
   options.luj.programs.waybar = {
     enable = mkEnableOption "Enable waybar";
     interfaceName = mkOption {
-      type = lib.types.string;
+      type = lib.types.str;
     };
   };
 
