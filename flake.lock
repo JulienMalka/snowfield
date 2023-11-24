@@ -1448,11 +1448,11 @@
     },
     "unstable-plus-patches": {
       "locked": {
-        "lastModified": 1699523297,
-        "narHash": "sha256-dNHInVXDdneFxgjqtrRMQqWM72Bp0YnajHqH3BJN8i4=",
+        "lastModified": 1700858455,
+        "narHash": "sha256-LchjRLHpxZypVPhI2pl74J8N0Qiw/BSTHzCILk3Zrrs=",
         "owner": "JulienMalka",
         "repo": "nixpkgs",
-        "rev": "bd40acaeac6244ef165f342ddf4d6f2ad1842e27",
+        "rev": "523278452b21fe16c124099ed53406b9269cdf08",
         "type": "github"
       },
       "original": {
