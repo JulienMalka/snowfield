@@ -69,8 +69,8 @@ inputs: lib: with lib; let
           tower = {
             inherit tld;
             arch = "x86_64-linux";
-            nixpkgs_version = inputs.unstable;
-            hm_version = inputs.home-manager-unstable;
+            nixpkgs_version = inputs.nixpkgs;
+            hm_version = inputs.home-manager;
             ipv4 = { public = "82.67.34.230"; local = "192.168.0.103"; vpn = "100.100.45.9"; };
             ipv6 = { public = "2a01:e0a:de4:a0e1:8ec7:b5d2:f663:a67a"; vpn = "fd7a:115c:a1e0::9"; };
 
