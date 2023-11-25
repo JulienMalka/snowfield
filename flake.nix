@@ -84,7 +84,7 @@
       };
     };
 
-    buildbot-nix.url = "github:Mic92/buildbot-nix";
+    buildbot-nix.url = "github:JulienMalka/buildbot-nix";
   };
 
   outputs = { self, nixpkgs, ... }@inputs:
