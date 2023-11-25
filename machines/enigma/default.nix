@@ -41,7 +41,6 @@
     enable = true;
   };
 
-  boot.kernelParams = [ "nvidia-drm.modeset=1" "module_blacklist=nouveau" ];
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = [ "nvidia" ];
 
@@ -71,7 +70,7 @@
 
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
-    package = config.boot.kernelPackages.nvidiaPackages.beta;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
 
