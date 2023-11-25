@@ -56,6 +56,7 @@ in
       };
     };
 
+    systemd.services.buildbot-worker.environment.WORKER_COUNT = "14";
     services.buildbot-nix.worker = {
       enable = true;
       workerPasswordFile = config.sops.secrets.buildbot-nix-worker-password.path;
