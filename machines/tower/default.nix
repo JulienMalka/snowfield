@@ -70,16 +70,11 @@
       {
         hostName = "epyc.infra.newtype.fr";
         maxJobs = 100;
-        systems = [ "x86_64-linux" ];
+        systems = [ "x86_64-linux" "aarch64-linux" ];
         sshUser = "root";
         sshKey = "/home/julien/.ssh/id_ed25519";
+        supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
         speedFactor = 2;
-      }
-      {
-        hostName = "lambda";
-        maxJobs = 4;
-        systems = [ "aarch64-linux" ];
-        supportedFeatures = [ "big-parallel" ];
       }
       {
         hostName = "darwin-build-box.winter.cafe";
