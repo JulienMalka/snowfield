@@ -20,6 +20,7 @@ in
       enable = true;
       domain = "ci.julienmalka.me";
       workersFile = config.sops.secrets.buildbot-nix-workers.path;
+      buildSystems = [ "x86_64-linux" "aarch64-linux" ];
       github = {
         tokenFile = config.sops.secrets.github-token.path;
         webhookSecretFile = config.sops.secrets.github-webhook-secret.path;
