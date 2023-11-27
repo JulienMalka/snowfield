@@ -63,7 +63,7 @@ nixpkgs.lib.nixosSystem {
             keycloak-keywind = prev.pkgs.callPackage ../packages/keycloak-keywind { };
             nix-rfc-92 = inputs.nix-rfc-92.packages.${system}.default;
             bcachefs-tools = prev.unstable.bcachefs-tools;
-            zotero = inputs.zotero.packages.${system}.default;
+            zotero = inputs.zotero-nix.packages.${system}.default;
           })
       ];
     }
