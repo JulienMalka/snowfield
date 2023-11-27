@@ -54,8 +54,6 @@
     extraOptions = [ "--unsupported-gpu" ];
   };
 
-  nixpkgs.config.permittedInsecurePackages = [ "zotero-6.0.27" ];
-
   services.tailscale.enable = true;
   networking.networkmanager.enable =
     true; # Easiest to use and most distros use this by default.

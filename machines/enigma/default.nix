@@ -93,10 +93,6 @@
 
   programs.xwayland.enable = true;
 
-  nixpkgs.config.permittedInsecurePackages = [
-    "zotero-6.0.26"
-  ];
-
   time.timeZone = "Europe/Paris";
 
   # Select internationalisation properties.
