@@ -183,11 +183,6 @@
 
   programs.ssh.startAgent = true;
 
-  services.emacs = {
-    enable = true;
-    package = pkgs.emacs29-pgtk;
-  };
-
   services.gnome.gnome-keyring.enable = true;
 
   services.openssh.extraConfig = ''
