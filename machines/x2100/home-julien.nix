@@ -13,6 +13,7 @@
       luj.programs.waybar.interfaceName = "wlp3s0";
       luj.programs.kitty.enable = true;
       luj.programs.emacs.enable = true;
+      luj.programs.zsh.enable = true;
       luj.emails.enable = true;
 
       programs.rofi = {
@@ -24,7 +25,7 @@
 
       programs.direnv = {
         enable = true;
-        enableFishIntegration = true;
+        enableZshIntegration = true;
         nix-direnv.enable = true;
       };
 
