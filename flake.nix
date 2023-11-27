@@ -46,12 +46,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-apple-silicon.url = "github:JulienMalka/nixos-apple-silicon/";
-
-    hyprland.url = "github:hyprwm/Hyprland";
-
-    hyprpaper.url = "github:hyprwm/hyprpaper";
-
     attic = {
       url = "github:zhaofengli/attic";
       inputs.nixpkgs.follows = "unstable";
