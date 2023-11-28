@@ -43,20 +43,8 @@
 
   environment.sessionVariables = { LIBSEAT_BACKEND = "logind"; };
 
-  services.xserver = {
-    enable = true;
-    layout = "fr";
-    displayManager.gdm.enable = true;
-  };
-
-  programs.sway = {
-    enable = true;
-    extraOptions = [ "--unsupported-gpu" ];
-  };
-
   services.tailscale.enable = true;
-  networking.networkmanager.enable =
-    true; # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   networking.networkmanager.dns = "systemd-resolved";
   services.resolved.enable = true;
@@ -122,8 +110,6 @@
   users.users.julien.extraGroups =
     [ "tss" ]; # tss group has access to TPM devices
 
-  hardware.bluetooth.enable = true;
-
   services.syncthing = {
     enable = true;
     user = "julien";
@@ -173,11 +159,6 @@
     {
       CUPS_USER = "jmalka";
     };
-
-  services.avahi.enable = true;
-  services.avahi.nssmdns = true;
-  # for a WiFi printer
-  services.avahi.openFirewall = true;
 
   security.pam.services.swaylock = { };
 
