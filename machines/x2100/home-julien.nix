@@ -15,6 +15,7 @@
       luj.programs.emacs.enable = true;
       luj.programs.zsh.enable = true;
       luj.emails.enable = true;
+      luj.programs.firefox.enable = true;
       luj.programs.sway = {
         enable = true;
         modifier = "Mod4";
