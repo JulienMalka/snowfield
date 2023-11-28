@@ -40,6 +40,7 @@ nixpkgs.lib.nixosSystem {
     {
       home-manager.useGlobalPkgs = true;
       nixpkgs.overlays = [
+        inputs.nur.overlay
         (overlay-unstable system)
         (final: prev:
           {
