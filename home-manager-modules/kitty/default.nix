@@ -14,9 +14,9 @@ with lib;
       enable = true;
       settings = {
         wayland_titlebar_color = "background";
-        background_opacity = "0.96";
         shell_integration = "no-cursor";
-        window_padding_width = 4;
+        window_padding_width = 3;
+        font_size = 10;
         confirm_os_window_close = 0;
       };
       font = {
