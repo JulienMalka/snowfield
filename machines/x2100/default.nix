@@ -39,12 +39,6 @@
 
   services.logind.lidSwitch = "suspend";
 
-  services.xserver = {
-    enable = true;
-    layout = "fr";
-    displayManager.gdm.enable = true;
-  };
-
   services.tailscale.enable = true;
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
@@ -94,13 +88,16 @@
 
   security.pam.services.swaylock = { };
 
-  programs.ssh.startAgent = true;
   programs.sway.enable = true;
+  programs.sway.package = null;
+
+  programs.ssh.startAgent = true;
 
   services.gnome.gnome-keyring.enable = true;
 
   nixpkgs.config.permittedInsecurePackages = [
     "electron-24.8.6"
+    "zotero-6.0.27"
   ];
 
   services.autofs = {
