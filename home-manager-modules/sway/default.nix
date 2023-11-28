@@ -39,9 +39,9 @@ with lib;
         gaps = {
           right = 2;
           left = 2;
-          top = 2;
-          bottom = 2;
-          inner = 7;
+          top = 0;
+          bottom = 0;
+          inner = 1;
         };
 
         bars = [ ];
@@ -91,6 +91,10 @@ with lib;
       };
       extraConfig = ''
         set $laptop eDP-1
+        corner_radius 8
+        default_dim_inactive 0.2
+        default_border none
+        default_floating_border none
         bindswitch lid:on output $laptop disable
         bindswitch lid:off output $laptop enable
       '';
@@ -124,9 +128,6 @@ with lib;
         };
 
       };
-
-
-
 
   };
 }
