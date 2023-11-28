@@ -2,7 +2,7 @@
 let
   cfg = config.luj.programs.sway;
   modifier = cfg.modifier;
-  terminal = "kitty";
+  terminal = "alacritty";
 in
 with lib;
 {
@@ -25,8 +25,8 @@ with lib;
         terminal = terminal;
         output =
           {
-            eDP-1 = {
-              bg = builtins.toString cfg.background + " fit";
+            DP-6 = {
+              bg = builtins.toString cfg.background + " fill";
             };
           };
         modifier = cfg.modifier;
