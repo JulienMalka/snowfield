@@ -82,15 +82,11 @@
   # for a WiFi printer
   services.avahi.openFirewall = true;
 
-  services.davfs2 = {
-    enable = true;
-  };
 
   security.pam.services.swaylock = { };
 
   programs.sway.enable = true;
   programs.sway.package = null;
-
   programs.ssh.startAgent = true;
 
   services.gnome.gnome-keyring.enable = true;
@@ -99,20 +95,6 @@
     "electron-24.8.6"
     "zotero-6.0.27"
   ];
-
-  services.autofs = {
-    enable = true;
-    debug = true;
-    autoMaster =
-      let
-        mapConf = pkgs.writeText "auto" ''
-          nuage -fstype=davfs,uid=1000,file_mode=600,dir_mode=700,conf=/home/julien/.davfs2/davfs2.conf,rw :https\://nuage.malka.family/remote.php/webdav/
-        '';
-      in
-      ''
-        /home/julien/clouds file:${mapConf}
-      '';
-  };
 
   system.stateVersion = "23.05";
 

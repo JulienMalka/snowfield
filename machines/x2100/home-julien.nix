@@ -12,7 +12,6 @@
       luj.programs.waybar.enable = true;
       luj.programs.waybar.interfaceName = "wlp3s0";
       luj.programs.kitty.enable = true;
-      luj.programs.emacs.enable = true;
       luj.programs.zsh.enable = true;
       luj.emails.enable = true;
       luj.programs.firefox.enable = true;
@@ -54,11 +53,13 @@
           fira-code
           feh
           meld
+          emacsGit
           vlc
           jftui
           nerdfonts
           libreoffice
           font-awesome
+          cantarell-fonts
           nodejs
           neomutt
           htop

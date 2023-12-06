@@ -82,6 +82,7 @@
 
     zotero-nix.url = "github:camillemndn/zotero-nix";
     nur.url = "github:nix-community/NUR";
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
   };
 
   outputs = { self, nixpkgs, ... }@inputs:
