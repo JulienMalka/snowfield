@@ -60,6 +60,7 @@
           libreoffice
           font-awesome
           cantarell-fonts
+          roboto
           nodejs
           neomutt
           htop
