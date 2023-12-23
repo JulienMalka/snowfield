@@ -7,6 +7,7 @@ keys:
   - &bin-cache age10d49ptrmad2n7rke6helvmmm86gf06gj9gtfxsh334f3hfr0eewqqa2a7w
   - &core-security age1qedjtr4llnmue2r08ec64mtkl8hpkdsn5mpfh26l3pngmxdm2ymq2tfh80
   - &enigma age109qksyjgdnf7elnk98dh4vtxt0epju7xjemlqng0j0x75st5zg9qm9h3hy
+  - &core-data age133w8dx0wr9z95v0kgrqup7s47q56qdwt2z8szl7mghnpnqqpvpvs3q98kj
 creation_rules:
   - path_regex: secrets/[^/]+\.yaml$
     key_groups:
@@ -19,6 +20,7 @@ creation_rules:
       - *bin-cache
       - *core-security
       - *enigma
+      - *core-data
   - key_groups: 
     - age:
       - *macintosh
@@ -29,3 +31,4 @@ creation_rules:
       - *bin-cache
       - *core-security
       - *enigma
+      - *core-data
