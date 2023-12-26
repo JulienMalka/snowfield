@@ -53,6 +53,7 @@ inputs: lib: with lib; let
             hm_version = inputs.home-manager-unstable;
           };
           enigma = {
+            inherit tld;
             arch = "aarch64-linux";
             nixpkgs_version = inputs.nixpkgs;
             hm_version = inputs.home-manager;
