@@ -56,6 +56,7 @@ inputs: lib: with lib; let
             arch = "aarch64-linux";
             nixpkgs_version = inputs.nixpkgs;
             hm_version = inputs.home-manager;
+            ipv4.vpn = "100.100.45.21";
           };
           lambda = {
             inherit tld;
