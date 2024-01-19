@@ -52,6 +52,7 @@
           vlc
           nerdfonts
           libreoffice
+          unstable.signal-desktop
           font-awesome
           nodejs
           neomutt
