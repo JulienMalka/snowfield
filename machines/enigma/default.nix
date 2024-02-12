@@ -13,7 +13,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-
   services.gnome.gnome-browser-connector.enable = true;
 
   services.tailscale.enable = true;
@@ -21,7 +20,6 @@
 
   networking.networkmanager.dns = "systemd-resolved";
   services.resolved.enable = true;
-
 
   security.pam.loginLimits = [{
     domain = "*";
@@ -32,10 +30,7 @@
 
 
   services.xserver.enable = true;
-
   services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-
   # Enable OpenGL
   hardware.opengl = {
     enable = true;
@@ -77,21 +72,12 @@
 
   boot.initrd.kernelModules = [ "nvidia" ];
   boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
-
-  services.spotifyd = {
-    enable = true;
-    settings = {
-      global = {
-        username = "julienmalka@icloud.com";
-        password_cmd = "cat /root/spotify_pw";
-        use_mpris = false;
-      };
-    };
-  };
-
-  systemd.services.spotifyd.serviceConfig.DynamicUser = lib.mkForce false;
-
   programs.xwayland.enable = true;
+  programs.hyprland =
+    {
+      enable = true;
+      enableNvidiaPatches = true;
+    };
 
   time.timeZone = "Europe/Paris";
 
@@ -105,7 +91,7 @@
   programs.dconf.enable = true;
   services.emacs = {
     enable = true;
-    package = pkgs.emacs29;
+    package = pkgs.emacs29-gtk3;
   };
 
   security.polkit.enable = true;
@@ -127,6 +113,7 @@
   };
 
 
+  programs.ssh.startAgent = true;
 
   environment.systemPackages = with pkgs; [
     tailscale
