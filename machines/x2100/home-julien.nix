@@ -66,28 +66,17 @@
           htop
           evince
           mosh
-          obsidian
           zotero
           flameshot
           kitty
           networkmanagerapplet
-          element-desktop
           xdg-utils
           sops
           step-cli
-          coq
           gh
           gh-dash
           cvc5
           signal-desktop-beta
-          coqPackages.coqide
-          (why3.withProvers
-            [
-              unstable.cvc4
-              alt-ergo
-              z3
-            ])
-          libsForQt5.neochat
           scli
           texlive.combined.scheme-full
         ];
