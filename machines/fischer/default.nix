@@ -39,7 +39,7 @@
 
   networking.hostName = "fischer";
 
-  networking.wireless.enable = false;
+  networking.wireless.enable = true;
 
   environment.sessionVariables = { LIBSEAT_BACKEND = "logind"; };
 
@@ -131,6 +131,8 @@
   };
 
   systemd.services.syncthing.serviceConfig.StateDirectory = "syncthing";
+
+  services.postgresql.enable = true;
 
   environment.systemPackages = with pkgs; [
     tailscale
