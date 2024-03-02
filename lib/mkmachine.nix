@@ -59,7 +59,6 @@ nixpkgs.lib.nixosSystem {
             hydrasect = prev.pkgs.callPackage ../packages/hydrasect { };
             linkal = inputs.linkal.defaultPackage."${system}";
             mosh = prev.unstable.mosh;
-            hyprpaper = inputs.hyprpaper.packages.${system}.default;
             attic = inputs.attic.packages.${system}.default;
             colmena = inputs.colmena.packages.${system}.colmena;
             nixd = inputs.nixd.packages.${system}.default;
