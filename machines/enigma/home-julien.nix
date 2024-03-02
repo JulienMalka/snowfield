@@ -9,9 +9,15 @@
       luj.programs.git.enable = true;
       luj.programs.gtk.enable = true;
       luj.programs.kitty.enable = true;
-      luj.programs.emacs.enable = true;
+      luj.programs.emacs.enable = false;
       luj.programs.zsh.enable = true;
+      luj.programs.hyprland.enable = true;
       luj.emails.enable = true;
+
+      luj.programs.waybar = {
+        enable = true;
+        interfaceName = "";
+      };
 
       programs.rofi = {
         enable = true;
@@ -26,10 +32,14 @@
         nix-direnv.enable = true;
       };
 
-      dconf.settings = {
-        "org/gnome/desktop/input-sources" = {
-          sources = [ (inputs.home-manager.lib.hm.gvariant.mkTuple [ "xkb" "fr" ]) ];
-          xkb-options = [ ];
+      home.pointerCursor = {
+        gtk.enable = true;
+        name = "Adwaita";
+        package = pkgs.gnome.adwaita-icon-theme;
+        size = 15;
+        x11 = {
+          enable = true;
+          defaultCursor = "Adwaita";
         };
       };
 
@@ -51,6 +61,9 @@
           meld
           vlc
           nerdfonts
+          jetbrains-mono
+          cantarell-fonts
+          unstable.nixd
           libreoffice
           unstable.signal-desktop
           font-awesome
