@@ -33,13 +33,12 @@
     };
     homer.enable = true;
     mailserver.enable = true;
-    linkal.enable = true;
 
   };
 
 
   # make the tailscale command usable to users
-  environment.systemPackages = [ pkgs.tailscale pkgs.linkal ];
+  environment.systemPackages = [ pkgs.tailscale ];
 
   # enable the tailscale service
   services.tailscale.enable = true;
