@@ -55,8 +55,8 @@ inputs: lib: with lib; let
           enigma = {
             inherit tld;
             arch = "aarch64-linux";
-            nixpkgs_version = inputs.nixpkgs;
-            hm_version = inputs.home-manager;
+            nixpkgs_version = inputs.unstable;
+            hm_version = inputs.home-manager-unstable;
             ipv4.vpn = "100.100.45.21";
           };
           lambda = {
