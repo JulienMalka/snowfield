@@ -41,7 +41,6 @@ nixpkgs.lib.nixosSystem {
     {
       home-manager.useGlobalPkgs = true;
       nixpkgs.overlays = [
-        inputs.emacs-overlay.overlay
         inputs.nur.overlay
         (overlay-unstable system)
         (final: prev:
@@ -58,11 +57,9 @@ nixpkgs.lib.nixosSystem {
             tailscale = prev.unstable.tailscale;
             nodePackages = prev.unstable.nodePackages;
             hydrasect = prev.pkgs.callPackage ../packages/hydrasect { };
-            linkal = inputs.linkal.defaultPackage."${system}";
             mosh = prev.unstable.mosh;
             attic = inputs.attic.packages.${system}.default;
             colmena = inputs.colmena.packages.${system}.colmena;
-            nixd = inputs.nixd.packages.${system}.default;
             keycloak-keywind = prev.pkgs.callPackage ../packages/keycloak-keywind { };
             nix-rfc-92 = inputs.nix-rfc-92.packages.${system}.default;
             bcachefs-tools = prev.unstable.bcachefs-tools;
