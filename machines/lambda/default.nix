@@ -5,8 +5,6 @@
     [
       ./hardware.nix
       ./home-julien.nix
-      ../../users/julien.nix
-      ../../users/default.nix
     ];
 
   boot.loader.systemd-boot.enable = true;

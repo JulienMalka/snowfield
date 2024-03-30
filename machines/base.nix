@@ -2,6 +2,11 @@
 
 {
 
+  imports = [
+    ../users/default.nix
+    ../users/julien.nix
+  ];
+
   luj.nix.enable = true;
   #luj.secrets.enable = true;
   luj.ssh-server.enable = true;
@@ -16,7 +21,6 @@
   console = {
     keyMap = lib.mkForce "fr";
   };
-
 
   programs.gnupg.agent.enable = true;
 
@@ -66,7 +70,6 @@ jAYwCgYIKoZIzj0EAwIDSQAwRgIhALdsEqiRa4ak5Cnin6Tjnel5uOiHSjoC6LKf
 VfXtULncAiEA2gmqdr+ugFz5tvPdKwanroTiMTUMhhCRYVlQlyTApyQ=
 -----END CERTIFICATE-----''
   ];
-
 
 
 }

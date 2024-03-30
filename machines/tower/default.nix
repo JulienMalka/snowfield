@@ -3,11 +3,8 @@
 {
   imports =
     [
-      # Include the results of the hardware scan.
       ./hardware.nix
       ./home-julien.nix
-      ../../users/julien.nix
-      ../../users/default.nix
     ];
 
   # Bootloader.

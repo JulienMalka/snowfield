@@ -5,8 +5,6 @@
     [
       ./hardware.nix
       ./home-julien.nix
-      ../../users/julien.nix
-      ../../users/default.nix
       ../../share.nix
     ];
 
@@ -99,26 +97,26 @@
   ];
 
 
-  networking.wireguard.interfaces.rezo = {           
-  ips = [ "fd81:fb3a:50cc::200/128" ];
+  networking.wireguard.interfaces.rezo = {
+    ips = [ "fd81:fb3a:50cc::200/128" ];
     privateKeyFile = "/root/wg-private";
-     peers = [
-       {
-         publicKey = "srQPT9ZjXBKyJ7R1mvXYMZNy+NcnHMy5qE1WGZDfmnc=";
-         allowedIPs = [ "fd81:fb3a:50cc::/48" ];
-         endpoint = "129.199.146.230:25351";
-       }
-     ];                                                                                                          
-   };
+    peers = [
+      {
+        publicKey = "srQPT9ZjXBKyJ7R1mvXYMZNy+NcnHMy5qE1WGZDfmnc=";
+        allowedIPs = [ "fd81:fb3a:50cc::/48" ];
+        endpoint = "129.199.146.230:25351";
+      }
+    ];
+  };
 
-  
+
 
   services.hash-collection = {
     enable = true;
     retries = 1;
     collection-url = "http://localhost:8000";
     tokenFile = "/home/julien/token";
-  }; 
+  };
 
   services.printing.enable = true;
   services.avahi.enable = true;
