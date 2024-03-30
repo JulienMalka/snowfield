@@ -33,8 +33,7 @@ in
     mkMerge [{
       services.sonarr = {
         enable = true;
-        inherit (cfg) user;
-        inherit (cfg) group;
+        inherit (cfg) user group;
       };
     }
 

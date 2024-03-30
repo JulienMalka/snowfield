@@ -18,9 +18,9 @@ in
     mkMerge [{
 
       services.hydra = {
+        inherit port;
         enable = true;
         notificationSender = "hydra@localhost";
-        inherit port;
         buildMachinesFiles = [ ];
         useSubstitutes = true;
       };
@@ -28,9 +28,11 @@ in
       networking.firewall = { allowedTCPPorts = [ port ]; };
     }
 
-      (mkIf cfg.nginx.enable (recursiveUpdate {
-        services.hydra.hydraURL = "${cfg.nginx.subdomain}.julienmalka.me";
-      } (mkSubdomain cfg.nginx.subdomain port)) )]);
+      (mkIf cfg.nginx.enable (recursiveUpdate
+        {
+          services.hydra.hydraURL = "${cfg.nginx.subdomain}.julienmalka.me";
+        }
+        (mkSubdomain cfg.nginx.subdomain port)))]);
 
 
 

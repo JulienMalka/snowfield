@@ -33,13 +33,13 @@ in
     mkMerge [{
       services.radarr = {
         enable = true;
-        inherit (cfg) user;
-        inherit (cfg) group;
+        package = pkgs.unstable.radarr;
+        inherit (cfg) user group;
       };
     }
-      
+
       (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))]);
- 
+
 
 
 

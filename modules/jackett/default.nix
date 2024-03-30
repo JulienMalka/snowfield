@@ -32,14 +32,14 @@ in
     mkMerge [{
       services.jackett = {
         enable = true;
-        inherit (cfg) user;
-        inherit (cfg) group;
+        package = pkgs.unstable.jackett;
+        inherit (cfg) user group;
       };
 
     }
 
       (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))]);
- 
+
 
 
 

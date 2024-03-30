@@ -33,14 +33,13 @@ in
     mkMerge [{
       services.lidarr = {
         enable = true;
-        inherit (cfg) user;
-        inherit (cfg) group;
+        inherit (cfg) user group;
       };
     }
 
-      
+
       (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))]);
- 
+
 
 
 

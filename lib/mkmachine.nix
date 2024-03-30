@@ -26,8 +26,8 @@ nixpkgs.lib.nixosSystem {
     };
   modules = builtins.attrValues modules ++ [
     ../machines/base.nix
-    inputs.sops-nix.nixosModules.sops
     host-config
+    inputs.sops-nix.nixosModules.sops
     home-manager.nixosModules.home-manager
     inputs.simple-nixos-mailserver.nixosModule
     inputs.attic.nixosModules.atticd
@@ -36,7 +36,6 @@ nixpkgs.lib.nixosSystem {
     inputs.buildbot-nix.nixosModules.buildbot-master
     inputs.buildbot-nix.nixosModules.buildbot-worker
     inputs.nix-hash-collection.nixosModules.hash-collection
-
     inputs.nur.nixosModules.nur
     {
       home-manager.useGlobalPkgs = true;
@@ -48,22 +47,14 @@ nixpkgs.lib.nixosSystem {
             waybar = prev.waybar.overrideAttrs (oldAttrs: {
               mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
             });
-            tinystatus = prev.pkgs.callPackage ../packages/tinystatus { };
-            inherit (prev.unstable) jackett;
-            inherit (prev.unstable) radarr;
-            htpdate = prev.pkgs.callPackage ../packages/htpdate { };
-            authelia = prev.pkgs.callPackage ../packages/authelia { };
-            paperless-ng = prev.pkgs.callPackage ../packages/paperless-ng { };
-            inherit (prev.unstable) tailscale;
-            inherit (prev.unstable) nodePackages;
-            hydrasect = prev.pkgs.callPackage ../packages/hydrasect { };
-            inherit (prev.unstable) mosh;
+            # Packages comming from other repositories
             attic = inputs.attic.packages.${system}.default;
             inherit (inputs.colmena.packages.${system}) colmena;
-            keycloak-keywind = prev.pkgs.callPackage ../packages/keycloak-keywind { };
-            nix-rfc-92 = inputs.nix-rfc-92.packages.${system}.default;
             inherit (prev.unstable) bcachefs-tools;
             zotero = inputs.zotero-nix.packages.${system}.default;
+            # My own packages
+            keycloak-keywind = prev.pkgs.callPackage ../packages/keycloak-keywind { };
+            hydrasect = prev.pkgs.callPackage ../packages/hydrasect { };
           })
       ];
     }

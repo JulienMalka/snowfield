@@ -32,47 +32,16 @@ in
     mkMerge [{
       services.jellyfin = {
         enable = true;
-        inherit (cfg) user;
-        inherit (cfg) group;
+        inherit (cfg) user group;
       };
-
-      #      services.nginx.appendHttpConfig = ''
-      #       server {
-      #           server_name tv.julienmalka.me;
-      #           listen 80;
-      #           return 301 https://$server_name$request_uri;
-      #       }
-
-      #      server {
-      #          server_name tv.julienmalka.me;
-      #          listen 443 ssl http2;
-
-      #         include ${../authelia/authelia.conf}; # Authelia auth endpoint
-
-      #        location / {
-      #           proxy_pass http://127.0.0.1:8096;
-      #   	    proxy_set_header Host $host;
-      # proxy_set_header X-Real-IP $remote_addr;
-      # proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-
-      #  	    include ${../authelia/secure.conf}; # Protect this endpoint
-      #      }
-      #  }
-      # '';
-
-
-
-
-      
-
 
     }
 
-      (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port))     
+      (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port))
       (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))]);
-      
-    
-      
+
+
+
 
 
 

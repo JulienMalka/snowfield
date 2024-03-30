@@ -39,8 +39,7 @@ in
 
       services.transmission = {
         enable = true;
-        inherit (cfg) user;
-        inherit (cfg) group;
+        inherit (cfg) user group;
         credentialsFile = "/run/secrets/transmission";
         downloadDirPermissions = "770";
         settings = {
@@ -52,7 +51,7 @@ in
       };
     }
 
-      (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port) )]);
+      (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port))]);
 
 
 
