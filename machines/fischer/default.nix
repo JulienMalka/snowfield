@@ -39,8 +39,10 @@
 
   networking.hostName = "fischer";
 
-  networking.wireless.enable = true;
 
+
+  services.blueman.enable = true;
+  hardware.bluetooth.enable = true;
   environment.sessionVariables = { LIBSEAT_BACKEND = "logind"; };
 
   services.tailscale.enable = true;
