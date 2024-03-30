@@ -7,6 +7,7 @@
       ./home-julien.nix
       ../../users/julien.nix
       ../../users/default.nix
+      ../../share.nix
     ];
 
 
@@ -27,6 +28,7 @@
     wireplumber.enable = true;
   };
 
+  hardware.pulseaudio.enable = lib.mkForce false;
 
   services.postgresql.enable = true;
 
@@ -59,18 +61,12 @@
   hardware.opengl.driSupport = true;
 
   services.dbus.enable = true;
-  xdg.portal = {
-    enable = true;
-    wlr.enable = true;
-    extraPortals = lib.mkForce [ pkgs.xdg-desktop-portal-wlr pkgs.xdg-desktop-portal-gtk ];
-
-  };
 
   programs.dconf.enable = true;
 
   security.polkit.enable = true;
 
-  services.tlp.enable = true;
+  services.tlp.enable = false;
 
   security.tpm2.enable = true;
   security.tpm2.pkcs11.enable = true; # expose /run/current-system/sw/lib/libtpm2_pkcs11.so
@@ -101,6 +97,28 @@
     sbctl
     wl-mirror
   ];
+
+
+  networking.wireguard.interfaces.rezo = {           
+  ips = [ "fd81:fb3a:50cc::200/128" ];
+    privateKeyFile = "/root/wg-private";
+     peers = [
+       {
+         publicKey = "srQPT9ZjXBKyJ7R1mvXYMZNy+NcnHMy5qE1WGZDfmnc=";
+         allowedIPs = [ "fd81:fb3a:50cc::/48" ];
+         endpoint = "129.199.146.230:25351";
+       }
+     ];                                                                                                          
+   };
+
+  
+
+  services.hash-collection = {
+    enable = true;
+    retries = 1;
+    collection-url = "http://localhost:8000";
+    tokenFile = "/home/julien/token";
+  }; 
 
   services.printing.enable = true;
   services.avahi.enable = true;

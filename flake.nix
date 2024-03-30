@@ -19,7 +19,7 @@
       flake = false;
     };
 
-    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    unstable.url = "github:NixOS/nixpkgs/nixos-unstable-small";
 
     unstable-plus-patches.url = "github:JulienMalka/nixpkgs/unstable-plus-patches";
 
@@ -83,6 +83,8 @@
     zotero-nix.url = "github:camillemndn/zotero-nix";
     nur.url = "github:nix-community/NUR";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
+
+    nix-hash-collection.url = "github:JulienMalka/nix-hash-collection";
   };
 
   outputs = { self, nixpkgs, ... }@inputs:

@@ -76,7 +76,7 @@
           gh
           gh-dash
           cvc5
-          signal-desktop-beta
+          signal-desktop
           scli
           texlive.combined.scheme-full
         ];

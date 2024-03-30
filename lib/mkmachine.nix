@@ -35,6 +35,7 @@ nixpkgs.lib.nixosSystem {
     inputs.nix-index-database.nixosModules.nix-index
     inputs.buildbot-nix.nixosModules.buildbot-master
     inputs.buildbot-nix.nixosModules.buildbot-worker
+    inputs.nix-hash-collection.nixosModules.hash-collection
 
     inputs.nur.nixosModules.nur
     {
