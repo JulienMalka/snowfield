@@ -2,7 +2,7 @@
 let
   cfg = config.luj.programs.sway;
   modifier = cfg.modifier;
-  terminal = "alacritty";
+  terminal = "kitty";
 in
 with lib;
 {
@@ -28,6 +28,12 @@ with lib;
             DP-6 = {
               bg = builtins.toString cfg.background + " fill";
             };
+
+            DP-7 = {
+              bg = builtins.toString cfg.background + " fill";
+              pos = "0 0";
+            };
+
           };
         modifier = cfg.modifier;
         input = {
