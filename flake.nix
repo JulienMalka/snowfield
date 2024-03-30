@@ -40,22 +40,11 @@
       inputs.utils.follows = "flake-utils";
     };
 
-    linkal = {
-      url = "github:JulienMalka/Linkal/main";
-      inputs.flake-utils.follows = "flake-utils";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     attic = {
       url = "github:zhaofengli/attic";
       inputs.nixpkgs.follows = "unstable";
       inputs.nixpkgs-stable.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
-    };
-
-    nixd = {
-      url = "github:nix-community/nixd";
-      inputs.nixpkgs.follows = "unstable";
     };
 
     nix-index-database = {
@@ -67,23 +56,10 @@
       url = "github:nix-community/lanzaboote/master";
     };
 
-    nix-straight = {
-      url = "github:codingkoi/nix-straight.el?ref=codingkoi/apply-librephoenixs-fix";
-      flake = false;
-    };
-    nix-doom-emacs = {
-      url = "github:nix-community/nix-doom-emacs";
-      inputs = {
-        nix-straight.follows = "nix-straight";
-      };
-    };
-
     buildbot-nix.url = "github:JulienMalka/buildbot-nix";
 
     zotero-nix.url = "github:camillemndn/zotero-nix";
     nur.url = "github:nix-community/NUR";
-    emacs-overlay.url = "github:nix-community/emacs-overlay";
-
     nix-hash-collection.url = "github:JulienMalka/nix-hash-collection";
   };
 
