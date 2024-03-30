@@ -7,13 +7,11 @@
       ./home-julien.nix
     ];
 
-  # Bootloader.
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
 
-  services.resolved.enable = true;
-  networking.hostName = "tower"; # Define your hostname.
+  networking.hostName = "tower";
 
   networking.networkmanager.enable = true;
 
@@ -25,11 +23,6 @@
   environment.systemPackages = with pkgs; [ tailscale colmena git ];
 
   services.tailscale.enable = true;
-
-  nix.extraOptions = ''
-    allow-import-from-derivation = true
-      experimental-features = nix-command flakes
-  '';
 
   services.openssh.extraConfig = ''
     HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
@@ -45,16 +38,7 @@
 
   console.keyMap = "fr";
 
-  users.users.julien = {
-    isNormalUser = true;
-    description = "Julien";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = [ ];
-  };
-
   services.openssh.enable = true;
-
-  boot.binfmt.emulatedSystems = [ "i686-linux" ];
 
   programs.ssh.knownHosts."darwin-build-box.winter.cafe".publicKey =
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0io9E0eXiDIEHvsibXOxOPveSjUPIr1RnNKbUkw3fD";

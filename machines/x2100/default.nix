@@ -124,9 +124,6 @@
   # for a WiFi printer
   services.avahi.openFirewall = true;
 
-
-  security.pam.services.swaylock = { };
-
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
