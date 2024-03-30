@@ -53,7 +53,7 @@
           fira-code
           feh
           meld
-          emacs-pgtk
+          emacs29-pgtk
           vlc
           jftui
           nerdfonts
