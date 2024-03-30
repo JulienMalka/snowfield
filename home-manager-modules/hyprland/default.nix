@@ -2,7 +2,7 @@
 let
   cfg = config.luj.programs.hyprland;
   terminal = "${pkgs.kitty}/bin/kitty";
-  menu = "${pkgs.rofi-wayland}/bin/rofi -no-lazy-grab -show";
+  menu = "${pkgs.rofi-wayland}/bin/rofi -no-lazy-grab -show drun";
 in
 with lib;
 {
@@ -14,139 +14,114 @@ with lib;
     {
       wayland.windowManager.hyprland = {
         enable = true;
-        package = pkgs.hyprland;
+        package = pkgs.unstable.hyprland;
+        systemd = {
+          enable = true;
+          variables = [ "WLR_NO_HARDWARE_CURSORS=1" ];
+        };
+        settings = {
+          # Variables
+          "$mod" = "ALT_L";
+          "$term" = terminal;
+          "$launcher" = menu;
+
+
+          general = {
+            gaps_in = "6";
+            gaps_out = "10";
+          };
+          input = {
+            kb_layout = "fr";
+            follow_mouse = 1;
+            sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
+          };
+          misc = {
+            disable_hyprland_logo = true;
+            disable_splash_rendering = true;
+          };
+          decoration = {
+            rounding = 6;
+          };
+          animations.enabled = true;
+
+          xwayland = {
+            force_zero_scaling = true;
+          };
+
+          workspace = [
+            "1,monitor:DP-3"
+            "2,monitor:HDM1-A-1"
+          ];
+
+          exec = [
+            "hyprpaper"
+          ];
+
+          env = [
+            "LIBVA_DRIVER_NAME, nvidia"
+            "WLR_NO_HARDWARE_CURSORS, 1"
+            "WLR_DRM_DEVICES,/dev/dri/card0"
+          ];
+
+          monitor = [
+            "DP-3, 2560x1440@60, 0x0, 1"
+            "HDM1-A-1, 2560x1440@60, 2560x0, 1"
+          ];
+
+          bind = [
+            "$mod, RETURN, exec, kitty"
+            "$mod, SPACE, exec, $launcher"
+            "$mod, w, exec, swaylock"
+
+            # Window management
+            "$mod, Q, killactive"
+            "$mod, F, fullscreen"
+            # Focus
+            "$mod, left, movefocus, l"
+            "$mod, right, movefocus, r"
+            "$mod, up, movefocus, u"
+            "$mod, down, movefocus, d"
+            # Move
+            "$mod SHIFT, left, movewindow, l"
+            "$mod SHIFT, right, movewindow, r"
+            "$mod SHIFT, up, movewindow, u"
+            "$mod SHIFT, down, movewindow, d"
+
+            # Switch workspaces
+            "$mod, code:10, workspace, 1"
+            "$mod, code:11, workspace, 2"
+            "$mod, code:12, workspace, 3"
+            "$mod, code:13, workspace, 4"
+            "$mod, code:14, workspace, 5"
+            "$mod, code:15, workspace, 6"
+            "$mod, code:16, workspace, 7"
+            "$mod, code:17, workspace, 8"
+            "$mod, code:18, workspace, 9"
+            "$mod, code:19, workspace, 10"
+
+            "$mod SHIFT, code:10, movetoworkspace, 1"
+            "$mod SHIFT, code:11, movetoworkspace, 2"
+            "$mod SHIFT, code:12, movetoworkspace, 3"
+            "$mod SHIFT, code:13, movetoworkspace, 4"
+            "$mod SHIFT, code:14, movetoworkspace, 5"
+            "$mod SHIFT, code:15, movetoworkspace, 6"
+            "$mod SHIFT, code:16, movetoworkspace, 7"
+            "$mod SHIFT, code:17, movetoworkspace, 8"
+            "$mod SHIFT, code:18, movetoworkspace, 9"
+            "$mod SHIFT, code:19, movetoworkspace, 10"
+
+          ];
+
+
+        };
 
       };
 
-      xdg.configFile."hypr/hyprland.conf".text = ''
-                exec-once = waybar & hyprpaper
-                exec-once=dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY
-                exec-once = nm-applet --indicator 
-                # Monitors
-                monitor = eDP-1, preferred, auto, auto
-      
-                # Input
-                input {
-                  kb_layout = fr
-                  follow_mouse = 1
-                  sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
-                }
-    
-                # General
-                general {
-            gaps_in = 3
-            gaps_out = 5
-            border_size = 2
-            col.active_border = rgb(11111b)
-            col.inactive_border = rgb(11111b)
-            cursor_inactive_timeout = 1
-            layout = dwindle
-        }
-    
-                # Misc
-                misc {
-                  disable_hyprland_logo = true
-                  disable_splash_rendering = true
-                }
-    
-                # Decorations
-                decoration {
-                      rounding = 4
-                }
-
-                animations {
-                  enabled = false
-                }
-    
-    
-                # Gestures
-                gestures {
-                  workspace_swipe = true
-                  workspace_swipe_fingers = 4
-                }
-    
-    
-                # Variables
-                $term = ${terminal}
-                $browser = chromium
-                $editor = nvim
-                $files = nemo
-                $launcher = ${menu}
-    
-                # Apps
-                bind = SUPER, RETURN, exec, kitty
-                bind = SUPER SHIFT, E, exec, $editor
-                bind = SUPER SHIFT, F, exec, $files
-                bind = SUPER SHIFT, B, exec, $browser
-                bind = SUPER, SPACE, exec, $launcher
-                bind = SUPER, X, exec, power-menu
-    
-                # Function keys
-                bind = ,XF86MonBrightnessUp, exec, brightnessctl s +10%
-                bind = ,XF86MonBrightnessDown, exec, brightnessctl s 10%-
-    
-                # Screenshots
-                bind = , Print, exec, $screenshotarea
-                bind = CTRL, Print, exec, grimblast --notify --cursor copysave output
-                bind = SUPER SHIFT CTRL, R, exec, grimblast --notify --cursor copysave output
-                bind = ALT, Print, exec, grimblast --notify --cursor copysave screen
-                bind = SUPER SHIFT ALT, R, exec, grimblast --notify --cursor copysave screen
-    
-                # Misc
-                bind = CTRL ALT, L, exec, swaylock
-    
-                # Window management
-                bind = SUPER, Q, killactive,
-                bind = SUPER, M, exit,
-                bind = SUPER, F, fullscreen,
-                bind = SUPER, D, togglefloating,
-                bind = SUPER, P, pseudo, # dwindle
-                bind = SUPER, J, togglesplit, # dwindle
-    
-                # Focus
-                bind = SUPER, left, movefocus, l
-                bind = SUPER, right, movefocus, r
-                bind = SUPER, up, movefocus, u
-                bind = SUPER, down, movefocus, d
-    
-                # Move
-                bind = SUPER SHIFT, left, movewindow, l
-                bind = SUPER SHIFT, right, movewindow, r
-                bind = SUPER SHIFT, up, movewindow, u
-                bind = SUPER SHIFT, down, movewindow, d
-    
-                # Resize
-                bind = SUPER CTRL, left, resizeactive, -20 0
-                bind = SUPER CTRL, right, resizeactive, 20 0
-                bind = SUPER CTRL, up, resizeactive, 0 -20
-                bind = SUPER CTRL, down, resizeactive, 0 20
-    
-                # Tabbed
-                bind= SUPER, g, togglegroup
-                bind= SUPER, tab, changegroupactive
-    
-                # Special workspace
-                bind = SUPER, grave, togglespecialworkspace
-                bind = SUPERSHIFT, grave, movetoworkspace, special
-    
-                # Switch workspaces
-                bind = SUPER, ampersand, workspace, 1
-                bind = SUPER, eacute, workspace, 2
-                bind = SUPER, quotedbl, workspace, 3 
-                bind = SUPER, apostrophe, workspace, 4 
-                bind = SUPER, parenleft, workspace, 5 
-                bindm = SUPER, mouse:272, movewindow
-                bindm = SUPER, mouse:273, resizewindow
-                bind = SUPER, mouse_down, workspace, e+1
-                bind = SUPER, mouse_up, workspace, e-1
-
-                bind = SUPER SHIFT, ampersand, movetoworkspace, 1
-                bind = SUPER SHIFT, eacute, movetoworkspace, 2
-                bind = SUPER SHIFT, quotedbl, movetoworkspace, 3 
-                bind = SUPER SHIFT, apostrophe, movetoworkspace, 4 
-                bind = SUPER, parenleft, movetoworkspace, 5 
-
+      xdg.configFile."hypr/hyprpaper.conf".text = ''
+        preload = ${../../machines/x2100/wallpaper.jpg}
+        wallpaper = ,${../../machines/x2100/wallpaper.jpg}
       '';
+
 
       services.swayidle = {
         enable = true;
@@ -189,7 +164,7 @@ with lib;
 
 
       home.packages = with pkgs;
-        [ qt6.qtwayland libsForQt5.qt5.qtwayland ];
+        [ qt6.qtwayland libsForQt5.qt5.qtwayland hyprpaper ];
 
     };
 }
