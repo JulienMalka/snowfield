@@ -1,7 +1,0 @@
-users:
-  julien:
-    displayname: "Julien Malka"
-    email: julien@malka.sh
-    groups:
-      - admins
-      - dev
