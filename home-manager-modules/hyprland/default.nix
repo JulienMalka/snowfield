@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, ... }:
 let
   cfg = config.luj.programs.hyprland;
   terminal = "${pkgs.kitty}/bin/kitty";

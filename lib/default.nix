@@ -1,9 +1,9 @@
-inputs: final: prev:
+inputs: final: _prev:
 
 with builtins;
 
 {
-  importConfig = path: (mapAttrs (name: value: import (path + "/${name}/default.nix")) (final.filterAttrs (_: v: v == "directory") (readDir path)));
+  importConfig = path: (mapAttrs (name: _value: import (path + "/${name}/default.nix")) (final.filterAttrs (_: v: v == "directory") (readDir path)));
 
   mkSubdomain = name: port: {
     luj.nginx.enable = true;

@@ -1,4 +1,4 @@
-{ pkgs, config, lib, inputs, ... }:
+{ config, lib, ... }:
 let
   cfg = config.luj.programs.mosh;
 in

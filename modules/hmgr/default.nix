@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, lib, ... }:
 let
   cfg = config.luj.hmgr;
 in

@@ -1,7 +1,7 @@
 inputs: lib:
 
 let
-  overlay-unstable = arch: final: prev:
+  overlay-unstable = arch: _final: _prev:
     let
       nixpkgs-patched-src = (import inputs.nixpkgs { system = arch; }).applyPatches {
         name = "nixpkgs-patches";
@@ -16,7 +16,7 @@ let
     };
 in
 
-{ host, host-config, modules, nixpkgs ? inputs.nixpkgs, system ? "x86_64-linux", home-manager ? inputs.home-manager }:
+{ host-config, modules, nixpkgs ? inputs.nixpkgs, system ? "x86_64-linux", home-manager ? inputs.home-manager }:
 nixpkgs.lib.nixosSystem {
   inherit system;
   lib = (nixpkgs.lib.extend (import ./default.nix inputs));
@@ -43,7 +43,7 @@ nixpkgs.lib.nixosSystem {
       nixpkgs.overlays = [
         inputs.nur.overlay
         (overlay-unstable system)
-        (final: prev:
+        (_final: prev:
           {
             waybar = prev.waybar.overrideAttrs (oldAttrs: {
               mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];

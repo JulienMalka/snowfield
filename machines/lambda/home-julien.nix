@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ ... }:
 {
   luj.hmgr.julien = {
     home.stateVersion = "22.11";

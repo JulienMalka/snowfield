@@ -1,4 +1,4 @@
-{ lib, pkgs, inputs, config, ... }:
+{ lib, config, ... }:
 with lib;
 let
   cfg = config.luj.homer;

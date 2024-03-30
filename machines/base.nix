@@ -1,4 +1,4 @@
-{ config, pkgs, sops-nix, lib, ... }:
+{ pkgs, lib, ... }:
 
 {
 

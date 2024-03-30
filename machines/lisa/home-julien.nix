@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ ... }:
 {
 
   sops.secrets.ssh-lisa-pub = {

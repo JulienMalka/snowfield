@@ -2,11 +2,6 @@
 with lib;
 let
   cfg = config.luj.buildbot;
-  port = "1810";
-  package = pkgs.buildbot-worker;
-  python = package.pythonModule;
-  home = "/var/lib/buildbot-worker";
-  buildbotDir = "${home}/worker";
 in
 {
 

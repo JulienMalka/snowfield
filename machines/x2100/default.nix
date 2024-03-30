@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, nixpkgs-patched, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports =

@@ -3,7 +3,6 @@ with lib;
 let
   cfg = config.luj.navidrome;
   port = 4533;
-  settingsFormat = pkgs.formats.json { };
 in
 {
 

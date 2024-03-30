@@ -1,4 +1,4 @@
-{ lib, pkgs, inputs, config, ... }:
+{ lib, inputs, config, ... }:
 with lib;
 let
   cfg = config.luj.homepage;

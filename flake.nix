@@ -64,7 +64,7 @@
   outputs = { self, nixpkgs, ... }@inputs:
     let
       lib = nixpkgs.lib.extend (import ./lib inputs);
-      machines_plats = lib.mapAttrsToList (name: value: value.arch) (lib.filterAttrs (n: v: builtins.hasAttr "arch" v) lib.luj.machines);
+      machines_plats = lib.mapAttrsToList (_name: value: value.arch) (lib.filterAttrs (_n: v: builtins.hasAttr "arch" v) lib.luj.machines);
       mkMachine = import ./lib/mkmachine.nix inputs lib;
 
       nixpkgs_plats = builtins.listToAttrs (builtins.map
@@ -118,7 +118,7 @@
           (plat: {
             name = plat;
             value =
-              (lib.filterAttrs (name: value: (!lib.hasAttrByPath [ "meta" "platforms" ] value) || builtins.elem plat value.meta.platforms)
+              (lib.filterAttrs (_name: value: (!lib.hasAttrByPath [ "meta" "platforms" ] value) || builtins.elem plat value.meta.platforms)
                 (builtins.listToAttrs (builtins.map
                   (e: {
                     name = e;

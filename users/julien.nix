@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, ... }: {
 
   sops.secrets.user-julien-password.neededForUsers = true;
 
