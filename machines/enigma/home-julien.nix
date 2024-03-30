@@ -84,7 +84,6 @@
           sops
           step-cli
           scli
-          spotify-tui
           jftui
           texlive.combined.scheme-full
         ];
