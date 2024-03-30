@@ -12,6 +12,7 @@
       luj.programs.emacs.enable = false;
       luj.programs.zsh.enable = true;
       luj.programs.hyprland.enable = true;
+      luj.programs.dunst.enable = true;
       luj.emails.enable = true;
 
       luj.programs.waybar = {
@@ -98,11 +99,6 @@
       home.keyboard = {
         layout = "fr";
       };
-
-      services.dunst = {
-        enable = true;
-      };
-
     };
 
 
