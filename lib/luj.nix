@@ -49,7 +49,7 @@ inputs: lib: with lib; let
           };
           fischer = {
             arch = "x86_64-linux";
-            nixpkgs_version = inputs.unstable-plus-patches;
+            nixpkgs_version = inputs.unstable;
             hm_version = inputs.home-manager-unstable;
           };
           enigma = {
