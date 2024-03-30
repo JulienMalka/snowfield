@@ -75,12 +75,15 @@
 
   services.tailscale.enable = true;
 
+  services.openssh.settings.PermitRootLogin = "yes";
+  services.openssh.settings.PasswordAuthentication = lib.mkForce true;
 
   # Photoprism
   services.photoprism = {
     enable = true;
     port = 2342;
     originalsPath = "/data/photos";
+    passwordFile = "/srv/photoprism";
     importPath = "import";
     address = "0.0.0.0";
     settings = {
@@ -97,7 +100,6 @@
 
   services.mysql = {
     enable = true;
-    dataDir = "/data/mysql";
     package = pkgs.mariadb;
     ensureDatabases = [ "photoprism" ];
     ensureUsers = [{
@@ -119,15 +121,10 @@
       "photos.malka.family" = {
         forceSSL = true;
         enableACME = true;
+        http2 = true;
         locations."/" = {
-          proxyPass = "http://127.0.0.1:2342";
+          proxyPass = "http://0.0.0.0:2342";
           proxyWebsockets = true;
-          extraConfig = ''
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header Host $host;
-            proxy_buffering off;
-            proxy_http_version 1.1;
-          '';
         };
       };
     };
