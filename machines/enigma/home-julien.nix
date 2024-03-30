@@ -80,7 +80,6 @@
           networkmanagerapplet
           element-desktop
           xdg-utils
-          onagre
           sops
           step-cli
           scli
