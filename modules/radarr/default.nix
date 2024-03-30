@@ -33,8 +33,8 @@ in
     mkMerge [{
       services.radarr = {
         enable = true;
-        user = cfg.user;
-        group = cfg.group;
+        inherit (cfg) user;
+        inherit (cfg) group;
       };
     }
       

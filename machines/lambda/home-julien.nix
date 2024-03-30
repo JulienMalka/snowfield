@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   luj.hmgr.julien = {
     home.stateVersion = "22.11";

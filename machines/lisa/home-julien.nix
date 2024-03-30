@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
 
   sops.secrets.ssh-lisa-pub = {

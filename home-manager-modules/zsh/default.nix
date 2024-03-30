@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 let
   cfg = config.luj.programs.zsh;
-  fetchFromGitHub = pkgs.fetchFromGitHub;
+  inherit (pkgs) fetchFromGitHub;
 in
 with lib;
 {

@@ -92,7 +92,7 @@ in
             --service gitlab-runner \
             --config ${cfg.registrationConfigFile}
           '';
-        } // optionalAttrs (cfg.gracefulTermination) {
+        } // optionalAttrs cfg.gracefulTermination {
           TimeoutStopSec = "${cfg.gracefulTimeout}";
           KillSignal = "SIGQUIT";
           KillMode = "process";

@@ -21,7 +21,7 @@ in
       services.hedgedoc = {
         enable = true;
         settings = {
-          port = port;
+          inherit port;
           db = {
             dialect = "postgres";
             host = "/run/postgresql";

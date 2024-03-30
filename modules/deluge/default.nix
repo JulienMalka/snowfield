@@ -39,8 +39,8 @@ in
 
       services.deluge = {
         enable = true;
-        user = cfg.user;
-        group = cfg.group;
+        inherit (cfg) user;
+        inherit (cfg) group;
         openFirewall = true;
         declarative = true;
         authFile = "/run/secrets/deluge";

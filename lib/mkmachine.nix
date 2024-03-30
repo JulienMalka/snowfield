@@ -19,7 +19,7 @@ in
 { host-config, modules, nixpkgs ? inputs.nixpkgs, system ? "x86_64-linux", home-manager ? inputs.home-manager }:
 nixpkgs.lib.nixosSystem {
   inherit system;
-  lib = (nixpkgs.lib.extend (import ./default.nix inputs));
+  lib = nixpkgs.lib.extend (import ./default.nix inputs);
   specialArgs =
     {
       inherit inputs;
@@ -49,20 +49,20 @@ nixpkgs.lib.nixosSystem {
               mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
             });
             tinystatus = prev.pkgs.callPackage ../packages/tinystatus { };
-            jackett = prev.unstable.jackett;
-            radarr = prev.unstable.radarr;
+            inherit (prev.unstable) jackett;
+            inherit (prev.unstable) radarr;
             htpdate = prev.pkgs.callPackage ../packages/htpdate { };
             authelia = prev.pkgs.callPackage ../packages/authelia { };
             paperless-ng = prev.pkgs.callPackage ../packages/paperless-ng { };
-            tailscale = prev.unstable.tailscale;
-            nodePackages = prev.unstable.nodePackages;
+            inherit (prev.unstable) tailscale;
+            inherit (prev.unstable) nodePackages;
             hydrasect = prev.pkgs.callPackage ../packages/hydrasect { };
-            mosh = prev.unstable.mosh;
+            inherit (prev.unstable) mosh;
             attic = inputs.attic.packages.${system}.default;
-            colmena = inputs.colmena.packages.${system}.colmena;
+            inherit (inputs.colmena.packages.${system}) colmena;
             keycloak-keywind = prev.pkgs.callPackage ../packages/keycloak-keywind { };
             nix-rfc-92 = inputs.nix-rfc-92.packages.${system}.default;
-            bcachefs-tools = prev.unstable.bcachefs-tools;
+            inherit (prev.unstable) bcachefs-tools;
             zotero = inputs.zotero-nix.packages.${system}.default;
           })
       ];

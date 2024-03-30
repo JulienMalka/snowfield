@@ -118,20 +118,20 @@
           (plat: {
             name = plat;
             value =
-              (lib.filterAttrs (_name: value: (!lib.hasAttrByPath [ "meta" "platforms" ] value) || builtins.elem plat value.meta.platforms)
+              lib.filterAttrs (_name: value: (!lib.hasAttrByPath [ "meta" "platforms" ] value) || builtins.elem plat value.meta.platforms)
                 (builtins.listToAttrs (builtins.map
                   (e: {
                     name = e;
                     value = nixpkgs_plats.${plat}.callPackage (./packages + "/${e}") { };
                   })
-                  (builtins.attrNames (builtins.readDir ./packages)))));
+                  (builtins.attrNames (builtins.readDir ./packages))));
           })
           machines_plats);
 
-      machines = lib.luj.machines;
+      inherit (lib.luj) machines;
 
       checks = {
-        packages = packages;
+        inherit packages;
         machines = lib.mapAttrs (_: v: v.config.system.build.toplevel) self.nixosConfigurations;
       };
     };

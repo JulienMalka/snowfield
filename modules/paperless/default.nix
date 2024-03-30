@@ -26,7 +26,7 @@ in
     mkMerge [{
       services.paperless = {
         enable = true;
-        user = cfg.user;
+        inherit (cfg) user;
         mediaDir = "/home/julien/papers";
         extraConfig = {
           PAPERLESS_OCR_LANGUAGE = "fra+eng";

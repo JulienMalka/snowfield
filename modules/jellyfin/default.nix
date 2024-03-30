@@ -32,8 +32,8 @@ in
     mkMerge [{
       services.jellyfin = {
         enable = true;
-        user = cfg.user;
-        group = cfg.group;
+        inherit (cfg) user;
+        inherit (cfg) group;
       };
 
       #      services.nginx.appendHttpConfig = ''

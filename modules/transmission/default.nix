@@ -39,8 +39,8 @@ in
 
       services.transmission = {
         enable = true;
-        user = cfg.user;
-        group = cfg.group;
+        inherit (cfg) user;
+        inherit (cfg) group;
         credentialsFile = "/run/secrets/transmission";
         downloadDirPermissions = "770";
         settings = {

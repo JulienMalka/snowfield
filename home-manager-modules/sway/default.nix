@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 let
   cfg = config.luj.programs.sway;
-  modifier = cfg.modifier;
+  inherit (cfg) modifier;
   terminal = "kitty";
 in
 with lib;
@@ -22,7 +22,7 @@ with lib;
       enable = true;
       package = pkgs.swayfx;
       config = {
-        terminal = terminal;
+        inherit terminal;
         output =
           {
             DP-6 = {
@@ -35,7 +35,7 @@ with lib;
             };
 
           };
-        modifier = cfg.modifier;
+        inherit (cfg) modifier;
         input = {
           "*" = {
             xkb_layout = "fr";

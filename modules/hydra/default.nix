@@ -20,7 +20,7 @@ in
       services.hydra = {
         enable = true;
         notificationSender = "hydra@localhost";
-        port = port;
+        inherit port;
         buildMachinesFiles = [ ];
         useSubstitutes = true;
       };
