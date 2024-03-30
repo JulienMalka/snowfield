@@ -127,7 +127,5 @@ with lib;
 
       };
 
-    security.pam.services.swaylock = { };
-
   };
 }

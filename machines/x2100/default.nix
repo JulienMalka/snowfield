@@ -110,6 +110,7 @@
   };
 
 
+  security.pam.services.swaylock = { };
 
   services.hash-collection = {
     enable = true;
