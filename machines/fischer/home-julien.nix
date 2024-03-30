@@ -11,10 +11,8 @@
       luj.programs.waybar.enable = true;
       luj.programs.waybar.interfaceName = "enp0s13f0u1u4u4";
       luj.programs.kitty.enable = true;
-      luj.programs.alacritty.enable = true;
       luj.programs.dunst.enable = true;
       luj.programs.zsh.enable = true;
-      luj.programs.emacs.enable = true;
       luj.programs.firefox.enable = true;
       luj.emails.enable = true;
       luj.programs.sway = {
@@ -46,11 +44,13 @@
           jq
           lazygit
           fira-code
+          emacs29-pgtk
           feh
           meld
           vlc
           jftui
           nerdfonts
+          cantarell-fonts
           libreoffice
           font-awesome
           nodejs
@@ -67,7 +67,7 @@
           gh
           gh-dash
           cvc5
-          signal-desktop-beta
+          signal-desktop
           scli
           texlive.combined.scheme-full
         ];
