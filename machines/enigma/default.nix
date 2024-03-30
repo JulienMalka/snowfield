@@ -149,6 +149,7 @@
     wireplumber.enable = true;
   };
 
+  programs.adb.enable = true;
 
 
 
