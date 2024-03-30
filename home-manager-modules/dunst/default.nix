@@ -14,8 +14,8 @@ with lib;
       enable = true;
       settings = {
         global = {
+          monitor = 0;
           corner_radius = 5;
-          follow = "mouse";
           frame_color = "#89B4FA";
           frame_width = 0;
           separator_color = "frame";
