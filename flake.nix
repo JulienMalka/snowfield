@@ -21,8 +21,6 @@
 
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable-small";
 
-    unstable-plus-patches.url = "github:JulienMalka/nixpkgs/unstable-plus-patches";
-
     flake-utils.url = "github:numtide/flake-utils";
 
     colmena.url = "github:zhaofengli/colmena";

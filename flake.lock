@@ -842,7 +842,6 @@
         "simple-nixos-mailserver": "simple-nixos-mailserver",
         "sops-nix": "sops-nix",
         "unstable": "unstable",
-        "unstable-plus-patches": "unstable-plus-patches",
         "zotero-nix": "zotero-nix"
       }
     },
@@ -1098,22 +1097,6 @@
       "original": {
         "owner": "NixOS",
         "ref": "nixos-unstable-small",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "unstable-plus-patches": {
-      "locked": {
-        "lastModified": 1709406994,
-        "narHash": "sha256-WVzW/ow9xoySzTVRu0jSSs8ew+cGtjqR6rUkRc20BHs=",
-        "owner": "JulienMalka",
-        "repo": "nixpkgs",
-        "rev": "887f38c600d5f1ce236f831489462fce3610b6e2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "JulienMalka",
-        "ref": "unstable-plus-patches",
         "repo": "nixpkgs",
         "type": "github"
       }
