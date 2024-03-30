@@ -23,18 +23,10 @@ with lib;
       package = pkgs.swayfx;
       config = {
         inherit terminal;
-        output =
-          {
-            DP-6 = {
-              bg = builtins.toString cfg.background + " fill";
-            };
+        output."*" = {
+          bg = builtins.toString cfg.background + " fill";
+        };
 
-            DP-7 = {
-              bg = builtins.toString cfg.background + " fill";
-              pos = "0 0";
-            };
-
-          };
         inherit (cfg) modifier;
         input = {
           "*" = {
