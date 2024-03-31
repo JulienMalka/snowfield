@@ -12,13 +12,6 @@ with lib;
     programs.firefox = {
       enable = true;
       package = pkgs.firefox-esr;
-      profiles.default = {
-        extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-          bitwarden
-          ublock-origin
-        ];
-
-      };
     };
 
   };

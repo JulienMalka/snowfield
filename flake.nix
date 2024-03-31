@@ -57,7 +57,6 @@
     buildbot-nix.url = "github:JulienMalka/buildbot-nix";
 
     zotero-nix.url = "github:camillemndn/zotero-nix";
-    nur.url = "github:nix-community/NUR";
     nix-hash-collection.url = "github:JulienMalka/nix-hash-collection";
   };
 

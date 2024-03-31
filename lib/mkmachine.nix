@@ -36,11 +36,9 @@ nixpkgs.lib.nixosSystem {
     inputs.buildbot-nix.nixosModules.buildbot-master
     inputs.buildbot-nix.nixosModules.buildbot-worker
     inputs.nix-hash-collection.nixosModules.hash-collection
-    inputs.nur.nixosModules.nur
     {
       home-manager.useGlobalPkgs = true;
       nixpkgs.overlays = [
-        inputs.nur.overlay
         (overlay-unstable system)
         (_final: prev:
           {
