@@ -2,13 +2,13 @@ let
   inputs = import ./deps;
   nixpkgs = import inputs.nixpkgs { };
   lib = nixpkgs.lib.extend (import ./lib inputs);
-  machines_plats = lib.mapAttrsToList (_name: value: value.arch) (lib.filterAttrs (_n: v: builtins.hasAttr "arch" v) lib.luj.machines);
+  machines_plats = lib.lists.unique (lib.mapAttrsToList (_name: value: value.arch) (lib.filterAttrs (_n: v: builtins.hasAttr "arch" v) lib.luj.machines));
   mkMachine = import ./lib/mkmachine.nix inputs lib;
 
   nixpkgs_plats = builtins.listToAttrs (builtins.map
     (plat: {
       name = plat;
-      value = import nixpkgs { system = plat; };
+      value = import inputs.nixpkgs { system = plat; };
     })
     machines_plats);
 in
