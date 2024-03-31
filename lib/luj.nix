@@ -44,7 +44,7 @@ inputs: lib: with lib; let
           };
           x2100 = {
             arch = "x86_64-linux";
-            nixpkgs_version = inputs.unstable;
+            nixpkgs_version = inputs.nixpkgs_patched;
             hm_version = inputs.home-manager-unstable;
           };
           fischer = {

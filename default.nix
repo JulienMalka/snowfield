@@ -1,9 +1,11 @@
 let
   inputs = import ./deps;
+  patch = import inputs.nix-patches { patchFile = ./patches; };
+  inputs_final = inputs // { nixpkgs_patched = patch.mkNixpkgsSrc { src = inputs.unstable; version = "nixos-unstable"; }; };
   nixpkgs = import inputs.nixpkgs { };
-  lib = nixpkgs.lib.extend (import ./lib inputs);
+  lib = nixpkgs.lib.extend (import ./lib inputs_final);
   machines_plats = lib.lists.unique (lib.mapAttrsToList (_name: value: value.arch) (lib.filterAttrs (_n: v: builtins.hasAttr "arch" v) lib.luj.machines));
-  mkMachine = import ./lib/mkmachine.nix inputs lib;
+  mkMachine = import ./lib/mkmachine.nix inputs_final lib;
 
   nixpkgs_plats = builtins.listToAttrs (builtins.map
     (plat: {

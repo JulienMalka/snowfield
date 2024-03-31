@@ -96,6 +96,19 @@
       "url": "https://github.com/mic92/nix-index-database/archive/2844b5f3ad3b478468151bd101370b9d8ef8a3a7.tar.gz",
       "hash": "1kg8h513n2wk83bqh06pv73cvipfj171x5qqqzgv8kr5zimavx14"
     },
+    "nix-patches": {
+      "type": "GitRelease",
+      "repository": {
+        "type": "Git",
+        "url": "https://git.hubrecht.ovh/hubrecht/nix-patches.git"
+      },
+      "pre_releases": false,
+      "version_upper_bound": null,
+      "version": "v0.4.0",
+      "revision": "616b23a27a7ad72fcbde78962a9a96fba686f8b8",
+      "url": null,
+      "hash": "1msf33xs77h32fviziq949n57b3fckxwwmpjdpycp16lva36affm"
+    },
     "nixos-mailserver": {
       "type": "Git",
       "repository": {
