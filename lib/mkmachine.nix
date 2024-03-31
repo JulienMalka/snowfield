@@ -39,7 +39,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
             # Packages comming from other repositories
 
             attic = import inputs.attic;
-            inherit (inputs.colmena.packages.${system}) colmena;
+            colmena = import inputs.colmena;
             inherit (prev.unstable) bcachefs-tools;
             # My own packages
             keycloak-keywind = prev.pkgs.callPackage ../packages/keycloak-keywind { };
