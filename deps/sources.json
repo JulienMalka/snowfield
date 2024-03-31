@@ -143,6 +143,18 @@
       "revision": "d8fe5e6c92d0d190646fb9f1056741a229980089",
       "url": "https://github.com/nixos/nixpkgs/archive/d8fe5e6c92d0d190646fb9f1056741a229980089.tar.gz",
       "hash": "0jd6x1qaggxklah856zx86dxwy4j17swv4df52njcn3ln410bic8"
+    },
+    "zotero-nix": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "camillemndn",
+        "repo": "zotero-nix"
+      },
+      "branch": "main",
+      "revision": "5dd398b6113dc13cfec9df468fb191bf59338c88",
+      "url": "https://github.com/camillemndn/zotero-nix/archive/5dd398b6113dc13cfec9df468fb191bf59338c88.tar.gz",
+      "hash": "167bwwf12apgb8wp0p7z3rvjdkcn30i81xzk85md2p396y6f109i"
     }
   },
   "version": 3

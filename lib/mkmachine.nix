@@ -37,7 +37,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
               mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
             });
             # Packages comming from other repositories
-
+            zotero = pkgs.wrapFirefox (pkgs.callPackage "${inputs.zotero-nix}/pkgs" { }) { };
             attic = import inputs.attic;
             colmena = import inputs.colmena;
             inherit (prev.unstable) bcachefs-tools;
