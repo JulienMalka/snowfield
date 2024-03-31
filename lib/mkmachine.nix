@@ -2,17 +2,8 @@ inputs: lib:
 
 let
   overlay-unstable = arch: _final: _prev:
-    let
-      nixpkgs-patched-src = (import inputs.nixpkgs { system = arch; }).applyPatches {
-        name = "nixpkgs-patches";
-        src = inputs.nixpkgs;
-        patches = [ ];
-      };
-    in
     {
       unstable = inputs.unstable.legacyPackages."${arch}";
-      nixpkgs-patched = import nixpkgs-patched-src { system = arch; };
-      stable = inputs.nixpkgs.legacyPackages."${arch}";
     };
 in
 
