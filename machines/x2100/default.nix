@@ -112,13 +112,6 @@
 
   security.pam.services.swaylock = { };
 
-  services.hash-collection = {
-    enable = true;
-    retries = 1;
-    collection-url = "http://localhost:8000";
-    tokenFile = "/home/julien/token";
-  };
-
   services.printing.enable = true;
   services.avahi.enable = true;
   services.avahi.nssmdns4 = true;
