@@ -24,9 +24,9 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.home-manager}/nixos")
     (import "${inputs.nixos-mailserver}")
     (import "${inputs.attic}/nixos/atticd.nix")
-    (import "${inputs.lanzaboote}/nix/modules/lanzaboote.nix")
     (import "${inputs.buildbot-nix}/nix/master.nix")
     (import "${inputs.buildbot-nix}/nix/worker.nix")
+    (import inputs.lanzaboote).nixosModules.lanzaboote
     {
       home-manager.useGlobalPkgs = true;
       nixpkgs.overlays = [
