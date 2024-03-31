@@ -21,7 +21,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     ../machines/base.nix
     host-config
     (import "${inputs.sops-nix}/modules/sops")
-    (import "${inputs.home-manager}/nixos")
+    (import "${home-manager}/nixos")
     (import "${inputs.nixos-mailserver}")
     (import "${inputs.attic}/nixos/atticd.nix")
     (import "${inputs.buildbot-nix}/nix/master.nix")
