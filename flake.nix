@@ -56,7 +56,6 @@
 
     buildbot-nix.url = "github:JulienMalka/buildbot-nix";
 
-    zotero-nix.url = "github:camillemndn/zotero-nix";
   };
 
   outputs = { self, nixpkgs, ... }@inputs:

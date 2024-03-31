@@ -48,7 +48,6 @@ nixpkgs.lib.nixosSystem {
             attic = inputs.attic.packages.${system}.default;
             inherit (inputs.colmena.packages.${system}) colmena;
             inherit (prev.unstable) bcachefs-tools;
-            zotero = inputs.zotero-nix.packages.${system}.default;
             # My own packages
             keycloak-keywind = prev.pkgs.callPackage ../packages/keycloak-keywind { };
             hydrasect = prev.pkgs.callPackage ../packages/hydrasect { };
