@@ -1,0 +1,149 @@
+{
+  "pins": {
+    "attic": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "zhaofengli",
+        "repo": "attic"
+      },
+      "branch": "main",
+      "revision": "4dbdbee45728d8ce5788db6461aaaa89d98081f0",
+      "url": "https://github.com/zhaofengli/attic/archive/4dbdbee45728d8ce5788db6461aaaa89d98081f0.tar.gz",
+      "hash": "1iri77pbf0gvas93zra29qy1c3l61n97z84xblqxmmhsxvljzvnh"
+    },
+    "buildbot-nix": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "JulienMalka",
+        "repo": "buildbot-nix"
+      },
+      "branch": "main",
+      "revision": "88d60799a4cc8bfdd85f65468a1b225af402c66a",
+      "url": "https://github.com/JulienMalka/buildbot-nix/archive/88d60799a4cc8bfdd85f65468a1b225af402c66a.tar.gz",
+      "hash": "1qdccfclg2avk3z72cql3n8lcci0nal9n92s8ravrfv3jbni62dm"
+    },
+    "colmena": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "zhaofengli",
+        "repo": "colmena"
+      },
+      "branch": "main",
+      "revision": "cd65ef7a25cdc75052fbd04b120aeb066c3881db",
+      "url": "https://github.com/zhaofengli/colmena/archive/cd65ef7a25cdc75052fbd04b120aeb066c3881db.tar.gz",
+      "hash": "0n1j499702iclz4hdb4ywvmn8rl4d1mbdf43dwm7lvpjq5pjjqc1"
+    },
+    "home-manager": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "nix-community",
+        "repo": "home-manager"
+      },
+      "branch": "release-23.11",
+      "revision": "f33900124c23c4eca5831b9b5eb32ea5894375ce",
+      "url": "https://github.com/nix-community/home-manager/archive/f33900124c23c4eca5831b9b5eb32ea5894375ce.tar.gz",
+      "hash": "0g51f2hz13dk953i501fmc6935difhz60741nypaqwz127hy5ldk"
+    },
+    "home-manager-unstable": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "nix-community",
+        "repo": "home-manager"
+      },
+      "branch": "master",
+      "revision": "30f2ec39519f4f5a8a96af808c439e730c15aeab",
+      "url": "https://github.com/nix-community/home-manager/archive/30f2ec39519f4f5a8a96af808c439e730c15aeab.tar.gz",
+      "hash": "11jy0k35j1f27agqzvs3yq37chdvw1xvnymgv2ds3fymasg5m5j2"
+    },
+    "homepage": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "JulienMalka",
+        "repo": "homepage"
+      },
+      "branch": "main",
+      "revision": "29e779d8600b1c1e6235570a3614a54f8ec8126e",
+      "url": "https://github.com/JulienMalka/homepage/archive/29e779d8600b1c1e6235570a3614a54f8ec8126e.tar.gz",
+      "hash": "0prma1rg6glf3xy1dkd6gbzb26z1sxkgzd8wr623pbqvf44hgv32"
+    },
+    "lanzaboote": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "nix-community",
+        "repo": "lanzaboote"
+      },
+      "branch": "master",
+      "revision": "df7ac26bd24fac8baa94d60a02c3e0f0d4d16368",
+      "url": "https://github.com/nix-community/lanzaboote/archive/df7ac26bd24fac8baa94d60a02c3e0f0d4d16368.tar.gz",
+      "hash": "0s1bvc2px5z6qab1i78kjdgzh6w3y1by9sc87q7bcyirqv6xh3gw"
+    },
+    "nix-index-database": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "mic92",
+        "repo": "nix-index-database"
+      },
+      "branch": "main",
+      "revision": "2844b5f3ad3b478468151bd101370b9d8ef8a3a7",
+      "url": "https://github.com/mic92/nix-index-database/archive/2844b5f3ad3b478468151bd101370b9d8ef8a3a7.tar.gz",
+      "hash": "1kg8h513n2wk83bqh06pv73cvipfj171x5qqqzgv8kr5zimavx14"
+    },
+    "nixos-mailserver": {
+      "type": "Git",
+      "repository": {
+        "type": "GitLab",
+        "repo_path": "simple-nixos-mailserver/nixos-mailserver",
+        "server": "https://gitlab.com/"
+      },
+      "branch": "nixos-23.11",
+      "revision": "e47f3719f1db3e0961a4358d4cb234a0acaa7baf",
+      "url": "https://gitlab.com/api/v4/projects/simple-nixos-mailserver%2Fnixos-mailserver/repository/archive.tar.gz?sha=e47f3719f1db3e0961a4358d4cb234a0acaa7baf",
+      "hash": "122vm4n3gkvlkqmlskiq749bhwfd0r71v6vcmg1bbyg4998brvx8"
+    },
+    "nixpkgs": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "nixos",
+        "repo": "nixpkgs"
+      },
+      "branch": "nixos-23.11",
+      "revision": "219951b495fc2eac67b1456824cc1ec1fd2ee659",
+      "url": "https://github.com/nixos/nixpkgs/archive/219951b495fc2eac67b1456824cc1ec1fd2ee659.tar.gz",
+      "hash": "065jy7qivlbdqmbvd7r9h97b23f21axmc4r7sqmq2h0j82rmymxv"
+    },
+    "sops-nix": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "mic92",
+        "repo": "sops-nix"
+      },
+      "branch": "master",
+      "revision": "99b1e37f9fc0960d064a7862eb7adfb92e64fa10",
+      "url": "https://github.com/mic92/sops-nix/archive/99b1e37f9fc0960d064a7862eb7adfb92e64fa10.tar.gz",
+      "hash": "0s3lrd3fqy6djd9j6bjafqafb16x5a11f6xif6w209fhz40a05qz"
+    },
+    "unstable": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "nixos",
+        "repo": "nixpkgs"
+      },
+      "branch": "nixos-unstable",
+      "revision": "d8fe5e6c92d0d190646fb9f1056741a229980089",
+      "url": "https://github.com/nixos/nixpkgs/archive/d8fe5e6c92d0d190646fb9f1056741a229980089.tar.gz",
+      "hash": "0jd6x1qaggxklah856zx86dxwy4j17swv4df52njcn3ln410bic8"
+    }
+  },
+  "version": 3
+}

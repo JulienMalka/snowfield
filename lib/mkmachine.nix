@@ -3,14 +3,16 @@ inputs: lib:
 let
   overlay-unstable = arch: _final: _prev:
     {
-      unstable = inputs.unstable.legacyPackages."${arch}";
+      unstable = import inputs.unstable { };
     };
 in
 
 { host-config, modules, nixpkgs ? inputs.nixpkgs, system ? "x86_64-linux", home-manager ? inputs.home-manager }:
-nixpkgs.lib.nixosSystem {
+let pkgs = import nixpkgs { };
+in
+import "${nixpkgs}/nixos/lib/eval-config.nix" {
   inherit system;
-  lib = nixpkgs.lib.extend (import ./default.nix inputs);
+  lib = pkgs.lib.extend (import ./default.nix inputs);
   specialArgs =
     {
       inherit inputs;
@@ -18,14 +20,13 @@ nixpkgs.lib.nixosSystem {
   modules = builtins.attrValues modules ++ [
     ../machines/base.nix
     host-config
-    inputs.sops-nix.nixosModules.sops
-    home-manager.nixosModules.home-manager
-    inputs.simple-nixos-mailserver.nixosModule
-    inputs.attic.nixosModules.atticd
-    inputs.lanzaboote.nixosModules.lanzaboote
-    inputs.nix-index-database.nixosModules.nix-index
-    inputs.buildbot-nix.nixosModules.buildbot-master
-    inputs.buildbot-nix.nixosModules.buildbot-worker
+    (import "${inputs.sops-nix}/modules/sops")
+    (import "${inputs.home-manager}/nixos")
+    (import "${inputs.nixos-mailserver}")
+    (import "${inputs.attic}/nixos/atticd.nix")
+    (import "${inputs.lanzaboote}/nix/modules/lanzaboote.nix")
+    (import "${inputs.buildbot-nix}/nix/master.nix")
+    (import "${inputs.buildbot-nix}/nix/worker.nix")
     {
       home-manager.useGlobalPkgs = true;
       nixpkgs.overlays = [
@@ -36,7 +37,8 @@ nixpkgs.lib.nixosSystem {
               mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
             });
             # Packages comming from other repositories
-            attic = inputs.attic.packages.${system}.default;
+
+            attic = import inputs.attic;
             inherit (inputs.colmena.packages.${system}) colmena;
             inherit (prev.unstable) bcachefs-tools;
             # My own packages
@@ -46,6 +48,11 @@ nixpkgs.lib.nixosSystem {
       ];
     }
   ];
-  extraModules = [ inputs.colmena.nixosModules.deploymentOptions ];
+  extraModules =
+    let
+      colmenaModules = import
+        "${inputs.colmena}/src/nix/hive/options.nix";
+    in
+    [ colmenaModules.deploymentOptions ];
 }
 
