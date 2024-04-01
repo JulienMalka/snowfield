@@ -166,13 +166,6 @@ inputs: lib: with lib; let
             sshUser = "root";
           };
 
-          wiki = {
-            subdomains = [ "wiki.staging.julienmalka.me" ];
-            ipv4.public = "65.21.240.250";
-            ipv6.public = "2a01:4f9:c012:8178::";
-          };
-
-
         };
       };
     }
