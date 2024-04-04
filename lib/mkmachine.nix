@@ -24,6 +24,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${home-manager}/nixos")
     (import "${inputs.nixos-mailserver}")
     (import "${inputs.attic}/nixos/atticd.nix")
+    (import "${inputs.disko}/module.nix")
     (import "${inputs.buildbot-nix}/nix/master.nix")
     (import "${inputs.buildbot-nix}/nix/worker.nix")
     (import inputs.lanzaboote).nixosModules.lanzaboote

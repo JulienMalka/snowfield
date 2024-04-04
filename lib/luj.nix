@@ -78,6 +78,14 @@ inputs: lib: with lib; let
 
           };
 
+          gustave = {
+            inherit tld;
+            arch = "x86_64-linux";
+            nixpkgs_version = inputs.nixpkgs;
+            hm_version = inputs.home-manager;
+          };
+
+
           core-security = {
             inherit tld;
             arch = "x86_64-linux";
