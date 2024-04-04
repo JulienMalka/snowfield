@@ -20,9 +20,9 @@
         "repo": "buildbot-nix"
       },
       "branch": "main",
-      "revision": "288c0d99660f8554f08e0cb69fddd2489fa09105",
-      "url": "https://github.com/JulienMalka/buildbot-nix/archive/288c0d99660f8554f08e0cb69fddd2489fa09105.tar.gz",
-      "hash": "1ryiw9ljv8g69z5gz0k6pmsf2ckybiqck57y3nv21bqmfgklcrms"
+      "revision": "a0e55cbdda9bb7b4f2e731391632384ea36f3602",
+      "url": "https://github.com/JulienMalka/buildbot-nix/archive/a0e55cbdda9bb7b4f2e731391632384ea36f3602.tar.gz",
+      "hash": "0mgnjn8gvyrn02mjlvca0s666pvfsy4wi3wv7l9ggkbv452114m2"
     },
     "colmena": {
       "type": "Git",
@@ -56,9 +56,9 @@
         "repo": "home-manager"
       },
       "branch": "master",
-      "revision": "30f2ec39519f4f5a8a96af808c439e730c15aeab",
-      "url": "https://github.com/nix-community/home-manager/archive/30f2ec39519f4f5a8a96af808c439e730c15aeab.tar.gz",
-      "hash": "11jy0k35j1f27agqzvs3yq37chdvw1xvnymgv2ds3fymasg5m5j2"
+      "revision": "80546b220e95a575c66c213af1b09fe255299438",
+      "url": "https://github.com/nix-community/home-manager/archive/80546b220e95a575c66c213af1b09fe255299438.tar.gz",
+      "hash": "12zbw1b394rl4pw6h8nfk8rjjxdp7bcdl920pm0jazpsgjqk90pp"
     },
     "homepage": {
       "type": "Git",
@@ -153,9 +153,9 @@
         "repo": "nixpkgs"
       },
       "branch": "nixos-unstable",
-      "revision": "d8fe5e6c92d0d190646fb9f1056741a229980089",
-      "url": "https://github.com/nixos/nixpkgs/archive/d8fe5e6c92d0d190646fb9f1056741a229980089.tar.gz",
-      "hash": "0jd6x1qaggxklah856zx86dxwy4j17swv4df52njcn3ln410bic8"
+      "revision": "08b9151ed40350725eb40b1fe96b0b86304a654b",
+      "url": "https://github.com/nixos/nixpkgs/archive/08b9151ed40350725eb40b1fe96b0b86304a654b.tar.gz",
+      "hash": "09k701xi2zlxdzvsa276b4vs8h4vjjshlaik25bfv1hkrwm30s56"
     },
     "zotero-nix": {
       "type": "Git",
@@ -165,9 +165,9 @@
         "repo": "zotero-nix"
       },
       "branch": "main",
-      "revision": "5dd398b6113dc13cfec9df468fb191bf59338c88",
-      "url": "https://github.com/camillemndn/zotero-nix/archive/5dd398b6113dc13cfec9df468fb191bf59338c88.tar.gz",
-      "hash": "167bwwf12apgb8wp0p7z3rvjdkcn30i81xzk85md2p396y6f109i"
+      "revision": "fc8074c53e6d7c355234d1a46dedc612bfc3a94b",
+      "url": "https://github.com/camillemndn/zotero-nix/archive/fc8074c53e6d7c355234d1a46dedc612bfc3a94b.tar.gz",
+      "hash": "0w0xiyyk2zbm44fax36wcyvr6fm24fq1hjppblzrsi2b2njsz2xk"
     }
   },
   "version": 3
