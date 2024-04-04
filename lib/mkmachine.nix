@@ -3,12 +3,12 @@ inputs: lib:
 let
   overlay-unstable = arch: _final: _prev:
     {
-      unstable = import inputs.unstable { };
+      unstable = import inputs.unstable { system = arch; };
     };
 in
 
 { host-config, modules, nixpkgs ? inputs.nixpkgs, system ? "x86_64-linux", home-manager ? inputs.home-manager }:
-let pkgs = import nixpkgs { };
+let pkgs = import nixpkgs { inherit system; };
 in
 import "${nixpkgs}/nixos/lib/eval-config.nix" {
   inherit system;
@@ -38,8 +38,8 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
             });
             # Packages comming from other repositories
             zotero = pkgs.wrapFirefox (pkgs.callPackage "${inputs.zotero-nix}/pkgs" { }) { };
-            attic = import inputs.attic;
-            colmena = import inputs.colmena;
+            attic = pkgs.callPackage "${inputs.attic}/package.nix" { };
+            colmena = pkgs.callPackage "${inputs.colmena}/package.nix" { };
             inherit (prev.unstable) bcachefs-tools;
             # My own packages
             keycloak-keywind = prev.pkgs.callPackage ../packages/keycloak-keywind { };
