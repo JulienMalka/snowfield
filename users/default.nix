@@ -1,10 +1,10 @@
 { config, pkgs, lib, ... }: {
 
   users.mutableUsers = false;
-  users.defaultUserShell = pkgs.zsh;
+  users.defaultUserShell = pkgs.fish;
   sops.secrets.user-root-password.neededForUsers = true;
 
-  programs.zsh.enable = true;
+  programs.fish.enable = true;
 
   users.users.root = {
     uid = config.ids.uids.root;

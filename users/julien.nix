@@ -6,7 +6,7 @@
     isNormalUser = true;
     home = "/home/julien";
     extraGroups = [ "wheel" config.users.groups.keys.name "networkmanager" "davfs2" "adbusers" "audio" "pipewire" "dialout" "video" ];
-    shell = pkgs.zsh;
+    shell = pkgs.fish;
     hashedPasswordFile = config.sops.secrets.user-julien-password.path;
   };
 
