@@ -109,6 +109,13 @@
 
 
 
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+  };
+
+
+
   security.acme.acceptTerms = true;
   security.acme.defaults.email = "julien@malka.sh";
 
