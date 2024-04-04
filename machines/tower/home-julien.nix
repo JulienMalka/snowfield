@@ -8,7 +8,6 @@
     luj.programs.neovim.enable = true;
     luj.programs.ssh-client.enable = true;
     luj.programs.git.enable = true;
-    luj.programs.zsh.enable = true;
 
 
     programs.direnv = {

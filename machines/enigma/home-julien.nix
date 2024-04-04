@@ -10,7 +10,6 @@
       luj.programs.gtk.enable = true;
       luj.programs.kitty.enable = true;
       luj.programs.emacs.enable = false;
-      luj.programs.zsh.enable = true;
       luj.programs.hyprland.enable = true;
       luj.programs.dunst.enable = true;
       luj.emails.enable = true;

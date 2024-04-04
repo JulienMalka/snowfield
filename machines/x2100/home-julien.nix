@@ -12,7 +12,6 @@
       luj.programs.waybar.enable = true;
       luj.programs.waybar.interfaceName = "wlp3s0";
       luj.programs.kitty.enable = true;
-      luj.programs.zsh.enable = true;
       luj.programs.dunst.enable = true;
       luj.emails.enable = true;
       luj.programs.firefox.enable = true;
