@@ -27,6 +27,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.disko}/module.nix")
     (import "${inputs.buildbot-nix}/nix/master.nix")
     (import "${inputs.buildbot-nix}/nix/worker.nix")
+    (import "${inputs.agenix}/modules/age.nix")
     (import inputs.lanzaboote).nixosModules.lanzaboote
     {
       home-manager.useGlobalPkgs = true;
