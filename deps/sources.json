@@ -127,13 +127,13 @@
       "type": "Git",
       "repository": {
         "type": "GitHub",
-        "owner": "JulienMalka",
+        "owner": "nix-community",
         "repo": "nixos-anywhere"
       },
       "branch": "main",
-      "revision": "dba5c68db747fd32028d5f0b70e626f9a08a9690",
-      "url": "https://github.com/JulienMalka/nixos-anywhere/archive/dba5c68db747fd32028d5f0b70e626f9a08a9690.tar.gz",
-      "hash": "12mk3mxs04s1qbaidfp7jq4wcjycln2pdy2sj3sj7lxk0hnqc5g7"
+      "revision": "c34fd217b1765c9e92845051069f49560a52b8d6",
+      "url": "https://github.com/nix-community/nixos-anywhere/archive/c34fd217b1765c9e92845051069f49560a52b8d6.tar.gz",
+      "hash": "04bbnrz1lc8s6np20fmwlw7yf61c8l3c5q4pl0dj7lqn22fp4nyk"
     },
     "nixos-mailserver": {
       "type": "Git",
