@@ -15,6 +15,7 @@
       luj.programs.dunst.enable = true;
       luj.emails.enable = true;
       luj.programs.firefox.enable = true;
+      luj.programs.pass.enable = true;
       luj.programs.sway = {
         enable = true;
         modifier = "Mod4";
@@ -33,6 +34,7 @@
         enableZshIntegration = true;
         nix-direnv.enable = true;
       };
+
 
       home.pointerCursor = {
         name = "Adwaita";
