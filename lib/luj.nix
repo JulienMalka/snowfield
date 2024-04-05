@@ -51,13 +51,13 @@ inputs: lib: with lib; let
           };
           fischer = {
             arch = "x86_64-linux";
-            nixpkgs_version = inputs.unstable;
+            nixpkgs_version = inputs.nixpkgs_patched;
             hm_version = inputs.home-manager-unstable;
           };
           enigma = {
             inherit tld;
             arch = "aarch64-linux";
-            nixpkgs_version = inputs.unstable;
+            nixpkgs_version = inputs.nixpkgs_patched;
             hm_version = inputs.home-manager-unstable;
             ipv4.vpn = "100.100.45.21";
           };
