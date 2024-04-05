@@ -14,7 +14,7 @@ with lib;
       settings = {
         base_url = "https://vaults.malka.family";
         email = "julien@malka.sh";
-        pinentry = pkgs.pinentry-tty;
+        pinentry = pkgs.unstable.pinentry-tty;
         lock_timeout = 600;
       };
     };
