@@ -43,9 +43,11 @@ inputs: lib: with lib; let
             ipv6 = { public = "2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb"; vpn = "fd7a:115c:a1e0::c"; };
           };
           x2100 = {
+            inherit tld;
             arch = "x86_64-linux";
             nixpkgs_version = inputs.nixpkgs_patched;
             hm_version = inputs.home-manager-unstable;
+            ipv4.public = "127.0.0.1";
           };
           fischer = {
             arch = "x86_64-linux";

@@ -7,7 +7,7 @@ let
     };
 in
 
-{ host-config, modules, nixpkgs ? inputs.nixpkgs, system ? "x86_64-linux", home-manager ? inputs.home-manager }:
+{ name, host-config, modules, nixpkgs ? inputs.nixpkgs, system ? "x86_64-linux", home-manager ? inputs.home-manager }:
 let pkgs = import nixpkgs { inherit system; };
 in
 import "${nixpkgs}/nixos/lib/eval-config.nix" {
@@ -30,6 +30,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import inputs.lanzaboote).nixosModules.lanzaboote
     {
       home-manager.useGlobalPkgs = true;
+      networking.hostName = name;
       nixpkgs.overlays = [
         (overlay-unstable system)
         (_final: prev:
