@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
-# Create a temporary directory
-temp=$(mktemp -d)
 machine=$1
 ip=$2
+extra_args=("${@:3}")
+# Create a temporary directory
+temp=$(mktemp -d)
 # Function to cleanup temporary directory on exit
 cleanup() {
   rm -rf "$temp"
@@ -19,4 +20,4 @@ rbw get "$machine"_ssh_host_ed25519_key -f notes > "$temp/etc/ssh/ssh_host_ed255
 # Set the correct permissions so sshd will accept the key
 chmod 600 "$temp/etc/ssh/ssh_host_ed25519_key"
 
-nixos-anywhere --extra-files "$temp" --store-paths $(nix-build -A nixosConfigurations.\"$machine\".config.system.build.toplevel) $(nix-build -A nixosConfigurations.\"$machine\".config.system.build.diskoScript) root@"$ip"
+nixos-anywhere --extra-files "$temp" --store-paths $(nix-build -A nixosConfigurations.\"$machine\".config.system.build.diskoScript) $(nix-build -A nixosConfigurations.\"$machine\".config.system.build.toplevel) "${extra_args[@]}" root@"$ip"
