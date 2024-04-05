@@ -9,6 +9,7 @@
     luj.programs.ssh-client.enable = true;
     luj.programs.git.enable = true;
     luj.programs.fish.enable = true;
+    luj.programs.pass.enable = true;
 
   };
 }
