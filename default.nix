@@ -25,6 +25,7 @@ rec {
 
   nixosConfigurations = builtins.mapAttrs
     (name: value: (mkMachine {
+      inherit name;
       host-config = value;
       modules = nixosModules;
       nixpkgs = lib.luj.machines.${name}.nixpkgs_version;
