@@ -14,7 +14,7 @@ with lib;
       settings = {
         base_url = "https://vaults.malka.family";
         email = "julien@malka.sh";
-        pinentry = pkgs.pinentry-gnome3;
+        pinentry = pkgs.pinentry-tty;
         lock_timeout = 600;
       };
     };
