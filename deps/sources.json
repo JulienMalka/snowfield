@@ -62,6 +62,18 @@
       "url": "https://api.github.com/repos/nix-community/disko/tarball/v1.5.0",
       "hash": "1d03a0wb710by1m2c3rx758vy67f8r71gnv2h3qn4jj1bx10sdg4"
     },
+    "git-hooks": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "cachix",
+        "repo": "git-hooks.nix"
+      },
+      "branch": "master",
+      "revision": "e35aed5fda3cc79f88ed7f1795021e559582093a",
+      "url": "https://github.com/cachix/git-hooks.nix/archive/e35aed5fda3cc79f88ed7f1795021e559582093a.tar.gz",
+      "hash": "1bq0yrjmkddj964s2q6393nwp4mqrlmc2i5wsy992r034awyywp1"
+    },
     "home-manager": {
       "type": "Git",
       "repository": {
@@ -97,6 +109,18 @@
       "revision": "29e779d8600b1c1e6235570a3614a54f8ec8126e",
       "url": "https://github.com/JulienMalka/homepage/archive/29e779d8600b1c1e6235570a3614a54f8ec8126e.tar.gz",
       "hash": "0prma1rg6glf3xy1dkd6gbzb26z1sxkgzd8wr623pbqvf44hgv32"
+    },
+    "impermanence": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "nix-community",
+        "repo": "impermanence"
+      },
+      "branch": "master",
+      "revision": "a33ef102a02ce77d3e39c25197664b7a636f9c30",
+      "url": "https://github.com/nix-community/impermanence/archive/a33ef102a02ce77d3e39c25197664b7a636f9c30.tar.gz",
+      "hash": "1mig6ns8l5iynsm6pfbnx2b9hmr592s1kqbw6gq1n25czdlcniam"
     },
     "lanzaboote": {
       "type": "Git",
