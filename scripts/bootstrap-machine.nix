@@ -30,10 +30,8 @@ pkgs.writeShellScriptBin "bootstrap-machine" ''
 
   mkdir -p "$temp/persistent"
 
-  cp -r "$temp/ssh" "$temp/persistent/ssh"
+  cp -r "$temp/etc" "$temp/persistent/etc"
 
   nixos-anywhere --extra-files "$temp" --store-paths $(nix-build -A nixosConfigurations.\"$machine\".config.system.build.diskoScript) $(nix-build -A nixosConfigurations.\"$machine\".config.system.build.toplevel) "''${extra_args[@]}" root@"$ip"
   popd
 ''
-
-
