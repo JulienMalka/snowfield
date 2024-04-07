@@ -24,6 +24,14 @@ pkgs.writeShellScriptBin "bootstrap-machine" ''
   # Set the correct permissions so sshd will accept the key
   chmod 600 "$temp/etc/ssh/ssh_host_ed25519_key"
 
+  ssh-keygen -f "$temp/etc/ssh/ssh_host_ed25519_key" -y > "$temp/etc/ssh/ssh_host_ed25519_key.pub"
+
+  chmod 644 "$temp/etc/ssh/ssh_host_ed25519_key.pub"
+
+  mkdir -p "$temp/persistent"
+
+  cp -r "$temp/ssh" "$temp/persistent/ssh"
+
   nixos-anywhere --extra-files "$temp" --store-paths $(nix-build -A nixosConfigurations.\"$machine\".config.system.build.diskoScript) $(nix-build -A nixosConfigurations.\"$machine\".config.system.build.toplevel) "''${extra_args[@]}" root@"$ip"
   popd
 ''
