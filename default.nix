@@ -54,7 +54,6 @@ rec {
     {
       meta = {
         nixpkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
-        nodeNixpkgs = builtins.mapAttrs (_: v: v.pkgs) deployableConfigurations;
         nodeSpecialArgs = builtins.mapAttrs (_: v: v._module.specialArgs) deployableConfigurations;
         specialArgs.lib = lib;
       };
