@@ -1,7 +1,12 @@
-{ pkgs, home, lib, config, ... }:
+{
+  pkgs,
+  home,
+  lib,
+  config,
+  ...
+}:
 let
   cfg = config.luj.programs.neovim;
-
 in
 with lib;
 {
@@ -11,7 +16,12 @@ with lib;
 
   config = mkIf cfg.enable {
 
-    home.packages = with pkgs; [ nixfmt git nodejs ripgrep gcc ];
+    home.packages = with pkgs; [
+      git
+      nodejs
+      ripgrep
+      gcc
+    ];
 
     programs.neovim = {
       enable = true;
@@ -23,62 +33,93 @@ with lib;
       coc = {
         enable = true;
         settings = {
-          coc.preferences.formatOnSaveFiletypes = [ "nix" "rust" "sql" "python" "haskell" ];
+          coc.preferences.formatOnSaveFiletypes = [
+            "nix"
+            "rust"
+            "sql"
+            "python"
+            "haskell"
+          ];
           rust-analyzer.enable = true;
           rust-analyzer.cargo.allFeatures = true;
           rust-analyzer.checkOnSave.allTargets = true;
-          languageserver =
-            {
-              python = {
-                command = "pyright";
-                filetypes = [ "py" "python" ];
-              };
+          languageserver = {
+            python = {
+              command = "pyright";
+              filetypes = [
+                "py"
+                "python"
+              ];
+            };
 
-              haskell = {
-                command = "haskell-language-server-wrapper";
-                args = [ "--lsp" ];
-                rootPatterns = [
-                  "*.cabal"
-                  "cabal.project"
-                  "hie.yaml"
-                  ".stack.yaml"
-                ];
-                filetypes = [ "haskell" "lhaskell" "hs" "lhs" ];
-                settings = {
-                  haskell = {
-                    checkParents = "CheckOnSave";
-                    checkProject = true;
-                    maxCompletions = 40;
-                    formattingProvider = "ormolu";
-                  };
-                };
-              };
-
-              go = {
-                command = "gopls";
-                rootPatterns = [ "go.work" "go.mod" ".vim/" ".git/" ".hg/" ];
-                filetypes = [ "go" ];
-                initializationOptions = {
-                  usePlaceholders = true;
-                };
-              };
-
-              nix = {
-                command = "nixd";
-                filetypes = [ "nix" ];
-              };
-
-              ccls = {
-                command = "ccls";
-                filetypes = [ "c" "cpp" "objc" "objcpp" ];
-                rootPatterns = [ ".ccls" "compile_commands.json" ".vim/" ".git/" ".hg/" ];
-                initializationOptions = {
-                  cache = {
-                    directory = "/tmp/ccls";
-                  };
+            haskell = {
+              command = "haskell-language-server-wrapper";
+              args = [ "--lsp" ];
+              rootPatterns = [
+                "*.cabal"
+                "cabal.project"
+                "hie.yaml"
+                ".stack.yaml"
+              ];
+              filetypes = [
+                "haskell"
+                "lhaskell"
+                "hs"
+                "lhs"
+              ];
+              settings = {
+                haskell = {
+                  checkParents = "CheckOnSave";
+                  checkProject = true;
+                  maxCompletions = 40;
+                  formattingProvider = "ormolu";
                 };
               };
             };
+
+            go = {
+              command = "gopls";
+              rootPatterns = [
+                "go.work"
+                "go.mod"
+                ".vim/"
+                ".git/"
+                ".hg/"
+              ];
+              filetypes = [ "go" ];
+              initializationOptions = {
+                usePlaceholders = true;
+              };
+            };
+
+            nix = {
+              command = "nixd";
+              filetypes = [ "nix" ];
+              settings.nixd.formatting.command = [ "nixfmt" ];
+            };
+
+            ccls = {
+              command = "ccls";
+              filetypes = [
+                "c"
+                "cpp"
+                "objc"
+                "objcpp"
+              ];
+              rootPatterns = [
+                ".ccls"
+                "compile_commands.json"
+                ".vim/"
+                ".git/"
+                ".hg/"
+              ];
+              initializationOptions = {
+                cache = {
+                  directory = "/tmp/ccls";
+                };
+              };
+            };
+          };
         };
       };
 
@@ -98,11 +139,12 @@ with lib;
         pears-nvim
         nvim-tree-lua
 
-        (nvim-treesitter.withPlugins (ps: with ps; [
-          tree-sitter-nix
-          tree-sitter-python
-        ]))
-
+        (nvim-treesitter.withPlugins (
+          ps: with ps; [
+            tree-sitter-nix
+            tree-sitter-python
+          ]
+        ))
 
         vim-lastplace
         vim-nix
@@ -120,7 +162,15 @@ with lib;
         rust-vim
       ];
 
-      extraPackages = with pkgs; [ rust-analyzer pkgs.nixd pyright nixpkgs-fmt ormolu ccls gopls ];
+      extraPackages = with pkgs; [
+        rust-analyzer
+        pkgs.nixd
+        pyright
+        ormolu
+        ccls
+        gopls
+        unstable.nixfmt-rfc-style
+      ];
 
       extraConfig = ''
         luafile ${./settings.lua}
@@ -128,4 +178,3 @@ with lib;
     };
   };
 }
-
