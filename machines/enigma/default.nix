@@ -1,11 +1,10 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, ... }:
 
 {
-  imports =
-    [
-      ./hardware.nix
-      ./home-julien.nix
-    ];
+  imports = [
+    ./hardware.nix
+    ./home-julien.nix
+  ];
 
   networking.hostName = "enigma";
   boot.loader.systemd-boot.enable = true;
@@ -19,15 +18,16 @@
   networking.networkmanager.dns = "systemd-resolved";
   services.resolved.enable = true;
 
-  security.pam.loginLimits = [{
-    domain = "*";
-    type = "-";
-    item = "nofile";
-    value = "262144";
-  }];
+  security.pam.loginLimits = [
+    {
+      domain = "*";
+      type = "-";
+      item = "nofile";
+      value = "262144";
+    }
+  ];
 
   security.pam.services.swaylock = { };
-
 
   services.xserver = {
     enable = true;
@@ -68,28 +68,24 @@
     # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
     # Only available from driver 515.43.04+
     # Do not disable this unless your GPU is unsupported or if you have a good reason to.
-    open = true;
+    open = false;
 
     # Enable the Nvidia settings menu,
     # accessible via `nvidia-settings`.
     nvidiaSettings = true;
 
-
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
-
-
   boot.initrd.kernelModules = [ "nvidia" ];
   boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
   programs.xwayland.enable = true;
-  programs.hyprland =
-    {
-      enable = true;
-      package = pkgs.unstable.hyprland;
-      portalPackage = pkgs.unstable.xdg-desktop-portal-hyprland;
-    };
+  programs.hyprland = {
+    enable = true;
+    package = pkgs.unstable.hyprland;
+    portalPackage = pkgs.unstable.xdg-desktop-portal-hyprland;
+  };
 
   time.timeZone = "Europe/Paris";
 
@@ -111,7 +107,6 @@
   security.polkit.enable = true;
 
   nix = {
-    package = lib.mkForce pkgs.nix;
     distributedBuilds = true;
     buildMachines = [
       {
@@ -119,7 +114,12 @@
         maxJobs = 100;
         systems = [ "x86_64-linux" ];
         sshUser = "root";
-        supportedFeatures = [ "kvm" "nixos-test" "benchmark" "big-parallel" ];
+        supportedFeatures = [
+          "kvm"
+          "nixos-test"
+          "benchmark"
+          "big-parallel"
+        ];
         sshKey = "/home/julien/.ssh/id_ed25519";
         speedFactor = 2;
       }
@@ -149,19 +149,13 @@
 
   programs.adb.enable = true;
 
-
-
   environment.variables.WLR_NO_HARDWARE_CURSORS = "1";
 
   services.printing.enable = true;
   services.avahi.enable = true;
-  services.avahi.nssmdns4 = true;
+  services.avahi.nssmdns = true;
   # for a WiFi printer
   services.avahi.openFirewall = true;
 
   system.stateVersion = "23.05";
-
 }
-
-
-
