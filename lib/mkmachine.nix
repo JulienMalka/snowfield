@@ -24,7 +24,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
   modules = builtins.attrValues modules ++ [
     ../machines/base.nix
     host-config
-    (import "${inputs.sops-nix}/modules/sops")
     (import "${home-manager}/nixos")
     (import "${inputs.nixos-mailserver}")
     (import "${inputs.attic}/nixos/atticd.nix")
