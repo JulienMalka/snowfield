@@ -22,19 +22,15 @@ in
     };
 
     nginx.enable = mkEnableOption "activate nginx";
-    nginx.subdomain = mkOption {
-      type = types.str;
-    };
-
+    nginx.subdomain = mkOption { type = types.str; };
   };
 
-  config = mkIf cfg.enable (
-    mkMerge [{
+  config = mkIf cfg.enable (mkMerge [
+    {
 
-      sops.secrets.deluge = {
+      age.secrets.deluge-webui-password = {
         owner = cfg.user;
-        format = "binary";
-        sopsFile = ../../secrets/deluge-login;
+        file = ../../secrets/deluge-webui-password.age;
       };
 
       services.deluge = {
@@ -42,21 +38,16 @@ in
         inherit (cfg) user group;
         openFirewall = true;
         declarative = true;
-        authFile = "/run/secrets/deluge";
+        authFile = "/run/agenix/deluge-webui-password";
         web.enable = true;
         config = {
           download_location = "/home/mediaserver/downloads/complete/";
           allow_remote = true;
         };
         dataDir = "/home/mediaserver/deluge";
-
       };
     }
 
-
-
-      (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))]);
-
-
-
+    (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))
+  ]);
 }

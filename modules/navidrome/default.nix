@@ -1,4 +1,9 @@
-{ lib, pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 with lib;
 let
   cfg = config.luj.navidrome;
@@ -22,23 +27,12 @@ in
       description = "Group under which Navidrome runs.";
     };
 
-
     nginx.enable = mkEnableOption "activate nginx";
-    nginx.subdomain = mkOption {
-      type = types.str;
-    };
+    nginx.subdomain = mkOption { type = types.str; };
   };
 
-  config = mkIf cfg.enable (
-    mkMerge [{
-
-      sops.secrets."navidrome.json" = {
-        owner = cfg.user;
-        format = "binary";
-        sopsFile = ../../secrets/navidrome-config;
-      };
-
-
+  config = mkIf cfg.enable (mkMerge [
+    {
 
       systemd.services.navidrome = {
 
@@ -55,16 +49,10 @@ in
           WorkingDirectory = "/var/lib/navidrome";
         };
       };
-
-
-
     }
 
+    (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port))
 
-
-      (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port))
-
-      (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))]);
-
-
+    (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))
+  ]);
 }

@@ -8,24 +8,19 @@ with lib;
     enable = mkEnableOption "Create secrets";
   };
 
-  config = mkIf cfg.enable
-    {
-      sops.secrets.ens-mail-passwd = {
-        owner = "julien";
-        path = "/home/julien/.config/ens-mail-passwd";
-      };
+  config = mkIf cfg.enable {
 
-      sops.secrets.sendinblue-mail-passwd = { };
-      sops.secrets.git-gpg-private-key = {
-        owner = "julien";
-        mode = "0440";
-        group = config.users.groups.keys.name;
-        sopsFile = ../secrets/git-gpg-private-key;
-        format = "binary";
-      };
-
-
+    age.secrets.ens-mail-password = {
+      file = ../../secrets/ens-mail-password.age;
+      owner = "julien";
+      path = "/home/julien/.config/ens-mail-passwd";
     };
 
-
+    age.secrets.git-gpg-private-key = {
+      file = ../../secrets/git-gpg-private-key.age;
+      owner = "julien";
+      mode = "0440";
+      group = config.users.groups.keys.name;
+    };
+  };
 }

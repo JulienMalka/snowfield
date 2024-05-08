@@ -1,4 +1,4 @@
-{ lib, pkgs, config, ... }:
+{ lib, config, ... }:
 with lib;
 let
   cfg = config.luj.buildbot;
@@ -14,12 +14,15 @@ in
     services.buildbot-nix.master = {
       enable = true;
       domain = "ci.julienmalka.me";
-      workersFile = config.sops.secrets.buildbot-nix-workers.path;
-      buildSystems = [ "x86_64-linux" "aarch64-linux" ];
+      workersFile = config.age.secrets.buildbot-nix-workers.path;
+      buildSystems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
       github = {
-        tokenFile = config.sops.secrets.github-token.path;
-        webhookSecretFile = config.sops.secrets.github-webhook-secret.path;
-        oauthSecretFile = config.sops.secrets.github-oauth-secret.path;
+        tokenFile = config.age.secrets.github-token.path;
+        webhookSecretFile = config.age.secrets.github-webhook-secret.path;
+        oauthSecretFile = config.age.secrets.github-oauth-secret.path;
         oauthId = "bba3e144501aa5b8a5dd";
         user = "JulienMalka";
         admins = [ "JulienMalka" ];
@@ -33,37 +36,21 @@ in
       enableACME = true;
     };
 
-    sops.secrets = {
-      github-token = {
-        format = "binary";
-        sopsFile = ../../secrets/github-token-secret;
-      };
-      github-webhook-secret = {
-        format = "binary";
-        sopsFile = ../../secrets/github-webhook-secret;
-      };
-      github-oauth-secret = {
-        format = "binary";
-        sopsFile = ../../secrets/github-oauth-secret;
-      };
-      buildbot-nix-workers = {
-        format = "binary";
-        sopsFile = ../../secrets/buildbot-nix-workers;
+    age.secrets = {
+      github-token.file = ../../secrets/github-token-secret.age;
+      github-webhook-secret.file = ../../secrets/github-webhook-secret.age;
+      github-oauth-secret.file = ../../secrets/github-oauth-secret.age;
+      buildbot-nix-workers.file = ../../secrets/buildbot-nix-workers.age;
+      buildbot-nix-worker-password = {
+        file = ../../secrets/buildbot-nix-worker-password.age;
+        owner = "buildbot-worker";
       };
     };
 
     systemd.services.buildbot-worker.environment.WORKER_COUNT = "14";
     services.buildbot-nix.worker = {
       enable = true;
-      workerPasswordFile = config.sops.secrets.buildbot-nix-worker-password.path;
+      workerPasswordFile = config.age.secrets.buildbot-nix-worker-password.path;
     };
-
-    sops.secrets.buildbot-nix-worker-password = {
-      format = "binary";
-      owner = "buildbot-worker";
-      sopsFile = ../../secrets/buildbot-nix-worker-password;
-    };
-
   };
 }
-

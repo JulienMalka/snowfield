@@ -1,11 +1,15 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
-  imports =
-    [
-      ./hardware.nix
-      ./home-julien.nix
-    ];
+  imports = [
+    ./hardware.nix
+    ./home-julien.nix
+  ];
 
   # Bootloader.
   boot.loader.grub.enable = true;
@@ -18,7 +22,6 @@
 
   systemd.network.enable = true;
 
-
   systemd.network.networks."10-wan" = {
     matchConfig.Name = "ens18";
     networkConfig = {
@@ -30,7 +33,6 @@
     # make routing on this interface a dependency for network-online.target
     linkConfig.RequiredForOnline = "routable";
   };
-
 
   # Set your time zone.
   time.timeZone = "Europe/Paris";
@@ -66,14 +68,19 @@
 
   services.openssh.enable = true;
 
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
-  networking.firewall.allowedUDPPorts = [ 80 443 ];
+  networking.firewall.allowedTCPPorts = [
+    80
+    443
+  ];
+  networking.firewall.allowedUDPPorts = [
+    80
+    443
+  ];
 
   networking.firewall.checkReversePath = "loose";
 
   systemd.services.NetworkManager-wait-online.enable = lib.mkForce false;
   systemd.services.systemd-networkd-wait-online.enable = lib.mkForce false;
-
 
   luj.nginx.enable = true;
   services.nginx.virtualHosts."vaults.malka.family" = {
@@ -99,7 +106,7 @@
   services.keycloak = {
     enable = true;
     database.createLocally = true;
-    database.passwordFile = "/run/secrets/keycloak";
+    database.passwordFile = "/run/agenix/keycloak-db";
     settings = {
       hostname = "auth.julienmalka.me";
       hostname-admin-url = "https://auth.julienmalka.me";
@@ -107,7 +114,9 @@
       hostname-strict-backchannel = true;
       proxy = "edge";
     };
-    themes = { keywind = pkgs.keycloak-keywind; };
+    themes = {
+      keywind = pkgs.keycloak-keywind;
+    };
   };
 
   services.nginx.virtualHosts."auth.julienmalka.me" = {
@@ -115,22 +124,15 @@
     enableACME = true;
     locations."/" = {
       proxyPass = "http://127.0.0.1:8080";
-      extraConfig = '' 
-      proxy_buffer_size   128k;
-      proxy_buffers   4 256k;
-      proxy_busy_buffers_size   256k;
+      extraConfig = ''
+        proxy_buffer_size   128k;
+        proxy_buffers   4 256k;
+        proxy_busy_buffers_size   256k;
       '';
     };
   };
 
-
-  sops.secrets.keycloak = {
-    owner = "root";
-    sopsFile = ../../secrets/keycloak-db;
-    format = "binary";
-  };
-
-
+  age.secrets.keycloak-db.file = ../../secrets/keycloak-db.age;
 
   services.openssh.extraConfig = ''
     HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
@@ -138,8 +140,6 @@
     TrustedUserCAKeys /etc/ssh/ssh_user_key.pub
     MaxAuthTries 20
   '';
-
-
 
   services.step-ca.enable = true;
   services.step-ca.intermediatePasswordFile = "/root/capw";
@@ -162,38 +162,37 @@
     };
   };
 
-
   security.acme.certs."ca.luj".server = "https://127.0.0.1:8444/acme/acme/directory";
 
   systemd.services."step-ca".after = [ "keycloak.service" ];
 
   security.pki.certificates = [
-    ''-----BEGIN CERTIFICATE-----
-MIIByzCCAXKgAwIBAgIQAcJCOR+99m5v3dHWQw5m9jAKBggqhkjOPQQDAjAwMRIw
-EAYDVQQKEwlTYXVtb25OZXQxGjAYBgNVBAMTEVNhdW1vbk5ldCBSb290IENBMB4X
-DTIyMDQyNDIwMDE1MFoXDTMyMDQyMTIwMDE1MFowODESMBAGA1UEChMJU2F1bW9u
-TmV0MSIwIAYDVQQDExlTYXVtb25OZXQgSW50ZXJtZWRpYXRlIENBMFkwEwYHKoZI
-zj0CAQYIKoZIzj0DAQcDQgAE5Sk6vYJcYlh4aW0vAN84MWr84TTVTTdsM2s8skH6
-7fDsqNMb7FMwUMEAFwQRiADjYy3saU2Dogh2ESuB1dDFFqNmMGQwDgYDVR0PAQH/
-BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFO5iTfZiutpsM7ja
-mP3yuMIy6iNTMB8GA1UdIwQYMBaAFBWOQHe4eAeothQTmTNKiG/pAowGMAoGCCqG
-SM49BAMCA0cAMEQCICu8u19I7RMfnQ7t3QXHP5fdUm/fX/puqF+jYSf9SZEoAiBc
-oVcd0OfuAExWHhOMUZ0OV4bws9WCax333I+Pg4nDNw==
------END CERTIFICATE-----''
-    ''-----BEGIN CERTIFICATE-----
-MIIBpTCCAUqgAwIBAgIRALevKnnElllot/cRNGjnUqUwCgYIKoZIzj0EAwIwMDES
-MBAGA1UEChMJU2F1bW9uTmV0MRowGAYDVQQDExFTYXVtb25OZXQgUm9vdCBDQTAe
-Fw0yMjA0MjQyMDAxNDlaFw0zMjA0MjEyMDAxNDlaMDAxEjAQBgNVBAoTCVNhdW1v
-bk5ldDEaMBgGA1UEAxMRU2F1bW9uTmV0IFJvb3QgQ0EwWTATBgcqhkjOPQIBBggq
-hkjOPQMBBwNCAAQG356Ui437dBTSOiJILKjVkwrJMsXN3eba/T1N+IJeqRBfigo7
-BW9YZfs1xIbMZ5wL0Zc/DsSEo5xCC7j4YaXro0UwQzAOBgNVHQ8BAf8EBAMCAQYw
-EgYDVR0TAQH/BAgwBgEB/wIBATAdBgNVHQ4EFgQUFY5Ad7h4B6i2FBOZM0qIb+kC
-jAYwCgYIKoZIzj0EAwIDSQAwRgIhALdsEqiRa4ak5Cnin6Tjnel5uOiHSjoC6LKf
-VfXtULncAiEA2gmqdr+ugFz5tvPdKwanroTiMTUMhhCRYVlQlyTApyQ=
------END CERTIFICATE-----''
+    ''
+      -----BEGIN CERTIFICATE-----
+      MIIByzCCAXKgAwIBAgIQAcJCOR+99m5v3dHWQw5m9jAKBggqhkjOPQQDAjAwMRIw
+      EAYDVQQKEwlTYXVtb25OZXQxGjAYBgNVBAMTEVNhdW1vbk5ldCBSb290IENBMB4X
+      DTIyMDQyNDIwMDE1MFoXDTMyMDQyMTIwMDE1MFowODESMBAGA1UEChMJU2F1bW9u
+      TmV0MSIwIAYDVQQDExlTYXVtb25OZXQgSW50ZXJtZWRpYXRlIENBMFkwEwYHKoZI
+      zj0CAQYIKoZIzj0DAQcDQgAE5Sk6vYJcYlh4aW0vAN84MWr84TTVTTdsM2s8skH6
+      7fDsqNMb7FMwUMEAFwQRiADjYy3saU2Dogh2ESuB1dDFFqNmMGQwDgYDVR0PAQH/
+      BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFO5iTfZiutpsM7ja
+      mP3yuMIy6iNTMB8GA1UdIwQYMBaAFBWOQHe4eAeothQTmTNKiG/pAowGMAoGCCqG
+      SM49BAMCA0cAMEQCICu8u19I7RMfnQ7t3QXHP5fdUm/fX/puqF+jYSf9SZEoAiBc
+      oVcd0OfuAExWHhOMUZ0OV4bws9WCax333I+Pg4nDNw==
+      -----END CERTIFICATE-----''
+    ''
+      -----BEGIN CERTIFICATE-----
+      MIIBpTCCAUqgAwIBAgIRALevKnnElllot/cRNGjnUqUwCgYIKoZIzj0EAwIwMDES
+      MBAGA1UEChMJU2F1bW9uTmV0MRowGAYDVQQDExFTYXVtb25OZXQgUm9vdCBDQTAe
+      Fw0yMjA0MjQyMDAxNDlaFw0zMjA0MjEyMDAxNDlaMDAxEjAQBgNVBAoTCVNhdW1v
+      bk5ldDEaMBgGA1UEAxMRU2F1bW9uTmV0IFJvb3QgQ0EwWTATBgcqhkjOPQIBBggq
+      hkjOPQMBBwNCAAQG356Ui437dBTSOiJILKjVkwrJMsXN3eba/T1N+IJeqRBfigo7
+      BW9YZfs1xIbMZ5wL0Zc/DsSEo5xCC7j4YaXro0UwQzAOBgNVHQ8BAf8EBAMCAQYw
+      EgYDVR0TAQH/BAgwBgEB/wIBATAdBgNVHQ4EFgQUFY5Ad7h4B6i2FBOZM0qIb+kC
+      jAYwCgYIKoZIzj0EAwIDSQAwRgIhALdsEqiRa4ak5Cnin6Tjnel5uOiHSjoC6LKf
+      VfXtULncAiEA2gmqdr+ugFz5tvPdKwanroTiMTUMhhCRYVlQlyTApyQ=
+      -----END CERTIFICATE-----''
   ];
 
-
   system.stateVersion = "22.11";
-
 }

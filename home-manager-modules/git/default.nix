@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.luj.programs.git;
 in
@@ -18,9 +23,7 @@ with lib;
         key = "6FC74C847011FD83";
       };
       delta.enable = true;
-      ignores = [
-        ".direnv"
-      ];
+      ignores = [ ".direnv" ];
       extraConfig = {
         init.defaultBranch = "main";
         diff.colorMoved = "zebra";
@@ -32,11 +35,10 @@ with lib;
     };
 
     home.extraActivationPath = [ pkgs.gnupg ];
-    home.activation =
-      {
-        myActivationAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          gpg --import /run/secrets/git-gpg-private-key
-        '';
-      };
+    home.activation = {
+      myActivationAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        gpg --import /run/agenix/git-gpg-private-key
+      '';
+    };
   };
 }

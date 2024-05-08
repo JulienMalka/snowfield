@@ -1,30 +1,26 @@
-{ config, pkgs, ... }: {
-
-  sops.secrets.user-julien-password.neededForUsers = true;
+{ config, pkgs, ... }:
+{
 
   users.users.julien = {
     isNormalUser = true;
     home = "/home/julien";
-    extraGroups = [ "wheel" config.users.groups.keys.name "networkmanager" "davfs2" "adbusers" "audio" "pipewire" "dialout" "video" ];
+    extraGroups = [
+      "wheel"
+      config.users.groups.keys.name
+      "networkmanager"
+      "davfs2"
+      "adbusers"
+      "audio"
+      "pipewire"
+      "dialout"
+      "video"
+    ];
     shell = pkgs.fish;
-    hashedPasswordFile = config.sops.secrets.user-julien-password.path;
+    hashedPasswordFile = config.age.secrets.julien-password.path;
   };
 
   nix.settings.allowed-users = [ "julien" ];
   nix.settings.trusted-users = [ "julien" ];
 
-  sops.secrets.ens-mail-passwd = {
-    owner = "julien";
-    path = "/home/julien/.config/ens-mail-passwd";
-  };
-
-  sops.secrets.git-gpg-private-key = {
-    owner = "julien";
-    mode = "0440";
-    group = config.users.groups.keys.name;
-    sopsFile = ../secrets/git-gpg-private-key;
-    format = "binary";
-  };
-
-
+  age.secrets.julien-password.file = ../secrets/user-julien-password.age;
 }
