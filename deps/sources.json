@@ -229,18 +229,6 @@
       "url": "https://github.com/nixos/nixpkgs/archive/12430e43bd9b81a6b4e79e64f87c624ade701eaf.tar.gz",
       "hash": "1ry06nhk8ayfb7wjmkacz8zqk0hwvp9phyachbkxsyxgc0hj3y6z"
     },
-    "sops-nix": {
-      "type": "Git",
-      "repository": {
-        "type": "GitHub",
-        "owner": "mic92",
-        "repo": "sops-nix"
-      },
-      "branch": "master",
-      "revision": "f1b0adc27265274e3b0c9b872a8f476a098679bd",
-      "url": "https://github.com/mic92/sops-nix/archive/f1b0adc27265274e3b0c9b872a8f476a098679bd.tar.gz",
-      "hash": "048rwfxmmrx5z5kika5d7lamdwg1jraighj42kampqvadh1sd0dq"
-    },
     "unstable": {
       "type": "Git",
       "repository": {
@@ -267,4 +255,3 @@
     }
   },
   "version": 3
-}
