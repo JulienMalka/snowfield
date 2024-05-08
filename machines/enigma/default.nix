@@ -157,5 +157,12 @@
   # for a WiFi printer
   services.avahi.openFirewall = true;
 
+  services.hash-collection = {
+    enable = true;
+    collection-url = "https://reproducibility.nixos.social";
+    tokenFile = "/home/julien/lila-secrets/tokenfile";
+    secretKeyFile = "/home/julien/lila-secrets/secret.key";
+  };
+
   system.stateVersion = "23.05";
 }

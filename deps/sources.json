@@ -156,6 +156,18 @@
       "url": null,
       "hash": "1pkfkijhysplmvxfcdpblx0kixbip3w0fr109j1dppp1id8iq456"
     },
+    "nix-hash-collection": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "JulienMalka",
+        "repo": "nix-hash-collection"
+      },
+      "branch": "main",
+      "revision": "e3f01d279c52e21b0e9f92f4ab76bfe4cfea7601",
+      "url": "https://github.com/JulienMalka/nix-hash-collection/archive/e3f01d279c52e21b0e9f92f4ab76bfe4cfea7601.tar.gz",
+      "hash": "1lmd61nqsrfx1ga1rhcdzm9k79gh53gl4q87b7i3a28014x699cr"
+    },
     "nix-index-database": {
       "type": "Git",
       "repository": {
