@@ -1,4 +1,9 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 with lib;
 let
   cfg = config.luj.buildbot;
@@ -30,6 +35,15 @@ in
       };
       evalWorkerCount = 10; # limit number of concurrent evaluations
     };
+
+    systemd.services.buildbot-worker.path = lib.mkForce [
+      pkgs.attic
+      pkgs.git
+      pkgs.openssh
+      pkgs.gh
+      pkgs.nix
+      pkgs.nix-eval-jobs
+    ];
 
     services.nginx.virtualHosts."ci.julienmalka.me" = {
       forceSSL = true;
