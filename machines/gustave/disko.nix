@@ -3,7 +3,7 @@
     disk = {
       sda = {
         type = "disk";
-        device = "/dev/disk/by-diskseq/3";
+        device = "/dev/sda";
         content = {
           type = "gpt";
           partitions = {
@@ -28,7 +28,7 @@
                 # unless their parent is mounted
                 subvolumes = {
                   # Subvolume name is different from mountpoint
-                  "/rootfs" = {
+                  "/root" = {
                     mountpoint = "/";
                   };
                   # Subvolume name is the same as the mountpoint
@@ -36,13 +36,13 @@
                     mountpoint = "/persistent";
                   };
                   "/nix" = {
-                    mountOptions = [ "compress=zstd" "noatime" ];
+                    mountOptions = [
+                      "compress=zstd"
+                      "noatime"
+                    ];
                     mountpoint = "/nix";
                   };
                 };
-
-                mountpoint = "/partition-root";
-
               };
             };
           };
