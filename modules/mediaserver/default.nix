@@ -1,6 +1,7 @@
 { lib, config, ... }:
 with lib;
-let cfg = config.luj.mediaserver;
+let
+  cfg = config.luj.mediaserver;
 in
 {
   options.luj.mediaserver = {
@@ -9,9 +10,8 @@ in
     music.enable = mkEnableOption "enable the music mediaserver";
   };
 
-
-  config = mkIf cfg.enable (
-    mkMerge [{
+  config = mkIf cfg.enable (mkMerge [
+    {
 
       users.users.mediaserver = {
         name = "mediaserver";
@@ -39,57 +39,42 @@ in
         nginx.enable = true;
         nginx.subdomain = "downloads";
       };
-
     }
 
+    (mkIf cfg.tv.enable {
 
-      (mkIf cfg.tv.enable {
+      luj.sonarr = {
+        enable = true;
+        user = "mediaserver";
+        group = "mediaserver";
+        nginx.enable = true;
+        nginx.subdomain = "series";
+      };
 
-        luj.sonarr = {
-          enable = true;
-          user = "mediaserver";
-          group = "mediaserver";
-          nginx.enable = true;
-          nginx.subdomain = "series";
-        };
+      luj.radarr = {
+        enable = true;
+        user = "mediaserver";
+        group = "mediaserver";
+        nginx.enable = true;
+        nginx.subdomain = "films";
+      };
+      luj.jellyfin = {
+        enable = true;
+        user = "mediaserver";
+        group = "mediaserver";
+        nginx.enable = true;
+        nginx.subdomain = "tv";
+      };
+    })
 
-        luj.radarr = {
-          enable = true;
-          user = "mediaserver";
-          group = "mediaserver";
-          nginx.enable = true;
-          nginx.subdomain = "films";
-        };
-        luj.jellyfin = {
-          enable = true;
-          user = "mediaserver";
-          group = "mediaserver";
-          nginx.enable = true;
-          nginx.subdomain = "tv";
-        };
-
-
-      })
-
-      (mkIf cfg.music.enable {
-        luj.lidarr = {
-          enable = true;
-          user = "mediaserver";
-          group = "mediaserver";
-          nginx.enable = true;
-          nginx.subdomain = "songs";
-        };
-
-        luj.navidrome = {
-          enable = true;
-          user = "mediaserver";
-          group = "mediaserver";
-          nginx.enable = true;
-          nginx.subdomain = "music";
-        };
-
-
-      })]);
+    (mkIf cfg.music.enable {
+      luj.lidarr = {
+        enable = true;
+        user = "mediaserver";
+        group = "mediaserver";
+        nginx.enable = true;
+        nginx.subdomain = "songs";
+      };
+    })
+  ]);
 }
-
-
