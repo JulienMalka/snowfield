@@ -7,8 +7,7 @@ let
       version = "nixos-unstable";
     };
   };
-  nixpkgs = import inputs.nixpkgs { };
-  unstable = import inputs.unstable { };
+  nixpkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
   lib = nixpkgs.lib.extend (import ./lib inputs_final);
   machines_plats = lib.lists.unique (
     lib.mapAttrsToList (_name: value: value.arch) (
