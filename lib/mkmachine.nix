@@ -33,7 +33,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.agenix}/modules/age.nix")
     (import "${inputs.impermanence}/nixos.nix")
     (import inputs.lanzaboote).nixosModules.lanzaboote
-    (import inputs.nix-hash-collection).nixosModules.hash-collection
+    (import "${inputs.nix-hash-collection}/utils/nixos/module.nix")
     (import "${inputs.lix-module}/module.nix" { inherit (inputs) lix; })
     {
       home-manager.useGlobalPkgs = true;
