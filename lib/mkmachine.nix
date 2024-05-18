@@ -48,7 +48,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           # Packages comming from other repositories
           zotero = pkgs.wrapFirefox (pkgs.callPackage "${inputs.zotero-nix}/pkgs" { }) { };
           attic = pkgs.callPackage "${inputs.attic}/package.nix" { };
-          colmena = pkgs.callPackage "${inputs.colmena}/package.nix" { };
           inherit (prev.unstable) bcachefs-tools;
           # My own packages
           keycloak-keywind = prev.pkgs.callPackage ../packages/keycloak-keywind { };

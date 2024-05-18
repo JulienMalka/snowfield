@@ -21,7 +21,6 @@
 
   environment.systemPackages = with pkgs; [
     tailscale
-    colmena
     git
   ];
 
