@@ -1,11 +1,10 @@
 { pkgs, lib, ... }:
 
 {
-  imports =
-    [
-      ./hardware.nix
-      ./home-julien.nix
-    ];
+  imports = [
+    ./hardware.nix
+    ./home-julien.nix
+  ];
 
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
@@ -20,7 +19,11 @@
   luj.buildbot.enable = true;
   luj.nginx.enable = true;
 
-  environment.systemPackages = with pkgs; [ tailscale colmena git ];
+  environment.systemPackages = with pkgs; [
+    tailscale
+    colmena
+    git
+  ];
 
   services.tailscale.enable = true;
 
@@ -40,9 +43,13 @@
 
   services.openssh.enable = true;
 
-  programs.ssh.knownHosts."darwin-build-box.winter.cafe".publicKey =
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0io9E0eXiDIEHvsibXOxOPveSjUPIr1RnNKbUkw3fD";
+  programs.ssh.knownHosts."darwin-build-box.winter.cafe".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0io9E0eXiDIEHvsibXOxOPveSjUPIr1RnNKbUkw3fD";
 
+  services.nginx.virtualHosts."photos.julienmalka.me" = {
+    enableACME = true;
+    forceSSL = true;
+    root = "/srv/photos";
+  };
 
   nix = {
     package = lib.mkForce pkgs.nix;
@@ -51,10 +58,18 @@
       {
         hostName = "epyc.infra.newtype.fr";
         maxJobs = 100;
-        systems = [ "x86_64-linux" "aarch64-linux" ];
+        systems = [
+          "x86_64-linux"
+          "aarch64-linux"
+        ];
         sshUser = "root";
         sshKey = "/home/julien/.ssh/id_ed25519";
-        supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+        supportedFeatures = [
+          "nixos-test"
+          "benchmark"
+          "big-parallel"
+          "kvm"
+        ];
         speedFactor = 2;
       }
       {
@@ -62,7 +77,10 @@
         maxJobs = 4;
         sshKey = "/home/julien/.ssh/id_ed25519";
         sshUser = "julienmalka";
-        systems = [ "aarch64-darwin" "x86_64-darwin" ];
+        systems = [
+          "aarch64-darwin"
+          "x86_64-darwin"
+        ];
       }
     ];
   };
@@ -75,14 +93,16 @@
       Port 45
   '';
 
-
   services.nix-gitlab-runner = {
     enable = true;
     registrationConfigFile = "/var/lib/gitlab-runner/gitlab_runner";
-    packages = with pkgs; [ coreutils su bash git ];
+    packages = with pkgs; [
+      coreutils
+      su
+      bash
+      git
+    ];
   };
-
-
 
   services.nginx.virtualHosts."phd.julienmalka.me" = {
     basicAuthFile = "/home/gitlab-runner/nginx_auth";
@@ -98,7 +118,6 @@
   systemd.services.nginx.serviceConfig.ProtectHome = "read-only";
   systemd.services.nginx.serviceConfig.ReadWritePaths = [ "/home/gitlab-runner/artifacts" ];
 
-
   services.grafana.enable = true;
   services.grafana.settings.server.http_port = 3000;
   services.prometheus = {
@@ -107,9 +126,7 @@
     scrapeConfigs = [
       {
         job_name = "push";
-        static_configs = [{
-          targets = [ "127.0.0.1:9091" ];
-        }];
+        static_configs = [ { targets = [ "127.0.0.1:9091" ]; } ];
       }
     ];
   };
@@ -122,7 +139,6 @@
       proxyWebsockets = true;
     };
   };
-
 
   services.nginx.virtualHosts."prometheus.julienmalka.me" = {
     forceSSL = true;
@@ -140,7 +156,6 @@
     };
   };
 
-
   services.syncthing = {
     enable = true;
     user = "julien";
@@ -149,7 +164,9 @@
     overrideFolders = true;
     settings = {
       devices = {
-        "fischer" = { id = "MHV2PGN-GAHQMV5-ITXGNQS-IRJC3XL-OQIHVUX-JVKBZ6Z-33XHE7H-NC6H5AE"; };
+        "fischer" = {
+          id = "MHV2PGN-GAHQMV5-ITXGNQS-IRJC3XL-OQIHVUX-JVKBZ6Z-33XHE7H-NC6H5AE";
+        };
       };
       folders = {
         "dev" = {
@@ -163,10 +180,18 @@
 
   systemd.services.syncthing.serviceConfig.StateDirectory = "syncthing";
 
-
-  networking.firewall.allowedTCPPorts = [ 80 443 1810 9989 ];
-  networking.firewall.allowedUDPPorts = [ 80 443 1810 9989 ];
+  networking.firewall.allowedTCPPorts = [
+    80
+    443
+    1810
+    9989
+  ];
+  networking.firewall.allowedUDPPorts = [
+    80
+    443
+    1810
+    9989
+  ];
 
   system.stateVersion = "22.11"; # Did you read the comment?
-
 }

@@ -94,7 +94,6 @@ let
           tower = {
             inherit tld;
             arch = "x86_64-linux";
-            subdomains = [ "photos.julienmalka.me" ];
             nixpkgs_version = inputs.nixpkgs;
             hm_version = inputs.home-manager;
             ipv4 = {
