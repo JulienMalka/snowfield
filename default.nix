@@ -7,8 +7,10 @@ let
       version = "nixos-unstable";
     };
   };
-  nixpkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
-  lib = nixpkgs.lib.extend (import ./lib inputs_final);
+  lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib inputs_final);
+  mkLibForMachine =
+    machine:
+    (import "${lib.luj.machines.${machine}.nixpkgs_version}/lib").extend (import ./lib inputs_final);
   machines_plats = lib.lists.unique (
     lib.mapAttrsToList (_name: value: value.arch) (
       lib.filterAttrs (_n: v: builtins.hasAttr "arch" v) lib.luj.machines
@@ -52,9 +54,12 @@ rec {
     in
     {
       meta = {
-        nixpkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
-        nodeSpecialArgs = builtins.mapAttrs (_: v: v._module.specialArgs) deployableConfigurations;
-        specialArgs.lib = lib;
+        nodeNixpkgs = builtins.mapAttrs (
+          n: _: import lib.luj.machines.${n}.nixpkgs_version
+        ) deployableConfigurations;
+        nodeSpecialArgs = builtins.mapAttrs (
+          n: v: v._module.specialArgs // { lib = mkLibForMachine n; }
+        ) deployableConfigurations;
       };
     }
     // builtins.mapAttrs (_: v: { imports = v._module.args.modules; }) deployableConfigurations;
