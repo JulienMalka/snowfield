@@ -32,9 +32,9 @@
         "repo": "buildbot-nix"
       },
       "branch": "main",
-      "revision": "0613fafc8efab39cba69b8d9a99a0a90bf7b44b8",
-      "url": "https://github.com/JulienMalka/buildbot-nix/archive/0613fafc8efab39cba69b8d9a99a0a90bf7b44b8.tar.gz",
-      "hash": "07rk6b5iqnyzj3w11xaidrl43znbg71p2hdnw9rl59g3rm84flfy"
+      "revision": "2ada539d5518e74e18c83c4bf6090f7bd1cfb8e2",
+      "url": "https://github.com/JulienMalka/buildbot-nix/archive/2ada539d5518e74e18c83c4bf6090f7bd1cfb8e2.tar.gz",
+      "hash": "1y4p5rb270l8d8a7id49djs022cxv79r9m2jfv3amjvp4jkz97hk"
     },
     "colmena": {
       "type": "Git",

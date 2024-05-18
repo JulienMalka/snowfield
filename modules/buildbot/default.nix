@@ -43,6 +43,7 @@ in
       pkgs.gh
       pkgs.nix
       pkgs.nix-eval-jobs
+      pkgs.coreutils
     ];
 
     services.nginx.virtualHosts."ci.julienmalka.me" = {
