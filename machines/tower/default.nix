@@ -155,30 +155,6 @@
     };
   };
 
-  services.syncthing = {
-    enable = true;
-    user = "julien";
-    group = "users";
-    overrideDevices = true;
-    overrideFolders = true;
-    settings = {
-      devices = {
-        "fischer" = {
-          id = "MHV2PGN-GAHQMV5-ITXGNQS-IRJC3XL-OQIHVUX-JVKBZ6Z-33XHE7H-NC6H5AE";
-        };
-      };
-      folders = {
-        "dev" = {
-          # Name of folder in Syncthing, also the folder ID
-          path = "/home/julien/dev"; # Which folder to add to Syncthing
-          devices = [ "fischer" ]; # Which devices to share the folder with
-        };
-      };
-    };
-  };
-
-  systemd.services.syncthing.serviceConfig.StateDirectory = "syncthing";
-
   networking.firewall.allowedTCPPorts = [
     80
     443

@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   imports = [
     ./hardware.nix
@@ -32,16 +37,15 @@
     # no need to redefine it in your config for now)
     #media-session.enable = true;
     wireplumber.enable = true;
-
   };
 
   networking.hostName = "fischer";
 
-
-
   services.blueman.enable = true;
   hardware.bluetooth.enable = true;
-  environment.sessionVariables = { LIBSEAT_BACKEND = "logind"; };
+  environment.sessionVariables = {
+    LIBSEAT_BACKEND = "logind";
+  };
 
   services.tailscale.enable = true;
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
@@ -103,34 +107,9 @@
   security.polkit.enable = true;
 
   security.tpm2.enable = true;
-  security.tpm2.pkcs11.enable =
-    true; # expose /run/current-system/sw/lib/libtpm2_pkcs11.so
-  security.tpm2.tctiEnvironment.enable =
-    true; # TPM2TOOLS_TCTI and TPM2_PKCS11_TCTI env variables
-  users.users.julien.extraGroups =
-    [ "tss" ]; # tss group has access to TPM devices
-
-  services.syncthing = {
-    enable = true;
-    user = "julien";
-    group = "users";
-    settings.options.urAccepted = -1;
-    overrideDevices = true;
-    overrideFolders = true;
-    settings = {
-      devices = {
-        "tower" = { id = "XEPZZIP-GX73OKE-KNGZA47-XWWGI5G-LNXPU57-BMLXK5M-VNGS5UQ-ZFIZSAK"; };
-      };
-      folders = {
-        "dev" = {
-          path = "/home/julien/dev";
-          devices = [ "tower" ];
-        };
-      };
-    };
-  };
-
-  systemd.services.syncthing.serviceConfig.StateDirectory = "syncthing";
+  security.tpm2.pkcs11.enable = true; # expose /run/current-system/sw/lib/libtpm2_pkcs11.so
+  security.tpm2.tctiEnvironment.enable = true; # TPM2TOOLS_TCTI and TPM2_PKCS11_TCTI env variables
+  users.users.julien.extraGroups = [ "tss" ]; # tss group has access to TPM devices
 
   services.postgresql.enable = true;
 
@@ -154,13 +133,11 @@
       Encryption Required
       User jmalka
     '';
-
   };
 
-  environment.variables =
-    {
-      CUPS_USER = "jmalka";
-    };
+  environment.variables = {
+    CUPS_USER = "jmalka";
+  };
 
   security.pam.services.swaylock = { };
 
@@ -176,5 +153,4 @@
   '';
 
   system.stateVersion = "23.05";
-
 }
