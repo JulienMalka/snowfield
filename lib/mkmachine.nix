@@ -40,6 +40,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
       nixpkgs.system = system;
       networking.hostName = name;
       nixpkgs.overlays = lib.mkAfter [
+        # TODO: Remove when https://git.lix.systems/lix-project/lix/issues/310 is fixed
         (_: prev: {
           nix = prev.nix.overrideAttrs (_: {
             doCheck = false;

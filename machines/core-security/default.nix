@@ -166,6 +166,7 @@
 
   systemd.services."step-ca".after = [ "keycloak.service" ];
 
+  # TODO: Remove when keycloak is update in stable channel
   nixpkgs.config.permittedInsecurePackages = [ "keycloak-23.0.6" ];
 
   security.pki.certificates = [
