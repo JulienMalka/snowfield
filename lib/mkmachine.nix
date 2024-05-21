@@ -39,7 +39,12 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
       home-manager.useGlobalPkgs = true;
       nixpkgs.system = system;
       networking.hostName = name;
-      nixpkgs.overlays = [
+      nixpkgs.overlays = lib.mkAfter [
+        (_: prev: {
+          nix = prev.nix.overrideAttrs (_: {
+            doCheck = false;
+          });
+        })
         (overlay-unstable system)
         (_final: prev: {
           waybar = prev.waybar.overrideAttrs (oldAttrs: {
