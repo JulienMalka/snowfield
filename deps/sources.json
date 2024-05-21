@@ -57,6 +57,7 @@
       },
       "pre_releases": false,
       "version_upper_bound": null,
+      "release_prefix": null,
       "version": "v1.6.1",
       "revision": "4677f6c53482a8b01ee93957e3bdd569d51261d6",
       "url": "https://api.github.com/repos/nix-community/disko/tarball/v1.6.1",
@@ -134,6 +135,18 @@
       "url": "https://github.com/nix-community/lanzaboote/archive/850f27322239f8cfa56b122cc9a278ab99a49015.tar.gz",
       "hash": "1qysya9d89d6hz6vga8yq1i2f0nm3w4l8p2clrhkl8j8z738d0qv"
     },
+    "lila": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "JulienMalka",
+        "repo": "lila"
+      },
+      "branch": "main",
+      "revision": "9c52498d310c8ecca8de63e50658bd5089617e3a",
+      "url": "https://github.com/JulienMalka/lila/archive/9c52498d310c8ecca8de63e50658bd5089617e3a.tar.gz",
+      "hash": "08zwv0b7x0yvbcwkr39pmhlyfr86y6ijsm71az8xx323zp4c5r8q"
+    },
     "lix": {
       "type": "Git",
       "repository": {
@@ -156,18 +169,6 @@
       "url": null,
       "hash": "1zi6fdcfia6hl7ivdxyjdxpmxx508w89v4pwwqhc5rzmbl15hh91"
     },
-    "nix-hash-collection": {
-      "type": "Git",
-      "repository": {
-        "type": "GitHub",
-        "owner": "JulienMalka",
-        "repo": "nix-hash-collection"
-      },
-      "branch": "main",
-      "revision": "f7a52f5833b29f7c8a3f5ba01762b9ef21d0b00c",
-      "url": "https://github.com/JulienMalka/nix-hash-collection/archive/f7a52f5833b29f7c8a3f5ba01762b9ef21d0b00c.tar.gz",
-      "hash": "0xf1nyzf6dd6r4zkwzl23wk1gy47ilqx5p99vp4azm1yq7lachbl"
-    },
     "nix-index-database": {
       "type": "Git",
       "repository": {
@@ -188,6 +189,7 @@
       },
       "pre_releases": false,
       "version_upper_bound": null,
+      "release_prefix": null,
       "version": "v0.5.0",
       "revision": "e11ba20945f4a867f09d84343c37328288f274b4",
       "url": null,
