@@ -12,14 +12,10 @@
     luj.programs.waybar.interfaceName = "wlp3s0";
     luj.programs.kitty.enable = true;
     luj.programs.dunst.enable = true;
+    luj.programs.hyprland.enable = true;
     luj.emails.enable = true;
     luj.programs.firefox.enable = true;
     luj.programs.pass.enable = true;
-    luj.programs.sway = {
-      enable = true;
-      modifier = "Mod4";
-      background = ./wallpaper.jpg;
-    };
 
     programs.rofi = {
       enable = true;
