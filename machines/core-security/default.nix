@@ -166,6 +166,8 @@
 
   systemd.services."step-ca".after = [ "keycloak.service" ];
 
+  nixpkgs.config.permittedInsecurePackages = [ "keycloak-23.0.6" ];
+
   security.pki.certificates = [
     ''
       -----BEGIN CERTIFICATE-----
