@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.luj.programs.waybar;
 in
@@ -6,9 +11,7 @@ with lib;
 {
   options.luj.programs.waybar = {
     enable = mkEnableOption "Enable waybar";
-    interfaceName = mkOption {
-      type = lib.types.str;
-    };
+    interfaceName = mkOption { type = lib.types.str; };
   };
 
   config = mkIf cfg.enable {
@@ -18,14 +21,21 @@ with lib;
       settings = {
         mainBar = {
           layer = "top";
-          modules-left = [ "custom/nixos" "sway/workspaces" ];
+          modules-left = [
+            "custom/nixos"
+            "hyprland/workspaces"
+          ];
           modules-center = [ "clock" ];
-          modules-right = [ "custom/mails" "network" "battery" ];
+          modules-right = [
+            "custom/mails"
+            "network"
+            "battery"
+          ];
           "custom/nixos" = {
             format = " ❄ ";
             tooltip = false;
           };
-          "sway/workspaces" = {
+          "hyprland/workspaces" = {
             format = "{name}";
             tooltip = false;
             all-outputs = true;
@@ -34,7 +44,17 @@ with lib;
           "backlight" = {
             device = "intel_backlight";
             format = "<span color='#cba6f7'>{icon}</span> {percent}%";
-            format-icons = [ "" "" "" "" "" "" "" "" "" ];
+            format-icons = [
+              ""
+              ""
+              ""
+              ""
+              ""
+              ""
+              ""
+              ""
+              ""
+            ];
           };
           "pulseaudio" = {
             format = "<span color='#cba6f7'>{icon}</span> {volume}%";
@@ -42,7 +62,16 @@ with lib;
             tooltip = false;
             format-icons = {
               headphone = "";
-              default = [ "" "" "󰕾" "󰕾" "󰕾" "" "" "" ];
+              default = [
+                ""
+                ""
+                "󰕾"
+                "󰕾"
+                "󰕾"
+                ""
+                ""
+                ""
+              ];
             };
             scroll-step = 1;
           };
@@ -63,7 +92,13 @@ with lib;
           };
           "battery" = {
             format = "<span color='#cba6f7'>{icon}</span> {capacity}%";
-            format-icons = [ "" "" "" "" "" ];
+            format-icons = [
+              ""
+              ""
+              ""
+              ""
+              ""
+            ];
             format-charging = "<span color='#cba6f7'></span> {capacity}%";
             tooltip = false;
           };
