@@ -239,9 +239,9 @@
         "repo": "nixpkgs"
       },
       "branch": "nixos-unstable",
-      "revision": "4a6b83b05df1a8bd7d99095ec4b4d271f2956b64",
-      "url": "https://github.com/nixos/nixpkgs/archive/4a6b83b05df1a8bd7d99095ec4b4d271f2956b64.tar.gz",
-      "hash": "0zmyrxyrq6l2qjiy4fshjvhza6gvjdq1fn82543wb2li21jmpnpq"
+      "revision": "6c0b7a92c30122196a761b440ac0d46d3d9954f1",
+      "url": "https://github.com/nixos/nixpkgs/archive/6c0b7a92c30122196a761b440ac0d46d3d9954f1.tar.gz",
+      "hash": "1wxx1h7w47gpg7lkycz51dlrwcm1wb2vcmdbjq3gyhjbxd9hz35j"
     },
     "zotero-nix": {
       "type": "Git",
