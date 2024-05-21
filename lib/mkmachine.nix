@@ -33,7 +33,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.agenix}/modules/age.nix")
     (import "${inputs.impermanence}/nixos.nix")
     (import inputs.lanzaboote).nixosModules.lanzaboote
-    (import inputs.nix-hash-collection).nixosModules.hash-collection
+    (import inputs.lila).nixosModules.hash-collection
     (import "${inputs.lix-module}/module.nix" { inherit (inputs) lix; })
     {
       home-manager.useGlobalPkgs = true;
@@ -48,7 +48,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           # Packages comming from other repositories
           zotero = pkgs.wrapFirefox (pkgs.callPackage "${inputs.zotero-nix}/pkgs" { }) { };
           attic = pkgs.callPackage "${inputs.attic}/package.nix" { };
-          inherit (prev.unstable) bcachefs-tools;
+          lila-build-hook = (import inputs.lila).packages.${system}.utils;
           # My own packages
           keycloak-keywind = prev.pkgs.callPackage ../packages/keycloak-keywind { };
           hydrasect = prev.pkgs.callPackage ../packages/hydrasect { };
