@@ -20,7 +20,6 @@
         subdomain = "docs";
       };
     };
-    homer.enable = true;
     mailserver.enable = true;
   };
 
