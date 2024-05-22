@@ -42,5 +42,13 @@
     ];
   };
 
+  luj.irc = {
+    enable = true;
+    nginx = {
+      enable = true;
+      subdomain = "irc";
+    };
+  };
+
   system.stateVersion = "23.11";
 }
