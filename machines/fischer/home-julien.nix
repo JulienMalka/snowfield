@@ -13,11 +13,7 @@
     luj.programs.dunst.enable = true;
     luj.programs.firefox.enable = true;
     luj.emails.enable = true;
-    luj.programs.sway = {
-      enable = true;
-      modifier = "Mod1";
-      background = ./wallpaper.jpg;
-    };
+    luj.programs.hyprland.enable = true;
 
     programs.rofi = {
       enable = true;
