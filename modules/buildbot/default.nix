@@ -30,9 +30,9 @@ in
         oauthSecretFile = config.age.secrets.github-oauth-secret.path;
         oauthId = "bba3e144501aa5b8a5dd";
         user = "JulienMalka";
-        admins = [ "JulienMalka" ];
         topic = "nix-ci";
       };
+      admins = [ "JulienMalka" ];
       evalWorkerCount = 10; # limit number of concurrent evaluations
     };
 
