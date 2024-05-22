@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ pkgs, lib, ... }:
 
 {
   imports = [
@@ -41,6 +41,10 @@
       "/etc/ssh/ssh_host_ed25519_key.pub"
     ];
   };
+
+  environment.systemPackages = [ pkgs.tailscale ];
+
+  services.tailscale.enable = true;
 
   luj.irc = {
     enable = true;
