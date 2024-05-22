@@ -116,6 +116,13 @@ let
             arch = "x86_64-linux";
             nixpkgs_version = inputs.nixpkgs;
             hm_version = inputs.home-manager;
+            ipv4 = {
+              public = "82.67.34.230";
+              local = "192.168.0.90";
+            };
+            ipv6 = {
+              public = "2a01:e0a:de4:a0e1:eb2:aaaa::45";
+            };
           };
 
           core-security = {

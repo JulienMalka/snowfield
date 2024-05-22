@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -10,8 +10,6 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  deployment.targetHost = lib.mkForce "192.168.0.126";
 
   disko = import ./disko.nix;
 
@@ -25,7 +23,7 @@
       # start a DHCP Client for IPv4 Addressing/Routing
       DHCP = "ipv4";
       # accept Router Advertisements for Stateless IPv6 Autoconfiguraton (SLAAC)
-      IPv6AcceptRA = true;
+      Address = "2a01:e0a:de4:a0e1:eb2:aaaa::45";
     };
     # make routing on this interface a dependency for network-online.target
     linkConfig.RequiredForOnline = "routable";
