@@ -119,9 +119,11 @@ let
             ipv4 = {
               public = "82.67.34.230";
               local = "192.168.0.90";
+              vpn = "100.100.45.24";
             };
             ipv6 = {
               public = "2a01:e0a:de4:a0e1:eb2:aaaa::45";
+              vpn = "fd7a:115c:a1e0::18";
             };
           };
 
