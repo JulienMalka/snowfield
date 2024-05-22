@@ -35,8 +35,8 @@
   environment.persistence."/persistent" = {
     hideMounts = true;
     directories = [
-      "var/lib"
-      "var/log"
+      "/var/lib"
+      "/var/log"
     ];
     files = [
       "/etc/machine-id"
