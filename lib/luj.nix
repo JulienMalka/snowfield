@@ -62,12 +62,16 @@ let
             arch = "x86_64-linux";
             nixpkgs_version = inputs.nixpkgs_patched;
             hm_version = inputs.home-manager-unstable;
+            # TODO: Fix colmena deployment
             ipv4.public = "127.0.0.1";
           };
           fischer = {
+            inherit tld;
             arch = "x86_64-linux";
             nixpkgs_version = inputs.nixpkgs_patched;
             hm_version = inputs.home-manager-unstable;
+            # TODO: Fix colmena deployment
+            ipv4.public = "127.0.0.1";
           };
           enigma = {
             inherit tld;
