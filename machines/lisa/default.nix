@@ -12,7 +12,6 @@
       tv.enable = true;
       music.enable = true;
     };
-    homepage.enable = true;
     docs = {
       enable = true;
       nginx = {
