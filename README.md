@@ -1,5 +1,5 @@
 # My NixOS Configurations ❄ 
-[![Build status](https://ci.julienmalka.me/badges/JulienMalka_snowfield_nix-eval.svg)](https://ci.julienmalka.me/#/builders/16) [![built with nix](https://img.shields.io/static/v1?logo=nixos&logoColor=white&label=&message=Built%20with%20Nix&color=41439a)](https://builtwithnix.org)
+[![Build status](https://ci.julienmalka.me/badges/JulienMalka_snowfield_nix-eval.png)](https://ci.julienmalka.me/#/builders/16) [![built with nix](https://img.shields.io/static/v1?logo=nixos&logoColor=white&label=&message=Built%20with%20Nix&color=41439a)](https://builtwithnix.org)
 
 This repository contains the configurations of my machines using NixOS. 
 
