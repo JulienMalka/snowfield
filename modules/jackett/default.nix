@@ -1,4 +1,9 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 with lib;
 let
   cfg = config.luj.jackett;
@@ -22,25 +27,19 @@ in
     };
 
     nginx.enable = mkEnableOption "activate nginx";
-    nginx.subdomain = mkOption {
-      type = types.str;
-    };
-
+    nginx.subdomain = mkOption { type = types.str; };
   };
 
-  config = mkIf cfg.enable (
-    mkMerge [{
+  config = mkIf cfg.enable (mkMerge [
+    {
       services.jackett = {
         enable = true;
+        # unstable version to have updated torrent list
         package = pkgs.unstable.jackett;
         inherit (cfg) user group;
       };
-
     }
 
-      (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))]);
-
-
-
-
+    (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))
+  ]);
 }
