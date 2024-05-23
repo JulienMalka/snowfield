@@ -58,6 +58,11 @@
   };
 
   luj.homepage.enable = true;
+  luj.mediaserver = {
+    enable = true;
+    tv.enable = true;
+    music.enable = true;
+  };
 
   system.stateVersion = "23.11";
 }

@@ -7,11 +7,6 @@
   ];
 
   luj = {
-    mediaserver = {
-      enable = true;
-      tv.enable = true;
-      music.enable = true;
-    };
     docs = {
       enable = true;
       nginx = {
