@@ -14,9 +14,6 @@
   disko = import ./disko.nix;
 
   systemd.network.enable = true;
-  systemd.services."systemd-networkd".environment.SYSTEMD_LOG_LEVEL = "debug";
-
-  networking.useNetworkd = true;
   systemd.network.networks."10-wan" = {
     matchConfig.Name = "ens18";
     networkConfig = {
