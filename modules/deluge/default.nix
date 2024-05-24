@@ -44,7 +44,6 @@ in
           download_location = "/home/mediaserver/downloads/complete/";
           allow_remote = true;
         };
-        dataDir = "/home/mediaserver/deluge";
       };
     }
 
