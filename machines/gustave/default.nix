@@ -16,13 +16,16 @@
   systemd.network.enable = true;
   systemd.network.networks."10-wan" = {
     matchConfig.Name = "ens18";
+    routes = [
+      {
+        routeConfig.Metric = 500;
+        routeConfig.Destination = "0.0.0.0/0";
+      }
+    ];
     networkConfig = {
-      # start a DHCP Client for IPv4 Addressing/Routing
       DHCP = "ipv4";
-      # accept Router Advertisements for Stateless IPv6 Autoconfiguraton (SLAAC)
-      Address = "2a01:e0a:de4:a0e1:eb2:aaaa::45";
+      Address = "2a01:e0a:de4:a0e1:eb2:aaaa::45/128";
     };
-    # make routing on this interface a dependency for network-online.target
     linkConfig.RequiredForOnline = "routable";
   };
 
