@@ -28,6 +28,7 @@
     xorg.xbacklight
     neovim
     attic
+    kitty
   ];
 
   environment.variables.EDITOR = "nvim";
