@@ -10,12 +10,6 @@ with lib;
 
   config = mkIf cfg.enable {
 
-    age.secrets.ens-mail-password = {
-      file = ../../secrets/ens-mail-password.age;
-      owner = "julien";
-      path = "/home/julien/.config/ens-mail-passwd";
-    };
-
     age.secrets.git-gpg-private-key = {
       file = ../../secrets/git-gpg-private-key.age;
       owner = "julien";
