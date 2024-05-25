@@ -35,7 +35,7 @@ in
     {
       services.radarr = {
         enable = true;
-        package = pkgs.radarr;
+        package = pkgs.unstable.radarr;
         inherit (cfg) user group;
       };
     }

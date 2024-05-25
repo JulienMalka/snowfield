@@ -35,7 +35,7 @@ in
       services.jackett = {
         enable = true;
         # unstable version to have updated torrent list
-        package = pkgs.unstable.jackett;
+        package = pkgs.jackett;
         inherit (cfg) user group;
       };
     }

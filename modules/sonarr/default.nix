@@ -1,4 +1,9 @@
-{ lib, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 with lib;
 let
   cfg = config.luj.sonarr;
@@ -30,6 +35,7 @@ in
     {
       services.sonarr = {
         enable = true;
+        package = pkgs.unstable.sonarr;
         inherit (cfg) user group;
       };
     }
