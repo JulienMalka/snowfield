@@ -76,6 +76,7 @@
     directories = [
       "/var/lib"
       "/var/log"
+      "/srv"
     ];
     files = [
       "/etc/machine-id"
@@ -83,6 +84,8 @@
       "/etc/ssh/ssh_host_ed25519_key.pub"
     ];
   };
+
+  fileSystems."/srv".neededForBoot = true;
 
   environment.systemPackages = [ pkgs.tailscale ];
 
