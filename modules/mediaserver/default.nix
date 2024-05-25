@@ -13,6 +13,24 @@ in
   config = mkIf cfg.enable (mkMerge [
     {
 
+      environment.persistence."/persistent".directories = [
+        {
+          directory = "/home/mediaserver/downloads";
+          user = "mediaserver";
+          group = "mediaserver";
+        }
+        {
+          directory = "/home/mediaserver/series";
+          user = "mediaserver";
+          group = "mediaserver";
+        }
+        {
+          directory = "/home/mediaserver/films";
+          user = "mediaserver";
+          group = "mediaserver";
+        }
+      ];
+
       users.users.mediaserver = {
         name = "mediaserver";
         isNormalUser = true;
