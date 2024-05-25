@@ -21,6 +21,11 @@ in
       description = "Group under which deluge runs.";
     };
 
+    interface = mkOption {
+      type = types.str;
+      description = "Interface deluge will use.";
+    };
+
     nginx.enable = mkEnableOption "activate nginx";
     nginx.subdomain = mkOption { type = types.str; };
   };
@@ -41,8 +46,10 @@ in
         authFile = "/run/agenix/deluge-webui-password";
         web.enable = true;
         config = {
-          download_location = "/home/mediaserver/downloads/complete/";
+          download_location = "${config.users.users.${cfg.user}.home}/downloads/";
           allow_remote = true;
+          outgoing_interface = cfg.interface;
+          listen_interface = cfg.interface;
         };
       };
     }

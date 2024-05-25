@@ -60,6 +60,7 @@
     tv.enable = true;
     music.enable = true;
   };
+  luj.deluge.interface = "wg0";
 
   system.stateVersion = "23.11";
 }
