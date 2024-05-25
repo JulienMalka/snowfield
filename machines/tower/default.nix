@@ -12,7 +12,15 @@
 
   networking.hostName = "tower";
 
-  networking.networkmanager.enable = true;
+  networking.useNetworkd = true;
+  systemd.network.networks."10-wan" = {
+    matchConfig.Name = "ens18";
+    networkConfig = {
+      DHCP = "ipv4";
+      Address = "2a01:e0a:de4:a0e1:8ec7:b5d2:f663:a67a";
+    };
+    linkConfig.RequiredForOnline = "routable";
+  };
 
   time.timeZone = "Europe/Paris";
 
