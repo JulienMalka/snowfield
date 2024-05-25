@@ -29,6 +29,45 @@
     linkConfig.RequiredForOnline = "routable";
   };
 
+  systemd.network.netdevs = {
+    "20-wg0" = {
+      netdevConfig = {
+        Kind = "wireguard";
+        Name = "wg0";
+        MTUBytes = "1300";
+      };
+      wireguardConfig = {
+        PrivateKeyFile = "/srv/wg-private";
+        ListenPort = 51820;
+      };
+      wireguardPeers = [
+        {
+          wireguardPeerConfig = {
+            RouteMetric = 2000;
+            PublicKey = "oYsN1Qy+a7dwVOKapN5s5KJOmhSflLHZqh+GLMeNpHw=";
+            AllowedIPs = [ "0.0.0.0/0" ];
+            Endpoint = "[2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb]:51821";
+            PersistentKeepalive = 25;
+          };
+        }
+      ];
+    };
+  };
+  systemd.network.networks."30-wg0" = {
+    matchConfig.Name = "wg0";
+    addresses = [
+      {
+        addressConfig.Address = "10.100.45.2/24";
+        addressConfig.AddPrefixRoute = false;
+      }
+    ];
+    DHCP = "no";
+    gateway = [ "10.100.45.1" ];
+    networkConfig = {
+      IPv6AcceptRA = false;
+    };
+  };
+
   # Set your time zone.
   time.timeZone = "Europe/Paris";
 
@@ -64,6 +103,9 @@
     music.enable = true;
   };
   luj.deluge.interface = "wg0";
+
+  networking.firewall.allowedTCPPorts = [ 51820 ];
+  networking.firewall.allowedUDPPorts = [ 51820 ];
 
   system.stateVersion = "23.11";
 }
