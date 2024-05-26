@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 {
 
@@ -16,16 +16,15 @@
   time.timeZone = "Europe/Paris";
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
-    keyMap = lib.mkForce "fr";
+    keyMap = "fr";
+    font = null;
+    useXkbConfig = true;
   };
 
   programs.gnupg.agent.enable = true;
-
   networking.firewall.enable = true;
+
   environment.systemPackages = with pkgs; [
-    wget
-    rxvt_unicode
-    xorg.xbacklight
     neovim
     attic
     kitty
@@ -37,8 +36,6 @@
   services.resolved.enable = true;
 
   networking.firewall.checkReversePath = "loose";
-
-  systemd.services.NetworkManager-wait-online.enable = false;
 
   age.identityPaths = [
     "/etc/ssh/ssh_host_ed25519_key"
