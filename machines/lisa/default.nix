@@ -1,4 +1,4 @@
-{ pkgs, modulesPath, ... }:
+{ modulesPath, ... }:
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
@@ -17,15 +17,7 @@
     mailserver.enable = true;
   };
 
-  # make the tailscale command usable to users
-  environment.systemPackages = [ pkgs.tailscale ];
-
-  # enable the tailscale service
-  services.tailscale.enable = true;
-
   services.fail2ban.enable = true;
-
-  networking.hostName = "lisa";
 
   networking.hostId = "fbb334ae";
 
