@@ -15,6 +15,8 @@
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
 
+  deployment.tags = [ "server" ];
+
   systemd.network.enable = true;
   systemd.network.networks."10-wan" = {
     matchConfig.Name = "ens18";

@@ -17,6 +17,8 @@
     mailserver.enable = true;
   };
 
+  deployment.tags = [ "server" ];
+
   services.fail2ban.enable = true;
 
   networking.hostId = "fbb334ae";

@@ -46,23 +46,16 @@ rec {
     })
   ) (lib.importConfig ./machines);
 
-  colmena =
-    let
-      deployableConfigurations = lib.filterAttrs (
-        _: v: builtins.hasAttr "ipv4" lib.luj.machines.${v.config.networking.hostName}
+  colmena = {
+    meta = {
+      nodeNixpkgs = builtins.mapAttrs (
+        n: _: import lib.luj.machines.${n}.nixpkgs_version
       ) nixosConfigurations;
-    in
-    {
-      meta = {
-        nodeNixpkgs = builtins.mapAttrs (
-          n: _: import lib.luj.machines.${n}.nixpkgs_version
-        ) deployableConfigurations;
-        nodeSpecialArgs = builtins.mapAttrs (
-          n: v: v._module.specialArgs // { lib = mkLibForMachine n; }
-        ) deployableConfigurations;
-      };
-    }
-    // builtins.mapAttrs (_: v: { imports = v._module.args.modules; }) deployableConfigurations;
+      nodeSpecialArgs = builtins.mapAttrs (
+        n: v: v._module.specialArgs // { lib = mkLibForMachine n; }
+      ) nixosConfigurations;
+    };
+  } // builtins.mapAttrs (_: v: { imports = v._module.args.modules; }) nixosConfigurations;
 
   packages = builtins.listToAttrs (
     builtins.map (plat: {

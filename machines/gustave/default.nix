@@ -11,6 +11,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  deployment.tags = [ "server" ];
+
   disko = import ./disko.nix;
 
   systemd.network.enable = true;

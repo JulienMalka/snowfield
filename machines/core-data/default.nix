@@ -8,8 +8,7 @@
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
-  deployment.targetHost = lib.mkForce "192.168.0.57";
-  deployment.targetPort = lib.mkForce 45;
+  deployment.tags = [ "server" ];
 
   luj.nginx.enable = true;
 

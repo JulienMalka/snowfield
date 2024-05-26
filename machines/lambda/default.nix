@@ -10,6 +10,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   deployment.buildOnTarget = true;
+  deployment.tags = [ "server" ];
 
   luj.nginx.enable = true;
 
