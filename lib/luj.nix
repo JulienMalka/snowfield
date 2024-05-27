@@ -161,6 +161,7 @@ let
 
           nuage = {
             inherit tld;
+            arch = "x86_64-linux";
             nixpkgs_version = inputs.nixpkgs;
             hm_version = inputs.home-manager;
             ipv4 = {
