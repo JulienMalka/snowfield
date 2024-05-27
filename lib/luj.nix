@@ -161,13 +161,16 @@ let
 
           nuage = {
             inherit tld;
-            subdomains = [ "nuage.malka.family" ];
+            nixpkgs_version = inputs.nixpkgs;
+            hm_version = inputs.home-manager;
             ipv4 = {
               public = "82.67.34.230";
               local = "192.168.0.101";
+              vpn = "100.100.45.28";
             };
             ipv6 = {
               public = "2a01:e0a:de4:a0e1:95c9:b2e2:e999:1a45";
+              vpn = "fd7a:115c:a1e0::1c";
             };
           };
 
