@@ -31,7 +31,7 @@
   services.mysql.package = pkgs.mysql;
   services.nextcloud = {
     enable = true;
-    package = pkgs.nextcloud26;
+    package = pkgs.nextcloud27;
     https = true;
     hostName = "nuage.malka.family";
     config = {
