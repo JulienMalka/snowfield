@@ -46,6 +46,7 @@
     attic
     kitty
     tailscale
+    step-cli
   ];
 
   environment.variables.EDITOR = "nvim";
