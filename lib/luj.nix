@@ -187,6 +187,18 @@ let
             };
           };
 
+          proxmox-nixos-infra = {
+            inherit tld;
+            subdomains = [ "proxmox-nixos-update-logs.saumon.network" ];
+            ipv4 = {
+              public = "82.67.34.230";
+              local = "192.168.0.177";
+            };
+            ipv6 = {
+              public = "2a01:e0a:de4:a0e1:eb2:caa1::78";
+            };
+          };
+
           doma-zulip = {
             inherit tld;
             subdomains = [ "zulip.julienmalka.me" ];
