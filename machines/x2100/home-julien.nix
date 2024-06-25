@@ -57,7 +57,6 @@
       cantarell-fonts
       roboto
       nodejs
-      neomutt
       htop
       evince
       mosh

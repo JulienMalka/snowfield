@@ -64,7 +64,6 @@
       unstable.signal-desktop
       font-awesome
       nodejs
-      neomutt
       htop
       evince
       mosh

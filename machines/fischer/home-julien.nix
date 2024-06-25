@@ -45,7 +45,6 @@
       libreoffice
       font-awesome
       nodejs
-      neomutt
       htop
       evince
       mosh
