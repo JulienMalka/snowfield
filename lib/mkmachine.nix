@@ -1,7 +1,10 @@
 inputs: lib:
 
 let
-  overlay-unstable = arch: _final: _prev: { unstable = import inputs.unstable { system = arch; }; };
+  overlay-unstable = arch: _final: _prev: {
+    stable = import inputs.nixpkgs { system = arch; };
+    unstable = import inputs.unstable { system = arch; };
+  };
 in
 
 {

@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
   cfg = config.luj.emails;
 in
@@ -8,11 +13,11 @@ with lib;
     enable = mkEnableOption "enable mail management";
   };
 
-
   config = mkIf cfg.enable {
     home.packages = [ pkgs.notmuch-addrlookup ];
     programs.mbsync.enable = true;
     programs.neomutt.enable = true;
+    programs.neomutt.package = pkgs.stable.neomutt;
     programs.msmtp.enable = true;
     accounts.email = {
       accounts.ens = {
@@ -98,7 +103,6 @@ with lib;
         userName = "luj@dgnum.eu";
       };
 
-
     };
 
     services.mbsync = {
@@ -159,8 +163,5 @@ with lib;
       "notifymuch/notifymuch.cfg".source = lib.mkForce ./notifymuch;
     };
 
-
   };
 }
-
-
