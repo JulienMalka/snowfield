@@ -37,18 +37,11 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.impermanence}/nixos.nix")
     (import inputs.lanzaboote).nixosModules.lanzaboote
     (import inputs.lila).nixosModules.hash-collection
-    (import "${inputs.lix-module}/module.nix" { inherit (inputs) lix; })
     {
       home-manager.useGlobalPkgs = true;
       nixpkgs.system = system;
       networking.hostName = name;
       nixpkgs.overlays = lib.mkAfter [
-        # TODO: Remove when https://git.lix.systems/lix-project/lix/issues/310 is fixed
-        (_: prev: {
-          nix = prev.nix.overrideAttrs (_: {
-            doCheck = false;
-          });
-        })
         (overlay-unstable system)
         (_final: prev: {
           waybar = prev.waybar.overrideAttrs (oldAttrs: {

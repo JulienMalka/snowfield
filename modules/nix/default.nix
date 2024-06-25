@@ -2,6 +2,7 @@
   config,
   lib,
   inputs,
+  pkgs,
   ...
 }:
 let
@@ -16,7 +17,7 @@ with lib;
   config = mkIf cfg.enable {
     nixpkgs.config.allowUnfree = true;
     nix = {
-      #package = pkgs.unstable.nix;
+      package = pkgs.unstable.lix;
       extraOptions = ''
         experimental-features = nix-command flakes
       '';
