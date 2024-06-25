@@ -32,9 +32,9 @@
         "repo": "buildbot-nix"
       },
       "branch": "main",
-      "revision": "1a978e8c4abde49dfb4e81be1f2d6e561089bb0e",
-      "url": "https://github.com/JulienMalka/buildbot-nix/archive/1a978e8c4abde49dfb4e81be1f2d6e561089bb0e.tar.gz",
-      "hash": "10yr5yx1y9wh9x1asj29142w787fsvc9q6arf0znvs4gb89dl8l9"
+      "revision": "f61a81d27ca851a3c696d178f841119b0984582c",
+      "url": "https://github.com/JulienMalka/buildbot-nix/archive/f61a81d27ca851a3c696d178f841119b0984582c.tar.gz",
+      "hash": "1ij15aay7mxphlxhdqp8shp66s7hb1mhm5l1kbai7717fws3ac1n"
     },
     "colmena": {
       "type": "Git",
@@ -147,28 +147,6 @@
       "url": "https://github.com/JulienMalka/lila/archive/9c52498d310c8ecca8de63e50658bd5089617e3a.tar.gz",
       "hash": "08zwv0b7x0yvbcwkr39pmhlyfr86y6ijsm71az8xx323zp4c5r8q"
     },
-    "lix": {
-      "type": "Git",
-      "repository": {
-        "type": "Git",
-        "url": "https://git.lix.systems/lix-project/lix.git"
-      },
-      "branch": "main",
-      "revision": "ce2b48aa41ed8e6f3eed60a20e3e2afb244457b6",
-      "url": null,
-      "hash": "1cy16y5h9dk602qi16i4h6i0vdw8v8jb6p740y7hyy4d8d1kh9ka"
-    },
-    "lix-module": {
-      "type": "Git",
-      "repository": {
-        "type": "Git",
-        "url": "https://git.lix.systems/lix-project/nixos-module.git"
-      },
-      "branch": "main",
-      "revision": "4e25f1ab68f2270f9cff59216056c21073db0164",
-      "url": null,
-      "hash": "0bi6qc6mvbp73hnkxrw02hg9fl9czfqrz7j8pqh3xnalqfvxiicv"
-    },
     "nix-index-database": {
       "type": "Git",
       "repository": {
@@ -214,10 +192,10 @@
         "repo_path": "simple-nixos-mailserver/nixos-mailserver",
         "server": "https://gitlab.com/"
       },
-      "branch": "nixos-23.11",
-      "revision": "e47f3719f1db3e0961a4358d4cb234a0acaa7baf",
-      "url": "https://gitlab.com/api/v4/projects/simple-nixos-mailserver%2Fnixos-mailserver/repository/archive.tar.gz?sha=e47f3719f1db3e0961a4358d4cb234a0acaa7baf",
-      "hash": "122vm4n3gkvlkqmlskiq749bhwfd0r71v6vcmg1bbyg4998brvx8"
+      "branch": "nixos-24.05",
+      "revision": "29916981e7b3b5782dc5085ad18490113f8ff63b",
+      "url": "https://gitlab.com/api/v4/projects/simple-nixos-mailserver%2Fnixos-mailserver/repository/archive.tar.gz?sha=29916981e7b3b5782dc5085ad18490113f8ff63b",
+      "hash": "0clvw4622mqzk1aqw1qn6shl9pai097q62mq1ibzscnjayhp278b"
     },
     "nixpkgs": {
       "type": "Git",
