@@ -32,7 +32,10 @@ in
         user = "JulienMalka";
         topic = "nix-ci";
       };
-      admins = [ "JulienMalka" ];
+      admins = [
+        "JulienMalka"
+        "camillemndn"
+      ];
       evalWorkerCount = 10; # limit number of concurrent evaluations
     };
 
