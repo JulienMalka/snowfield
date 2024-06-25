@@ -10,14 +10,12 @@ in
 
     enable = mkEnableOption "activate hedgedoc service";
     nginx.enable = mkEnableOption "activate nginx";
-    nginx.subdomain = mkOption {
-      type = types.str;
-    };
+    nginx.subdomain = mkOption { type = types.str; };
 
   };
 
-  config = mkIf cfg.enable (
-    mkMerge [{
+  config = mkIf cfg.enable (mkMerge [
+    {
       services.hedgedoc = {
         enable = true;
         settings = {
@@ -40,19 +38,15 @@ in
         ensureUsers = [
           {
             name = "hedgedoc";
-            ensurePermissions."DATABASE hedgedoc" = "ALL PRIVILEGES";
+            ensureDBOwnership = true;
           }
         ];
       };
     }
 
+    (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port))
 
-      (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port))
-
-      (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))]);
-
-
-
-
+    (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))
+  ]);
 
 }
