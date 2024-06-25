@@ -40,7 +40,7 @@ in
     };
 
     systemd.services.buildbot-worker.path = lib.mkForce [
-      pkgs.attic
+      pkgs.attic-client
       pkgs.git
       pkgs.openssh
       pkgs.gh

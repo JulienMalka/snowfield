@@ -29,7 +29,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     host-config
     (import "${home-manager}/nixos")
     (import "${inputs.nixos-mailserver}")
-    (import "${inputs.attic}/nixos/atticd.nix")
     (import "${inputs.disko}/module.nix")
     (import "${inputs.buildbot-nix}/nix/master.nix")
     (import "${inputs.buildbot-nix}/nix/worker.nix")
@@ -49,7 +48,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           });
           # Packages comming from other repositories
           zotero = pkgs.wrapFirefox (pkgs.callPackage "${inputs.zotero-nix}/pkgs" { }) { };
-          attic = pkgs.callPackage "${inputs.attic}/package.nix" { };
           jackett = pkgs.callPackage ../packages/jackett { };
           lila-build-hook = (import inputs.lila).packages.${system}.utils;
           # My own packages
