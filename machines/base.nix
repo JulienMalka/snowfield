@@ -33,9 +33,9 @@
     useXkbConfig = true;
   };
 
-  services.xserver = {
+  services.xserver.xkb = {
     layout = "fr";
-    xkbVariant = "";
+    variant = "";
   };
 
   programs.gnupg.agent.enable = true;

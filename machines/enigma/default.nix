@@ -28,16 +28,15 @@
 
   security.pam.services.swaylock = { };
 
+  services.displayManager.autoLogin = {
+    enable = true;
+    user = "julien";
+  };
+
   services.xserver = {
     enable = true;
-    layout = "fr";
-    xkbVariant = "";
     displayManager = {
       gdm.enable = true;
-      autoLogin = {
-        enable = true;
-        user = "julien";
-      };
     };
   };
 
@@ -143,7 +142,7 @@
 
   services.printing.enable = true;
   services.avahi.enable = true;
-  services.avahi.nssmdns = true;
+  services.avahi.nssmdns4 = true;
   # for a WiFi printer
   services.avahi.openFirewall = true;
 

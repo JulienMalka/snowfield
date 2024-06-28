@@ -66,8 +66,7 @@
     useXkbConfig = true; # use xkbOptions in tty.
   };
 
-  hardware.opengl.enable = true;
-  hardware.opengl.driSupport = true;
+  hardware.graphics.enable = true;
 
   services.dbus.enable = true;
 
