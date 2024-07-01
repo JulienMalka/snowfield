@@ -41,11 +41,6 @@
     MaxAuthTries 20
   '';
 
-  services.xserver = {
-    layout = "fr";
-    xkbVariant = "";
-  };
-
   console.keyMap = "fr";
 
   services.openssh.enable = true;
