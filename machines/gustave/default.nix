@@ -73,6 +73,19 @@
   # Set your time zone.
   time.timeZone = "Europe/Paris";
 
+  services.forgejo = {
+    enable = true;
+  };
+
+  services.nginx.virtualHosts."git.luj.fr" = {
+    forceSSL = true;
+    enableACME = true;
+    locations."/" = {
+      proxyPass = "http://localhost:3000";
+      proxyWebsockets = true;
+    };
+  };
+
   environment.persistence."/persistent" = {
     hideMounts = true;
     directories = [
