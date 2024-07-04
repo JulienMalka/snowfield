@@ -68,7 +68,12 @@
     "/persistent/etc/ssh/ssh_host_ed25519_key"
   ];
 
-  system.nixos.label = "${config.system.nixos.release}-${(builtins.fetchGit ../.).dirtyShortRev}";
+  system.nixos.label = "${config.system.nixos.release}-${
+    let
+      repo = builtins.fetchGit ../.;
+    in
+    repo.dirtyShortRev or repo.shortRev
+  }";
 
   security.pki.certificates = [
     ''
