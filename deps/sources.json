@@ -71,9 +71,9 @@
         "repo": "home-manager"
       },
       "branch": "release-24.05",
-      "revision": "a1fddf0967c33754271761d91a3d921772b30d0e",
-      "url": "https://github.com/nix-community/home-manager/archive/a1fddf0967c33754271761d91a3d921772b30d0e.tar.gz",
-      "hash": "1vvrrk14vrhb6drj3fy8snly0sf24x3402ykb9q5j1gy99vvqqq6"
+      "revision": "e1391fb22e18a36f57e6999c7a9f966dc80ac073",
+      "url": "https://github.com/nix-community/home-manager/archive/e1391fb22e18a36f57e6999c7a9f966dc80ac073.tar.gz",
+      "hash": "0c83di08nhkzq0cwc3v7aax3x8y5m7qahyzxppinzwxi3r8fnjq3"
     },
     "home-manager-unstable": {
       "type": "Git",
@@ -83,9 +83,9 @@
         "repo": "home-manager"
       },
       "branch": "master",
-      "revision": "1a4f12ae0bda877ec4099b429cf439aad897d7e9",
-      "url": "https://github.com/nix-community/home-manager/archive/1a4f12ae0bda877ec4099b429cf439aad897d7e9.tar.gz",
-      "hash": "0gm7wgav6wnxxb67lalmq13nrbnq20dk2xdp6cvm382ccsisqngx"
+      "revision": "0a30138c694ab3b048ac300794c2eb599dc40266",
+      "url": "https://github.com/nix-community/home-manager/archive/0a30138c694ab3b048ac300794c2eb599dc40266.tar.gz",
+      "hash": "0fbnp6122zmmapyicq1pz76aj500ah4ikf8vfibbkhqpwh3knqcn"
     },
     "homepage": {
       "type": "Git",
@@ -119,9 +119,9 @@
         "repo": "lanzaboote"
       },
       "branch": "master",
-      "revision": "6fa7bc0522f71d3906a3788bbd80c344cd9c4523",
-      "url": "https://github.com/nix-community/lanzaboote/archive/6fa7bc0522f71d3906a3788bbd80c344cd9c4523.tar.gz",
-      "hash": "06nwqdsks3kqj6fyjcijmnx1rvvx6i2ih5dyrh5i7rxiniznc87i"
+      "revision": "0e6457c98547ec8866714d4222545e7e8c1ae429",
+      "url": "https://github.com/nix-community/lanzaboote/archive/0e6457c98547ec8866714d4222545e7e8c1ae429.tar.gz",
+      "hash": "1b9268mp4iywkjn10is7n5brc0ygghxflxcl7axvr0b5jbb2b206"
     },
     "lila": {
       "type": "Git",
@@ -143,9 +143,9 @@
         "repo": "nix-index-database"
       },
       "branch": "main",
-      "revision": "4293f532d0107dfb7e6f8b34a0421dc8111320e6",
-      "url": "https://github.com/mic92/nix-index-database/archive/4293f532d0107dfb7e6f8b34a0421dc8111320e6.tar.gz",
-      "hash": "0h9hikmf606k0ada8cp5px9fainnfsb6wb64ijfrqblz3wgk2wmf"
+      "revision": "2917972ed34ce292309b3a4976286f8b5c08db27",
+      "url": "https://github.com/mic92/nix-index-database/archive/2917972ed34ce292309b3a4976286f8b5c08db27.tar.gz",
+      "hash": "1bivv09xp1nfaw456al4pwnq0hl9056h9g089r6sbq5vwj8h7gvn"
     },
     "nix-patches": {
       "type": "GitRelease",
@@ -169,9 +169,9 @@
         "repo": "nixos-anywhere"
       },
       "branch": "main",
-      "revision": "ce18c086d8ca143d43ab20b3db20ab1e3e62c519",
-      "url": "https://github.com/nix-community/nixos-anywhere/archive/ce18c086d8ca143d43ab20b3db20ab1e3e62c519.tar.gz",
-      "hash": "05klzqpya3y5z1iv242blvmrmvb3d8d3mwxb7whmsx6n4f0w72ri"
+      "revision": "f99d120b3788a286989db4e592a698f5d310d2f6",
+      "url": "https://github.com/nix-community/nixos-anywhere/archive/f99d120b3788a286989db4e592a698f5d310d2f6.tar.gz",
+      "hash": "0alvk9kzlhpcdhd8d572anhcrwwkc0cj7li1icyygg0xrkmwaypk"
     },
     "nixos-mailserver": {
       "type": "Git",
@@ -193,9 +193,9 @@
         "repo": "nixpkgs"
       },
       "branch": "nixos-24.05",
-      "revision": "89c49874fb15f4124bf71ca5f42a04f2ee5825fd",
-      "url": "https://github.com/nixos/nixpkgs/archive/89c49874fb15f4124bf71ca5f42a04f2ee5825fd.tar.gz",
-      "hash": "07mr5xmdba3i5qw68kvxs0w1l70pv6pg636dqqxi6s91hiazv4n8"
+      "revision": "706eef542dec88cc0ed25b9075d3037564b2d164",
+      "url": "https://github.com/nixos/nixpkgs/archive/706eef542dec88cc0ed25b9075d3037564b2d164.tar.gz",
+      "hash": "0bpw6x46mp0xqfdwbrhnjn6qlb4avglir993n3cdqg8zv4klgllw"
     },
     "unstable": {
       "type": "Git",
@@ -205,9 +205,9 @@
         "repo": "nixpkgs"
       },
       "branch": "nixos-unstable",
-      "revision": "2893f56de08021cffd9b6b6dfc70fd9ccd51eb60",
-      "url": "https://github.com/nixos/nixpkgs/archive/2893f56de08021cffd9b6b6dfc70fd9ccd51eb60.tar.gz",
-      "hash": "1anwxmjpm21msnnlrjdz19w31bxnbpn4kgf93sn3npihi7wf4a8h"
+      "revision": "9f4128e00b0ae8ec65918efeba59db998750ead6",
+      "url": "https://github.com/nixos/nixpkgs/archive/9f4128e00b0ae8ec65918efeba59db998750ead6.tar.gz",
+      "hash": "0i494s328s733id5z7578k6ny4v92y3lvabmmqxpzysmjqsgq35g"
     },
     "zotero-nix": {
       "type": "Git",
