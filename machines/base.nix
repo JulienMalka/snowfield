@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 {
 
@@ -62,6 +67,8 @@
     "/etc/ssh/ssh_host_ed25519_key"
     "/persistent/etc/ssh/ssh_host_ed25519_key"
   ];
+
+  system.nixos.label = "${config.system.nixos.release}-${(builtins.fetchGit ../.).dirtyShortRev}";
 
   security.pki.certificates = [
     ''
