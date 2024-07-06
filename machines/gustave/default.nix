@@ -75,6 +75,12 @@
 
   services.forgejo = {
     enable = true;
+    settings = {
+      server = {
+        ROOT_URL = "https://git.luj.fr/";
+        LANDING_PAGE = "luj";
+      };
+    };
   };
 
   services.nginx.virtualHosts."git.luj.fr" = {
