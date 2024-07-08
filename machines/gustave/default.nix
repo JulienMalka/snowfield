@@ -18,12 +18,6 @@
   systemd.network.enable = true;
   systemd.network.networks."10-wan" = {
     matchConfig.Name = "ens18";
-    routes = [
-      {
-        routeConfig.Metric = 500;
-        routeConfig.Destination = "0.0.0.0/0";
-      }
-    ];
     networkConfig = {
       DHCP = "ipv4";
       Address = "2a01:e0a:de4:a0e1:eb2:aaaa::45/128";
@@ -45,7 +39,6 @@
       wireguardPeers = [
         {
           wireguardPeerConfig = {
-            RouteMetric = 2000;
             PublicKey = "oYsN1Qy+a7dwVOKapN5s5KJOmhSflLHZqh+GLMeNpHw=";
             AllowedIPs = [ "0.0.0.0/0" ];
             Endpoint = "[2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb]:51821";
@@ -63,8 +56,15 @@
         addressConfig.AddPrefixRoute = false;
       }
     ];
+    routes = [
+      {
+        routeConfig = {
+          Gateway = "10.100.45.1";
+          Destination = "10.100.45.0/24";
+        };
+      }
+    ];
     DHCP = "no";
-    gateway = [ "10.100.45.1" ];
     networkConfig = {
       IPv6AcceptRA = false;
     };
