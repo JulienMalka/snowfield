@@ -83,6 +83,8 @@
     };
   };
 
+  services.openssh.ports = [ 22 ];
+
   services.nginx.virtualHosts."git.luj.fr" = {
     forceSSL = true;
     enableACME = true;
