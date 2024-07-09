@@ -28,6 +28,8 @@ pkgs.mkShell {
     agenix
     bootstrap
     statix
+    rbw
+    pinentry
   ];
   shellHook = ''
     ${pre-commit-hook.shellHook}
