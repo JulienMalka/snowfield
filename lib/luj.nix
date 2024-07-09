@@ -57,6 +57,16 @@ let
               vpn = "fd7a:115c:a1e0::c";
             };
           };
+          lisanew = {
+            inherit tld;
+            arch = "x86_64-linux";
+            nixpkgs_version = inputs.nixpkgs;
+            hm_version = inputs.home-manager;
+            ipv4 = {
+              public = "163.172.91.82";
+            };
+          };
+
           x2100 = {
             inherit tld;
             arch = "x86_64-linux";
