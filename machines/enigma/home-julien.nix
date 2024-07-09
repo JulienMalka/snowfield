@@ -84,7 +84,7 @@
 
     programs.firefox = {
       enable = true;
-      package = pkgs.firefox-esr;
+      package = pkgs.firefox;
     };
 
     home.keyboard = {
