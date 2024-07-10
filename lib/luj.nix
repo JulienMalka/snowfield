@@ -64,6 +64,7 @@ let
             hm_version = inputs.home-manager;
             ipv4 = {
               public = "163.172.91.82";
+              vpn = "100.100.45.32";
             };
           };
 
