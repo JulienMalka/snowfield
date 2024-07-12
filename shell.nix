@@ -30,15 +30,13 @@ let
       };
 in
 pkgs.mkShell {
-  nativeBuildInputs = with pkgs; [
-    colmena
-    npins
+  nativeBuildInputs = [
+    pkgs.colmena
+    pkgs.npins
     agenix
     bootstrap
     update-deps
-    statix
-    rbw
-    pinentry
+    pkgs.statix
   ];
   shellHook = ''
     ${pre-commit-hook.shellHook}
