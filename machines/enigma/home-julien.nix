@@ -69,7 +69,6 @@
       mosh
       zotero
       flameshot
-      albert
       kitty
       networkmanagerapplet
       element-desktop
