@@ -3,7 +3,8 @@ let
   pkgs = import inputs.unstable { };
   nixos-anywhere = pkgs.callPackage "${inputs.nixos-anywhere}/src/default.nix" { };
   agenix = pkgs.callPackage "${inputs.agenix}/pkgs/agenix.nix" { };
-  bootstrap = import scripts/bootstrap-machine.nix;
+  bootstrap = pkgs.callPackage scripts/bootstrap-machine.nix { inherit nixos-anywhere; };
+  update-deps = pkgs.callPackage scripts/update-deps.nix { };
   pre-commit-hook =
     (import (
       pkgs.applyPatches {
@@ -32,9 +33,9 @@ pkgs.mkShell {
   nativeBuildInputs = with pkgs; [
     colmena
     npins
-    nixos-anywhere
     agenix
     bootstrap
+    update-deps
     statix
     rbw
     pinentry
