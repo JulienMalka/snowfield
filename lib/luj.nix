@@ -57,11 +57,11 @@ let
               vpn = "fd7a:115c:a1e0::c";
             };
           };
-          lisanew = {
+          akhaten = {
             inherit tld;
             arch = "x86_64-linux";
-            nixpkgs_version = inputs.nixpkgs;
-            hm_version = inputs.home-manager;
+            nixpkgs_version = inputs.unstable;
+            hm_version = inputs.home-manager-unstable;
             ipv4 = {
               public = "163.172.91.82";
               vpn = "100.100.45.32";

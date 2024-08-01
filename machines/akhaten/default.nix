@@ -3,6 +3,7 @@
   imports = [
     ./hardware.nix
     ./home-julien.nix
+    ./stalwart.nix
   ];
 
   deployment.tags = [ "server" ];
@@ -27,5 +28,5 @@
     };
   };
 
-  system.stateVersion = "24.05";
+  system.stateVersion = "24.11";
 }
