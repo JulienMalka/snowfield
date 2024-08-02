@@ -71,4 +71,5 @@ in
     lisa
     tower
   ];
+  "forgejo_runners-token_file.age".publicKeys = [ tower ];
 }
