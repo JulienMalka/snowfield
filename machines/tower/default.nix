@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -54,7 +54,6 @@
   };
 
   nix = {
-    package = lib.mkForce pkgs.nix;
     distributedBuilds = true;
     buildMachines = [
       {
