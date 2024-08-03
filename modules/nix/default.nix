@@ -28,10 +28,7 @@ with lib;
       settings = {
         builders-use-substitutes = true;
         auto-optimise-store = true;
-        substituters = [
-          "https://cache.nixos.org"
-          "https://cache.saumon.network/attic-exec?priority=100"
-        ];
+        substituters = [ "https://cache.nixos.org" ];
         trusted-public-keys = [ "attic-exec:W1PQ0txRf4qpCIlNLscD/Xw1GwGoBij73JSum/I8Xt4=" ];
       };
     };
