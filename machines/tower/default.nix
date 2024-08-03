@@ -4,6 +4,7 @@
   imports = [
     ./hardware.nix
     ./home-julien.nix
+    ./forgejo-runner.nix
   ];
 
   boot.loader.grub.enable = true;
