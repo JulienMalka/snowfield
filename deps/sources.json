@@ -193,9 +193,9 @@
         "repo": "nixpkgs"
       },
       "branch": "nixos-24.05",
-      "revision": "a046c1202e11b62cbede5385ba64908feb7bfac4",
-      "url": "https://github.com/nixos/nixpkgs/archive/a046c1202e11b62cbede5385ba64908feb7bfac4.tar.gz",
-      "hash": "10y8ccyv76i9zhd3s8x792g58p5iw16xy3qz4f6gqk0svwlgwr09"
+      "revision": "883180e6550c1723395a3a342f830bfc5c371f6b",
+      "url": "https://github.com/nixos/nixpkgs/archive/883180e6550c1723395a3a342f830bfc5c371f6b.tar.gz",
+      "hash": "01axrf25mahbxmp6vgfgx09dflbyaavr5liynkp6rpm4lkacr27f"
     },
     "unstable": {
       "type": "Git",
@@ -205,9 +205,9 @@
         "repo": "nixpkgs"
       },
       "branch": "nixos-unstable",
-      "revision": "feb2849fdeb70028c70d73b848214b00d324a497",
-      "url": "https://github.com/nixos/nixpkgs/archive/feb2849fdeb70028c70d73b848214b00d324a497.tar.gz",
-      "hash": "016ihxx048j09mfxxapaab5mx9kasjlvljqfgnz1vslmw8gcs2b6"
+      "revision": "cb9a96f23c491c081b38eab96d22fa958043c9fa",
+      "url": "https://github.com/nixos/nixpkgs/archive/cb9a96f23c491c081b38eab96d22fa958043c9fa.tar.gz",
+      "hash": "19nv90nr810mmckhg7qkzhjml9zgm5wk4idhrvyb63y4i74ih2i0"
     },
     "zotero-nix": {
       "type": "Git",
