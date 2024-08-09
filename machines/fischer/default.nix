@@ -23,8 +23,6 @@
   };
   boot.initrd.systemd.enableTpm2 = true;
 
-  # Sound stuff
-  sound.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -155,6 +153,10 @@
     package = pkgs.unstable.hyprland;
     portalPackage = pkgs.unstable.xdg-desktop-portal-hyprland;
   };
-
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  };
   system.stateVersion = "23.05";
 }
