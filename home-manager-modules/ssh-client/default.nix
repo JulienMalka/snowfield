@@ -11,44 +11,48 @@ with lib;
   config = mkIf cfg.enable {
     programs.ssh = {
       enable = true;
-      matchBlocks = lib.mapAttrs
-        (n: v: { hostname = "${n}.${lib.luj.tld}"; user = v.sshUser; port = v.sshPort; })
-        lib.luj.machines // {
-        sas = {
-          hostname = "sas.eleves.ens.fr";
-          user = "jmalka";
-        };
-        router = {
-          hostname = "vpn.saumon.network";
-        };
-        mails = {
-          hostname = "192.168.0.76";
-          proxyJump = "router";
-        };
+      matchBlocks =
+        lib.mapAttrs (n: v: {
+          hostname = "${n}.${lib.snowfield.${n}.tld}";
+          user = v.sshUser;
+          port = v.sshPort;
+        }) lib.snowfield
+        // {
+          sas = {
+            hostname = "sas.eleves.ens.fr";
+            user = "jmalka";
+          };
+          router = {
+            hostname = "vpn.saumon.network";
+          };
+          mails = {
+            hostname = "192.168.0.76";
+            proxyJump = "router";
+          };
 
-        proxy-telecom = {
-          hostname = "ssh.enst.fr";
-          user = "jmalka";
-        };
+          proxy-telecom = {
+            hostname = "ssh.enst.fr";
+            user = "jmalka";
+          };
 
-        lame24 = {
-          hostname = "lame24.enst.fr";
-          user = "jmalka";
-          proxyJump = "proxy-telecom";
-        };
+          lame24 = {
+            hostname = "lame24.enst.fr";
+            user = "jmalka";
+            proxyJump = "proxy-telecom";
+          };
 
-        epyc = {
-          hostname = "epyc.infra.newtype.fr";
-          user = "luj";
-          proxyJump = "tower";
-        };
+          epyc = {
+            hostname = "epyc.infra.newtype.fr";
+            user = "luj";
+            proxyJump = "tower";
+          };
 
-        exps = {
-          hostname = "192.168.0.240";
-          proxyJump = "router";
-        };
+          exps = {
+            hostname = "192.168.0.240";
+            proxyJump = "router";
+          };
 
-      };
+        };
     };
   };
 }
