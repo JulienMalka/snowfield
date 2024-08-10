@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   imports = [
@@ -6,6 +6,22 @@
     ./home-julien.nix
     ./forgejo-runner.nix
   ];
+
+  machine.meta = {
+    arch = "x86_64-linux";
+    nixpkgs_version = inputs.nixpkgs;
+    hm_version = inputs.home-manager;
+    ipv4 = {
+      public = "82.67.34.230";
+      local = "192.168.0.103";
+      vpn = "100.100.45.9";
+    };
+    ipv6 = {
+      public = "2a01:e0a:de4:a0e1:8ec7:b5d2:f663:a67a";
+      vpn = "fd7a:115c:a1e0::9";
+    };
+
+  };
 
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";

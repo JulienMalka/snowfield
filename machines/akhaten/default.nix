@@ -1,10 +1,20 @@
-{ ... }:
+{ inputs, ... }:
 {
   imports = [
     ./hardware.nix
     ./home-julien.nix
     ./stalwart.nix
   ];
+
+  machine.meta = {
+    arch = "x86_64-linux";
+    nixpkgs_version = inputs.unstable;
+    hm_version = inputs.home-manager-unstable;
+    ipv4 = {
+      public = "163.172.91.82";
+      vpn = "100.100.45.33";
+    };
+  };
 
   deployment.tags = [ "server" ];
 
