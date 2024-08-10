@@ -2,8 +2,12 @@ inputs: final: _prev:
 
 with builtins;
 
-{
-  importConfig = path: (mapAttrs (name: _value: import (path + "/${name}/default.nix")) (final.filterAttrs (_: v: v == "directory") (readDir path)));
+rec {
+  importConfig =
+    path:
+    (mapAttrs (name: _value: import (path + "/${name}/default.nix")) (
+      final.filterAttrs (_: v: v == "directory") (readDir path)
+    ));
 
   mkSubdomain = name: port: {
     luj.nginx.enable = true;
@@ -33,10 +37,25 @@ with builtins;
     };
   };
 
+  evalMeta =
+    raw:
+    (_prev.evalModules {
+      modules = [
+        (import ../modules/meta/default.nix)
+        { machine.meta = raw; }
+      ];
+    }).config.machine.meta;
 
-
-
-  luj = import ./luj.nix inputs final;
+  snowfield = mapAttrs (
+    name: _value:
+    evalMeta
+      (import (../machines + "/${name}/default.nix") {
+        inherit inputs;
+        config = null;
+        pkgs = null;
+        lib = null;
+        modulesPath = null;
+      }).machine.meta
+  ) (final.filterAttrs (_: v: v == "directory") (readDir ../machines));
 
 }
-
