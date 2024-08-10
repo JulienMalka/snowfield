@@ -1,10 +1,25 @@
-{ modulesPath, ... }:
+{ modulesPath, inputs, ... }:
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ./hardware.nix
     ./home-julien.nix
   ];
+
+  machine.meta = {
+    arch = "x86_64-linux";
+    nixpkgs_version = inputs.nixpkgs;
+    hm_version = inputs.home-manager;
+    ipv4 = {
+      public = "212.129.40.11";
+      vpn = "100.100.45.12";
+    };
+    ipv6 = {
+      public = "2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb";
+      vpn = "fd7a:115c:a1e0::c";
+    };
+
+  };
 
   luj = {
     docs = {

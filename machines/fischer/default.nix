@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 {
@@ -9,6 +10,14 @@
     ./hardware.nix
     ./home-julien.nix
   ];
+
+  machine.meta = {
+    arch = "x86_64-linux";
+    nixpkgs_version = inputs.nixpkgs_patched;
+    hm_version = inputs.home-manager-unstable;
+    # TODO: Fix colmena deployment
+    ipv4.public = "127.0.0.1";
+  };
 
   # Boot stuff
   boot.loader.systemd-boot.enable = lib.mkForce false;

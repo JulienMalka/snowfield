@@ -1,10 +1,23 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
   imports = [
     ./hardware.nix
     ./home-julien.nix
   ];
+
+  machine.meta = {
+    arch = "aarch64-linux";
+    nixpkgs_version = inputs.nixpkgs;
+    hm_version = inputs.home-manager;
+    ipv4.vpn = "100.100.45.21";
+
+  };
 
   networking.hostName = "enigma";
   boot.loader.systemd-boot.enable = true;
