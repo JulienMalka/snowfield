@@ -11,7 +11,7 @@ in
   config = mkIf cfg.enable {
 
     deployment = {
-      targetHost = "${hostname}.${lib.luj.machines.${hostname}.tld}";
+      targetHost = "${hostname}.${config.machine.meta.tld}";
       targetPort = 45;
       targetUser = "root";
       allowLocalDeployment = true;
@@ -20,4 +20,3 @@ in
 
   };
 }
-

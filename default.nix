@@ -10,10 +10,10 @@ let
   lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib inputs_final);
   mkLibForMachine =
     machine:
-    (import "${lib.luj.machines.${machine}.nixpkgs_version}/lib").extend (import ./lib inputs_final);
+    (import "${lib.snowfield.${machine}.nixpkgs_version}/lib").extend (import ./lib inputs_final);
   machines_plats = lib.lists.unique (
     lib.mapAttrsToList (_name: value: value.arch) (
-      lib.filterAttrs (_n: v: builtins.hasAttr "arch" v) lib.luj.machines
+      lib.filterAttrs (_n: v: builtins.hasAttr "arch" v) lib.snowfield
     )
   );
   mkMachine = import ./lib/mkmachine.nix inputs_final lib;
@@ -40,9 +40,9 @@ rec {
       inherit name;
       host-config = value;
       modules = nixosModules;
-      nixpkgs = lib.luj.machines.${name}.nixpkgs_version;
-      system = lib.luj.machines.${name}.arch;
-      home-manager = lib.luj.machines.${name}.hm_version;
+      nixpkgs = lib.snowfield.${name}.nixpkgs_version;
+      system = lib.snowfield.${name}.arch;
+      home-manager = lib.snowfield.${name}.hm_version;
     })
   ) (lib.importConfig ./machines);
 
