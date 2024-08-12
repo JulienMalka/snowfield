@@ -58,4 +58,8 @@ rec {
       }).machine.meta
   ) (final.filterAttrs (_: v: v == "directory") (readDir ../machines));
 
+  dns = import ./dns.nix {
+    lib = final;
+    dnsLib = (import inputs.dns).lib;
+  };
 }
