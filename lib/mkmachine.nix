@@ -14,6 +14,7 @@ in
   nixpkgs ? inputs.nixpkgs,
   system ? "x86_64-linux",
   home-manager ? inputs.home-manager,
+  self,
 }:
 let
   pkgs = import nixpkgs { inherit system; };
@@ -23,6 +24,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
   lib = pkgs.lib.extend (import ./default.nix inputs);
   specialArgs = {
     inherit inputs;
+    inherit (self) nixosConfigurations;
   };
   modules = builtins.attrValues modules ++ [
     ../machines/base.nix
