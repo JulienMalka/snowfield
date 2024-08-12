@@ -1,11 +1,11 @@
 { pkgs, inputs, ... }:
-
 {
   imports = [
     ../../users/default.nix
     ../../users/julien.nix
     ./hardware.nix
     ./home-julien.nix
+    ./nsd.nix
   ];
 
   machine.meta = {
