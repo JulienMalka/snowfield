@@ -10,15 +10,12 @@
     arch = "aarch64-linux";
     nixpkgs_version = inputs.nixpkgs;
     hm_version = inputs.home-manager;
-    ipv4 = {
-      public = "141.145.197.219";
-      vpn = "100.100.45.13";
+    ips = {
+      public.ipv4 = "141.145.197.219";
+      vpn.ipv4 = "100.100.45.13";
+      public.ipv6 = "2603:c027:c001:89aa:aad9:34b3:f3c9:924f";
+      vpn.ipv6 = "fd7a:115c:a1e0::d";
     };
-    ipv6 = {
-      public = "2603:c027:c001:89aa:aad9:34b3:f3c9:924f";
-      vpn = "fd7a:115c:a1e0::d";
-    };
-
   };
 
   boot.loader.systemd-boot.enable = true;
