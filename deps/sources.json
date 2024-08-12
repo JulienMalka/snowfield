@@ -51,6 +51,18 @@
       "url": "https://api.github.com/repos/nix-community/disko/tarball/v1.6.1",
       "hash": "1p9vsml07bm3riw703dv83ihlmgyc11qv882qa6bqzqdgn86y8z4"
     },
+    "dns": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "JulienMalka",
+        "repo": "dns.nix"
+      },
+      "branch": "master",
+      "revision": "ae7f7ea28f6ac75afb7d547394bda4f18bb4d90e",
+      "url": "https://github.com/JulienMalka/dns.nix/archive/ae7f7ea28f6ac75afb7d547394bda4f18bb4d90e.tar.gz",
+      "hash": "1zdydrp4sqd4wpmajgihaqfgi3w9qh59j0dy4cajz2larn9dlp8z"
+    },
     "git-hooks": {
       "type": "Git",
       "repository": {
