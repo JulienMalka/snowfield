@@ -1,7 +1,16 @@
 inputs: final: _prev:
 
 with builtins;
-
+let
+  evalMeta =
+    raw:
+    (_prev.evalModules {
+      modules = [
+        (import ../modules/meta/default.nix)
+        { machine.meta = raw; }
+      ];
+    }).config.machine.meta;
+in
 rec {
   importConfig =
     path:
@@ -37,29 +46,25 @@ rec {
     };
   };
 
-  evalMeta =
-    raw:
-    (_prev.evalModules {
-      modules = [
-        (import ../modules/meta/default.nix)
-        { machine.meta = raw; }
-      ];
-    }).config.machine.meta;
+  listToAttrsWithMerge =
+    l:
+    mapAttrs (_: v: _prev.fold (elem: acc: elem.value // acc) { } v) (builtins.groupBy (e: e.name) l);
+
+  mapAttrsWithMerge = f: set: listToAttrsWithMerge (map (attr: f attr set.${attr}) (attrNames set));
 
   snowfield = mapAttrs (
     name: _value:
+    let
+      machineF = import (../machines + "/${name}/default.nix");
+    in
     evalMeta
-      (import (../machines + "/${name}/default.nix") {
-        inherit inputs;
-        config = null;
-        pkgs = null;
-        lib = null;
-        modulesPath = null;
-      }).machine.meta
+      (machineF ((mapAttrs (_: _: null) (builtins.functionArgs machineF)) // { inherit inputs; }))
+      .machine.meta
   ) (final.filterAttrs (_: v: v == "directory") (readDir ../machines));
 
   dns = import ./dns.nix {
     lib = final;
     dnsLib = (import inputs.dns).lib;
   };
+
 }
