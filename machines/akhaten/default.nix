@@ -10,9 +10,9 @@
     arch = "x86_64-linux";
     nixpkgs_version = inputs.unstable;
     hm_version = inputs.home-manager-unstable;
-    ipv4 = {
-      public = "163.172.91.82";
-      vpn = "100.100.45.33";
+    ips = {
+      public.ipv4 = "163.172.91.82";
+      vpn.ipv4 = "100.100.45.33";
     };
   };
 
