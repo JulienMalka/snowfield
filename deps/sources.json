@@ -59,9 +59,9 @@
         "repo": "dns.nix"
       },
       "branch": "master",
-      "revision": "ae7f7ea28f6ac75afb7d547394bda4f18bb4d90e",
-      "url": "https://github.com/JulienMalka/dns.nix/archive/ae7f7ea28f6ac75afb7d547394bda4f18bb4d90e.tar.gz",
-      "hash": "1zdydrp4sqd4wpmajgihaqfgi3w9qh59j0dy4cajz2larn9dlp8z"
+      "revision": "533e2b6b7b6ad84988927d7937acba4738aea7a1",
+      "url": "https://github.com/JulienMalka/dns.nix/archive/533e2b6b7b6ad84988927d7937acba4738aea7a1.tar.gz",
+      "hash": "0b7v8kcmf8kdvk8905a5zlb36w4lk69lahs9w4qfp3q53lg95al1"
     },
     "git-hooks": {
       "type": "Git",
