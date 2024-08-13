@@ -21,8 +21,12 @@ let
     adminEmail = "dns@malka.sh";
     serial = 0;
   };
+  NS = [
+    "ns1"
+    "ns2"
+  ];
   defaults = {
-    inherit SOA;
+    inherit SOA NS;
   };
 in
 with lib;
