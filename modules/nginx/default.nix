@@ -1,6 +1,7 @@
 { lib, config, ... }:
 with lib;
-let cfg = config.luj.nginx;
+let
+  cfg = config.luj.nginx;
 in
 {
 
@@ -14,10 +15,15 @@ in
 
   config = mkIf cfg.enable {
 
-    networking.firewall.allowedTCPPorts = [ 80 443 ];
+    networking.firewall.allowedTCPPorts = [
+      80
+      443
+    ];
     security.acme.defaults.email = "${cfg.email}";
     security.acme.acceptTerms = true;
-    users.groups.nginx = { name = "nginx"; };
+    users.groups.nginx = {
+      name = "nginx";
+    };
 
     services.nginx = {
       enable = true;
@@ -38,8 +44,7 @@ in
       };
     };
 
-
-
+    machine.meta.zones."julienmalka.me".subdomains."404" = lib.mkForce { };
 
   };
 }
