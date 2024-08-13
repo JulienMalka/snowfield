@@ -42,7 +42,7 @@ in
     ];
     zones = lib.mapAttrs (_: value: {
       data = builtins.toString value;
-      provideXFR = [ "192.168.0.0/21 NOKEY" ];
+      provideXFR = [ "100.100.45.0/24 NOKEY" ];
     }) (evalZones zonesFromConfig);
   };
 }
