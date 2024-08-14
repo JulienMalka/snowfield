@@ -82,8 +82,6 @@ let
       }) machines_plats
     );
 
-    inherit (lib.luj) machines;
-
     checks = {
       inherit packages;
       machines = lib.mapAttrs (_: v: v.config.system.build.toplevel) nixosConfigurations;
