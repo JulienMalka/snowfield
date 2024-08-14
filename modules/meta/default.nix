@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, profiles, ... }:
 {
   options.machine.meta = lib.mkOption {
     description = "Machine metadata";
@@ -32,6 +32,10 @@
             tld = mkOption {
               description = "tld for local addressing of the machine";
               default = "luj";
+            };
+            profiles = mkOption {
+              description = "profiles applied to the machine";
+              default = with profiles; [ base ];
             };
 
           };
