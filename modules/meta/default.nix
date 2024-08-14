@@ -44,4 +44,8 @@
     default = { };
   };
 
+  config = {
+    machine.meta.profiles = [ profiles.base ];
+  };
+
 }
