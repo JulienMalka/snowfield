@@ -10,6 +10,8 @@ let
         { machine.meta = raw; }
       ];
     }).config.machine.meta;
+
+  non_local_machines = (import ./snowfield.nix).machines;
 in
 rec {
   importConfig =
@@ -52,15 +54,17 @@ rec {
 
   mapAttrsWithMerge = f: set: listToAttrsWithMerge (map (attr: f attr set.${attr}) (attrNames set));
 
-  snowfield = mapAttrs (
-    name: _value:
-    let
-      machineF = import (../machines + "/${name}/default.nix");
-    in
-    evalMeta
-      (machineF ((mapAttrs (_: _: null) (builtins.functionArgs machineF)) // { inherit inputs; }))
-      .machine.meta
-  ) (final.filterAttrs (_: v: v == "directory") (readDir ../machines));
+  snowfield =
+    (mapAttrs (
+      name: _value:
+      let
+        machineF = import (../machines + "/${name}/default.nix");
+      in
+      evalMeta
+        (machineF ((mapAttrs (_: _: null) (builtins.functionArgs machineF)) // { inherit inputs; }))
+        .machine.meta
+    ) (final.filterAttrs (_: v: v == "directory") (readDir ../machines)))
+    // mapAttrs (_: evalMeta) non_local_machines;
 
   dns = import ./dns.nix {
     lib = final;
