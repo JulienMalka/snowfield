@@ -32,7 +32,7 @@ let
         in
         map (domain: {
           machine.meta.zones.${lib.dns.domainToZone allowedDomains domain}.subdomains =
-            lib.dns.domainToRecords domain elem
+            lib.dns.domainToRecords (lib.dns.getDomainPrefix allowedDomains domain) elem
               (isVPNDomain domain);
         }) domains
 
