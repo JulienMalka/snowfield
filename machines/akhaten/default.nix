@@ -4,6 +4,7 @@
     ./hardware.nix
     ./home-julien.nix
     ./stalwart.nix
+    ./nsd.nix
   ];
 
   machine.meta = {
