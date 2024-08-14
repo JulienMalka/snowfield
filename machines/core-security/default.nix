@@ -3,6 +3,7 @@
   pkgs,
   lib,
   inputs,
+  profiles,
   ...
 }:
 
@@ -16,6 +17,7 @@
     arch = "x86_64-linux";
     nixpkgs_version = inputs.nixpkgs;
     hm_version = inputs.home-manager;
+    profiles = with profiles; [ vm-simple-network ];
     ips = {
       public.ipv4 = "82.67.34.230";
       local.ipv4 = "192.168.0.175";
@@ -30,19 +32,6 @@
   boot.loader.grub.useOSProber = true;
 
   deployment.tags = [ "server" ];
-
-  systemd.network.enable = true;
-  systemd.network.networks."10-wan" = {
-    matchConfig.Name = "ens18";
-    networkConfig = {
-      # start a DHCP Client for IPv4 Addressing/Routing
-      DHCP = "ipv4";
-      # accept Router Advertisements for Stateless IPv6 Autoconfiguraton (SLAAC)
-      IPv6AcceptRA = true;
-    };
-    # make routing on this interface a dependency for network-online.target
-    linkConfig.RequiredForOnline = "routable";
-  };
 
   services.openssh.enable = true;
 
