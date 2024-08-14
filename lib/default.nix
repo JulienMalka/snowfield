@@ -64,8 +64,9 @@ rec {
         machineF = import (../machines + "/${name}/default.nix");
       in
       evalMeta
-        (machineF ((mapAttrs (_: _: null) (builtins.functionArgs machineF)) // { inherit inputs; }))
-        .machine.meta
+        (machineF (
+          (mapAttrs (_: _: null) (builtins.functionArgs machineF)) // { inherit inputs profiles; }
+        )).machine.meta
     ) (final.filterAttrs (_: v: v == "directory") (readDir ../machines)))
     // mapAttrs (_: evalMeta) non_local_machines;
 
