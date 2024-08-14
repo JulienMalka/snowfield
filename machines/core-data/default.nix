@@ -2,6 +2,7 @@
   pkgs,
   lib,
   inputs,
+  profiles,
   ...
 }:
 
@@ -15,6 +16,7 @@
     arch = "x86_64-linux";
     nixpkgs_version = inputs.nixpkgs;
     hm_version = inputs.home-manager;
+    profiles = with profiles; [ vm-simple-network ];
     ips = {
       public.ipv4 = "82.67.34.230";
       local.ipv4 = "192.168.0.66";
@@ -30,17 +32,6 @@
   deployment.tags = [ "server" ];
 
   luj.nginx.enable = true;
-
-  systemd.network.enable = true;
-
-  systemd.network.networks."10-wan" = {
-    matchConfig.Name = "ens18";
-    networkConfig = {
-      DHCP = "ipv4";
-      Address = "2a01:e0a:de4:a0e1:be24:11ff:fe09:638d";
-    };
-    linkConfig.RequiredForOnline = "routable";
-  };
 
   systemd.services.NetworkManager-wait-online.enable = lib.mkForce false;
   systemd.services.systemd-networkd-wait-online.enable = lib.mkForce false;

@@ -2,6 +2,7 @@
   config,
   pkgs,
   inputs,
+  profiles,
   ...
 }:
 
@@ -15,6 +16,7 @@
     arch = "x86_64-linux";
     nixpkgs_version = inputs.nixpkgs;
     hm_version = inputs.home-manager;
+    profiles = with profiles; [ vm-simple-network ];
     ips = {
       public.ipv4 = "82.67.34.230";
       local.ipv4 = "192.168.0.101";
@@ -22,7 +24,6 @@
       public.ipv6 = "2a01:e0a:de4:a0e1:95c9:b2e2:e999:1a45";
       vpn.ipv6 = "fd7a:115c:a1e0::1c";
     };
-
   };
 
   boot.loader.grub.enable = true;
@@ -32,17 +33,6 @@
   deployment.tags = [ "server" ];
 
   luj.nginx.enable = true;
-
-  systemd.network.enable = true;
-
-  systemd.network.networks."10-wan" = {
-    matchConfig.Name = "ens18";
-    networkConfig = {
-      DHCP = "ipv4";
-      Address = "2a01:e0a:de4:a0e1:95c9:b2e2:e999:1a45";
-    };
-    linkConfig.RequiredForOnline = "routable";
-  };
 
   services.mysql.enable = true;
   services.mysql.package = pkgs.mysql;

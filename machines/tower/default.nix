@@ -1,4 +1,9 @@
-{ pkgs, inputs, ... }:
+{
+  pkgs,
+  inputs,
+  profiles,
+  ...
+}:
 
 {
   imports = [
@@ -11,6 +16,7 @@
     arch = "x86_64-linux";
     nixpkgs_version = inputs.nixpkgs;
     hm_version = inputs.home-manager;
+    profiles = with profiles; [ vm-simple-network ];
     ips = {
       public.ipv4 = "82.67.34.230";
       local.ipv4 = "192.168.0.103";
@@ -28,14 +34,6 @@
   networking.hostName = "tower";
 
   networking.useNetworkd = true;
-  systemd.network.networks."10-wan" = {
-    matchConfig.Name = "ens18";
-    networkConfig = {
-      DHCP = "ipv4";
-      Address = "2a01:e0a:de4:a0e1:8ec7:b5d2:f663:a67a";
-    };
-    linkConfig.RequiredForOnline = "routable";
-  };
 
   time.timeZone = "Europe/Paris";
 
