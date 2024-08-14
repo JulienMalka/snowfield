@@ -21,13 +21,12 @@ let
 in
 import "${nixpkgs}/nixos/lib/eval-config.nix" {
   inherit system;
-  lib = pkgs.lib.extend (import ./default.nix inputs);
+  lib = pkgs.lib.extend (import ./default.nix inputs self.profiles);
   specialArgs = {
     inherit inputs;
-    inherit (self) nixosConfigurations;
+    inherit (self) nixosConfigurations profiles;
   };
-  modules = builtins.attrValues modules ++ [
-    ../machines/base.nix
+  modules = modules ++ [
     host-config
     (import "${home-manager}/nixos")
     (import "${inputs.nixos-mailserver}")

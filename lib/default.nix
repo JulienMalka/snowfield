@@ -1,4 +1,4 @@
-inputs: final: _prev:
+inputs: profiles: final: _prev:
 
 with builtins;
 let
@@ -9,6 +9,9 @@ let
         (import ../modules/meta/default.nix)
         { machine.meta = raw; }
       ];
+      specialArgs = {
+        inherit profiles;
+      };
     }).config.machine.meta;
 
   non_local_machines = (import ./snowfield.nix).machines;
