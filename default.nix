@@ -48,7 +48,7 @@ let
     colmena = {
       meta = {
         nodeNixpkgs = builtins.mapAttrs (
-          n: _: import lib.luj.machines.${n}.nixpkgs_version
+          n: _: import lib.snowfield.${n}.nixpkgs_version
         ) nixosConfigurations;
         nodeSpecialArgs = builtins.mapAttrs (
           n: v: v._module.specialArgs // { lib = mkLibForMachine n; }
