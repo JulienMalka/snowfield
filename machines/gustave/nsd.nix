@@ -23,7 +23,7 @@ let
 
   isVPNDomain = domain: lib.dns.domainToZone [ "luj" ] domain != null;
 
-  zonesFromSnowField = lib.fold (elem: acc: acc // elem) { } (
+  zonesFromSnowField = lib.fold (elem: acc: lib.attrsets.recursiveUpdate acc elem) { } (
     lib.flatten (
       map (
         elem:
