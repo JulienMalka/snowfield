@@ -87,7 +87,9 @@ lib.mkMerge [
         echo "0" > ${stateDir}/counter
         new_value="0"
       fi
-      sed -i "3s/0/$new_value/" ${stateDir}/zones/julienmalka.me
+      for file in ${stateDir}/zones/*; do
+        sed -i "3s/0/$new_value/" "$file"
+      done
     '';
 
     networking.firewall.allowedUDPPorts = [ 53 ];
