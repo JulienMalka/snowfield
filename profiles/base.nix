@@ -52,6 +52,7 @@
     kitty
     tailscale
     step-cli
+    comma-with-db
   ];
 
   environment.variables.EDITOR = "nvim";
@@ -62,6 +63,12 @@
   networking.firewall.checkReversePath = "loose";
 
   services.tailscale.enable = true;
+
+  programs.command-not-found.enable = false;
+  programs.nix-index = {
+    enable = true;
+    package = pkgs.nix-index-with-db;
+  };
 
   age.identityPaths = [
     "/etc/ssh/ssh_host_ed25519_key"
