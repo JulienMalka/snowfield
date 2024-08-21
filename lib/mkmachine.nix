@@ -56,6 +56,32 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           hydrasect = prev.pkgs.callPackage ../packages/hydrasect { };
           codeberg-pages-custom = prev.pkgs.callPackage ../packages/codeberg-pages-custom { };
         })
+
+        (
+          _final: prev:
+          let
+            generated = import "${inputs.nix-index-database}/generated.nix";
+            nix-index-database =
+              (prev.fetchurl {
+                url = generated.url + prev.stdenv.system;
+                hash = generated.hashes.${prev.stdenv.system};
+              }).overrideAttrs
+                {
+                  __structuredAttrs = true;
+                  unsafeDiscardReferences.out = true;
+                };
+          in
+          {
+            inherit nix-index-database;
+            nix-index-with-db = prev.callPackage "${inputs.nix-index-database}/nix-index-wrapper.nix" {
+              inherit nix-index-database;
+            };
+            comma-with-db = prev.callPackage "${inputs.nix-index-database}/comma-wrapper.nix" {
+              inherit nix-index-database;
+            };
+          }
+        )
+
       ];
     }
   ];
