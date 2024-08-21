@@ -11,11 +11,11 @@ in
   config = mkIf cfg.enable {
 
     deployment = {
-      targetHost = "${hostname}.${config.machine.meta.tld}";
-      targetPort = 45;
-      targetUser = "root";
-      allowLocalDeployment = true;
-      buildOnTarget = true;
+      targetHost = lib.mkDefault "${hostname}.${config.machine.meta.tld}";
+      targetPort = lib.mkDefault 45;
+      targetUser = lib.mkDefault "root";
+      allowLocalDeployment = lib.mkDefault true;
+      buildOnTarget = lib.mkDefault true;
     };
 
   };
