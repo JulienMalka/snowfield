@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, config, ... }:
 {
   imports = [
     ./hardware.nix
@@ -18,8 +18,26 @@
   };
 
   deployment.tags = [ "server" ];
+  deployment.targetHost = config.machine.meta.ips.public.ipv4;
 
   disko = import ./disko.nix;
+
+  environment.persistence."/persistent" = {
+    hideMounts = true;
+    directories = [
+      "/var/lib"
+      "/var/log"
+      "/srv"
+    ];
+    files = [
+      "/etc/machine-id"
+      "/etc/ssh/ssh_host_ed25519_key"
+      "/etc/ssh/ssh_host_ed25519_key.pub"
+    ];
+  };
+
+  fileSystems."/srv".neededForBoot = true;
+  fileSystems."/persistent".neededForBoot = true;
 
   services.fail2ban.enable = true;
 
