@@ -75,6 +75,24 @@
     "/persistent/etc/ssh/ssh_host_ed25519_key"
   ];
 
+  machine.meta.zones.luj =
+    lib.mkIf
+      (lib.hasAttrByPath [
+        "vpn"
+        "ipv4"
+      ] config.machine.meta.ips)
+      {
+        SOA = {
+          nameServer = "ns";
+          adminEmail = "dns@malka.sh";
+          serial = 0;
+        };
+
+        subdomains.${config.networking.hostName} = {
+          A = [ config.machine.meta.ips.vpn.ipv4 ];
+        };
+      };
+
   system.nixos.label = "${config.system.nixos.release}-${
     let
       repo = builtins.fetchGit ../.;
