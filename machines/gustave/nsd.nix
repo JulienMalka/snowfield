@@ -74,7 +74,10 @@ lib.mkMerge [
       zones = lib.mapAttrs (_: value: {
         data = builtins.toString value;
         provideXFR = [ "100.100.45.0/24 NOKEY" ];
-        notify = [ "${lib.snowfield.akhaten.ips.vpn.ipv4} NOKEY" ];
+        notify = [
+          "${lib.snowfield.akhaten.ips.vpn.ipv4} NOKEY"
+          "82.67.34.230 NOKEY"
+        ];
       }) (evalZones zonesFromConfig);
     };
 
