@@ -38,6 +38,11 @@
               default = with profiles; [ base ];
             };
 
+            defaultInterface = mkOption {
+              description = "default interface of the machine";
+              default = "ens18";
+            };
+
           };
         }
       );

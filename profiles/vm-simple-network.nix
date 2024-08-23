@@ -2,7 +2,7 @@
 {
   systemd.network.enable = true;
   systemd.network.networks."10-wan" = {
-    matchConfig.Name = "ens18";
+    matchConfig.Name = config.machine.meta.defaultInterface;
     networkConfig = {
       DHCP = "ipv4";
       Address = config.machine.meta.ips.public.ipv6;
