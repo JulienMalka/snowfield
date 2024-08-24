@@ -19,7 +19,6 @@ let
       lib.filterAttrs (_n: v: builtins.hasAttr "arch" v) lib.snowfield
     )
   );
-  mkMachine = import ./lib/mkmachine.nix inputs_final lib;
 
   nixpkgs_plats = builtins.listToAttrs (
     builtins.map (plat: {
@@ -45,7 +44,7 @@ let
 
     nixosConfigurations = builtins.mapAttrs (
       name: value:
-      (mkMachine {
+      (lib.mkMachine {
         inherit name self dnsLib;
         host-config = value;
         modules = builtins.attrValues nixosModules ++ lib.snowfield.${name}.profiles;
