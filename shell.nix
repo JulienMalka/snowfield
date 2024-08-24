@@ -10,7 +10,6 @@ let
       pkgs.applyPatches {
         name = "patched-git-hooks";
         src = inputs.git-hooks;
-        patches = [ ./patches/hooks-correct-nixfmt.patch ];
       }
     )).run
       {
