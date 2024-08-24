@@ -6,17 +6,9 @@
     luj.programs.neovim.enable = true;
     luj.programs.ssh-client.enable = true;
     luj.programs.git.enable = true;
-    luj.programs.gtk.enable = true;
     luj.programs.kitty.enable = true;
     luj.programs.emacs.enable = false;
-    luj.programs.hyprland.enable = true;
-    luj.programs.dunst.enable = true;
     luj.emails.enable = true;
-
-    luj.programs.waybar = {
-      enable = true;
-      interfaceName = "";
-    };
 
     programs.rofi = {
       enable = true;
@@ -61,13 +53,12 @@
       cantarell-fonts
       unstable.nixd
       libreoffice
-      unstable.signal-desktop
+      signal-desktop
       font-awesome
       nodejs
       htop
       evince
       mosh
-      zotero
       flameshot
       kitty
       networkmanagerapplet
@@ -77,6 +68,8 @@
       scli
       jftui
       texlive.combined.scheme-full
+      unstable.inochi-creator
+      chromium
     ];
 
     fonts.fontconfig.enable = true;

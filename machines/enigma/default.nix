@@ -22,9 +22,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  services.gnome.gnome-browser-connector.enable = true;
-
-  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true;
 
   networking.networkmanager.dns = "systemd-resolved";
   services.resolved.enable = true;
@@ -50,52 +48,24 @@
     displayManager = {
       gdm.enable = true;
     };
+    desktopManager.gnome.enable = true;
+    videoDrivers = [ "nvidia" ];
   };
 
-  # Enable OpenGL
-  hardware.opengl = {
-    enable = true;
-  };
-
-  # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.opengl.enable = true;
+  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
 
   hardware.nvidia = {
-
-    # Modesetting is required.
     modesetting.enable = true;
-
-    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
     powerManagement.enable = false;
-    # Fine-grained power management. Turns off GPU when not in use.
-    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
     powerManagement.finegrained = false;
-
-    # Use the NVidia open source kernel module (not to be confused with the
-    # independent third-party "nouveau" open source driver).
-    # Support is limited to the Turing and later architectures. Full list of 
-    # supported GPUs is at: 
-    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
-    # Only available from driver 515.43.04+
-    # Do not disable this unless your GPU is unsupported or if you have a good reason to.
-    open = false;
-
-    # Enable the Nvidia settings menu,
-    # accessible via `nvidia-settings`.
+    open = true;
     nvidiaSettings = true;
-
-    # Optionally, you may need to select the appropriate driver version for your specific GPU.
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.beta;
   };
 
-  boot.initrd.kernelModules = [ "nvidia" ];
-  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
   programs.xwayland.enable = true;
-  programs.hyprland = {
-    enable = true;
-    package = pkgs.unstable.hyprland;
-    portalPackage = pkgs.unstable.xdg-desktop-portal-hyprland;
-  };
+  services.postgresql.enable = true;
 
   programs.dconf.enable = true;
   services.emacs = {
@@ -137,16 +107,10 @@
     brightnessctl
     sbctl
     ddcutil
+    xorg.xinit
   ];
 
-  sound.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    wireplumber.enable = true;
-  };
+  #sound.enable = true;
 
   programs.adb.enable = true;
 
