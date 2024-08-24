@@ -7,11 +7,12 @@ let
       version = "nixos-unstable";
     };
   };
-  lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib inputs_final self.profiles);
+  dnsLib = (import inputs.dns).lib;
+  lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib inputs_final self.profiles dnsLib);
   mkLibForMachine =
     machine:
     (import "${lib.snowfield.${machine}.nixpkgs_version}/lib").extend (
-      import ./lib inputs_final self.profiles
+      import ./lib inputs_final self.profiles dnsLib
     );
   machines_plats = lib.lists.unique (
     lib.mapAttrsToList (_name: value: value.arch) (
@@ -45,7 +46,7 @@ let
     nixosConfigurations = builtins.mapAttrs (
       name: value:
       (mkMachine {
-        inherit name self;
+        inherit name self dnsLib;
         host-config = value;
         modules = builtins.attrValues nixosModules ++ lib.snowfield.${name}.profiles;
         nixpkgs = lib.snowfield.${name}.nixpkgs_version;

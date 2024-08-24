@@ -15,15 +15,16 @@ in
   system ? "x86_64-linux",
   home-manager ? inputs.home-manager,
   self,
+  dnsLib,
 }:
 let
   pkgs = import nixpkgs { inherit system; };
 in
 import "${nixpkgs}/nixos/lib/eval-config.nix" {
   inherit system;
-  lib = pkgs.lib.extend (import ./default.nix inputs self.profiles);
+  lib = pkgs.lib.extend (import ./default.nix inputs self.profiles dnsLib);
   specialArgs = {
-    inherit inputs;
+    inherit inputs dnsLib;
     inherit (self) nixosConfigurations profiles;
   };
   modules = modules ++ [

@@ -1,7 +1,7 @@
 {
   lib,
   config,
-  inputs,
+  dnsLib,
   ...
 }:
 let
@@ -15,7 +15,6 @@ let
   ];
 
   isVPNDomain = domain: lib.dns.domainToZone [ "luj" ] domain != null;
-  dnsLib = (import inputs.dns).lib;
   SOA = {
     nameServer = "ns";
     adminEmail = "dns@malka.sh";
