@@ -1,4 +1,4 @@
-{ inputs, config, ... }:
+{ inputs, ... }:
 {
   imports = [
     ./hardware.nix
@@ -19,7 +19,6 @@
   };
 
   deployment.tags = [ "server" ];
-  deployment.targetHost = config.machine.meta.ips.public.ipv4;
 
   disko = import ./disko.nix;
 
