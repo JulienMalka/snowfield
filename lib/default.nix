@@ -75,4 +75,6 @@ rec {
     inherit dnsLib;
   };
 
+  mkMachine = import ./mkmachine.nix inputs final;
+
 }
