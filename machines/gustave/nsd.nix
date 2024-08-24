@@ -69,14 +69,18 @@ lib.mkMerge [
       enable = true;
       interfaces = [
         config.machine.meta.ips.vpn.ipv4
+        config.machine.meta.ips.vpn.ipv6
         config.machine.meta.ips.public.ipv6
       ];
       zones = lib.mapAttrs (_: value: {
         data = builtins.toString value;
-        provideXFR = [ "100.100.45.0/24 NOKEY" ];
+        provideXFR = [
+          "100.100.45.0/24 NOKEY"
+          "fd7a:115c:a1e0::1/128 NOKEY"
+        ];
         notify = [
           "${lib.snowfield.akhaten.ips.vpn.ipv4} NOKEY"
-          "82.67.34.230 NOKEY"
+          "fd7a:115c:a1e0::1 NOKEY"
         ];
       }) (evalZones zonesFromConfig);
     };
