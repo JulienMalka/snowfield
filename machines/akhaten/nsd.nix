@@ -44,9 +44,9 @@ in
 {
   services.nsd = {
     enable = true;
-    remoteControl.enable = true;
     interfaces = [
       config.machine.meta.ips.public.ipv4
+      config.machine.meta.ips.public.ipv6
       config.machine.meta.ips.vpn.ipv4
     ];
     zones = lib.mapAttrs (name: _: {
