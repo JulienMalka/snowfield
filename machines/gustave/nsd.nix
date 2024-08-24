@@ -1,8 +1,8 @@
 {
   config,
   lib,
-  inputs,
   nixosConfigurations,
+  dnsLib,
   ...
 }:
 let
@@ -40,7 +40,6 @@ let
     )
   );
 
-  dnsLib = (import inputs.dns).lib;
   evalZones =
     zones:
     (lib.evalModules {

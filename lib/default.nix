@@ -1,4 +1,4 @@
-inputs: profiles: final: _prev:
+inputs: profiles: dnsLib: final: _prev:
 
 with builtins;
 let
@@ -72,7 +72,7 @@ rec {
 
   dns = import ./dns.nix {
     lib = final;
-    dnsLib = (import inputs.dns).lib;
+    inherit dnsLib;
   };
 
 }
