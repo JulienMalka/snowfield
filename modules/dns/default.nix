@@ -27,6 +27,16 @@ let
   ];
   defaults = {
     inherit SOA NS;
+    subdomains = {
+      ns1 = {
+        A = [ lib.snowfield.router.ips.public.ipv4 ];
+        AAAA = [ lib.snowfield.router.ips.public.ipv6 ];
+      };
+      ns2 = {
+        A = [ lib.snowfield.akhaten.ips.public.ipv4 ];
+        AAAA = [ lib.snowfield.akhaten.ips.public.ipv6 ];
+      };
+    };
   };
 in
 with lib;
@@ -52,7 +62,9 @@ with lib;
             let
               subdomain = lib.dns.getDomainPrefix allowedDomains n;
             in
-            (if elem subdomain allowedDomains then v else { subdomains."${subdomain}" = v; }) // defaults
+            lib.recursiveUpdate (
+              if elem subdomain allowedDomains then v else { subdomains."${subdomain}" = v; }
+            ) defaults
           )
         ) (lib.dns.domainToRecords domain cfg (isVPNDomain domain))
       ) domains;

@@ -100,16 +100,6 @@ lib.mkMerge [
     '';
 
     networking.firewall.allowedUDPPorts = [ 53 ];
-    machine.meta.zones."julienmalka.me".subdomains = {
-      ns1 = {
-        A = [ "82.67.34.230" ];
-        AAAA = [ "2a01:e0a:de4:a0e0:2f0:cbff:feef:e12a" ];
-      };
-      ns2 = {
-        A = [ "163.172.91.82" ];
-        AAAA = [ "2001:bc8:3d24::45" ];
-      };
-    };
 
   }
 
