@@ -118,8 +118,8 @@ with lib;
     };
 
     xdg.configFile."hypr/hyprpaper.conf".text = ''
-      preload = ${../../machines/x2100/wallpaper.jpg}
-      wallpaper = ,${../../machines/x2100/wallpaper.jpg}
+      preload = ${../../machines/fischer/wallpaper.jpg}
+      wallpaper = ,${../../machines/fischer/wallpaper.jpg}
     '';
 
     services.swayidle = {
