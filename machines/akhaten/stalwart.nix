@@ -3,10 +3,9 @@
   services.stalwart-mail = {
     enable = true;
     settings = {
-      global.tracing.level = "trace";
       authentication.fallback-admin = {
         user = "admin";
-        secret = "$6$R469iElYzZ7v7TlV$PtJpqLO0Szw.B/r8V.puCC26i5.nfQLJQotTWrNoBsTrFo6/J1pC43OIMKc.2Oli/Of0pjPcgbBNmhfFImuuu0";
+        secret = "%{file:/var/lib/stalwart-mail/admin-hash}%";
       };
       lookup.default.hostname = "mail.luj.fr";
       server = {
@@ -55,6 +54,13 @@
       };
 
     };
+  };
+
+  age.secrets.stalwart-admin-hash = {
+    file = ../../secrets/stalwart-admin.age;
+    path = "/var/lib/stalwart-mail/admin-hash";
+    owner = "stalwart-mail";
+    group = "stalwart-mail";
   };
 
   machine.meta.zones."luj.fr".subdomains."mail" = {

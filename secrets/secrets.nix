@@ -9,7 +9,7 @@ let
   lambda = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKluGTi+vGRLU2emYBhTJuEy7Qw0xq1e0Ey7wvU9xYHz";
   nuage = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEtPoZXJKPfSPGYb/H9eWL0tNSpAKM6V/AgeE1Uf2Is6";
   enigma = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBgBNhXqFN79KUpmey44pag2FQYVulf1gYnRjdbvkzWW";
-  lisanew = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII5W1rr+VW2TLLytoTExWg4T14lrdLFkSM4YLfbEIb2g";
+  akhaten = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII5W1rr+VW2TLLytoTExWg4T14lrdLFkSM4YLfbEIb2g";
   servers = [
     gustave
     tower
@@ -18,7 +18,7 @@ let
     lambda
     core-data
     nuage
-    lisanew
+    akhaten
   ];
   all = servers ++ [
     x2100
@@ -72,4 +72,8 @@ in
     tower
   ];
   "forgejo_runners-token_file.age".publicKeys = [ tower ];
+  "stalwart-admin.age".publicKeys = [
+    tower
+    akhaten
+  ];
 }
