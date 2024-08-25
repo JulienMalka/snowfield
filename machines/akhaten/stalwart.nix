@@ -1,3 +1,4 @@
+{ config, ... }:
 {
   services.stalwart-mail = {
     enable = true;
@@ -54,6 +55,11 @@
       };
 
     };
+  };
+
+  machine.meta.zones."luj.fr".subdomains."mail" = {
+    A = [ config.machine.meta.ips.public.ipv4 ];
+    AAAA = [ config.machine.meta.ips.public.ipv6 ];
   };
 
   networking.firewall.allowedTCPPorts = [
