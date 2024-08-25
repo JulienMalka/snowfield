@@ -1,8 +1,8 @@
 let
   inputs = import ./deps;
-  patch = import inputs.nix-patches { patchFile = ./patches; };
+  patches = import inputs.nix-patches { patchFile = ./patches; };
   inputs_final = inputs // {
-    nixpkgs_patched = patch.mkNixpkgsSrc {
+    nixpkgs_patched = patches.mkNixpkgsSrc {
       src = inputs.unstable;
       version = "nixos-unstable";
     };
