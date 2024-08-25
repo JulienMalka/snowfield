@@ -24,53 +24,60 @@ let
     "ns1"
     "ns2"
   ];
-  defaults = {
-    inherit SOA NS;
-    subdomains = {
-      ns1 = {
-        A = [ lib.snowfield.router.ips.public.ipv4 ];
-        AAAA = [ lib.snowfield.router.ips.public.ipv6 ];
-      };
-      ns2 = {
-        A = [ lib.snowfield.akhaten.ips.public.ipv4 ];
-        AAAA = [ lib.snowfield.akhaten.ips.public.ipv6 ];
+
+  # Set some defaults for a zone
+  getSubmodulesCustom =
+    inputs@{ name, ... }:
+    lib.recursiveUpdate ((lib.head dnsLib.types.zone.getSubModules) ({ inherit name; } // inputs)) {
+      config = {
+        SOA = lib.mkDefault SOA;
+        NS = lib.mkDefault NS;
+        subdomains = {
+          ns1 = lib.mkDefault {
+            A = [ lib.snowfield.router.ips.public.ipv4 ];
+            AAAA = [ lib.snowfield.router.ips.public.ipv6 ];
+          };
+          ns2 = lib.mkDefault {
+            A = [ lib.snowfield.akhaten.ips.public.ipv4 ];
+            AAAA = [ lib.snowfield.akhaten.ips.public.ipv6 ];
+          };
+        };
       };
     };
-  };
+
 in
 with lib;
 {
-
   options = {
     machine.meta.zones = mkOption {
-      type = types.attrsOf dnsLib.types.zone;
+      type = types.attrsOf (
+        recursiveUpdate dnsLib.types.zone { getSubModules = [ getSubmodulesCustom ]; }
+      );
       default = { };
     };
   };
 
   config =
     let
-      # list of domains that are defined in the current configuration throught virtualHosts
-      domains = lib.dns.domainsFromConfiguration allowedDomains config;
+      # list of domains that are defined in the current configuration through virtualHosts
+      domains = dns.domainsFromConfiguration allowedDomains config;
       # AttrSet domain -> { records }
       recordsPerDomain = map (
         domain:
         mapAttrs' (
           n: v:
-          nameValuePair (lib.dns.domainToZone allowedDomains n) (
+          nameValuePair (dns.domainToZone allowedDomains n) (
             let
-              subdomain = lib.dns.getDomainPrefix allowedDomains n;
+              subdomain = dns.getDomainPrefix allowedDomains n;
             in
-            lib.recursiveUpdate (
-              if elem subdomain allowedDomains then v else { subdomains."${subdomain}" = v; }
-            ) defaults
+            if elem subdomain allowedDomains then v else { subdomains."${subdomain}" = v; }
           )
-        ) (lib.dns.domainToRecords domain cfg (isVPNDomain domain))
+        ) (dns.domainToRecords domain cfg (isVPNDomain domain))
       ) domains;
     in
 
     {
-      machine.meta.zones = lib.mkMerge recordsPerDomain;
+      machine.meta.zones = mkMerge recordsPerDomain;
     };
 
 }
