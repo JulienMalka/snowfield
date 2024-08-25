@@ -82,12 +82,6 @@
         "ipv4"
       ] config.machine.meta.ips)
       {
-        SOA = {
-          nameServer = "ns";
-          adminEmail = "dns@malka.sh";
-          serial = 0;
-        };
-
         subdomains.${config.networking.hostName} = {
           A = [ config.machine.meta.ips.vpn.ipv4 ];
         };
