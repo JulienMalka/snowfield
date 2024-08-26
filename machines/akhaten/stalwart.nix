@@ -9,6 +9,7 @@
       };
       lookup.default.hostname = "mail.luj.fr";
       server = {
+        http.hsts = true;
         max-connections = 8192;
         hostname = "mail.luj.fr";
         tls.enable = true;
