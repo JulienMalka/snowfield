@@ -159,8 +159,8 @@
   programs.xwayland.enable = true;
   programs.hyprland = {
     enable = true;
-    package = pkgs.unstable.hyprland;
-    portalPackage = pkgs.unstable.xdg-desktop-portal-hyprland;
+    package = pkgs.hyprland;
+    portalPackage = pkgs.xdg-desktop-portal-hyprland;
   };
   xdg.portal = {
     enable = true;
