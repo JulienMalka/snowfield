@@ -41,6 +41,7 @@
     };
 
     pve1 = {
+      subdomains = [ "pve1.luj" ];
       ips = {
         public.ipv4 = "82.67.34.230";
         local.ipv4 = "192.168.1.1";
@@ -52,6 +53,7 @@
       sshUser = "root";
     };
     pve2 = {
+      subdomains = [ "pve2.luj" ];
       ips = {
         public.ipv4 = "82.67.34.230";
         local.ipv4 = "192.168.1.2";
@@ -63,6 +65,7 @@
       sshUser = "root";
     };
     pve3 = {
+      subdomains = [ "pve3.luj" ];
       ips = {
         public.ipv4 = "82.67.34.230";
         local.ipv4 = "192.168.1.3";
@@ -74,6 +77,7 @@
       sshUser = "root";
     };
     pve4 = {
+      subdomains = [ "pve4.luj" ];
       ips = {
         public.ipv4 = "82.67.34.230";
         local.ipv4 = "192.168.1.4";
