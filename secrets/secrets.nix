@@ -76,4 +76,9 @@ in
     tower
     akhaten
   ];
+  "arkheon-env.age".publicKeys = [
+    lambda
+    tower
+  ];
+  "arkheon-token.age".publicKeys = servers;
 }

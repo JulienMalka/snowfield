@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, profiles, ... }:
 {
   imports = [
     ./hardware.nix
@@ -16,9 +16,8 @@
       public.ipv6 = "2001:0bc8:3d24::45";
       vpn.ipv4 = "100.100.45.33";
     };
+    profiles = with profiles; [ server ];
   };
-
-  deployment.tags = [ "server" ];
 
   disko = import ./disko.nix;
 
