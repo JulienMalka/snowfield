@@ -86,6 +86,7 @@
 
   services.forgejo = {
     enable = true;
+    package = pkgs.unstable.forgejo;
     settings = {
       server = {
         ROOT_URL = "https://git.luj.fr/";
