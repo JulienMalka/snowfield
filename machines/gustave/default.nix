@@ -121,10 +121,7 @@
 
   fileSystems."/srv".neededForBoot = true;
 
-  environment.systemPackages = [
-    pkgs.tailscale
-    pkgs.bottom
-  ];
+  environment.systemPackages = [ pkgs.tailscale ];
 
   services.tailscale.enable = true;
 
