@@ -17,7 +17,10 @@
     arch = "x86_64-linux";
     nixpkgs_version = inputs.nixpkgs;
     hm_version = inputs.home-manager;
-    profiles = with profiles; [ vm-simple-network ];
+    profiles = with profiles; [
+      vm-simple-network
+      server
+    ];
     ips = {
       public.ipv4 = "82.67.34.230";
       local.ipv4 = "192.168.0.175";

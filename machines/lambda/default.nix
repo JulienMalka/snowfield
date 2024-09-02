@@ -1,15 +1,22 @@
-{ pkgs, inputs, ... }:
+{
+  pkgs,
+  inputs,
+  profiles,
+  ...
+}:
 
 {
   imports = [
     ./hardware.nix
     ./home-julien.nix
+    ./arkheon.nix
   ];
 
   machine.meta = {
     arch = "aarch64-linux";
     nixpkgs_version = inputs.nixpkgs;
     hm_version = inputs.home-manager;
+    profiles = with profiles; [ server ];
     ips = {
       public.ipv4 = "141.145.197.219";
       vpn.ipv4 = "100.100.45.13";
