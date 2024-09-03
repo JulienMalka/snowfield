@@ -57,6 +57,8 @@
     };
   };
 
+  services.backup.includes = [ "/var/lib/stalwart-mail/db" ];
+
   age.secrets.stalwart-admin-hash = {
     file = ../../secrets/stalwart-admin.age;
     path = "/var/lib/stalwart-mail/admin-hash";

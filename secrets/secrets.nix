@@ -81,4 +81,12 @@ in
     tower
   ];
   "arkheon-token.age".publicKeys = servers;
+  "borg-ssh-priv.age".publicKeys = [
+    akhaten
+    tower
+  ];
+  "borg-encryption-secret.age".publicKeys = [
+    akhaten
+    tower
+  ];
 }
