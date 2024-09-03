@@ -9,6 +9,7 @@
     ./hardware.nix
     ./home-julien.nix
     ./nsd.nix
+    ./borg.nix
   ];
 
   machine.meta = {
