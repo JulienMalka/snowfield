@@ -177,6 +177,66 @@
     };
   };
 
+  machine.meta.zones."malka.sh" = {
+    MX = [
+      {
+        preference = 10;
+        exchange = "mail.luj.fr.";
+      }
+    ];
+    SRV = [
+      {
+        service = "jmap";
+        proto = "tcp";
+        port = 443;
+        target = "mail.luj.fr";
+      }
+      {
+        service = "imaps";
+        proto = "tcp";
+        port = 993;
+        target = "mail.luj.fr";
+      }
+      {
+        service = "imap";
+        proto = "tcp";
+        port = 143;
+        target = "mail.luj.fr";
+      }
+      {
+        service = "submissions";
+        proto = "tcp";
+        port = 465;
+        target = "mail.luj.fr";
+      }
+      {
+        service = "submission";
+        proto = "tcp";
+        port = 587;
+        target = "mail.luj.fr";
+      }
+    ];
+    TXT = [ "v=spf1 mx ra=postmaster -all" ];
+    subdomains = {
+      "mail".CNAME = [ "mail.luj.fr" ];
+      "202408e._domainkey".TXT = [
+        "v=DKIM1; k=ed25519; h=sha256; p=yApFb5wLSoy9+5bBx0EgzQFxJv3bAPrkEkZhrlDh0hs="
+      ];
+      "202408r._domainkey".TXT = [
+        "v=DKIM1; k=rsa; h=sha256; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApQii0y+8s9IM3ZTaGrwbG6H4qJTUsCFXhGjjfp11pv9hAzTMWKNiZQ9yazGGILtwX6l6ROBkzqFSfAeS2OV473dC5zPvQcWjDQaUbkf/XzktYkL7b8e4JuFqz4lRl3L/nzOYd37ymrM2wx1IDB78mjxqlyUjvdme+gYFHfd3a2RdpRhpsJtLhvCGItptxzRzrET3yUhEGFp4mM37eS0re0abckcodZTlCG4lHNlU4EsWTYDdbCuCVd43u15v27wET0MFnEyYvUYPB56n5eTNOXQd5DZU0xslldDwtUS0R5wpseWRGH+EFR22dtD/5dcvsdDYm+z16jjUL9bxUKooCwIDAQAB"
+      ];
+      "_mta-sts".TXT = [ "v=STSv1; id=17428246908727558748" ];
+      "_dmarc".TXT = [
+        "v=DMARC1; p=reject; rua=mailto:postmaster@malka.sh; ruf=mailto:postmaster@malka.sh"
+      ];
+      "_smtp._tls".TXT = [ "v=TLSRPTv1; rua=mailto:postmaster@malka.sh" ];
+      "autoconfig".CNAME = [ "mail.luj.fr" ];
+      "autodiscover".CNAME = [ "mail.luj.fr" ];
+      "mta-sts".CNAME = [ "mail.luj.fr" ];
+    };
+
+  };
+
   networking.firewall.allowedTCPPorts = [
     80
     443
