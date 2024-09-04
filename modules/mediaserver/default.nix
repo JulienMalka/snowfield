@@ -33,6 +33,7 @@ in
 
       users.users.mediaserver = {
         name = "mediaserver";
+        uid = 1001;
         isNormalUser = true;
         home = "/home/mediaserver";
         group = config.users.groups.mediaserver.name;
