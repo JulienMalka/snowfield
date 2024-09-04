@@ -59,47 +59,8 @@
         networkConfig.DHCP = "yes";
         linkConfig.RequiredForOnline = "routable";
       };
-      "30-wg0" = {
-        matchConfig.Name = "wg0";
-        address = [
-          "10.100.45.1/24"
-          "fc00::1/64"
-        ];
-        networkConfig = {
-          IPMasquerade = "ipv4";
-          IPForward = true;
-        };
-      };
     };
 
-    netdevs = {
-      "10-wg0" = {
-        netdevConfig = {
-          Kind = "wireguard";
-          Name = "wg0";
-          MTUBytes = "1300";
-        };
-        wireguardConfig = {
-          PrivateKeyFile = "/srv/wg-private";
-          ListenPort = 51821;
-        };
-        wireguardPeers = [
-          {
-            wireguardPeerConfig = {
-              PublicKey = "axigTezuClSoQlxWvpdzXKXUDjrrQlswE50ox0uDLR0=";
-              AllowedIPs = [ "10.100.45.2/32" ];
-            };
-          }
-          {
-            wireguardPeerConfig = {
-              PublicKey = "ElVrxNiYvV13hEDtqZNw4kLF7UiPTXziz8XgqABB0AU=";
-              AllowedIPs = [ "10.100.45.3/32" ];
-            };
-          }
-
-        ];
-      };
-    };
   };
 
   services.openssh.extraConfig = ''
