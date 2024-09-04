@@ -12,6 +12,7 @@ let
     "malka.family"
     "luj"
     "luj-static.page"
+    "malka.sh"
   ];
 
   isVPNDomain = domain: lib.dns.domainToZone [ "luj" ] domain != null;
