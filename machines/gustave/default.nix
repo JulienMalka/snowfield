@@ -2,6 +2,7 @@
   pkgs,
   inputs,
   profiles,
+  lib,
   ...
 }:
 {
@@ -53,7 +54,7 @@
           wireguardPeerConfig = {
             PublicKey = "oYsN1Qy+a7dwVOKapN5s5KJOmhSflLHZqh+GLMeNpHw=";
             AllowedIPs = [ "0.0.0.0/0" ];
-            Endpoint = "[2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb]:51821";
+            Endpoint = "[${lib.snowfield.akhaten.ips.public.ipv6}]:51821";
             PersistentKeepalive = 25;
           };
         }
