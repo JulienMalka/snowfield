@@ -43,6 +43,7 @@
   networking.useNetworkd = true;
   systemd.network = {
     enable = true;
+    config.networkConfig.IPv4Forwarding = true;
 
     networks = {
       "10-wan" = {
@@ -55,7 +56,14 @@
           { Address = "163.172.91.82/24"; }
           { Address = "2001:0bc8:3d24::45/64"; }
         ];
-        gateway = [ "163.172.91.1" ];
+        routes = [
+          {
+            routeConfig = {
+              Gateway = "163.172.91.1";
+              Destination = "0.0.0.0/0";
+            };
+          }
+        ];
         dhcpV6Config = {
           DUIDRawData = "00:01:62:7c:0e:d3:27:5b";
           DUIDType = "link-layer";
@@ -70,8 +78,54 @@
 
         linkConfig.RequiredForOnline = "routable";
       };
+
+      "30-wg0" = {
+        matchConfig.Name = "wg0";
+        address = [
+          "10.100.45.1/24"
+          "fc00::1/64"
+        ];
+        networkConfig.IPMasquerade = "ipv4";
+      };
     };
+
+    netdevs = {
+      "10-wg0" = {
+        netdevConfig = {
+          Kind = "wireguard";
+          Name = "wg0";
+          MTUBytes = "1300";
+        };
+        wireguardConfig = {
+          PrivateKeyFile = "/srv/wg-private";
+          ListenPort = 51821;
+        };
+        wireguardPeers = [
+          {
+            wireguardPeerConfig = {
+              PublicKey = "axigTezuClSoQlxWvpdzXKXUDjrrQlswE50ox0uDLR0=";
+              AllowedIPs = [ "10.100.45.2/32" ];
+            };
+          }
+          {
+            wireguardPeerConfig = {
+              PublicKey = "ElVrxNiYvV13hEDtqZNw4kLF7UiPTXziz8XgqABB0AU=";
+              AllowedIPs = [ "10.100.45.3/32" ];
+            };
+          }
+
+        ];
+      };
+    };
+
   };
+
+  networking.firewall.allowedUDPPorts = [
+    51821
+  ];
+  networking.firewall.allowedTCPPorts = [
+    51821
+  ];
 
   system.stateVersion = "24.11";
 }
