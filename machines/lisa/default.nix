@@ -19,10 +19,6 @@
 
   };
 
-  luj = {
-    mailserver.enable = true;
-  };
-
   deployment.tags = [ "server" ];
 
   services.fail2ban.enable = true;
