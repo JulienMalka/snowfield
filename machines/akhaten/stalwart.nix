@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
   services.stalwart-mail = {
     enable = true;
@@ -178,6 +178,11 @@
   };
 
   machine.meta.zones."malka.sh" = {
+    # todo: remove when we are at a registar that knows how to publish GLUE records
+    NS = lib.mkForce [
+      "ns1.luj.fr."
+      "ns2.luj.fr."
+    ];
     MX = [
       {
         preference = 10;
