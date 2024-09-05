@@ -20,13 +20,6 @@
   };
 
   luj = {
-    docs = {
-      enable = true;
-      nginx = {
-        enable = true;
-        subdomain = "docs";
-      };
-    };
     mailserver.enable = true;
   };
 
