@@ -31,6 +31,11 @@
 
   };
 
+  luj.docs = {
+    enable = true;
+    nginx.enable = true;
+    nginx.subdomain = "docs";
+  };
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
