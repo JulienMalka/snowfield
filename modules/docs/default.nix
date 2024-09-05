@@ -34,6 +34,7 @@ in
         };
       };
       services.postgresql = {
+        enable = true;
         ensureDatabases = [ "hedgedoc" ];
         ensureUsers = [
           {
