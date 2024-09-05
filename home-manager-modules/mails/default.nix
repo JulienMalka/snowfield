@@ -43,7 +43,7 @@ with lib;
       accounts.work = {
         notmuch.enable = true;
         address = "julien@malka.sh";
-        imap.host = "mail.julienmalka.me";
+        imap.host = "mail.luj.fr";
         mbsync = {
           enable = true;
           create = "maildir";
@@ -56,9 +56,9 @@ with lib;
         realName = "Julien Malka";
         passwordCommand = "${pkgs.coreutils}/bin/cat /home/julien/.config/work-mail-pw";
         smtp = {
-          host = "mail.julienmalka.me";
+          host = "mail.luj.fr";
         };
-        userName = "julien@malka.sh";
+        userName = "malka";
       };
 
       accounts.telecom = {
