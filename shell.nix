@@ -4,7 +4,6 @@ let
   nixos-anywhere = pkgs.callPackage "${inputs.nixos-anywhere}/src/default.nix" { };
   agenix = pkgs.callPackage "${inputs.agenix}/pkgs/agenix.nix" { };
   bootstrap = pkgs.callPackage scripts/bootstrap-machine.nix { inherit nixos-anywhere; };
-  update-deps = pkgs.callPackage scripts/update-deps.nix { };
   lon = pkgs.callPackage "${inputs.lon}/nix/packages/lon.nix" { };
   pre-commit-hook =
     (import (
@@ -35,7 +34,6 @@ pkgs.mkShell {
     pkgs.npins
     agenix
     bootstrap
-    update-deps
     pkgs.statix
     lon
   ];
