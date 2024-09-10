@@ -8,7 +8,7 @@
 {
   age.secrets."arkheon-env".file = ../../secrets/arkheon-env.age;
 
-  nixpkgs.overlays = [ (import (inputs.arkheon.outPath + "/overlay.nix")) ];
+  nixpkgs.overlays = [ (import "${inputs.arkheon}/overlay.nix") ];
 
   services.arkheon = {
     enable = true;
