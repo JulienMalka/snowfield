@@ -1,5 +1,5 @@
 let
-  inputs = import ./deps;
+  inputs = import ./lon.nix;
   patches = import inputs.nix-patches { patchFile = ./patches; };
   inputs_final = inputs // {
     nixpkgs_patched = patches.mkNixpkgsSrc {

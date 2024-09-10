@@ -1,0 +1,204 @@
+{
+  "version": "1",
+  "sources": {
+    "agenix": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "ryantm",
+      "repo": "agenix",
+      "branch": "main",
+      "revision": "f6291c5935fdc4e0bef208cfc0dcab7e3f7a1c41",
+      "url": "https://github.com/ryantm/agenix/archive/f6291c5935fdc4e0bef208cfc0dcab7e3f7a1c41.tar.gz",
+      "hash": "sha256-b+uqzj+Wa6xgMS9aNbX4I+sXeb5biPDi39VgvSFqFvU="
+    },
+    "arkheon": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "raitobezarius",
+      "repo": "arkheon",
+      "branch": "main",
+      "revision": "113724a1a206905e68319676f73d095fcc043a42",
+      "url": "https://github.com/raitobezarius/arkheon/archive/113724a1a206905e68319676f73d095fcc043a42.tar.gz",
+      "hash": "sha256-+BkuEBvFcLRsIe3FoHojRvXeyOS+n3dxPOafBgR4CHo="
+    },
+    "buildbot-nix": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "JulienMalka",
+      "repo": "buildbot-nix",
+      "branch": "main",
+      "revision": "699160c3e095d349cf26a4957e07d9cb99a379f2",
+      "url": "https://github.com/JulienMalka/buildbot-nix/archive/699160c3e095d349cf26a4957e07d9cb99a379f2.tar.gz",
+      "hash": "sha256-AzQrQPctgjr+wGiVLMrP8ZT/B2s0W+DlxViniQbzZ+4="
+    },
+    "colmena": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "zhaofengli",
+      "repo": "colmena",
+      "branch": "main",
+      "revision": "cd65ef7a25cdc75052fbd04b120aeb066c3881db",
+      "url": "https://github.com/zhaofengli/colmena/archive/cd65ef7a25cdc75052fbd04b120aeb066c3881db.tar.gz",
+      "hash": "sha256-gWEpb8Hybnoqb4O4tmpohGZk6+aerAbJpywKcFIiMlg="
+    },
+    "disko": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "nix-community",
+      "repo": "disko",
+      "branch": "master",
+      "revision": "e55f9a8678adc02024a4877c2a403e3f6daf24fe",
+      "url": "https://github.com/nix-community/disko/archive/e55f9a8678adc02024a4877c2a403e3f6daf24fe.tar.gz",
+      "hash": "sha256-tqoAO8oT6zEUDXte98cvA1saU9+1dLJQe3pMKLXv8ps="
+    },
+    "dns": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "JulienMalka",
+      "repo": "dns.nix",
+      "branch": "master",
+      "revision": "922d6a72ae1f4436cc8f8e04080c50aa65e0d749",
+      "url": "https://github.com/JulienMalka/dns.nix/archive/922d6a72ae1f4436cc8f8e04080c50aa65e0d749.tar.gz",
+      "hash": "sha256-K2X21U4sSYtEZiDM0Eg/IV4wRs80kztLi6qaVDIUCJE="
+    },
+    "git-hooks": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "cachix",
+      "repo": "git-hooks.nix",
+      "branch": "master",
+      "revision": "7570de7b9b504cfe92025dd1be797bf546f66528",
+      "url": "https://github.com/cachix/git-hooks.nix/archive/7570de7b9b504cfe92025dd1be797bf546f66528.tar.gz",
+      "hash": "sha256-tyMUA6NgJSvvQuzB7A1Sf8+0XCHyfSPRx/b00o6K0uo="
+    },
+    "home-manager": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "nix-community",
+      "repo": "home-manager",
+      "branch": "release-24.05",
+      "revision": "208df2e558b73b6a1f0faec98493cb59a25f62ba",
+      "url": "https://github.com/nix-community/home-manager/archive/208df2e558b73b6a1f0faec98493cb59a25f62ba.tar.gz",
+      "hash": "sha256-tDgM4d8mLK0Hd6YMB2w1BqMto1XBXADOzPEaLl10VI4="
+    },
+    "home-manager-unstable": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "nix-community",
+      "repo": "home-manager",
+      "branch": "master",
+      "revision": "e5fa72bad0c6f533e8d558182529ee2acc9454fe",
+      "url": "https://github.com/nix-community/home-manager/archive/e5fa72bad0c6f533e8d558182529ee2acc9454fe.tar.gz",
+      "hash": "sha256-4QOPemDQ9VRLQaAdWuvdDBhh+lEUOAnSMHhdr4nS1mk="
+    },
+    "homepage": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "JulienMalka",
+      "repo": "homepage",
+      "branch": "main",
+      "revision": "29e779d8600b1c1e6235570a3614a54f8ec8126e",
+      "url": "https://github.com/JulienMalka/homepage/archive/29e779d8600b1c1e6235570a3614a54f8ec8126e.tar.gz",
+      "hash": "sha256-YuwHCXEbrzuEyRy1/2bX4Rux/nqmzRZ8H44+83JQNV8="
+    },
+    "impermanence": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "nix-community",
+      "repo": "impermanence",
+      "branch": "master",
+      "revision": "63f4d0443e32b0dd7189001ee1894066765d18a5",
+      "url": "https://github.com/nix-community/impermanence/archive/63f4d0443e32b0dd7189001ee1894066765d18a5.tar.gz",
+      "hash": "sha256-4qWg9sNh5g1qPGO6d/GV2ktY+eDikkBTbWSg5/iD2nY="
+    },
+    "lanzaboote": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "nix-community",
+      "repo": "lanzaboote",
+      "branch": "master",
+      "revision": "e7bd94e0b5ff3c1e686f2101004ebf4fcea9d871",
+      "url": "https://github.com/nix-community/lanzaboote/archive/e7bd94e0b5ff3c1e686f2101004ebf4fcea9d871.tar.gz",
+      "hash": "sha256-qS1H/5/20ewJIXmf8FN2A5KTOKKU9elWvCPwdBi1P/U="
+    },
+    "lila": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "JulienMalka",
+      "repo": "lila",
+      "branch": "main",
+      "revision": "9c52498d310c8ecca8de63e50658bd5089617e3a",
+      "url": "https://github.com/JulienMalka/lila/archive/9c52498d310c8ecca8de63e50658bd5089617e3a.tar.gz",
+      "hash": "sha256-GOXCyP1DjN7RV+FULaPxBmXnKaw3jTw5W9uDfhbY/CM="
+    },
+    "lon": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "nikstur",
+      "repo": "lon",
+      "branch": "main",
+      "revision": "a8b4406e5151af87b989564d4aa98ecd6d4d3500",
+      "url": "https://github.com/nikstur/lon/archive/a8b4406e5151af87b989564d4aa98ecd6d4d3500.tar.gz",
+      "hash": "sha256-VGvK0ahBl440NMs03WqmP7T4a1DP13yfX47YI84rlGU="
+    },
+    "nix-index-database": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "mic92",
+      "repo": "nix-index-database",
+      "branch": "main",
+      "revision": "642275444c5a9defce57219c944b3179bf2adaa9",
+      "url": "https://github.com/mic92/nix-index-database/archive/642275444c5a9defce57219c944b3179bf2adaa9.tar.gz",
+      "hash": "sha256-hwX53i24KyWzp2nWpQsn8lfGQNCP0JoW/bvQmcR1DPY="
+    },
+    "nix-patches": {
+      "type": "Git",
+      "fetchType": "git",
+      "branch": "main",
+      "revision": "e11ba20945f4a867f09d84343c37328288f274b4",
+      "url": "https://git.hubrecht.ovh/hubrecht/nix-patches.git",
+      "hash": "sha256-O23shOv9RePAw5tD+fTg7pzIEK0TcsuMn+NRfglhzLA=",
+      "submodules": false
+    },
+    "nixos-anywhere": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "nix-community",
+      "repo": "nixos-anywhere",
+      "branch": "main",
+      "revision": "55b239c13648898a43cf4da248f988185c322ced",
+      "url": "https://github.com/nix-community/nixos-anywhere/archive/55b239c13648898a43cf4da248f988185c322ced.tar.gz",
+      "hash": "sha256-Vk9g2rfhWVOM3//aWbYBb5UeipuJXCD4rbeyle84UVA="
+    },
+    "nixpkgs": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "nixos",
+      "repo": "nixpkgs",
+      "branch": "nixos-24.05",
+      "revision": "f4c846aee8e1e29062aa8514d5e0ab270f4ec2f9",
+      "url": "https://github.com/nixos/nixpkgs/archive/f4c846aee8e1e29062aa8514d5e0ab270f4ec2f9.tar.gz",
+      "hash": "sha256-L64N1rpLlXdc94H+F6scnrbuEu+utC03cDDVvvJGOME="
+    },
+    "unstable": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "nixos",
+      "repo": "nixpkgs",
+      "branch": "nixos-unstable",
+      "revision": "574d1eac1c200690e27b8eb4e24887f8df7ac27c",
+      "url": "https://github.com/nixos/nixpkgs/archive/574d1eac1c200690e27b8eb4e24887f8df7ac27c.tar.gz",
+      "hash": "sha256-v3rIhsJBOMLR8e/RNWxr828tB+WywYIoajrZKFM+0Gg="
+    },
+    "zotero-nix": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "camillemndn",
+      "repo": "zotero-nix",
+      "branch": "main",
+      "revision": "36c832d9b699378fbabcfcc36844c968db6dbec9",
+      "url": "https://github.com/camillemndn/zotero-nix/archive/36c832d9b699378fbabcfcc36844c968db6dbec9.tar.gz",
+      "hash": "sha256-NnEflPjUDnHm5ZtNb24S/1iETGhaR/HE4E1xMGRLxDk="
+    }
+  }
+}

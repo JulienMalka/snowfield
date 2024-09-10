@@ -30,7 +30,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
   modules = modules ++ [
     host-config
     (import "${home-manager}/nixos")
-    (import "${inputs.nixos-mailserver}")
     (import "${inputs.disko}/module.nix")
     (import "${inputs.buildbot-nix}/nix/master.nix")
     (import "${inputs.buildbot-nix}/nix/worker.nix")

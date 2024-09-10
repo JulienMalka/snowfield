@@ -1,10 +1,11 @@
 let
-  inputs = import ./deps;
+  inputs = import ./lon.nix;
   pkgs = import inputs.unstable { };
   nixos-anywhere = pkgs.callPackage "${inputs.nixos-anywhere}/src/default.nix" { };
   agenix = pkgs.callPackage "${inputs.agenix}/pkgs/agenix.nix" { };
   bootstrap = pkgs.callPackage scripts/bootstrap-machine.nix { inherit nixos-anywhere; };
   update-deps = pkgs.callPackage scripts/update-deps.nix { };
+  lon = pkgs.callPackage "${inputs.lon}/nix/packages/lon.nix" { };
   pre-commit-hook =
     (import (
       pkgs.applyPatches {
@@ -36,6 +37,7 @@ pkgs.mkShell {
     bootstrap
     update-deps
     pkgs.statix
+    lon
   ];
   shellHook = ''
     ${pre-commit-hook.shellHook}
