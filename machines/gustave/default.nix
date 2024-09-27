@@ -36,6 +36,11 @@
     nginx.enable = true;
     nginx.subdomain = "docs";
   };
+  machine.meta.zones."luj.fr".subdomain."agorakit" = {
+    A = "82.67.34.230";
+    AAAA = "2a01:e0a:de4:a0e1:76c2:d2d0:6948:5219";
+  };
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
