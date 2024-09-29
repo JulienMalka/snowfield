@@ -8,7 +8,7 @@ let
   core-data = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPAcIdJ3gr17bvDZ8NAcDBkEmOPTEhpg2yq3p1NNQB0f";
   lambda = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKluGTi+vGRLU2emYBhTJuEy7Qw0xq1e0Ey7wvU9xYHz";
   nuage = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEtPoZXJKPfSPGYb/H9eWL0tNSpAKM6V/AgeE1Uf2Is6";
-  enigma = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBgBNhXqFN79KUpmey44pag2FQYVulf1gYnRjdbvkzWW";
+  gallifrey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEr9QRD7QTNsAFmuJoX1mFzQ5A2ik1/ogMrvW54JMXeQ";
   akhaten = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII5W1rr+VW2TLLytoTExWg4T14lrdLFkSM4YLfbEIb2g";
   servers = [
     gustave
@@ -23,7 +23,7 @@ let
   all = servers ++ [
     x2100
     fischer
-    enigma
+    gallifrey
   ];
 in
 {
@@ -51,7 +51,7 @@ in
   "git-gpg-private-key.age".publicKeys = servers ++ [
     x2100
     fischer
-    enigma
+    gallifrey
   ];
   "user-julien-password.age".publicKeys = all;
   "user-root-password.age".publicKeys = all;
