@@ -100,7 +100,7 @@
   ];
 
   environment.persistence."/persistent" = {
-    hidemounts = true;
+    hideMounts = true;
     directories = [
       "/var/lib"
       "/var/log"
@@ -113,7 +113,7 @@
   };
   programs.fuse.userAllowOther = true;
 
-  filesystems."/persistent".neededforboot = true;
+  fileSystems."/persistent".neededForBoot = true;
 
   system.stateVersion = "24.11";
 }
