@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  inputs,
+  ...
+}:
 let
   cfg = config.luj.hmgr;
 in
@@ -10,16 +15,20 @@ with lib;
 
   config = {
     home-manager.useGlobalPkgs = true;
-    home-manager.users =
-      lib.mapAttrs
-        (name: value:
-          {
-            imports = with builtins; (map (x: ../../home-manager-modules + "/${x}/default.nix") (attrNames (readDir ../../home-manager-modules)));
-            home.username = "${name}";
-            home.homeDirectory = "/home/${name}";
-            home.stateVersion = "21.05";
-          } // value)
-        cfg;
+    home-manager.users = lib.mapAttrs (
+      name: value:
+      {
+        imports =
+          with builtins;
+          (map (x: ../../home-manager-modules + "/${x}/default.nix") (
+            attrNames (readDir ../../home-manager-modules)
+          ))
+          ++ [ "${inputs.impermanence}/home-manager.nix" ];
+        home.username = "${name}";
+        home.homeDirectory = "/home/${name}";
+        home.stateVersion = "21.05";
+      }
+      // value
+    ) cfg;
   };
-}  
-
+}

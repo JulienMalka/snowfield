@@ -76,6 +76,15 @@
 
     fonts.fontconfig.enable = true;
 
+    home.persistence."/persistent/home/julien" = {
+      directories = [
+        "Pictures"
+        "Documents"
+        ".ssh"
+      ];
+      allowOther = true;
+    };
+
     programs.firefox = {
       enable = true;
       package = pkgs.firefox;
