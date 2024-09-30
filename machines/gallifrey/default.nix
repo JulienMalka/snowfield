@@ -25,7 +25,7 @@
 
   networking.networkmanager.dns = "systemd-resolved";
   services.resolved.enable = true;
-  services.userborn.enable = true;
+  #services.userborn.enable = true;
 
   services.displayManager.autoLogin = {
     enable = true;
@@ -98,6 +98,22 @@
     ddcutil
     xorg.xinit
   ];
+
+  environment.persistence."/persistent" = {
+    hidemounts = true;
+    directories = [
+      "/var/lib"
+      "/var/log"
+    ];
+    files = [
+      "/etc/machine-id"
+      "/etc/ssh/ssh_host_ed25519_key"
+      "/etc/ssh/ssh_host_ed25519_key.pub"
+    ];
+  };
+  programs.fuse.userAllowOther = true;
+
+  filesystems."/persistent".neededforboot = true;
 
   system.stateVersion = "24.11";
 }
