@@ -81,6 +81,8 @@
         "Pictures"
         "Documents"
         ".ssh"
+        "dev"
+        ".mozilla"
       ];
       allowOther = true;
     };
