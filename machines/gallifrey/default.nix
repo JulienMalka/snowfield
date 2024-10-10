@@ -2,6 +2,7 @@
   config,
   pkgs,
   inputs,
+  profiles,
   ...
 }:
 
@@ -15,6 +16,7 @@
     arch = "x86_64-linux";
     nixpkgs_version = inputs.unstable;
     hm_version = inputs.home-manager-unstable;
+    profiles = with profiles; [ sound ];
   };
 
   networking.hostName = "gallifrey";
@@ -27,32 +29,31 @@
   services.resolved.enable = true;
   #services.userborn.enable = true;
 
-  services.displayManager.autoLogin = {
-    enable = true;
-    user = "julien";
-  };
+  security.pam.loginLimits = [
+    {
+      domain = "*";
+      type = "-";
+      item = "nofile";
+      value = "262144";
+    }
+  ];
 
   disko = import ./disko.nix;
 
-  services.xserver = {
-    enable = true;
-    displayManager = {
-      gdm.enable = true;
-    };
-    desktopManager.gnome.enable = true;
-    videoDrivers = [ "nvidia" ];
-  };
+  services.desktopManager.cosmic.enable = true;
+  services.displayManager.cosmic-greeter.enable = true;
 
-  hardware.opengl.enable = true;
   boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
+  hardware.graphics.enable = true;
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
     powerManagement.finegrained = false;
-    open = true;
+    open = false;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.beta;
   };
 
   programs.xwayland.enable = true;

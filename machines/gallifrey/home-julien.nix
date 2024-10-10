@@ -47,7 +47,6 @@
       fira-code
       feh
       meld
-      vlc
       nerdfonts
       jetbrains-mono
       cantarell-fonts
@@ -68,10 +67,15 @@
       scli
       jftui
       texlive.combined.scheme-full
-      unstable.inochi-creator
+      inochi-creator
+      inochi-session
       chromium
       gh
       ouch
+      spotify
+      gnome.nautilus
+      pika-backup
+      mpv
     ];
 
     fonts.fontconfig.enable = true;
@@ -83,6 +87,12 @@
         ".ssh"
         "dev"
         ".mozilla"
+        ".config/cosmic"
+        ".local/share/direnv"
+        ".local/state/cosmic-comp"
+        ".config/Signal"
+        ".cache/spotify"
+        ".config/spotify"
       ];
       allowOther = true;
     };
