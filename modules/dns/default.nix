@@ -11,7 +11,6 @@ let
     "julienmalka.me"
     "malka.family"
     "luj"
-    "luj-static.page"
     "malka.sh"
   ];
 
