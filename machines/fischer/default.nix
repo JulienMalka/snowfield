@@ -17,6 +17,7 @@
     hm_version = inputs.home-manager-unstable;
     # TODO: Fix colmena deployment
     ips.public.ipv4 = "127.0.0.1";
+    ips.vpn.ipv4 = "100.100.45.11";
   };
 
   # Boot stuff
