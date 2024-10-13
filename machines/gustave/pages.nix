@@ -26,7 +26,7 @@
       ACME_EMAIL = "julien@malka.sh";
       DNS_PROVIDER = "gandiv5";
       ENABLE_HTTP_SERVER = "false";
-      GITEA_ROOT = "https://git.dgnum.eu";
+      GITEA_ROOT = "https://git.luj.fr";
       PORT = "8010";
       PAGES_DOMAIN = "luj-static.page";
       RAW_DOMAIN = "raw.luj-static.page";
