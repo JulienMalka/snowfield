@@ -74,7 +74,7 @@
       gh
       ouch
       spotify
-      gnome.nautilus
+      nautilus
       pika-backup
       mpv
     ];
