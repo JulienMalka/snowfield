@@ -30,7 +30,7 @@
     enable = true;
     devices."cryptroot".secretFile = ./root.jwe;
   };
-  boot.initrd.systemd.enableTpm2 = true;
+  boot.initrd.systemd.tpm2.enable = true;
 
   services.pipewire = {
     enable = true;
