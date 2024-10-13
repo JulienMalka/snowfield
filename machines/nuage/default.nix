@@ -44,8 +44,8 @@
     package = pkgs.nextcloud29;
     https = true;
     hostName = "nuage.malka.family";
+    settings.overwriteProtocol = "https";
     config = {
-      overwriteProtocol = "https";
       dbtype = "mysql";
       dbuser = "test";
       dbhost = "localhost"; # nextcloud will add /.s.PGSQL.5432 by itself
