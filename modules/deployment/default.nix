@@ -2,7 +2,6 @@
 with lib;
 let
   cfg = config.luj.deployment;
-  hostname = config.networking.hostName;
 in
 {
 
@@ -11,7 +10,7 @@ in
   config = mkIf cfg.enable {
 
     deployment = {
-      targetHost = lib.mkDefault "${hostname}.${config.machine.meta.tld}";
+      targetHost = lib.mkDefault config.machine.meta.ips.vpn.ipv4;
       targetPort = lib.mkDefault 45;
       targetUser = lib.mkDefault "root";
       allowLocalDeployment = lib.mkDefault true;
