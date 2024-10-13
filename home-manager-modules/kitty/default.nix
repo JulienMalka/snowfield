@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.luj.programs.kitty;
 in
@@ -23,7 +28,7 @@ with lib;
         name = "FiraCode Nerd Font Mono Reg";
         package = with pkgs; (nerdfonts.override { fonts = [ "FiraCode" ]; });
       };
-      theme = "Catppuccin-Mocha";
+      themeFile = "Catppuccin-Mocha";
 
     };
   };
