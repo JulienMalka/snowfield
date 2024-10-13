@@ -8,6 +8,7 @@
     luj.programs.git.enable = true;
     luj.programs.kitty.enable = true;
     luj.programs.emacs.enable = false;
+    luj.programs.fish.enable = true;
     luj.emails.enable = true;
 
     programs.rofi = {
@@ -93,6 +94,8 @@
         ".config/Signal"
         ".cache/spotify"
         ".config/spotify"
+        ".step"
+        ".emacs.d"
       ];
       allowOther = true;
     };
