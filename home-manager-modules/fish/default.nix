@@ -1,7 +1,11 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.luj.programs.fish;
-  inherit (pkgs) fetchFromGitHub;
 in
 with lib;
 {
@@ -19,6 +23,8 @@ with lib;
         ka = "killall";
         mkd = "mkdir -pv";
 
+        nix-build = "nom-build";
+
         ca = "khal interactive";
         sync_ca = "vsync sync";
 
@@ -34,7 +40,6 @@ with lib;
 
         SU = "systemctl --user";
         SS = "sudo systemctl";
-
 
         weather = "curl wttr.in";
         v6 = "curl api6.ipify.org";
@@ -92,6 +97,11 @@ with lib;
     # Misc
     programs.lesspipe.enable = true;
 
-    home.packages = with pkgs; [ eza python3 libnotify ];
+    home.packages = with pkgs; [
+      eza
+      python3
+      libnotify
+      nix-output-monitor
+    ];
   };
 }
