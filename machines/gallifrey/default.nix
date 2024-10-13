@@ -17,6 +17,7 @@
     nixpkgs_version = inputs.unstable;
     hm_version = inputs.home-manager-unstable;
     profiles = with profiles; [ sound ];
+    ips = "";
   };
 
   networking.hostName = "gallifrey";
