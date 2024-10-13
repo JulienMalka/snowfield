@@ -28,6 +28,11 @@ in
           for supported values.
         '';
       };
+
+      settingsFile = mkOption {
+        type = types.nullOr types.path;
+        default = null;
+      };
     };
   };
 
@@ -40,6 +45,7 @@ in
       environment = cfg.settings;
       serviceConfig = {
         Type = "simple";
+        EnvironmentFile = cfg.settingsFile;
         StateDirectory = "codeberg-pages";
         WorkingDirectory = "/var/lib/codeberg-pages";
         DynamicUser = true;
