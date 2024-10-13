@@ -17,7 +17,7 @@
         rev = "831ce3d913015e856351dc4d3fc983ada826ef7e";
         hash = "sha256-Ti9sOppHOaUU72A7Bxyfu4phJUed4m/5e9RyjmVino0=";
       };
-      patches = [ ../../packages/codeberg-pages-custom/update-lego.patch ];
+      patches = [ ./update-lego.patch ];
       vendorHash = "sha256-MWT51u4rjZB/QcJn91CxpCP+/N+O6gbVWAk+PEQlcUA=";
     });
 
