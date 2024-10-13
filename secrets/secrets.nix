@@ -89,4 +89,9 @@ in
     akhaten
     tower
   ];
+
+  "pages-settings-file.age".publicKeys = [
+    gustave
+    tower
+  ];
 }
