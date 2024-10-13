@@ -47,9 +47,9 @@
       "owner": "nix-community",
       "repo": "disko",
       "branch": "master",
-      "revision": "4c298a031a0631c46b53f82d345763f14eb18f82",
-      "url": "https://github.com/nix-community/disko/archive/4c298a031a0631c46b53f82d345763f14eb18f82.tar.gz",
-      "hash": "sha256-r5T2+ibfAyf2ZvKAdrhPr14Po1EY9xTu8zZtpuhGV04="
+      "revision": "bdbdb725d632863bdedb80baabf21327614dd237",
+      "url": "https://github.com/nix-community/disko/archive/bdbdb725d632863bdedb80baabf21327614dd237.tar.gz",
+      "hash": "sha256-D9TChzb00eTG1YWBx8eN2s6lJJnBjB5Y7RpxkAzGvyQ="
     },
     "dns": {
       "type": "GitHub",
@@ -67,9 +67,9 @@
       "owner": "cachix",
       "repo": "git-hooks.nix",
       "branch": "master",
-      "revision": "6d7586d0d35ccd1e87bb0ffb7c0d38b4cc0fe469",
-      "url": "https://github.com/cachix/git-hooks.nix/archive/6d7586d0d35ccd1e87bb0ffb7c0d38b4cc0fe469.tar.gz",
-      "hash": "sha256-f+Z7KHEHiitzHkG0H+yzZHzERvHr66bUaQ2akM/y3ww="
+      "revision": "eb74e0be24a11a1531b5b8659535580554d30b28",
+      "url": "https://github.com/cachix/git-hooks.nix/archive/eb74e0be24a11a1531b5b8659535580554d30b28.tar.gz",
+      "hash": "sha256-7FMyNISP7K6XDSIt1NJxkXZnEdV3HZUXvFoBaJ/qdOg="
     },
     "home-manager": {
       "type": "GitHub",
@@ -87,9 +87,9 @@
       "owner": "nix-community",
       "repo": "home-manager",
       "branch": "master",
-      "revision": "342a1d682386d3a1d74f9555cb327f2f311dda6e",
-      "url": "https://github.com/nix-community/home-manager/archive/342a1d682386d3a1d74f9555cb327f2f311dda6e.tar.gz",
-      "hash": "sha256-sSfvyO5xH3HObHHmh6lp/hcvo7tMjFKd/HXpxyrRnoE="
+      "revision": "d57112db877f07387ce7104b5ac346ede556d2d7",
+      "url": "https://github.com/nix-community/home-manager/archive/d57112db877f07387ce7104b5ac346ede556d2d7.tar.gz",
+      "hash": "sha256-8ZWr1HpciQsrFjvPMvZl0W+b0dilZOqXPoKa2Ux36bc="
     },
     "homepage": {
       "type": "GitHub",
@@ -176,9 +176,9 @@
       "owner": "lilyinstarlight",
       "repo": "nixos-cosmic",
       "branch": "main",
-      "revision": "c0fe031a0bb89e6641f9ab3fb0d413babe4845d4",
-      "url": "https://github.com/lilyinstarlight/nixos-cosmic/archive/c0fe031a0bb89e6641f9ab3fb0d413babe4845d4.tar.gz",
-      "hash": "sha256-xFQpxbBYaPktRuM9XBEJfWKGbq8odEikZP77+d/0o44="
+      "revision": "b744a190a610460e51fd2dbd10cf2bfc42711fe8",
+      "url": "https://github.com/lilyinstarlight/nixos-cosmic/archive/b744a190a610460e51fd2dbd10cf2bfc42711fe8.tar.gz",
+      "hash": "sha256-zhLDfVImuWQgwczQ+pxdwteWPiULTwYLzJNGluwcO4A="
     },
     "nixpkgs": {
       "type": "GitHub",
@@ -186,9 +186,9 @@
       "owner": "nixos",
       "repo": "nixpkgs",
       "branch": "nixos-24.05",
-      "revision": "d51c28603def282a24fa034bcb007e2bcb5b5dd0",
-      "url": "https://github.com/nixos/nixpkgs/archive/d51c28603def282a24fa034bcb007e2bcb5b5dd0.tar.gz",
-      "hash": "sha256-dOymOQ3AfNI4Z337yEwHGohrVQb4yPODCW9MDUyAc4w="
+      "revision": "c505ebf777526041d792a49d5f6dd4095ea391a7",
+      "url": "https://github.com/nixos/nixpkgs/archive/c505ebf777526041d792a49d5f6dd4095ea391a7.tar.gz",
+      "hash": "sha256-r+SF9AnHrTg+bk6YszoKfV9lgyw+yaFUQe0dOjI0Z2o="
     },
     "unstable": {
       "type": "GitHub",
