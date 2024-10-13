@@ -102,18 +102,13 @@
         };
         wireguardPeers = [
           {
-            wireguardPeerConfig = {
-              PublicKey = "axigTezuClSoQlxWvpdzXKXUDjrrQlswE50ox0uDLR0=";
-              AllowedIPs = [ "10.100.45.2/32" ];
-            };
+            PublicKey = "axigTezuClSoQlxWvpdzXKXUDjrrQlswE50ox0uDLR0=";
+            AllowedIPs = [ "10.100.45.2/32" ];
           }
           {
-            wireguardPeerConfig = {
-              PublicKey = "ElVrxNiYvV13hEDtqZNw4kLF7UiPTXziz8XgqABB0AU=";
-              AllowedIPs = [ "10.100.45.3/32" ];
-            };
+            PublicKey = "ElVrxNiYvV13hEDtqZNw4kLF7UiPTXziz8XgqABB0AU=";
+            AllowedIPs = [ "10.100.45.3/32" ];
           }
-
         ];
       };
     };
