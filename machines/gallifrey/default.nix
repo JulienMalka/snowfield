@@ -26,6 +26,8 @@
 
   networking.networkmanager.enable = true;
 
+  programs.ssh.knownHosts."epyc.infra.newtype.fr".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOXT9Init1MhKt4rjBANLq0t0bPww/WQZ96uB4AEDrml";
+
   networking.networkmanager.dns = "systemd-resolved";
   services.resolved.enable = true;
   #services.userborn.enable = true;
