@@ -16,6 +16,16 @@
     luj.emails.enable = true;
     luj.programs.hyprland.enable = true;
 
+    programs.emacs = {
+      enable = true;
+      package = pkgs.emacs30-pgtk;
+      extraPackages = epkgs: [
+        epkgs.mu4e
+      ];
+    };
+
+    programs.mu.enable = true;
+
     programs.rofi = {
       enable = true;
       package = pkgs.rofi-wayland;
@@ -35,7 +45,6 @@
       jq
       lazygit
       fira-code
-      emacs29-pgtk
       feh
       meld
       vlc
@@ -55,7 +64,6 @@
       step-cli
       gh
       gh-dash
-      cvc5
       signal-desktop
       scli
       texlive.combined.scheme-full
