@@ -24,14 +24,14 @@ let
     args@{ fetchType, ... }:
     if fetchType == "git" then
       builtins.fetchGit {
-        inherit (args) url;
+        url = args.url;
         ref = args.branch;
         rev = args.revision;
         narHash = args.hash;
       }
     else if fetchType == "tarball" then
       builtins.fetchTarball {
-        inherit (args) url;
+        url = args.url;
         sha256 = args.hash;
       }
     else
