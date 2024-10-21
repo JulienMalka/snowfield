@@ -57,7 +57,7 @@
       htop
       evince
       mosh
-      # zotero
+      zotero
       flameshot
       networkmanagerapplet
       xdg-utils
