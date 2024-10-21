@@ -50,7 +50,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
             mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
           });
           # Packages comming from other repositories
-          zotero = pkgs.wrapFirefox (pkgs.callPackage "${inputs.zotero-nix}/pkgs" { }) { };
           jackett = pkgs.callPackage ../packages/jackett { };
           lila-build-hook = (import inputs.lila).packages.${system}.utils;
           # My own packages
