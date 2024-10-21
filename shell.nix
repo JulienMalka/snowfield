@@ -16,7 +16,12 @@ let
         src = ./.;
 
         hooks = {
-          statix.enable = true;
+          statix = {
+            enable = true;
+            settings.ignore = [
+              "**/lon.nix"
+            ];
+          };
           deadnix.enable = true;
           rfc101 = {
             enable = true;
