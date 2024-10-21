@@ -7,7 +7,6 @@
     luj.programs.ssh-client.enable = true;
     luj.programs.git.enable = true;
     luj.programs.kitty.enable = true;
-    luj.programs.emacs.enable = false;
     luj.programs.fish.enable = true;
     luj.emails.enable = true;
 
@@ -77,6 +76,7 @@
       nautilus
       pika-backup
       mpv
+      zotero
     ];
 
     fonts.fontconfig.enable = true;

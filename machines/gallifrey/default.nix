@@ -65,7 +65,7 @@
   programs.dconf.enable = true;
   services.emacs = {
     enable = true;
-    package = pkgs.emacs29-gtk3;
+    package = pkgs.emacs30-pgtk;
   };
 
   services.udev.packages = [ pkgs.nitrokey-udev-rules ];
