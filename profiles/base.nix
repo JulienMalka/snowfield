@@ -53,6 +53,7 @@
     tailscale
     step-cli
     comma-with-db
+    nixos-firewall-tool
   ];
 
   environment.variables.EDITOR = "nvim";
