@@ -124,6 +124,7 @@
     sbctl
     wl-mirror
     texlive.combined.scheme-full
+    mu
   ];
 
   services.printing = {
