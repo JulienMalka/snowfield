@@ -1,5 +1,6 @@
 { config, ... }:
 {
+  networking.useNetworkd = true;
   systemd.network.enable = true;
   systemd.network.networks."10-wan" = {
     matchConfig.Name = config.machine.meta.defaultInterface;
