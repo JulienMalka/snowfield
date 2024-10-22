@@ -66,6 +66,8 @@
       gh-dash
       signal-desktop
       scli
+      emacsPackages.jinx
+      hunspellDicts.en_US
       texlive.combined.scheme-full
     ];
 
