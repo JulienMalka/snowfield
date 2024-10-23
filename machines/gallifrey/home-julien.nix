@@ -77,6 +77,8 @@
       pika-backup
       mpv
       zotero
+      emacsPackages.jinx
+      hunspellDicts.en_US
     ];
 
     fonts.fontconfig.enable = true;
