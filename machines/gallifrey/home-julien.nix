@@ -98,6 +98,7 @@
         ".config/spotify"
         ".step"
         ".emacs.d"
+        "Zotero"
       ];
       allowOther = true;
     };
