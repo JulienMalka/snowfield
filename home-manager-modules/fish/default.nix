@@ -17,6 +17,10 @@ with lib;
 
     programs.fish = {
       enable = true;
+      shellInit = ''
+        [ -n "$EAT_SHELL_INTEGRATION_DIR" ] && \
+          source "$EAT_SHELL_INTEGRATION_DIR/fish"
+      '';
 
       shellAliases = {
 
