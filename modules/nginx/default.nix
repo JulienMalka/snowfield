@@ -53,7 +53,8 @@ in
                 allow fd7a:115c:a1e0::/48;
                 deny all;
               '';
-              extraConfig = ''
+
+              extraConfig = lib.mkIf (lib.hasSuffix "luj" name) ''
                 ssl_stapling off;
               '';
 
@@ -100,6 +101,7 @@ in
         sslCertificate = "/var/lib/acme/default/cert.pem";
         sslCertificateKey = "/var/lib/acme/default/key.pem";
         extraConfig = ''
+          ssl_stapling off;
           return 444;
         '';
       };
