@@ -118,7 +118,7 @@
     };
   };
 
-  security.acme.certs."ca.luj".server = "https://127.0.0.1:8444/acme/acme/directory";
+  security.acme.certs."ca.luj".server = lib.mkForce "https://127.0.0.1:8444/acme/acme/directory";
 
   systemd.services."step-ca".after = [ "keycloak.service" ];
 
