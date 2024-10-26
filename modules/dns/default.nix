@@ -1,20 +1,9 @@
 {
   lib,
-  config,
   dnsLib,
   ...
 }:
 let
-  cfg = config.machine.meta;
-  allowedDomains = [
-    "luj.fr"
-    "julienmalka.me"
-    "malka.family"
-    "luj"
-    "malka.sh"
-  ];
-
-  isVPNDomain = domain: lib.dns.domainToZone [ "luj" ] domain != null;
   SOA = {
     nameServer = "ns";
     adminEmail = "dns@malka.sh";
@@ -56,28 +45,5 @@ with lib;
       default = { };
     };
   };
-
-  config =
-    let
-      # list of domains that are defined in the current configuration through virtualHosts
-      domains = dns.domainsFromConfiguration allowedDomains config;
-      # AttrSet domain -> { records }
-      recordsPerDomain = map (
-        domain:
-        mapAttrs' (
-          n: v:
-          nameValuePair (dns.domainToZone allowedDomains n) (
-            let
-              subdomain = dns.getDomainPrefix allowedDomains n;
-            in
-            if elem subdomain allowedDomains then v else { subdomains."${subdomain}" = v; }
-          )
-        ) (dns.domainToRecords domain cfg (isVPNDomain domain))
-      ) domains;
-    in
-
-    {
-      machine.meta.zones = mkMerge recordsPerDomain;
-    };
 
 }

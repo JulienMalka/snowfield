@@ -94,4 +94,6 @@ in
     gustave
     tower
   ];
+  "404-ssl-certificate-cert.age".publicKeys = all;
+  "404-ssl-certificate-key.age".publicKeys = all;
 }

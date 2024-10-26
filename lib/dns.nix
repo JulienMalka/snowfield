@@ -4,6 +4,16 @@ with lib;
 
 rec {
 
+  allowedDomains = [
+    "luj.fr"
+    "julienmalka.me"
+    "malka.family"
+    "luj"
+    "malka.sh"
+  ];
+
+  isVPNDomain = hasSuffix "luj";
+
   hasSuffix' = flip strings.hasSuffix;
 
   domainToZone = allowedDomains: domain: (findFirst (hasSuffix' domain) null allowedDomains);
