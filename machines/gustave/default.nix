@@ -12,6 +12,7 @@
     ./nsd.nix
     ./borg.nix
     ./pages.nix
+    ./readeck.nix
   ];
 
   machine.meta = {

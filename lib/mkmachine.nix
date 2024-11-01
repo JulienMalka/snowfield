@@ -55,6 +55,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           keycloak-keywind = prev.pkgs.callPackage ../packages/keycloak-keywind { };
           hydrasect = prev.pkgs.callPackage ../packages/hydrasect { };
           codeberg-pages-custom = prev.pkgs.callPackage ../packages/codeberg-pages-custom { };
+          readeck = prev.pkgs.callPackage ../packages/readeck { };
         })
 
         (

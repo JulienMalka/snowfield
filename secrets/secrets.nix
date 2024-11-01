@@ -96,4 +96,9 @@ in
   ];
   "404-ssl-certificate-cert.age".publicKeys = all;
   "404-ssl-certificate-key.age".publicKeys = all;
+  "readeck-config.age".publicKeys = [
+    gallifrey
+    tower
+    gustave
+  ];
 }
