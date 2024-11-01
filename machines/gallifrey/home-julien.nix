@@ -34,6 +34,17 @@
       };
     };
 
+    programs.atuin = {
+      enable = true;
+      enableFishIntegration = true;
+    };
+
+    dconf.settings = {
+      "org/gnome/shell" = {
+        welcome-dialog-last-shown-version = "999"; # prevent popup until gnome version 999 :)
+      };
+    };
+
     programs.obs-studio = {
       enable = true;
       plugins = with pkgs; [ obs-studio-plugins.obs-vkcapture ];
@@ -79,11 +90,17 @@
       zotero
       emacsPackages.jinx
       hunspellDicts.en_US
+      rstudio
     ];
 
     fonts.fontconfig.enable = true;
 
     home.persistence."/persistent/home/julien" = {
+      files = [
+        ".config/gnome-initial-setup-done"
+        ".config/monitors.xml"
+        ".config/background"
+      ];
       directories = [
         "Pictures"
         "Documents"
@@ -93,6 +110,7 @@
         ".config/cosmic"
         ".local/share/direnv"
         ".local/state/cosmic-comp"
+        ".local/share/atuin"
         ".config/Signal"
         ".cache/spotify"
         ".config/spotify"
@@ -100,6 +118,7 @@
         ".emacs.d"
         ".gnupg"
         "Zotero"
+        ".config/dconf"
       ];
       allowOther = true;
     };

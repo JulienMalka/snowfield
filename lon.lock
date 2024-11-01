@@ -170,16 +170,6 @@
       "url": "https://github.com/nix-community/nixos-anywhere/archive/51d347d35caec995d36d1450cb5bb183318c7fb7.tar.gz",
       "hash": "sha256-LrCxIU6laEf4JD1QtOBNr+PASY6CbNPpUrjLIUizt+Y="
     },
-    "nixos-cosmic": {
-      "type": "GitHub",
-      "fetchType": "tarball",
-      "owner": "lilyinstarlight",
-      "repo": "nixos-cosmic",
-      "branch": "main",
-      "revision": "ba83685fb3f4422dfcf3c01a0b3a9dc4b803714d",
-      "url": "https://github.com/lilyinstarlight/nixos-cosmic/archive/ba83685fb3f4422dfcf3c01a0b3a9dc4b803714d.tar.gz",
-      "hash": "sha256-9hZQO3Ll2tP2Jw+msNuHg+Sa4l7aqJ0TMjx5DH3fUZQ="
-    },
     "nixpkgs": {
       "type": "GitHub",
       "fetchType": "tarball",
