@@ -43,11 +43,13 @@
 
   disko = import ./disko.nix;
 
-  services.desktopManager.cosmic.enable = true;
-  services.displayManager.cosmic-greeter.enable = true;
-
   boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver = {
+    enable = true;
+    videoDrivers = [ "nvidia" ];
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
+  };
 
   hardware.graphics.enable = true;
   hardware.nvidia = {
@@ -56,7 +58,7 @@
     powerManagement.finegrained = false;
     open = false;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.beta;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
   programs.xwayland.enable = true;
@@ -101,6 +103,8 @@
     sbctl
     ddcutil
     xorg.xinit
+    gnomeExtensions.dash-to-dock
+    gnomeExtensions.tailscale-status
   ];
 
   environment.persistence."/persistent" = {
@@ -108,6 +112,7 @@
     directories = [
       "/var/lib"
       "/var/log"
+      "/etc/NetworkManager/system-connections"
     ];
     files = [
       "/etc/machine-id"
