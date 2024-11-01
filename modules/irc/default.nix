@@ -16,18 +16,18 @@ in
 
   };
 
-  config = mkIf cfg.enable (
-    mkMerge [{
+  config = mkIf cfg.enable (mkMerge [
+    {
       services.thelounge = {
         enable = true;
+        public = false;
+        extraConfig.fileUpload.enable = true;
       };
 
     }
-   
-      (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port))
-      (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))]);
- 
 
-
+    (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port))
+    (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))
+  ]);
 
 }
