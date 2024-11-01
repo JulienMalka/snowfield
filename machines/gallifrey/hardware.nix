@@ -22,6 +22,12 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  fileSystems."/data" = {
+    device = "/dev/disk/by-uuid/4680be45-8156-4bf0-8b0b-e7493aaf37c0";
+    fsType = "ext4";
+  };
 
   boot.initrd.postDeviceCommands = ''
     lvm lvremove --force /dev/mainpool/root || :
