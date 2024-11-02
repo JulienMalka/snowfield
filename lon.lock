@@ -180,6 +180,15 @@
       "url": "https://github.com/nixos/nixpkgs/archive/32e940c7c420600ef0d1ef396dc63b04ee9cad37.tar.gz",
       "hash": "sha256-BAuPWW+9fa1moZTU+jFh+1cUtmsuF8asgzFwejM4wac="
     },
+    "stateless-uptime-kuma": {
+      "type": "Git",
+      "fetchType": "git",
+      "branch": "master",
+      "revision": "880f444ff7862d6127b051cf1a993ad1585b1652",
+      "url": "https://git.dgnum.eu/DGNum/stateless-uptime-kuma.git",
+      "hash": "sha256-l9fgwesnmFxasCaYUCD7L9bGGJXytLuwtx3CZMgpwJg=",
+      "submodules": false
+    },
     "unstable": {
       "type": "GitHub",
       "fetchType": "tarball",

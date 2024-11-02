@@ -101,4 +101,9 @@ in
     tower
     gustave
   ];
+  "stateless-uptime-kuma-password.age".publicKeys = [
+    gallifrey
+    tower
+    lambda
+  ];
 }
