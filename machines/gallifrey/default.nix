@@ -80,7 +80,10 @@
       {
         hostName = "epyc.infra.newtype.fr";
         maxJobs = 100;
-        systems = [ "x86_64-linux" ];
+        systems = [
+          "x86_64-linux"
+          "aarch64-linux"
+        ];
         sshUser = "root";
         supportedFeatures = [
           "kvm"
