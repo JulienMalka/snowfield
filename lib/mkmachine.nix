@@ -38,6 +38,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import inputs.lanzaboote).nixosModules.lanzaboote
     (import inputs.lila).nixosModules.hash-collection
     (import "${inputs.arkheon}/module.nix")
+    (import "${inputs.stateless-uptime-kuma}/nixos/module.nix")
     {
       home-manager.useGlobalPkgs = true;
       nixpkgs.system = system;
@@ -51,6 +52,9 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           # Packages comming from other repositories
           jackett = pkgs.callPackage ../packages/jackett { };
           lila-build-hook = (import inputs.lila).packages.${system}.utils;
+          statelessUptimeKuma =
+            pkgs.callPackage "${inputs.stateless-uptime-kuma}/stateless-uptime-kuma.nix"
+              { };
           # My own packages
           keycloak-keywind = prev.pkgs.callPackage ../packages/keycloak-keywind { };
           hydrasect = prev.pkgs.callPackage ../packages/hydrasect { };

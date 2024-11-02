@@ -10,6 +10,7 @@
     ./hardware.nix
     ./home-julien.nix
     ./arkheon.nix
+    ./uptime-kuma.nix
   ];
 
   machine.meta = {
@@ -41,14 +42,6 @@
 
   luj.nginx.enable = true;
 
-  services.uptime-kuma = {
-    enable = true;
-    package = pkgs.unstable.uptime-kuma;
-    settings = {
-      NODE_EXTRA_CA_CERTS = "/etc/ssl/certs/ca-certificates.crt";
-    };
-  };
-
   services.ntfy-sh = {
     enable = true;
     package = pkgs.unstable.ntfy-sh;
@@ -59,26 +52,6 @@
       base-url = "https://notifications.julienmalka.me";
       auth-file = "/srv/ntfy/user.db";
       auth-default-access = "deny-all";
-    };
-  };
-
-  services.nginx.virtualHosts."status.julienmalka.me" = {
-    forceSSL = true;
-    enableACME = true;
-    locations."/" = {
-      proxyPass = "http://localhost:3001";
-      proxyWebsockets = true;
-    };
-  };
-
-  security.acme.certs."uptime.luj".server = "https://ca.luj/acme/acme/directory";
-
-  services.nginx.virtualHosts."uptime.luj" = {
-    forceSSL = true;
-    enableACME = true;
-    locations."/" = {
-      proxyPass = "http://localhost:3001";
-      proxyWebsockets = true;
     };
   };
 
