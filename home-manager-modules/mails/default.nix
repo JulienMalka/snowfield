@@ -14,6 +14,23 @@ with lib;
   };
 
   config = mkIf cfg.enable {
+
+    age.secrets.work-mail-pw = {
+      file = ../../secrets/work-mail-pw.age;
+    };
+
+    age.secrets.dgnum-mail-pw = {
+      file = ../../secrets/dgnum-mail-pw.age;
+    };
+
+    age.secrets.telecom-mail-pw = {
+      file = ../../secrets/telecom-mail-pw.age;
+    };
+
+    age.secrets.ens-mail-pw = {
+      file = ../../secrets/ens-mail-pw.age;
+    };
+
     programs.mbsync.enable = true;
     programs.mbsync.package = pkgs.stable.isync;
     programs.msmtp.enable = true;
@@ -32,7 +49,7 @@ with lib;
         msmtp.enable = true;
         primary = true;
         realName = "Julien Malka";
-        passwordCommand = "${pkgs.coreutils}/bin/cat /home/julien/.config/ens-mail-pw";
+        passwordCommand = "${pkgs.coreutils}/bin/cat ${config.age.secrets.ens-mail-pw.path}";
         smtp = {
           host = "clipper.ens.fr";
         };
@@ -52,7 +69,7 @@ with lib;
         msmtp.enable = true;
         primary = false;
         realName = "Julien Malka";
-        passwordCommand = "${pkgs.coreutils}/bin/cat /home/julien/.config/work-mail-pw";
+        passwordCommand = "${pkgs.coreutils}/bin/cat ${config.age.secrets.work-mail-pw.path}";
         smtp = {
           host = "mail.luj.fr";
         };
@@ -73,7 +90,7 @@ with lib;
         msmtp.enable = true;
         primary = false;
         realName = "Julien Malka";
-        passwordCommand = "${pkgs.coreutils}/bin/cat /home/julien/.config/telecom-mail-pw";
+        passwordCommand = "${pkgs.coreutils}/bin/cat ${config.age.secrets.telecom-mail-pw.path}";
         smtp = {
           host = "z.imt.fr";
         };
@@ -94,7 +111,7 @@ with lib;
         msmtp.enable = true;
         primary = false;
         realName = "Julien Malka";
-        passwordCommand = "${pkgs.coreutils}/bin/cat /home/julien/.config/dgnum-mail-pw";
+        passwordCommand = "${pkgs.coreutils}/bin/cat ${config.age.secrets.dgnum-mail-pw.path}";
         smtp = {
           host = "kurisu.lahfa.xyz";
         };
