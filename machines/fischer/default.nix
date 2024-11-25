@@ -13,7 +13,7 @@
 
   machine.meta = {
     arch = "x86_64-linux";
-    nixpkgs_version = inputs.nixpkgs_patched;
+    nixpkgs_version = inputs.unstable;
     hm_version = inputs.home-manager-unstable;
     # TODO: Fix colmena deployment
     ips.public.ipv4 = "127.0.0.1";
