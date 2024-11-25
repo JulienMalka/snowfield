@@ -50,6 +50,8 @@
       plugins = with pkgs; [ obs-studio-plugins.obs-vkcapture ];
     };
 
+    programs.mu.enable = true;
+
     home.packages = with pkgs; [
       du-dust
       kitty
