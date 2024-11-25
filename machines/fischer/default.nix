@@ -157,6 +157,13 @@
     MaxAuthTries 20
   '';
 
+  services.zerotierone = {
+    enable = true;
+    joinNetworks = [
+      "ebe7fbd4451442b0"
+    ];
+  };
+
   # Desktop environment
   programs.xwayland.enable = true;
   programs.hyprland = {
