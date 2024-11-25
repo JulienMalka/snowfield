@@ -22,7 +22,7 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_6_11;
 
   fileSystems."/data" = {
     device = "/dev/disk/by-uuid/4680be45-8156-4bf0-8b0b-e7493aaf37c0";
