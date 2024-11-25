@@ -23,7 +23,10 @@ with lib;
           (map (x: ../../home-manager-modules + "/${x}/default.nix") (
             attrNames (readDir ../../home-manager-modules)
           ))
-          ++ [ "${inputs.impermanence}/home-manager.nix" ];
+          ++ [
+            "${inputs.impermanence}/home-manager.nix"
+            "${inputs.agenix}/modules/age-home.nix"
+          ];
         home.username = "${name}";
         home.homeDirectory = "/home/${name}";
         home.stateVersion = "21.05";
