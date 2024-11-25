@@ -80,7 +80,6 @@
       texlive.combined.scheme-full
       inochi-creator
       inochi-session
-      chromium
       gh
       ouch
       spotify
@@ -91,6 +90,16 @@
       emacsPackages.jinx
       hunspellDicts.en_US
       rstudio
+      forge-sparks
+      citations
+      blanket
+      fragments
+      metadata-cleaner
+      gnome-obfuscate
+      warp
+      tuba
+      resources
+      notify-client
     ];
 
     fonts.fontconfig.enable = true;
@@ -100,6 +109,8 @@
         ".config/gnome-initial-setup-done"
         ".config/monitors.xml"
         ".config/background"
+        ".cert/nm-openvpn/telecom-paris-ca.pem"
+        ".local/share/com.ranfdev.Notify.sqlite"
       ];
       directories = [
         "Pictures"
@@ -111,21 +122,22 @@
         ".local/share/direnv"
         ".local/state/cosmic-comp"
         ".local/share/atuin"
+        ".local/share/firefoxpwa"
         ".config/Signal"
         ".cache/spotify"
         ".config/spotify"
+        ".config/autostart"
+        ".config/borg"
+        ".config/pika-backup"
+        ".config/Element"
         ".step"
         ".emacs.d"
         ".gnupg"
         "Zotero"
         ".config/dconf"
+        ".local/share/keyrings"
       ];
       allowOther = true;
-    };
-
-    programs.firefox = {
-      enable = true;
-      package = pkgs.firefox;
     };
 
     home.keyboard = {
