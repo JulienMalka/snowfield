@@ -108,7 +108,16 @@
     xorg.xinit
     gnomeExtensions.dash-to-dock
     gnomeExtensions.tailscale-status
+    gnomeExtensions.appindicator
+    gnome-tweaks
+    pkgs.firefoxpwa
   ];
+
+  programs.firefox = {
+    enable = true;
+    package = pkgs.firefox;
+    nativeMessagingHosts.packages = [ pkgs.firefoxpwa ];
+  };
 
   environment.persistence."/persistent" = {
     hideMounts = true;
