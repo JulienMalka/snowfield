@@ -18,7 +18,7 @@
 
     programs.emacs = {
       enable = true;
-      package = pkgs.emacs30-pgtk;
+      package = pkgs.emacs30;
       extraPackages = epkgs: [
         epkgs.mu4e
       ];
@@ -69,6 +69,7 @@
       emacsPackages.jinx
       hunspellDicts.en_US
       texlive.combined.scheme-full
+      hledger
     ];
 
     fonts.fontconfig.enable = true;
