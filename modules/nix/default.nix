@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  inputs,
   pkgs,
   ...
 }:
@@ -22,8 +21,8 @@ with lib;
         experimental-features = nix-command flakes
       '';
       nixPath = [
-        "nixpkgs=${inputs.nixpkgs}"
-        "nixos=${inputs.nixpkgs}"
+        "nixpkgs=${config.machine.meta.nixpkgs_version}"
+        "nixos=${config.machine.meta.nixpkgs_version}"
       ];
       settings = {
         builders-use-substitutes = true;
