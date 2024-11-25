@@ -38,9 +38,7 @@
     settingsFile = config.age.secrets."pages-settings-file".path;
   };
 
-  networking.firewall.allowedTCPPorts = [
-    8447
-  ];
+  networking.firewall.allowedTCPPorts = [ 8447 ];
 
   luj.nginx.enable = true;
   services.nginx = {
@@ -51,18 +49,25 @@
 
     defaultListen = [
       {
-        addr = "127.0.0.1";
+        addr = "0.0.0.0";
         port = 8446;
         ssl = true;
         proxyProtocol = true;
       }
       {
         addr = "0.0.0.0";
+        port = 80;
+        ssl = false;
+      }
+      {
+        addr = "[::]";
+        port = 80;
         ssl = false;
       }
     ];
 
     streamConfig = ''
+
       map $ssl_preread_server_name $sni_upstream {
         hostnames;
         default 0.0.0.0:8010;
