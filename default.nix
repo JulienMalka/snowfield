@@ -1,12 +1,6 @@
 let
   inputs = import ./lon.nix;
-  patches = import inputs.nix-patches { patchFile = ./patches; };
-  inputs_final = inputs // {
-    nixpkgs_patched = patches.mkNixpkgsSrc {
-      src = inputs.unstable;
-      version = "nixos-unstable";
-    };
-  };
+  inputs_final = inputs;
   dnsLib = (import inputs.dns).lib;
   lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib inputs_final self.profiles dnsLib);
   mkLibForMachine =

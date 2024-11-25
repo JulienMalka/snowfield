@@ -151,15 +151,6 @@
       "url": "https://github.com/mic92/nix-index-database/archive/f4a5ca5771ba9ca31ad24a62c8d511a405303436.tar.gz",
       "hash": "sha256-AGXhwHdJV0q/WNgqwrR2zriubLr785b02FphaBtyt1Q="
     },
-    "nix-patches": {
-      "type": "Git",
-      "fetchType": "git",
-      "branch": "main",
-      "revision": "b0e5962d93bc6193a65c137d8578c1faa7381480",
-      "url": "https://git.hubrecht.ovh/hubrecht/nix-patches.git",
-      "hash": "sha256-o6Mt6K2wPz9BciWSRvE1sYN9/91opbCMSyGltR5x7FY=",
-      "submodules": false
-    },
     "nixos-anywhere": {
       "type": "GitHub",
       "fetchType": "tarball",
