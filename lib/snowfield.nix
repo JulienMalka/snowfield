@@ -53,7 +53,6 @@
       sshUser = "root";
     };
     pve2 = {
-      subdomains = [ "pve2.luj" ];
       ips = {
         public.ipv4 = "82.67.34.230";
         local.ipv4 = "192.168.1.2";
