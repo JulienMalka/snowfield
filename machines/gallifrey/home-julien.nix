@@ -52,6 +52,14 @@
 
     programs.mu.enable = true;
 
+    programs.emacs = {
+      enable = true;
+      package = pkgs.emacs30;
+      extraPackages = epkgs: [
+        epkgs.mu4e
+      ];
+    };
+
     home.packages = with pkgs; [
       du-dust
       kitty
@@ -102,6 +110,8 @@
       tuba
       resources
       notify-client
+      emacs-lsp-booster
+      pyright
     ];
 
     fonts.fontconfig.enable = true;
@@ -138,6 +148,7 @@
         "Zotero"
         ".config/dconf"
         ".local/share/keyrings"
+        ".cache/mu"
       ];
       allowOther = true;
     };
