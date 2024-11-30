@@ -35,7 +35,13 @@ in
       services.jackett = {
         enable = true;
         # unstable version to have updated torrent list
-        package = pkgs.jackett;
+        package = pkgs.unstable.jackett.overrideAttrs (
+          _: _: {
+            postInstall = ''
+              cp ${./ygg-api.yml} $out/lib/jackett/Definitions/ygg-api.yml
+            '';
+          }
+        );
         inherit (cfg) user group;
       };
     }
