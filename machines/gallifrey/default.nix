@@ -65,10 +65,6 @@
   services.postgresql.enable = true;
 
   programs.dconf.enable = true;
-  services.emacs = {
-    enable = true;
-    package = pkgs.emacs30-pgtk;
-  };
 
   services.udev.packages = [ pkgs.nitrokey-udev-rules ];
 
