@@ -23,7 +23,7 @@
 
     settings = {
       ACME_ACCEPT_TERMS = "true";
-      ACME_EMAIL = "julien@malka.sh";
+      ACME_EMAIL = "acme@malka.sh";
       DNS_PROVIDER = "gandiv5";
       ENABLE_HTTP_SERVER = "false";
       GITEA_ROOT = "https://git.luj.fr";
