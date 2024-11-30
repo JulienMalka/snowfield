@@ -50,7 +50,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
             mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
           });
           # Packages comming from other repositories
-          jackett = pkgs.callPackage ../packages/jackett { };
           lila-build-hook = (import inputs.lila).packages.${system}.utils;
           statelessUptimeKuma =
             pkgs.callPackage "${inputs.stateless-uptime-kuma}/stateless-uptime-kuma.nix"
