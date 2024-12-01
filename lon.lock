@@ -76,10 +76,10 @@
       "fetchType": "tarball",
       "owner": "nix-community",
       "repo": "home-manager",
-      "branch": "release-24.05",
-      "revision": "2f23fa308a7c067e52dfcc30a0758f47043ec176",
-      "url": "https://github.com/nix-community/home-manager/archive/2f23fa308a7c067e52dfcc30a0758f47043ec176.tar.gz",
-      "hash": "sha256-Vl+WVTJwutXkimwGprnEtXc/s/s8sMuXzqXaspIGlwM="
+      "branch": "release-24.11",
+      "revision": "f3111f62a23451114433888902a55cf0692b408d",
+      "url": "https://github.com/nix-community/home-manager/archive/f3111f62a23451114433888902a55cf0692b408d.tar.gz",
+      "hash": "sha256-T1e5oceypZu3Q8vzICjv1X/sGs9XfJRMW5OuXHgpB3c="
     },
     "home-manager-unstable": {
       "type": "GitHub",
@@ -166,10 +166,10 @@
       "fetchType": "tarball",
       "owner": "nixos",
       "repo": "nixpkgs",
-      "branch": "nixos-24.05",
-      "revision": "e8c38b73aeb218e27163376a2d617e61a2ad9b59",
-      "url": "https://github.com/nixos/nixpkgs/archive/e8c38b73aeb218e27163376a2d617e61a2ad9b59.tar.gz",
-      "hash": "sha256-df3dJApLPhd11AlueuoN0Q4fHo/hagP75LlM5K1sz9g="
+      "branch": "nixos-24.11",
+      "revision": "62c435d93bf046a5396f3016472e8f7c8e2aed65",
+      "url": "https://github.com/nixos/nixpkgs/archive/62c435d93bf046a5396f3016472e8f7c8e2aed65.tar.gz",
+      "hash": "sha256-F7thesZPvAMSwjRu0K8uFshTk3ZZSNAsXTIFvXBT+34="
     },
     "stateless-uptime-kuma": {
       "type": "Git",
