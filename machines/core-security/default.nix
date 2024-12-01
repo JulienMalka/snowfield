@@ -67,8 +67,8 @@
       hostname = "auth.julienmalka.me";
       hostname-admin-url = "https://auth.julienmalka.me";
       http-port = 8080;
-      hostname-strict-backchannel = true;
-      proxy = "edge";
+      hostname-backchannel-dynamic = true;
+      proxy-headers = "forwarded";
     };
     themes = {
       keywind = pkgs.keycloak-keywind;
