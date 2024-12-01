@@ -38,7 +38,7 @@
   luj.nginx.enable = true;
 
   services.mysql.enable = true;
-  services.mysql.package = pkgs.mysql;
+  services.mysql.package = pkgs.mariadb;
   services.nextcloud = {
     enable = true;
     package = pkgs.nextcloud29;
