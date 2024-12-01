@@ -33,7 +33,7 @@
   systemd.network.networks."10-wan" = {
     matchConfig.Name = "enp0s3";
     DHCP = "ipv4";
-    addresses = [ { addressConfig.Address = "2603:c027:c001:89aa:aad9:34b3:f3c9:924f"; } ];
+    addresses = [ { Address = "2603:c027:c001:89aa:aad9:34b3:f3c9:924f"; } ];
     linkConfig.RequiredForOnline = "routable";
   };
 
