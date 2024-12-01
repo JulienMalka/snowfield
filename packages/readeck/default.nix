@@ -77,4 +77,6 @@ buildGoModule rec {
 
   vendorHash = "sha256-U1vMIig2/mncH07o1AZ2mUor5lq5WmNsfY/X2GbSGQA=";
 
+  meta.mainProgram = "readeck";
+
 }

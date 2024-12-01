@@ -59,12 +59,10 @@
       };
       wireguardPeers = [
         {
-          wireguardPeerConfig = {
-            PublicKey = "oYsN1Qy+a7dwVOKapN5s5KJOmhSflLHZqh+GLMeNpHw=";
-            AllowedIPs = [ "0.0.0.0/0" ];
-            Endpoint = "[${lib.snowfield.akhaten.ips.public.ipv6}]:51821";
-            PersistentKeepalive = 25;
-          };
+          PublicKey = "oYsN1Qy+a7dwVOKapN5s5KJOmhSflLHZqh+GLMeNpHw=";
+          AllowedIPs = [ "0.0.0.0/0" ];
+          Endpoint = "[${lib.snowfield.akhaten.ips.public.ipv6}]:51821";
+          PersistentKeepalive = 25;
         }
       ];
     };
@@ -73,16 +71,14 @@
     matchConfig.Name = "wg0";
     addresses = [
       {
-        addressConfig.Address = "10.100.45.2/24";
-        addressConfig.AddPrefixRoute = false;
+        Address = "10.100.45.2/24";
+        AddPrefixRoute = false;
       }
     ];
     routes = [
       {
-        routeConfig = {
-          Gateway = "10.100.45.1";
-          Destination = "10.100.45.0/24";
-        };
+        Gateway = "10.100.45.1";
+        Destination = "10.100.45.0/24";
       }
     ];
     DHCP = "no";

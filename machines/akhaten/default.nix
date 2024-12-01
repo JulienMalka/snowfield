@@ -58,10 +58,8 @@
         ];
         routes = [
           {
-            routeConfig = {
-              Gateway = "163.172.91.1";
-              Destination = "0.0.0.0/0";
-            };
+            Gateway = "163.172.91.1";
+            Destination = "0.0.0.0/0";
           }
         ];
         dhcpV6Config = {
