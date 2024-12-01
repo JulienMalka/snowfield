@@ -41,7 +41,7 @@
   services.mysql.package = pkgs.mariadb;
   services.nextcloud = {
     enable = true;
-    package = pkgs.nextcloud29;
+    package = pkgs.nextcloud30;
     https = true;
     hostName = "nuage.malka.family";
     settings.overwriteProtocol = "https";
