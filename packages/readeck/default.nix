@@ -28,14 +28,14 @@ in
 buildGoModule rec {
 
   pname = "readeck";
-  version = "0.15.4";
+  version = "0.16.0";
 
   src = fetchFromGitea {
     domain = "codeberg.org";
     owner = "readeck";
     repo = "readeck";
     rev = version;
-    hash = "sha256-GqpCIxwaS0OBKEgd3ByGDeg5ZkSZFusg7dFPOZpQYtI=";
+    hash = "sha256-jRfB7OqE6N8AdXojEn0bYfSScOa8Mpr0s4YtqcQ8V6U=";
   };
 
   nativeBuildInputs = [
@@ -72,10 +72,10 @@ buildGoModule rec {
 
   npmDeps = fetchNpmDeps {
     src = "${src}/web";
-    hash = "sha256-zqaiAChUdkzeoDjbGJ57tFsAiawU50G6KQEJgrcM3OA=";
+    hash = "sha256-D9G1m8nChHNAlLKfhph4gJoV8aKA2le0dZtDHobotlU=";
   };
 
-  vendorHash = "sha256-U1vMIig2/mncH07o1AZ2mUor5lq5WmNsfY/X2GbSGQA=";
+  vendorHash = "sha256-RaIcXplmtcgKndRlt0HDG/lfBPtvbLpkPdj7UEqG5ys=";
 
   meta.mainProgram = "readeck";
 
