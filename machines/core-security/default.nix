@@ -67,7 +67,6 @@
       hostname = "https://auth.julienmalka.me";
       hostname-admin-url = "https://auth.julienmalka.me";
       http-port = 8080;
-      hostname-backchannel-dynamic = true;
       proxy-headers = "forwarded";
       http-enabled = true;
     };
