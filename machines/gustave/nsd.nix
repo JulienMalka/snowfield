@@ -100,6 +100,10 @@ lib.mkMerge [
 
     networking.firewall.allowedUDPPorts = [ 53 ];
 
+    machine.meta.zones."luj.fr".A = [ config.machine.meta.ips.public.ipv4 ];
+    machine.meta.zones."luj.fr".AAAA = [ config.machine.meta.ips.public.ipv6 ];
+    machine.meta.zones."luj.fr".TXT = [ "homepage.luj.luj-static.page" ];
+
   }
 
   # DNS Records from all non local configurations are exported here

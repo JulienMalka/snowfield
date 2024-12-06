@@ -14,11 +14,13 @@
         domain = "codeberg.org";
         owner = "Codeberg";
         repo = "pages-server";
-        rev = "831ce3d913015e856351dc4d3fc983ada826ef7e";
-        hash = "sha256-Ti9sOppHOaUU72A7Bxyfu4phJUed4m/5e9RyjmVino0=";
+        rev = "044c684a47853af53c660e454328348a49277c9c";
+        hash = "sha256-FZmz4pSSa+d9UGUZuK6ROktsoDtYL8xBl0eRtr/BAD0=";
       };
-      patches = [ ./proxy-protocol.patch ];
-      vendorHash = "sha256-NHrohvZL7ie29xWpY3bO1BVWrqUywwaKAucZAwvEWto=";
+      vendorHash = "sha256-Zs900VVd9jZIoeVFv2SqD97hbTqv2JqroDUz8G3XbY0=";
+      patches = [
+        ./update-lego.patch
+      ];
     });
 
     settings = {
@@ -31,14 +33,16 @@
       PAGES_DOMAIN = "luj-static.page";
       RAW_DOMAIN = "raw.luj-static.page";
       PAGES_BRANCHES = "pages,main,master";
-      LOG_LEVEL = "trace";
       USE_PROXY_PROTOCOL = "true";
     };
 
     settingsFile = config.age.secrets."pages-settings-file".path;
   };
 
-  networking.firewall.allowedTCPPorts = [ 8447 ];
+  networking.firewall.allowedTCPPorts = [
+    444
+    8010
+  ];
 
   luj.nginx.enable = true;
   services.nginx = {
@@ -49,29 +53,33 @@
 
     defaultListen = [
       {
-        addr = "0.0.0.0";
-        port = 8446;
+        addr = "[::]";
+        port = 444;
         ssl = true;
         proxyProtocol = true;
-      }
-      {
-        addr = "0.0.0.0";
-        port = 80;
-        ssl = false;
       }
       {
         addr = "[::]";
         port = 80;
         ssl = false;
       }
+      {
+        addr = config.machine.meta.ips.vpn.ipv4;
+        port = 443;
+        ssl = true;
+      }
+      {
+        addr = config.machine.meta.ips.vpn.ipv4;
+        port = 80;
+        ssl = false;
+      }
     ];
 
     streamConfig = ''
-
       map $ssl_preread_server_name $sni_upstream {
         hostnames;
-        default 0.0.0.0:8010;
-      ${lib.concatMapStringsSep "\n" (vhost: "  ${vhost} 0.0.0.0:8446;") (
+        default [::]:8010;
+      ${lib.concatMapStringsSep "\n" (vhost: "  ${vhost} [::0]:444;") (
         lib.filter (e: e != "default") (lib.attrNames config.services.nginx.virtualHosts)
       )}
       }
@@ -83,14 +91,8 @@
         proxy_protocol on;
       }
 
-      server {
-        listen [::]:8447;
-        proxy_pass 0.0.0.0:8010;
-      }
-
     '';
 
-    defaultSSLListenPort = 8446;
-
   };
+
 }
