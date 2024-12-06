@@ -13,6 +13,7 @@
     ./borg.nix
     ./pages.nix
     ./readeck.nix
+    ./plausible.nix
   ];
 
   machine.meta = {

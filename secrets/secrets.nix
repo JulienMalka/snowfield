@@ -136,4 +136,16 @@ in
     gallifrey_home
     fisher_home
   ];
+
+  "plausible-keybase-secret.age".publicKeys = [
+    tower
+    gallifrey
+    gustave
+  ];
+  "plausible-password.age".publicKeys = [
+    tower
+    gallifrey
+    gustave
+  ];
+
 }
