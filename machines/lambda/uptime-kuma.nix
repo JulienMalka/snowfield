@@ -1,9 +1,13 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  config,
+  ...
+}:
 {
 
   services.uptime-kuma = {
     enable = true;
-    package = pkgs.unstable.uptime-kuma;
+    package = pkgs.uptime-kuma-beta;
     settings = {
       NODE_EXTRA_CA_CERTS = "/etc/ssl/certs/ca-certificates.crt";
     };
@@ -37,7 +41,10 @@
       };
     };
 
-    extraFlags = [ "-s" ];
+    extraFlags = [
+      "-s"
+      "-v DEBUG"
+    ];
 
     host = "http://localhost:${builtins.toString 3001}/";
     username = "Julien";
