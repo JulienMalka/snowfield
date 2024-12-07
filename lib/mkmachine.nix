@@ -37,7 +37,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.impermanence}/nixos.nix")
     (import inputs.lanzaboote).nixosModules.lanzaboote
     (import inputs.lila).nixosModules.hash-collection
-    (import "${inputs.arkheon}/module.nix")
     (import "${inputs.stateless-uptime-kuma}/nixos/module.nix")
     {
       home-manager.useGlobalPkgs = true;
