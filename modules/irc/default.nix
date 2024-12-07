@@ -2,7 +2,7 @@
 with lib;
 let
   cfg = config.luj.irc;
-  port = 9000;
+  port = 8349;
 in
 {
 
@@ -19,6 +19,7 @@ in
   config = mkIf cfg.enable (mkMerge [
     {
       services.thelounge = {
+        inherit port;
         enable = true;
         public = false;
         extraConfig.fileUpload.enable = true;
