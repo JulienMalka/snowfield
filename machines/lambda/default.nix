@@ -9,7 +9,6 @@
   imports = [
     ./hardware.nix
     ./home-julien.nix
-    ./arkheon.nix
     ./uptime-kuma.nix
   ];
 

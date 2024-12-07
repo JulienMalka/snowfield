@@ -11,16 +11,6 @@
       "url": "https://github.com/ryantm/agenix/archive/f6291c5935fdc4e0bef208cfc0dcab7e3f7a1c41.tar.gz",
       "hash": "sha256-b+uqzj+Wa6xgMS9aNbX4I+sXeb5biPDi39VgvSFqFvU="
     },
-    "arkheon": {
-      "type": "GitHub",
-      "fetchType": "tarball",
-      "owner": "raitobezarius",
-      "repo": "arkheon",
-      "branch": "main",
-      "revision": "113724a1a206905e68319676f73d095fcc043a42",
-      "url": "https://github.com/raitobezarius/arkheon/archive/113724a1a206905e68319676f73d095fcc043a42.tar.gz",
-      "hash": "sha256-+BkuEBvFcLRsIe3FoHojRvXeyOS+n3dxPOafBgR4CHo="
-    },
     "buildbot-nix": {
       "type": "GitHub",
       "fetchType": "tarball",
