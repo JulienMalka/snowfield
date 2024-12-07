@@ -59,6 +59,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           hydrasect = prev.pkgs.callPackage ../packages/hydrasect { };
           codeberg-pages-custom = prev.pkgs.callPackage ../packages/codeberg-pages-custom { };
           readeck = prev.pkgs.callPackage ../packages/readeck { };
+          uptime-kuma-beta = prev.pkgs.callPackage ../packages/uptime-kuma-beta { };
         })
 
         (
