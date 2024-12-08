@@ -59,6 +59,39 @@ in
               '';
 
               systemConfig = _: {
+                statelessUptimeKuma.probesConfig.monitors = lib.mkIf (name != "default") {
+                  "${name} - IPv4" = {
+                    url = "https://${
+                      if (hasSuffix "luj" name) then
+                        config.machine.meta.ips.vpn.ipv4
+                      else
+                        config.machine.meta.ips.public.ipv4
+                    }";
+                    type = "http";
+                    accepted_statuscodes = [ "200-299" ];
+                    headers = ''
+                      {
+                        "Host": "${name}"
+                      }
+                    '';
+                  };
+                  "${name} - IPv6" = {
+                    url = "https://[${
+                      if (hasSuffix "luj" name) then
+                        config.machine.meta.ips.vpn.ipv6
+                      else
+                        config.machine.meta.ips.public.ipv6
+                    }]";
+                    type = "http";
+                    accepted_statuscodes = [ "200-299" ];
+                    headers = ''
+                      {
+                        "Host": "${name}"
+                      }
+                    '';
+
+                  };
+                };
                 security.acme.certs = lib.optionalAttrs (hasSuffix "luj" name) {
                   "${name}".server = lib.mkIf (hasSuffix "luj" name) "https://ca.luj/acme/acme/directory";
                 };
@@ -134,6 +167,7 @@ in
     ];
 
     machine = mergeSub (c: c.machine);
+    statelessUptimeKuma = mergeSub (c: c.statelessUptimeKuma);
 
   };
 }

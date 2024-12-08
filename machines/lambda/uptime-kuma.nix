@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  inputs,
   ...
 }:
 {
@@ -23,24 +24,12 @@
   };
 
   age.secrets."stateless-uptime-kuma-password".file = ../../secrets/stateless-uptime-kuma-password.age;
+  nixpkgs.overlays = [
+    (import "${inputs.stateless-uptime-kuma}/overlay.nix")
+  ];
+
   statelessUptimeKuma = {
     enableService = true;
-    probesConfig = {
-      monitors = {
-        "mdr" = {
-          url = "https://82.67.34.230";
-          keyword = "Ulm";
-          type = "keyword";
-          accepted_statuscodes = [ "200-299" ];
-          headers = ''
-            {
-              "Host": "julienmalka.me"
-            }
-          '';
-        };
-      };
-    };
-
     extraFlags = [
       "-s"
       "-v DEBUG"
