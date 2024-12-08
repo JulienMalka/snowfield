@@ -50,9 +50,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           });
           # Packages comming from other repositories
           lila-build-hook = (import inputs.lila).packages.${system}.utils;
-          statelessUptimeKuma =
-            pkgs.callPackage "${inputs.stateless-uptime-kuma}/stateless-uptime-kuma.nix"
-              { };
           # My own packages
           keycloak-keywind = prev.pkgs.callPackage ../packages/keycloak-keywind { };
           hydrasect = prev.pkgs.callPackage ../packages/hydrasect { };
