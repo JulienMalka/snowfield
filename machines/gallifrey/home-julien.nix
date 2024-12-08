@@ -112,6 +112,7 @@
       notify-client
       emacs-lsp-booster
       pyright
+      nixfmt-rfc-style
     ];
 
     fonts.fontconfig.enable = true;
