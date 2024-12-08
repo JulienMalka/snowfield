@@ -32,7 +32,6 @@ with lib;
     };
 
     programs.mbsync.enable = true;
-    programs.mbsync.package = pkgs.stable.isync;
     programs.msmtp.enable = true;
     accounts.email = {
       accounts.ens = {
