@@ -157,6 +157,8 @@
     MaxAuthTries 20
   '';
 
+  virtualisation.docker.enable = true;
+
   services.zerotierone = {
     enable = true;
     joinNetworks = [

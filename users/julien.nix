@@ -14,6 +14,7 @@
       "pipewire"
       "dialout"
       "video"
+      "docker"
     ];
     shell = pkgs.fish;
     hashedPasswordFile = config.age.secrets.julien-password.path;
