@@ -68,8 +68,13 @@
       scli
       emacsPackages.jinx
       hunspellDicts.en_US
+      hunspellDicts.fr-moderne
       texlive.combined.scheme-full
       hledger
+      emacs-lsp-booster
+      pkgs.stable.pyright
+      unstable.nixd
+      unstable.nixfmt-rfc-style
     ];
 
     fonts.fontconfig.enable = true;

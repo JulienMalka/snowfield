@@ -49,7 +49,7 @@
 
   environment.systemPackages = with pkgs; [
     neovim
-    attic-client
+    #attic-client
     kitty
     tailscale
     step-cli
