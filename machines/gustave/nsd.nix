@@ -99,6 +99,7 @@ lib.mkMerge [
     '';
 
     networking.firewall.allowedUDPPorts = [ 53 ];
+    networking.firewall.allowedTCPPorts = [ 53 ];
 
     machine.meta.zones."luj.fr".A = [ config.machine.meta.ips.public.ipv4 ];
     machine.meta.zones."luj.fr".AAAA = [ config.machine.meta.ips.public.ipv6 ];
