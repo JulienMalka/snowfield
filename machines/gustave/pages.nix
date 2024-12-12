@@ -31,12 +31,13 @@ in
       ACME_EMAIL = "acme@malka.sh";
       DNS_PROVIDER = "gandiv5";
       ENABLE_HTTP_SERVER = "false";
-      GITEA_ROOT = "https://git.luj.fr";
+      GITEA_ROOT = "http://127.0.0.1:3000";
       PORT = "8010";
       PAGES_DOMAIN = "luj-static.page";
       RAW_DOMAIN = "raw.luj-static.page";
       PAGES_BRANCHES = "pages,main,master";
       USE_PROXY_PROTOCOL = "true";
+      LOG_LEVEL = "trace";
     };
 
     settingsFile = config.age.secrets."pages-settings-file".path;
