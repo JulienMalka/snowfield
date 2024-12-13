@@ -145,7 +145,7 @@
   luj.mediaserver = {
     enable = true;
     tv.enable = true;
-    music.enable = true;
+    music.enable = false;
   };
   luj.deluge.interface = "wg0";
 
