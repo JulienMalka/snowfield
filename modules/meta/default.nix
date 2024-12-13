@@ -1,4 +1,9 @@
-{ lib, profiles, ... }:
+{
+  pkgs,
+  lib,
+  profiles,
+  ...
+}:
 {
   options.machine.meta = lib.mkOption {
     description = "Machine metadata";
@@ -36,6 +41,11 @@
             profiles = mkOption {
               description = "profiles applied to the machine";
               default = with profiles; [ base ];
+            };
+
+            monitors = mkOption {
+              default = { };
+              type = types.attrsOf (pkgs.formats.json { }).type;
             };
 
             defaultInterface = mkOption {

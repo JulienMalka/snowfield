@@ -133,6 +133,9 @@
     root = "/home/gitlab-runner/artifacts";
   };
 
+  machine.meta.monitors."phd.julienmalka.me - IPv4".accepted_statuscodes = [ "401" ];
+  machine.meta.monitors."phd.julienmalka.me - IPv6".accepted_statuscodes = [ "401" ];
+
   systemd.services.nginx.serviceConfig.ProtectHome = "read-only";
   systemd.services.nginx.serviceConfig.ReadWritePaths = [ "/home/gitlab-runner/artifacts" ];
 
