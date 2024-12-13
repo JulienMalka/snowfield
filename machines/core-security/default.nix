@@ -121,6 +121,9 @@
 
   security.acme.certs."ca.luj".server = lib.mkForce "https://127.0.0.1:8444/acme/acme/directory";
 
+  machine.meta.monitors."ca.luj - IPv4".url = lib.mkForce "https://100.100.45.14/health";
+  machine.meta.monitors."ca.luj - IPv6".url = lib.mkForce "https://[fd7a:115c:a1e0::e]/health";
+
   systemd.services."step-ca".after = [ "keycloak.service" ];
 
   # TODO: Remove when keycloak is update in stable channel

@@ -59,7 +59,7 @@ in
               '';
 
               systemConfig = _: {
-                statelessUptimeKuma.probesConfig.monitors = lib.mkIf (name != "default") {
+                machine.meta.monitors = lib.mkIf (name != "default") {
                   "${name} - IPv4" = {
                     url = "https://${
                       if (hasSuffix "luj" name) then
@@ -167,7 +167,6 @@ in
     ];
 
     machine = mergeSub (c: c.machine);
-    statelessUptimeKuma = mergeSub (c: c.statelessUptimeKuma);
 
   };
 }

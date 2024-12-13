@@ -1,9 +1,17 @@
 {
   pkgs,
+  lib,
+  nixosConfigurations,
   config,
   inputs,
   ...
 }:
+let
+
+  probesFromConfig = lib.mkMerge (
+    lib.mapAttrsToList (_: value: value.config.machine.meta.monitors) nixosConfigurations
+  );
+in
 {
 
   services.uptime-kuma = {
@@ -30,6 +38,7 @@
 
   statelessUptimeKuma = {
     enableService = true;
+    probesConfig.monitors = probesFromConfig;
     extraFlags = [
       "-s"
       "-v DEBUG"
