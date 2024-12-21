@@ -5,6 +5,7 @@ let
   agenix = pkgs.callPackage "${inputs.agenix}/pkgs/agenix.nix" { };
   bootstrap = pkgs.callPackage scripts/bootstrap-machine.nix { inherit nixos-anywhere; };
   lon = pkgs.callPackage "${inputs.lon}/nix/packages/lon.nix" { };
+  nixmoxer = pkgs.callPackage "${inputs.proxmox}/pkgs/nixmoxer" { };
   pre-commit-hook =
     (import (
       pkgs.applyPatches {
@@ -40,6 +41,7 @@ pkgs.mkShell {
     bootstrap
     pkgs.statix
     lon
+    nixmoxer
   ];
   shellHook = ''
     ${pre-commit-hook.shellHook}

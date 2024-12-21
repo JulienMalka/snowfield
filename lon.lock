@@ -161,6 +161,16 @@
       "url": "https://github.com/nixos/nixpkgs/archive/b47fd6fa00c6afca88b8ee46cfdb00e104f50bca.tar.gz",
       "hash": "sha256-nbG9TijTMcfr+au7ZVbKpAhMJzzE2nQBYmRvSdXUD8g="
     },
+    "proxmox": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "saumonnet",
+      "repo": "proxmox-nixos",
+      "branch": "main",
+      "revision": "15187a4c4ac50d1a38c734f72dd201a7eb504a89",
+      "url": "https://github.com/saumonnet/proxmox-nixos/archive/15187a4c4ac50d1a38c734f72dd201a7eb504a89.tar.gz",
+      "hash": "sha256-wh2piKI2vfwQXmeSVX3ZDdxg6ChUQ1YolG4Cn4r6nuk="
+    },
     "stateless-uptime-kuma": {
       "type": "Git",
       "fetchType": "git",
