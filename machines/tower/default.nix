@@ -39,8 +39,6 @@
 
   networking.useNetworkd = true;
 
-  time.timeZone = "Europe/Paris";
-
   luj.buildbot.enable = true;
   luj.nginx.enable = true;
 

@@ -61,8 +61,6 @@
   networking.networkmanager.dns = "systemd-resolved";
   services.resolved.enable = true;
 
-  time.timeZone = "Europe/Paris";
-
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
