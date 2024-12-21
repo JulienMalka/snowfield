@@ -157,9 +157,9 @@
       "owner": "nixos",
       "repo": "nixpkgs",
       "branch": "nixos-24.11",
-      "revision": "62c435d93bf046a5396f3016472e8f7c8e2aed65",
-      "url": "https://github.com/nixos/nixpkgs/archive/62c435d93bf046a5396f3016472e8f7c8e2aed65.tar.gz",
-      "hash": "sha256-F7thesZPvAMSwjRu0K8uFshTk3ZZSNAsXTIFvXBT+34="
+      "revision": "b47fd6fa00c6afca88b8ee46cfdb00e104f50bca",
+      "url": "https://github.com/nixos/nixpkgs/archive/b47fd6fa00c6afca88b8ee46cfdb00e104f50bca.tar.gz",
+      "hash": "sha256-nbG9TijTMcfr+au7ZVbKpAhMJzzE2nQBYmRvSdXUD8g="
     },
     "stateless-uptime-kuma": {
       "type": "Git",
