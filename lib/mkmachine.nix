@@ -38,6 +38,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import inputs.lanzaboote).nixosModules.lanzaboote
     (import inputs.lila).nixosModules.hash-collection
     (import "${inputs.stateless-uptime-kuma}/nixos/module.nix")
+    (import "${inputs.proxmox}/modules/declarative-vms")
     {
       home-manager.useGlobalPkgs = true;
       nixpkgs.system = system;
