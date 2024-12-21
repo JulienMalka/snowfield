@@ -12,6 +12,7 @@ let
   gallifrey_home = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMAa0wll9ildhgPiV0DhgJXXtw3TQr5VkNxxxPspHSbX julien@gallifrey";
   fisher_home = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIADCpuBL/kSZShtXD6p/Nq9ok4w1DnlSoxToYgdOvUqo julien@telecom";
   akhaten = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII5W1rr+VW2TLLytoTExWg4T14lrdLFkSM4YLfbEIb2g";
+  biblios = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF5//9IlSSuES0xVsqqOwpotfcajgXL0AtcySpoZ8OLJ";
   servers = [
     gustave
     tower
@@ -21,6 +22,7 @@ let
     core-data
     nuage
     akhaten
+    biblios
   ];
   all = servers ++ [
     x2100
@@ -146,6 +148,12 @@ in
     tower
     gallifrey
     gustave
+  ];
+
+  "garage-env-file.age".publicKeys = [
+    tower
+    gallifrey
+    biblios
   ];
 
 }
