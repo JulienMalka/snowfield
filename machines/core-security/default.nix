@@ -11,6 +11,7 @@
   imports = [
     ./hardware.nix
     ./home-julien.nix
+    ./kanidm.nix
   ];
 
   machine.meta = {
