@@ -156,4 +156,16 @@ in
     biblios
   ];
 
+  "nextcloud-admin-password.age".publicKeys = [
+    tower
+    gallifrey
+    gustave
+  ];
+
+  "nextcloud-s3-token.age".publicKeys = [
+    tower
+    gallifrey
+    gustave
+  ];
+
 }
