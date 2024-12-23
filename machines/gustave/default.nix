@@ -14,6 +14,7 @@
     ./pages.nix
     ./readeck.nix
     ./plausible.nix
+    ./nextcloud.nix
   ];
 
   machine.meta = {
