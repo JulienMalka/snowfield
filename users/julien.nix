@@ -18,6 +18,7 @@
     ];
     shell = pkgs.fish;
     hashedPasswordFile = config.age.secrets.julien-password.path;
+    openssh.authorizedPrincipals = [ "julien" ];
   };
 
   nix.settings.allowed-users = [ "julien" ];

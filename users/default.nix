@@ -20,6 +20,7 @@
     shell = lib.mkForce config.users.defaultUserShell;
     group = "root";
     hashedPasswordFile = config.age.secrets.user-root-password.path;
+    openssh.authorizedPrincipals = [ "julien_root" ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGa+7n7kNzb86pTqaMn554KiPrkHRGeTJ0asY1NjSbpr julien@tower"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMAa0wll9ildhgPiV0DhgJXXtw3TQr5VkNxxxPspHSbX julien@gallifrey"
