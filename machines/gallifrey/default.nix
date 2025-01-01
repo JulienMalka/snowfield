@@ -32,6 +32,30 @@
   services.resolved.enable = true;
   #services.userborn.enable = true;
 
+  networking.interfaces.eno1.wakeOnLan.enable = true;
+  boot.kernelParams = [
+    #   # See <https://www.kernel.org/doc/Documentation/filesystems/nfs/nfsroot.txt> for docs on this
+    #   # ip=<client-ip>:<server-ip>:<gw-ip>:<netmask>:<hostname>:<device>:<autoconf>:<dns0-ip>:<dns1-ip>:<ntp0-ip>
+    #   # The server ip refers to the NFS server -- we don't need it.
+    #   # "ip=${ipv4.address}::${ipv4.gateway}:${ipv4.netmask}:${hostName}-initrd:${networkInterface}:off:1.1.1.1"
+    ## initrd luks_remote_unlock
+    "ip=192.168.4.10::192.168.0.1:255.255.248.0:gallifrey-initrd:eno1:none"
+  ];
+
+  boot.initrd.kernelModules = [
+    "r8169"
+  ];
+
+  boot.initrd.network = {
+    enable = true;
+    ssh = {
+      enable = true;
+      port = 2222;
+      authorizedKeys = config.users.users.root.openssh.authorizedKeys.keys;
+      hostKeys = [ "/persistent/initrd/ssh_host_ed25519_key" ];
+    };
+  };
+
   security.pam.loginLimits = [
     {
       domain = "*";
