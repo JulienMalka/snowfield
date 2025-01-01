@@ -117,7 +117,7 @@ lib.mkMerge [
         '';
       };
       "luj.fr - IPv6" = {
-        url = "https://${config.machine.meta.ips.public.ipv6}";
+        url = "https://[${config.machine.meta.ips.public.ipv6}]";
         type = "http";
         accepted_statuscodes = [ "200-299" ];
         headers = ''
