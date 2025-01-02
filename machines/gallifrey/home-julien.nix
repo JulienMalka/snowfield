@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
 
   luj.hmgr.julien = {
@@ -60,60 +60,62 @@
       ];
     };
 
-    home.packages = with pkgs; [
-      du-dust
-      kitty
-      jq
-      lazygit
-      fira-code
-      feh
-      meld
-      nerdfonts
-      jetbrains-mono
-      cantarell-fonts
-      unstable.nixd
-      libreoffice
-      signal-desktop
-      font-awesome
-      nodejs
-      htop
-      evince
-      mosh
-      flameshot
-      kitty
-      networkmanagerapplet
-      element-desktop
-      xdg-utils
-      step-cli
-      scli
-      jftui
-      texlive.combined.scheme-full
-      inochi-creator
-      inochi-session
-      gh
-      ouch
-      spotify
-      nautilus
-      pika-backup
-      mpv
-      zotero
-      emacsPackages.jinx
-      hunspellDicts.en_US
-      rstudio
-      forge-sparks
-      citations
-      blanket
-      fragments
-      metadata-cleaner
-      gnome-obfuscate
-      warp
-      tuba
-      resources
-      notify-client
-      emacs-lsp-booster
-      pyright
-      nixfmt-rfc-style
-    ];
+    home.packages =
+      with pkgs;
+      [
+        du-dust
+        kitty
+        jq
+        lazygit
+        fira-code
+        feh
+        meld
+        jetbrains-mono
+        cantarell-fonts
+        unstable.nixd
+        libreoffice
+        signal-desktop
+        font-awesome
+        nodejs
+        htop
+        evince
+        mosh
+        flameshot
+        kitty
+        networkmanagerapplet
+        element-desktop
+        xdg-utils
+        step-cli
+        scli
+        jftui
+        texlive.combined.scheme-full
+        inochi-creator
+        inochi-session
+        gh
+        ouch
+        spotify
+        nautilus
+        pika-backup
+        mpv
+        zotero
+        emacsPackages.jinx
+        hunspellDicts.en_US
+        rstudio
+        forge-sparks
+        citations
+        blanket
+        fragments
+        metadata-cleaner
+        gnome-obfuscate
+        warp
+        tuba
+        resources
+        notify-client
+        emacs-lsp-booster
+        pyright
+        nixfmt-rfc-style
+      ]
+      ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
 
     fonts.fontconfig.enable = true;
 
@@ -150,6 +152,7 @@
         ".config/dconf"
         ".local/share/keyrings"
         ".cache/mu"
+        "Maildir"
       ];
       allowOther = true;
     };

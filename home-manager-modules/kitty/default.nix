@@ -26,7 +26,7 @@ with lib;
       };
       font = {
         name = "FiraCode Nerd Font Mono Reg";
-        package = with pkgs; (nerdfonts.override { fonts = [ "FiraCode" ]; });
+        package = pkgs.nerd-fonts.fira-code;
       };
       themeFile = "Catppuccin-Mocha";
 
