@@ -35,7 +35,7 @@ in
     {
       services.sonarr = {
         enable = true;
-        package = pkgs.unstable.sonarr;
+        package = pkgs.sonarr;
         inherit (cfg) user group;
       };
     }
