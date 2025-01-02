@@ -57,7 +57,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           codeberg-pages-custom = prev.pkgs.callPackage ../packages/codeberg-pages-custom { };
           readeck = prev.pkgs.callPackage ../packages/readeck { };
           uptime-kuma-beta = prev.pkgs.callPackage ../packages/uptime-kuma-beta { };
-          isync = prev.pkgs.callPackage ../packages/isync { };
         })
 
         (
