@@ -48,6 +48,11 @@
 
   disko = import ./disko.nix;
 
+  nixpkgs.config.permittedInsecurePackages = [
+    "dotnet-sdk-6.0.428"
+    "aspnetcore-runtime-6.0.36"
+  ];
+
   systemd.network.netdevs = {
     "20-wg0" = {
       netdevConfig = {

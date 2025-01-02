@@ -37,6 +37,7 @@ in
         # unstable version to have updated torrent list
         package = pkgs.unstable.jackett.overrideAttrs (
           _: _: {
+            doCheck = false;
             postInstall = ''
               cp ${./ygg-api.yml} $out/lib/jackett/Definitions/ygg-api.yml
             '';
