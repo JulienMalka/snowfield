@@ -168,4 +168,10 @@ in
     gustave
   ];
 
+  "mastodon-env.age".publicKeys = [
+    tower
+    gallifrey
+    gustave
+  ];
+
 }
