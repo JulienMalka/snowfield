@@ -15,6 +15,7 @@
     ./readeck.nix
     ./plausible.nix
     ./nextcloud.nix
+    ./glance.nix
     ./mastodon.nix
   ];
 
