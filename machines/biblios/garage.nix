@@ -21,6 +21,12 @@ in
         api_bind_addr = "[::]:3900";
         root_domain = ".${api_domain}";
       };
+      s3_web = {
+        bind_addr = "127.0.0.1:3902";
+        root_domain = ".cdn.luj.fr";
+        index = "index.html";
+      };
+
       rpc_bind_addr = "[::]:3901";
       rpc_public_addr = "127.0.0.1:3901";
 
@@ -43,4 +49,23 @@ in
       '';
     };
   };
+
+  services.nginx.virtualHosts."cdn.luj.fr" = {
+    enableACME = true;
+    forceSSL = true;
+    serverAliases = [ "cdn.social.luj.fr" ];
+    locations."/".extraConfig = ''
+      proxy_pass http://127.0.0.1:3902;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $host;
+    '';
+  };
+
+  machine.meta.zones."luj.fr".subdomains."social".subdomains."cdn".A = [
+    config.machine.meta.ips.public.ipv4
+  ];
+  machine.meta.zones."luj.fr".subdomains."social".subdomains."cdn".AAAA = [
+    config.machine.meta.ips.public.ipv6
+  ];
+
 }
