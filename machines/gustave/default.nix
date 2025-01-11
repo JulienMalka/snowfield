@@ -11,7 +11,8 @@
     ./home-julien.nix
     ./nsd.nix
     ./borg.nix
-    ./pages.nix
+    # Performance is not as good as we expected, wait for pages v3
+    #    ./pages.nix
     ./readeck.nix
     ./plausible.nix
     ./nextcloud.nix
@@ -25,6 +26,7 @@
     profiles = with profiles; [
       vm-simple-network
       server
+      behind-sniproxy
     ];
     ips = {
       public.ipv4 = "82.67.34.230";

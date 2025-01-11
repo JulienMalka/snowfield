@@ -53,7 +53,7 @@ in
   services.nginx.virtualHosts."cdn.luj.fr" = {
     enableACME = true;
     forceSSL = true;
-    serverAliases = [ "cdn.social.luj.fr" ];
+    serverAliases = [ "luj.fr" ];
     locations."/".extraConfig = ''
       proxy_pass http://127.0.0.1:3902;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -61,10 +61,10 @@ in
     '';
   };
 
-  machine.meta.zones."luj.fr".subdomains."social".subdomains."cdn".A = [
+  machine.meta.zones."luj.fr".A = [
     config.machine.meta.ips.public.ipv4
   ];
-  machine.meta.zones."luj.fr".subdomains."social".subdomains."cdn".AAAA = [
+  machine.meta.zones."luj.fr".AAAA = [
     config.machine.meta.ips.public.ipv6
   ];
 
