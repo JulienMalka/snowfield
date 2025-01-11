@@ -20,6 +20,7 @@
           bash
           coreutils
           curl
+          awscli2
         ];
       };
     };
