@@ -75,6 +75,8 @@
       pkgs.stable.pyright
       unstable.nixd
       unstable.nixfmt-rfc-style
+      kanidm
+      yubioath-flutter
     ];
 
     fonts.fontconfig.enable = true;
