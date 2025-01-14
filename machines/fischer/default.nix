@@ -157,6 +157,9 @@
 
   virtualisation.docker.enable = true;
 
+  services.pcscd.enable = true;
+  services.udev.packages = [ pkgs.yubikey-personalization ];
+
   services.zerotierone = {
     enable = true;
     joinNetworks = [
