@@ -39,45 +39,47 @@
       size = 15;
     };
 
-    home.packages = with pkgs; [
-      du-dust
-      kitty
-      jq
-      lazygit
-      fira-code
-      feh
-      meld
-      vlc
-      jftui
-      nerdfonts
-      cantarell-fonts
-      libreoffice
-      font-awesome
-      nodejs
-      htop
-      evince
-      mosh
-      zotero
-      flameshot
-      networkmanagerapplet
-      xdg-utils
-      step-cli
-      gh
-      gh-dash
-      signal-desktop
-      scli
-      emacsPackages.jinx
-      hunspellDicts.en_US
-      hunspellDicts.fr-moderne
-      texlive.combined.scheme-full
-      hledger
-      emacs-lsp-booster
-      pkgs.stable.pyright
-      unstable.nixd
-      unstable.nixfmt-rfc-style
-      kanidm
-      yubioath-flutter
-    ];
+    home.packages =
+      with pkgs;
+      [
+        du-dust
+        kitty
+        jq
+        lazygit
+        fira-code
+        feh
+        meld
+        vlc
+        jftui
+        cantarell-fonts
+        libreoffice
+        font-awesome
+        nodejs
+        htop
+        evince
+        mosh
+        zotero
+        flameshot
+        networkmanagerapplet
+        xdg-utils
+        step-cli
+        gh
+        gh-dash
+        signal-desktop
+        scli
+        emacsPackages.jinx
+        hunspellDicts.en_US
+        hunspellDicts.fr-moderne
+        texlive.combined.scheme-full
+        hledger
+        emacs-lsp-booster
+        pkgs.stable.pyright
+        unstable.nixd
+        unstable.nixfmt-rfc-style
+        kanidm
+        yubioath-flutter
+      ]
+      ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
 
     fonts.fontconfig.enable = true;
 
