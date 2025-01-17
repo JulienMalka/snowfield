@@ -59,7 +59,7 @@ in
               '';
 
               systemConfig = _: {
-                machine.meta.monitors = lib.mkIf (name != "default") {
+                machine.meta.probes.monitors = lib.mkIf (name != "default") {
                   "${name} - IPv4" = {
                     url = "https://${
                       if (hasSuffix "luj" name) then
@@ -69,6 +69,7 @@ in
                     }";
                     type = "http";
                     accepted_statuscodes = [ "200-299" ];
+                    notificationIDList = [ 1 ];
                     headers = ''
                       {
                         "Host": "${name}"
@@ -84,6 +85,7 @@ in
                     }]";
                     type = "http";
                     accepted_statuscodes = [ "200-299" ];
+                    notificationIDList = [ 1 ];
                     headers = ''
                       {
                         "Host": "${name}"

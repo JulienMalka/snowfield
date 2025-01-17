@@ -8,15 +8,20 @@
 }:
 let
 
-  probesFromConfig = lib.mkMerge (
-    lib.mapAttrsToList (_: value: value.config.machine.meta.monitors) nixosConfigurations
+  monitorsFromConfig = lib.mkMerge (
+    lib.mapAttrsToList (_: value: value.config.machine.meta.probes.monitors) nixosConfigurations
   );
+
+  pagesFromConfig = lib.mkMerge (
+    lib.mapAttrsToList (_: value: value.config.machine.meta.probes.status_pages) nixosConfigurations
+  );
+
 in
 {
 
   services.uptime-kuma = {
     enable = true;
-    package = pkgs.uptime-kuma-beta;
+    package = pkgs.unstable.uptime-kuma;
     settings = {
       NODE_EXTRA_CA_CERTS = "/etc/ssl/certs/ca-certificates.crt";
     };
@@ -31,14 +36,16 @@ in
     };
   };
 
-  age.secrets."stateless-uptime-kuma-password".file = ../../secrets/stateless-uptime-kuma-password.age;
+  age.secrets."stateless-uptime-kuma-password".file =
+    ../../secrets/stateless-uptime-kuma-password.age;
   nixpkgs.overlays = [
     (import "${inputs.stateless-uptime-kuma}/overlay.nix")
   ];
 
   statelessUptimeKuma = {
     enableService = true;
-    probesConfig.monitors = probesFromConfig;
+    probesConfig.monitors = monitorsFromConfig;
+    probesConfig.status_pages = pagesFromConfig;
     extraFlags = [
       "-s"
       "-v DEBUG"

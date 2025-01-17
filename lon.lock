@@ -175,9 +175,9 @@
       "type": "Git",
       "fetchType": "git",
       "branch": "truly-deterministic",
-      "revision": "caf3169829647809805caaf968c8c0d4015ef187",
+      "revision": "78564e5f2c4fad5175f709560e6ee75d30115b22",
       "url": "https://git.dgnum.eu/Luj/stateless-uptime-kuma.git",
-      "hash": "sha256-tux43mzd1rrlpTEhcQ9PiJBse9+SGEcWY/9F8cxX+Po=",
+      "hash": "sha256-I5uHrQvwKvJMFSOJfEZRZyc5ZElD0tCGfFVDaBfcLNM=",
       "submodules": false
     },
     "unstable": {
