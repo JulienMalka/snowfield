@@ -68,4 +68,35 @@ in
     config.machine.meta.ips.public.ipv6
   ];
 
+  machine.meta.probes.monitors."s3.luj.fr - IPv4".accepted_statuscodes = [ "403" ];
+  machine.meta.probes.monitors."s3.luj.fr - IPv6".accepted_statuscodes = [ "403" ];
+
+  machine.meta.probes.monitors."cdn.luj.fr - IPv4".accepted_statuscodes = [ "404" ];
+  machine.meta.probes.monitors."cdn.luj.fr - IPv6".accepted_statuscodes = [ "404" ];
+
+  machine.meta.probes.monitors = {
+    "luj.fr - IPv4" = {
+      url = "https://${config.machine.meta.ips.public.ipv4}";
+      type = "http";
+      accepted_statuscodes = [ "200-299" ];
+      notificationIDList = [ 1 ];
+      headers = ''
+        {
+          "Host": "luj.fr"
+        }
+      '';
+    };
+    "luj.fr - IPv6" = {
+      url = "https://[${config.machine.meta.ips.public.ipv6}]";
+      type = "http";
+      accepted_statuscodes = [ "200-299" ];
+      notificationIDList = [ 1 ];
+      headers = ''
+        {
+          "Host": "luj.fr"
+        }
+      '';
+    };
+  };
+
 }

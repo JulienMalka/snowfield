@@ -43,9 +43,27 @@
               default = with profiles; [ base ];
             };
 
-            monitors = mkOption {
-              default = { };
-              type = types.attrsOf (pkgs.formats.json { }).type;
+            probes = {
+              monitors = lib.mkOption {
+                type = types.attrsOf (pkgs.formats.json { }).type;
+                default = { };
+              };
+              tags = lib.mkOption {
+                type = types.attrsOf (pkgs.formats.json { }).type;
+                default = { };
+              };
+              notifications = lib.mkOption {
+                type = types.attrsOf (pkgs.formats.json { }).type;
+                default = { };
+              };
+              status_pages = lib.mkOption {
+                type = types.attrsOf (pkgs.formats.json { }).type;
+                default = { };
+              };
+              settings = lib.mkOption {
+                type = types.attrsOf (pkgs.formats.json { }).type;
+                default = { };
+              };
             };
 
             defaultInterface = mkOption {

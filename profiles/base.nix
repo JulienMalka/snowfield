@@ -123,4 +123,24 @@
       VfXtULncAiEA2gmqdr+ugFz5tvPdKwanroTiMTUMhhCRYVlQlyTApyQ=
       -----END CERTIFICATE-----''
   ];
+
+  machine.meta.probes = {
+    status_pages."public" = {
+      title = "Public Services";
+      description = "State of my public infrastructure";
+      showTags = false;
+      publicGroupList =
+        lib.optionals ((builtins.length (lib.attrNames config.machine.meta.probes.monitors)) > 0)
+          [
+            {
+              name = config.networking.hostName;
+              weight = 1;
+              monitorList = builtins.filter (e: (lib.hasInfix ".luj.fr" e) || !(lib.hasInfix ".luj" e)) (
+                lib.attrNames config.machine.meta.probes.monitors
+              );
+            }
+          ];
+    };
+  };
+
 }

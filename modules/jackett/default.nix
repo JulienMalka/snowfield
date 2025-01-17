@@ -45,6 +45,10 @@ in
         );
         inherit (cfg) user group;
       };
+
+      machine.meta.probes.monitors."jackett.luj - IPv4".accepted_statuscodes = [ "400" ];
+      machine.meta.probes.monitors."jackett.luj - IPv6".accepted_statuscodes = [ "400" ];
+
     }
 
     (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))

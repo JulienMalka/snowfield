@@ -101,30 +101,8 @@ lib.mkMerge [
     networking.firewall.allowedUDPPorts = [ 53 ];
     networking.firewall.allowedTCPPorts = [ 53 ];
 
-    machine.meta.zones."luj.fr".TXT = [ "homepage.luj.luj-static.page" ];
-
-    machine.meta.monitors = {
-      "luj.fr - IPv4" = {
-        url = "https://${config.machine.meta.ips.public.ipv4}";
-        type = "http";
-        accepted_statuscodes = [ "200-299" ];
-        headers = ''
-          {
-            "Host": "luj.fr"
-          }
-        '';
-      };
-      "luj.fr - IPv6" = {
-        url = "https://[${config.machine.meta.ips.public.ipv6}]";
-        type = "http";
-        accepted_statuscodes = [ "200-299" ];
-        headers = ''
-          {
-            "Host": "luj.fr"
-          }
-        '';
-      };
-    };
+    # Page server disabled for now
+    #machine.meta.zones."luj.fr".TXT = [ "homepage.luj.luj-static.page" ];
 
   }
 

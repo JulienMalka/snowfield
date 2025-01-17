@@ -60,7 +60,8 @@
 
   services.openssh.enable = true;
 
-  programs.ssh.knownHosts."darwin-build-box.winter.cafe".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0io9E0eXiDIEHvsibXOxOPveSjUPIr1RnNKbUkw3fD";
+  programs.ssh.knownHosts."darwin-build-box.winter.cafe".publicKey =
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0io9E0eXiDIEHvsibXOxOPveSjUPIr1RnNKbUkw3fD";
 
   services.nginx.virtualHosts."photos.julienmalka.me" = {
     enableACME = true;
@@ -131,8 +132,8 @@
     root = "/home/gitlab-runner/artifacts";
   };
 
-  machine.meta.monitors."phd.julienmalka.me - IPv4".accepted_statuscodes = [ "401" ];
-  machine.meta.monitors."phd.julienmalka.me - IPv6".accepted_statuscodes = [ "401" ];
+  machine.meta.probes.monitors."phd.julienmalka.me - IPv4".accepted_statuscodes = [ "401" ];
+  machine.meta.probes.monitors."phd.julienmalka.me - IPv6".accepted_statuscodes = [ "401" ];
 
   systemd.services.nginx.serviceConfig.ProtectHome = "read-only";
   systemd.services.nginx.serviceConfig.ReadWritePaths = [ "/home/gitlab-runner/artifacts" ];
