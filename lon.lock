@@ -81,16 +81,6 @@
       "url": "https://github.com/nix-community/home-manager/archive/fc52a210b60f2f52c74eac41a8647c1573d2071d.tar.gz",
       "hash": "sha256-TY0jUwR3EW0fnS0X5wXMAVy6h4Z7Y6a3m+Yq++C9AyE="
     },
-    "homepage": {
-      "type": "GitHub",
-      "fetchType": "tarball",
-      "owner": "JulienMalka",
-      "repo": "homepage",
-      "branch": "main",
-      "revision": "29e779d8600b1c1e6235570a3614a54f8ec8126e",
-      "url": "https://github.com/JulienMalka/homepage/archive/29e779d8600b1c1e6235570a3614a54f8ec8126e.tar.gz",
-      "hash": "sha256-YuwHCXEbrzuEyRy1/2bX4Rux/nqmzRZ8H44+83JQNV8="
-    },
     "impermanence": {
       "type": "GitHub",
       "fetchType": "tarball",

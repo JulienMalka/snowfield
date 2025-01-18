@@ -1,6 +1,5 @@
 {
   lib,
-  inputs,
   config,
   ...
 }:
@@ -18,7 +17,11 @@ in
     services.nginx.virtualHosts."julienmalka.me" = {
       enableACME = true;
       forceSSL = true;
-      root = inputs.homepage;
+      locations."/" = {
+        extraConfig = ''
+          return 301 https://luj.fr$request_uri;
+        '';
+      };
     };
   };
 }
