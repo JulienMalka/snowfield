@@ -17,6 +17,7 @@
     ./plausible.nix
     ./nextcloud.nix
     ./glance.nix
+    ./syncthing.nix
   ];
 
   machine.meta = {
