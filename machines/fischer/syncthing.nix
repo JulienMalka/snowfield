@@ -14,7 +14,7 @@
 
     devices = {
       "gustave" = {
-        id = "GVKWXUD-UVEXZMZ-YCZ7S6X-R47ZWG4-AJQ2XAQ-B3HUDTK-NZTBJ2E-EFXGAQX";
+        id = "6APF3EP-TIV7ZBK-5WB5SA4-Y2K37CR-AMIB2TM-6T2VORK-UYNQO2X-TO6V2QH";
         addresses = [
           "tcp://gustave.luj:22000"
         ];
