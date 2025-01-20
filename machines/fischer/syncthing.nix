@@ -20,12 +20,20 @@
         ];
       };
 
+      "gallifrey" = {
+        id = "P3BTFAX-4MCSFQB-C5R5YBP-YGMJ6FU-OKJN4QG-MJ2BV6Y-YB4U7VL-3GFSTAM";
+        addresses = [
+          "tcp://gallifrey.luj:22000"
+        ];
+      };
+
     };
     folders = {
       "dev" = {
         path = "/home/julien/dev";
         devices = [
           "gustave"
+          "gallifrey"
         ];
       };
     };
