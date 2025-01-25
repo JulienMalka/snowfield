@@ -122,7 +122,6 @@
     home.persistence."/persistent/home/julien" = {
       files = [
         ".config/gnome-initial-setup-done"
-        ".config/monitors.xml"
         ".config/background"
         ".cert/nm-openvpn/telecom-paris-ca.pem"
         ".local/share/com.ranfdev.Notify.sqlite"
@@ -131,8 +130,8 @@
         "Pictures"
         "Documents"
         ".ssh"
-        "dev"
         ".mozilla"
+        "devold"
         ".config/cosmic"
         ".local/share/direnv"
         ".local/state/cosmic-comp"

@@ -47,6 +47,7 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  programs.fuse.userAllowOther = true;
 
   deployment.tags = [ "server" ];
 
