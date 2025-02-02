@@ -100,7 +100,6 @@
         zotero
         emacsPackages.jinx
         hunspellDicts.en_US
-        rstudio
         forge-sparks
         citations
         blanket
