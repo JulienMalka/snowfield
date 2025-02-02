@@ -1,4 +1,7 @@
-{ config, ... }:
+{ config, inputs, ... }:
+let
+  inherit (import inputs.unstable { }) readeck;
+in
 {
 
   age.secrets."readeck-config".file = ../../secrets/readeck-config.age;
@@ -13,6 +16,7 @@
 
   services.readeck = {
     enable = true;
-    configPath = config.age.secrets."readeck-config".path;
+    package = readeck;
+    environmentFile = config.age.secrets."readeck-config".path;
   };
 }
