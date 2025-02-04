@@ -118,6 +118,10 @@
 
     fonts.fontconfig.enable = true;
 
+    systemd.user.tmpfiles.rules = [
+      "L /home/julien/.emacs.d - - - - /home/julien/dev/emacs-config"
+    ];
+
     home.persistence."/persistent/home/julien" = {
       files = [
         ".config/gnome-initial-setup-done"
@@ -144,7 +148,6 @@
         ".config/pika-backup"
         ".config/Element"
         ".step"
-        ".emacs.d"
         ".gnupg"
         "Zotero"
         ".config/dconf"
