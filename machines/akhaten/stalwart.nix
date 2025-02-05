@@ -121,9 +121,9 @@
       "_mta-sts".TXT = [ "v=STSv1; id=17428246908727558748" ];
       "_dmarc".TXT = [ "v=DMARC1; p=reject; rua=mailto:postmaster@luj.fr; ruf=mailto:postmaster@luj.fr" ];
       "_smtp._tls".TXT = [ "v=TLSRPTv1; rua=mailto:postmaster@luj.fr" ];
-      "autoconfig".CNAME = [ "mail.luj.fr" ];
-      "autodiscover".CNAME = [ "mail.luj.fr" ];
-      "mta-sts".CNAME = [ "mail.luj.fr" ];
+      "autoconfig".CNAME = [ "mail.luj.fr." ];
+      "autodiscover".CNAME = [ "mail.luj.fr." ];
+      "mta-sts".CNAME = [ "mail.luj.fr." ];
       "_25._tcp".TLSA = [
         {
           usage = 3;
@@ -223,7 +223,7 @@
     ];
     TXT = [ "v=spf1 mx ra=postmaster -all" ];
     subdomains = {
-      "mail".CNAME = [ "mail.luj.fr" ];
+      "mail".CNAME = [ "mail.luj.fr." ];
       "202408e._domainkey".TXT = [
         "v=DKIM1; k=ed25519; h=sha256; p=yApFb5wLSoy9+5bBx0EgzQFxJv3bAPrkEkZhrlDh0hs="
       ];
@@ -235,9 +235,9 @@
         "v=DMARC1; p=reject; rua=mailto:postmaster@malka.sh; ruf=mailto:postmaster@malka.sh"
       ];
       "_smtp._tls".TXT = [ "v=TLSRPTv1; rua=mailto:postmaster@malka.sh" ];
-      "autoconfig".CNAME = [ "mail.luj.fr" ];
-      "autodiscover".CNAME = [ "mail.luj.fr" ];
-      "mta-sts".CNAME = [ "mail.luj.fr" ];
+      "autoconfig".CNAME = [ "mail.luj.fr." ];
+      "autodiscover".CNAME = [ "mail.luj.fr." ];
+      "mta-sts".CNAME = [ "mail.luj.fr." ];
     };
 
   };
