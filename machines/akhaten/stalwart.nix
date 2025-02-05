@@ -78,31 +78,31 @@
         service = "jmap";
         proto = "tcp";
         port = 443;
-        target = "mail.luj.fr";
+        target = "mail.luj.fr.";
       }
       {
         service = "imaps";
         proto = "tcp";
         port = 993;
-        target = "mail.luj.fr";
+        target = "mail.luj.fr.";
       }
       {
         service = "imap";
         proto = "tcp";
         port = 143;
-        target = "mail.luj.fr";
+        target = "mail.luj.fr.";
       }
       {
         service = "submissions";
         proto = "tcp";
         port = 465;
-        target = "mail.luj.fr";
+        target = "mail.luj.fr.";
       }
       {
         service = "submission";
         proto = "tcp";
         port = 587;
-        target = "mail.luj.fr";
+        target = "mail.luj.fr.";
       }
     ];
     TXT = [ "v=spf1 mx ra=postmaster -all" ];
@@ -194,31 +194,31 @@
         service = "jmap";
         proto = "tcp";
         port = 443;
-        target = "mail.luj.fr";
+        target = "mail.luj.fr.";
       }
       {
         service = "imaps";
         proto = "tcp";
         port = 993;
-        target = "mail.luj.fr";
+        target = "mail.luj.fr.";
       }
       {
         service = "imap";
         proto = "tcp";
         port = 143;
-        target = "mail.luj.fr";
+        target = "mail.luj.fr.";
       }
       {
         service = "submissions";
         proto = "tcp";
         port = 465;
-        target = "mail.luj.fr";
+        target = "mail.luj.fr.";
       }
       {
         service = "submission";
         proto = "tcp";
         port = 587;
-        target = "mail.luj.fr";
+        target = "mail.luj.fr.";
       }
     ];
     TXT = [ "v=spf1 mx ra=postmaster -all" ];
