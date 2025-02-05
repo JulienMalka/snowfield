@@ -113,6 +113,7 @@
         emacs-lsp-booster
         pyright
         nixfmt-rfc-style
+        slack
       ]
       ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
 
