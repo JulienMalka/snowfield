@@ -114,6 +114,7 @@
         pyright
         nixfmt-rfc-style
         slack
+        haskell-language-server
       ]
       ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
 
