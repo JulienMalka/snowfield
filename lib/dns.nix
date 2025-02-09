@@ -10,6 +10,7 @@ rec {
     "malka.family"
     "luj"
     "malka.sh"
+    "hownix.works"
   ];
 
   isVPNDomain = hasSuffix "luj";

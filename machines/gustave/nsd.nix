@@ -19,6 +19,7 @@ let
     "malka.family"
     "luj"
     "malka.sh"
+    "hownix.works"
   ];
 
   isVPNDomain = domain: lib.dns.domainToZone [ "luj" ] domain != null;
