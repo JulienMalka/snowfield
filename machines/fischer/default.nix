@@ -119,7 +119,6 @@
   environment.systemPackages = with pkgs; [
     tailscale
     brightnessctl
-    unstable.diffoscope
     sbctl
     wl-mirror
     texlive.combined.scheme-full
