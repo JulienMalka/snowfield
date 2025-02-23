@@ -51,6 +51,16 @@
       "url": "https://github.com/JulienMalka/dns.nix/archive/922d6a72ae1f4436cc8f8e04080c50aa65e0d749.tar.gz",
       "hash": "sha256-K2X21U4sSYtEZiDM0Eg/IV4wRs80kztLi6qaVDIUCJE="
     },
+    "emacs-overlay": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "nix-community",
+      "repo": "emacs-overlay",
+      "branch": "master",
+      "revision": "920cd4e86af18bd67a60013d80a79ff2cd7a176b",
+      "url": "https://github.com/nix-community/emacs-overlay/archive/920cd4e86af18bd67a60013d80a79ff2cd7a176b.tar.gz",
+      "hash": "sha256-rQY2wY+KTGIH2oZFyqdsODjqmOJqyn+0BNURADQHi/s="
+    },
     "git-hooks": {
       "type": "GitHub",
       "fetchType": "tarball",

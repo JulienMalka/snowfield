@@ -54,7 +54,7 @@
 
     programs.emacs = {
       enable = true;
-      package = pkgs.emacs30;
+      package = pkgs.emacs-igc;
       extraPackages = epkgs: [
         epkgs.mu4e
       ];
@@ -100,6 +100,7 @@
         zotero
         emacsPackages.jinx
         hunspellDicts.en_US
+        hunspellDicts.fr-moderne
         forge-sparks
         citations
         blanket
