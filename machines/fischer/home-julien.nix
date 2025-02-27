@@ -18,7 +18,7 @@
 
     programs.emacs = {
       enable = true;
-      package = pkgs.emacs30;
+      package = pkgs.emacs-igc;
       extraPackages = epkgs: [
         epkgs.mu4e
       ];
