@@ -83,6 +83,7 @@
     powerManagement.enable = false;
     powerManagement.finegrained = false;
     open = false;
+    gsp.enable = false;
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
