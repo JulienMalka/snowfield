@@ -161,5 +161,21 @@
   networking.firewall.allowedTCPPorts = [ 51820 ];
   networking.firewall.allowedUDPPorts = [ 51820 ];
 
+  services.roundcube = {
+    enable = true;
+    plugins = [
+      "managesieve"
+    ];
+    hostName = "webmail.luj.fr";
+    extraConfig = ''
+      # starttls needed for authentication, so the fqdn required to match
+      # the certificate
+      $config['smtp_server'] = "tls://mail.luj.fr";
+      $config['smtp_user'] = "%u";
+      $config['smtp_pass'] = "%p";
+      $config['imap_host'] = 'ssl://mail.luj.fr';
+    '';
+  };
+
   system.stateVersion = "23.11";
 }

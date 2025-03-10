@@ -113,11 +113,6 @@
 
   };
 
-  services.roundcube = {
-    enable = true;
-    hostName = "webmail.luj.fr";
-  };
-
   networking.firewall.allowedUDPPorts = [
     51821
   ];
