@@ -1,5 +1,6 @@
 let
   gustave = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe";
+  gustave_home = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINYE36VTx/wnxBJ/pOu9bSVfyp4MRCf4dA0Sf/yDk/I7 julien@gustave";
   tower = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA9QGKzHJ5/PR/il8REaTxJKB4G2LEEts0BlcVz789lt";
   lisa = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO4kSscukEEoW/QiLgyZQluhsYK4wF+lFphlCakKYC2q";
   core-security = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICLnOINGYOFb+bLUUTV9sjwi2qbpwcaQlmGmWfy1PeGR";
@@ -115,6 +116,7 @@ in
     tower
     fischer
     gallifrey_home
+    gustave_home
     fisher_home
   ];
   "work-mail-pw.age".publicKeys = [
@@ -122,6 +124,7 @@ in
     tower
     fischer
     gallifrey_home
+    gustave_home
     fisher_home
   ];
   "telecom-mail-pw.age".publicKeys = [
@@ -129,6 +132,7 @@ in
     tower
     fischer
     gallifrey_home
+    gustave_home
     fisher_home
   ];
   "ens-mail-pw.age".publicKeys = [
@@ -136,6 +140,7 @@ in
     tower
     fischer
     gallifrey_home
+    gustave_home
     fisher_home
   ];
 
