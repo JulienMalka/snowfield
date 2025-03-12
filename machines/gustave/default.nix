@@ -21,6 +21,15 @@
     "${inputs.unstable}/nixos/modules/services/web-apps/readeck.nix"
   ];
 
+  users.users.julien.linger = true;
+
+  services.openssh.extraConfig = ''
+    HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
+    HostKey /etc/ssh/ssh_host_ed25519_key
+    TrustedUserCAKeys /etc/ssh/ssh_user_key.pub
+    MaxAuthTries 20
+  '';
+
   machine.meta = {
     arch = "x86_64-linux";
     nixpkgs_version = inputs.nixpkgs;
@@ -46,6 +55,7 @@
     nginx.subdomain = "docs";
   };
 
+  security.polkit.enable = true;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   programs.fuse.userAllowOther = true;
