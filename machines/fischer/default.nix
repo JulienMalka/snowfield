@@ -125,6 +125,10 @@
     mu
   ];
 
+  networking.hosts = {
+    "172.25.90.82" = [ "ducati-diavel" ];
+  };
+
   services.printing = {
     enable = true;
     extraConf = ''
