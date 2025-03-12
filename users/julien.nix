@@ -19,6 +19,10 @@
     shell = pkgs.fish;
     hashedPasswordFile = config.age.secrets.julien-password.path;
     openssh.authorizedPrincipals = [ "julien" ];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMAa0wll9ildhgPiV0DhgJXXtw3TQr5VkNxxxPspHSbX julien@gallifrey"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIADCpuBL/kSZShtXD6p/Nq9ok4w1DnlSoxToYgdOvUqo julien@telecom"
+    ];
   };
 
   nix.settings.allowed-users = [ "julien" ];
