@@ -31,10 +31,15 @@ with lib;
       file = ../../secrets/ens-mail-pw.age;
     };
 
-    programs.mbsync.enable = true;
+    programs.mbsync = {
+      enable = true;
+      package = pkgs.unstable.isync;
+    };
+
     programs.msmtp.enable = true;
     accounts.email = {
       accounts.ens = {
+        notmuch.enable = true;
         folders.inbox = "INBOX";
         address = "julien.malka@ens.fr";
         imap.host = "clipper.ens.fr";
@@ -55,6 +60,7 @@ with lib;
         userName = "jmalka";
       };
       accounts.work = {
+        notmuch.enable = true;
         folders.inbox = "INBOX";
         address = "julien@malka.sh";
         imap.host = "mail.luj.fr";
@@ -76,6 +82,7 @@ with lib;
       };
 
       accounts.telecom = {
+        notmuch.enable = true;
         folders.inbox = "INBOX";
         address = "julien.malka@telecom-paris.fr";
         imap.host = "z.imt.fr";
@@ -97,6 +104,7 @@ with lib;
       };
 
       accounts.dgnum = {
+        notmuch.enable = true;
         folders.inbox = "INBOX";
         address = "luj@dgnum.eu";
         imap.host = "kurisu.lahfa.xyz";
@@ -122,7 +130,32 @@ with lib;
     services.mbsync = {
       enable = true;
       frequency = "minutely";
-      verbose = true;
+      package = pkgs.unstable.isync;
+    };
+
+    services.mbsync.postExec = "${pkgs.notmuch}/bin/notmuch new";
+    programs.notmuch = {
+      enable = true;
+      new.tags = [ "new" ];
+      hooks.postNew = ''
+        ${pkgs.afew}/bin/afew --tag --new
+      '';
+    };
+
+    programs.afew = {
+      enable = true;
+      extraConfig = ''
+        [FolderNameFilter]
+        maildir_separator = /
+        folder_lowercases = true
+        folder_blacklist = Sent 
+        [ArchiveSentMailsFilter]
+        sent_tag = sent
+        [Filter.1]
+        query = tag:archive
+        tags = -new
+        [InboxFilter]
+      '';
     };
 
   };
