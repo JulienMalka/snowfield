@@ -32,7 +32,7 @@ with lib;
     };
 
     programs.mbsync = {
-      enable = true;
+      enable = lib.mkDefault true;
       package = pkgs.unstable.isync;
     };
 
@@ -128,16 +128,17 @@ with lib;
     };
 
     services.mbsync = {
-      enable = true;
+      enable = lib.mkDefault true;
       frequency = "minutely";
       package = pkgs.unstable.isync;
     };
 
-    services.mbsync.postExec = "${pkgs.notmuch}/bin/notmuch new";
+    services.mbsync.postExec = lib.mkDefault "${pkgs.notmuch}/bin/notmuch new";
+
     programs.notmuch = {
-      enable = true;
+      enable = lib.mkDefault true;
       new.tags = [ "new" ];
-      hooks.postNew = ''
+      hooks.postNew = lib.mkDefault ''
         ${pkgs.afew}/bin/afew --tag --new
       '';
     };
