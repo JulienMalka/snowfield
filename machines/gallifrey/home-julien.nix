@@ -10,6 +10,19 @@
     luj.programs.fish.enable = true;
     luj.emails.enable = true;
 
+    services.mbsync.postExec = lib.mkForce null;
+
+    services.mbsync.enable = lib.mkForce false;
+    programs.mbsync.enable = lib.mkForce false;
+    programs.notmuch.hooks.postNew = lib.mkForce "";
+
+    services.muchsync.remotes."gustave" = {
+      frequency = "minutely";
+      local.checkForModifiedFiles = true;
+      remote.checkForModifiedFiles = true;
+      remote.host = "gustave";
+    };
+
     programs.rofi = {
       enable = true;
       package = pkgs.rofi-wayland;
@@ -116,6 +129,9 @@
         nixfmt-rfc-style
         slack
         haskell-language-server
+        aporetic
+        notmuch
+        muchsync
       ]
       ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
 
