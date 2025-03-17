@@ -5,6 +5,7 @@ let
   lisa = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO4kSscukEEoW/QiLgyZQluhsYK4wF+lFphlCakKYC2q";
   core-security = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICLnOINGYOFb+bLUUTV9sjwi2qbpwcaQlmGmWfy1PeGR";
   arcadia = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBR6TATH7NrekBiRk8mMnxNw0LcDzMHgHh/JtpPUCfqT julien@arcadia";
+  arcadia_home = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHH2mPgov6t7oFfEjtZr/DdJW5qSQYqbw+4uYitOCf9n julien@arcadia";
   fischer = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPeKDFxgdZlhNXEUx8ex0Fj2Re+tDBvUr52SS4Wh3V9n";
   core-data = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPAcIdJ3gr17bvDZ8NAcDBkEmOPTEhpg2yq3p1NNQB0f";
   lambda = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKluGTi+vGRLU2emYBhTJuEy7Qw0xq1e0Ey7wvU9xYHz";
@@ -119,6 +120,7 @@ in
     gallifrey_home
     gustave_home
     fisher_home
+    arcadia_home
   ];
   "work-mail-pw.age".publicKeys = [
     gallifrey
@@ -127,6 +129,7 @@ in
     gallifrey_home
     gustave_home
     fisher_home
+    arcadia_home
   ];
   "telecom-mail-pw.age".publicKeys = [
     gallifrey
@@ -135,6 +138,7 @@ in
     gallifrey_home
     gustave_home
     fisher_home
+    arcadia_home
   ];
   "ens-mail-pw.age".publicKeys = [
     gallifrey
@@ -142,6 +146,7 @@ in
     fischer
     gallifrey_home
     gustave_home
+    arcadia_home
     fisher_home
   ];
 

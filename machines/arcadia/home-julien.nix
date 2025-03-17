@@ -38,7 +38,7 @@
         fira-code
         feh
         meld
-        emacs
+        emacs-igc
         vlc
         jftui
         libreoffice
@@ -58,6 +58,10 @@
         signal-desktop
         scli
         texlive.combined.scheme-full
+        unstable.nixd
+        emacs-lsp-booster
+        hunspellDicts.en_US
+        hunspellDicts.fr-moderne
       ]
       ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
     fonts.fontconfig.enable = true;
@@ -68,7 +72,6 @@
 
     home.persistence."/persistent/home/julien" = {
       files = [
-        ".config/gnome-initial-setup-done"
         ".config/background"
         ".cert/nm-openvpn/telecom-paris-ca.pem"
       ];
