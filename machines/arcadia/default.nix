@@ -8,6 +8,7 @@
   imports = [
     ./hardware.nix
     ./home-julien.nix
+    ./syncthing.nix
   ];
 
   machine.meta = {
@@ -16,7 +17,7 @@
     hm_version = inputs.home-manager-unstable;
     # TODO: Fix colmena deployment
     ips.public.ipv4 = "127.0.0.1";
-    ips.vpn.ipv4 = "";
+    ips.vpn.ipv4 = "100.100.45.12";
 
   };
 
@@ -46,9 +47,6 @@
   services.tailscale.enable = true;
 
   networking.networkmanager.enable = true;
-
-  networking.networkmanager.dns = "systemd-resolved";
-  services.resolved.enable = true;
 
   services.dbus.enable = true;
 
