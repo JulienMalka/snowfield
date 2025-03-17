@@ -62,6 +62,40 @@
       ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
     fonts.fontconfig.enable = true;
 
+    systemd.user.tmpfiles.rules = [
+      "L /home/julien/.emacs.d - - - - /home/julien/dev/emacs-config"
+    ];
+
+    home.persistence."/persistent/home/julien" = {
+      files = [
+        ".config/gnome-initial-setup-done"
+        ".config/background"
+        ".cert/nm-openvpn/telecom-paris-ca.pem"
+      ];
+      directories = [
+        "Pictures"
+        "Documents"
+        ".ssh"
+        ".mozilla"
+        ".local/share/direnv"
+        ".local/share/atuin"
+        ".local/share/firefoxpwa"
+        ".config/Signal"
+        ".cache/spotify"
+        ".config/spotify"
+        ".config/autostart"
+        ".config/borg"
+        ".config/Element"
+        ".step"
+        ".gnupg"
+        "Zotero"
+        ".config/dconf"
+        ".local/share/keyrings"
+        "Maildir"
+      ];
+      allowOther = true;
+    };
+
     home.keyboard = {
       layout = "fr";
     };
