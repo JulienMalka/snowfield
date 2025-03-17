@@ -1,9 +1,19 @@
 {
   pkgs,
   inputs,
+  lib,
   ...
 }:
+let
+  emacs-from-overlay = pkgs.emacsWithPackagesFromUsePackage {
+    config = ../../../emacs-config/ReadMe.org;
+    package = pkgs.emacs-igc;
+    alwaysEnsure = true;
+    alwaysTangle = true;
+    extraEmacsPackages = epkgs: [ epkgs.exwm ];
+  };
 
+in
 {
   imports = [
     ./hardware.nix
@@ -82,8 +92,16 @@
 
   programs.ssh.startAgent = true;
 
-  services.xserver.desktopManager.gnome.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.desktopManager.xterm.enable = true;
+  services.xserver.enable = true;
+
+  services.xserver.windowManager.session = lib.singleton {
+    name = "exwm";
+    start = ''
+      ${emacs-from-overlay}/bin/emacs -l /home/julien/.emacs.d/exwm-config.el
+    '';
+  };
 
   services.gnome.gnome-keyring.enable = true;
   system.stateVersion = "25.05";
