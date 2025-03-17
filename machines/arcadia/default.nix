@@ -16,6 +16,7 @@
     hm_version = inputs.home-manager-unstable;
     # TODO: Fix colmena deployment
     ips.public.ipv4 = "127.0.0.1";
+    ips.vpn.ipv4 = "";
 
   };
 
@@ -84,6 +85,7 @@
   programs.ssh.startAgent = true;
 
   services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
 
   services.gnome.gnome-keyring.enable = true;
   system.stateVersion = "25.05";
