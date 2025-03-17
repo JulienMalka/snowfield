@@ -37,6 +37,7 @@ in
 pkgs.mkShell {
   nativeBuildInputs = [
     pkgs.colmena
+    pkgs.rbw
     agenix
     bootstrap
     pkgs.statix
