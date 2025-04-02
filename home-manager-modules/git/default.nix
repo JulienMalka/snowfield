@@ -22,6 +22,12 @@ with lib;
         signByDefault = true;
         key = "6FC74C847011FD83";
       };
+      maintenance = {
+        enable = true;
+        repositories = [
+          "/home/julien/dev/nixpkgs"
+        ];
+      };
       delta.enable = true;
       ignores = [ ".direnv" ];
       extraConfig = {
