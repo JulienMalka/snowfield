@@ -78,6 +78,7 @@
         unstable.nixfmt-rfc-style
         kanidm
         yubioath-flutter
+        ltex-ls
       ]
       ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
 
