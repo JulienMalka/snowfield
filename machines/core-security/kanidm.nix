@@ -5,7 +5,7 @@ in
 {
   services.kanidm = {
     enableServer = true;
-    package = pkgs.kanidm_1_4;
+    package = pkgs.kanidm_1_5;
     serverSettings = rec {
       domain = "auth.luj.fr";
       origin = "https://${domain}";
