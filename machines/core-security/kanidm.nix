@@ -1,11 +1,12 @@
 { pkgs, config, ... }:
 let
   certificate = config.security.acme.certs."auth.luj.fr";
+  kanidm = pkgs.kanidm_1_5;
 in
 {
   services.kanidm = {
     enableServer = true;
-    package = pkgs.kanidm_1_5;
+    package = kanidm;
     serverSettings = rec {
       domain = "auth.luj.fr";
       origin = "https://${domain}";
@@ -16,7 +17,7 @@ in
     };
   };
 
-  environment.systemPackages = [ pkgs.kanidm_1_4 ];
+  environment.systemPackages = [ kanidm ];
 
   users.users.kanidm.extraGroups = [ certificate.group ];
 
