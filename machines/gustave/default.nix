@@ -23,6 +23,8 @@
 
   users.users.julien.linger = true;
 
+  services.backup.includes = [ "/home/julien/Maildir" ];
+
   services.openssh.extraConfig = ''
     HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
     HostKey /etc/ssh/ssh_host_ed25519_key
@@ -113,11 +115,19 @@
   services.forgejo = {
     enable = true;
     package = pkgs.unstable.forgejo;
+    database.type = "postgres";
     settings = {
       server = {
         ROOT_URL = "https://git.luj.fr/";
         LANDING_PAGE = "luj";
       };
+      #openid.ENABLE_OPENID_SIGNIN = true;
+      openid.ENABLE_OPENID_SIGNUP = true;
+      oauth2_client.REGISTER_EMAIL_CONFIRM = false;
+      oauth2_client.ENABLE_AUTO_REGISTRATION = true;
+      oauth2_client.UPDATE_AVATAR = true;
+      oauth2_client.ACCOUNT_LINKING = "auto";
+      service.ALLOW_ONLY_EXTERNAL_REGISTRATION = true;
     };
   };
 
