@@ -157,9 +157,9 @@
       "owner": "nixos",
       "repo": "nixpkgs",
       "branch": "nixos-24.11",
-      "revision": "ebe2788eafd539477f83775ef93c3c7e244421d3",
-      "url": "https://github.com/nixos/nixpkgs/archive/ebe2788eafd539477f83775ef93c3c7e244421d3.tar.gz",
-      "hash": "sha256-yfDy6chHcM7pXpMF4wycuuV+ILSTG486Z/vLx/Bdi6Y="
+      "revision": "a880f49904d68b5e53338d1e8c7bf80f59903928",
+      "url": "https://github.com/nixos/nixpkgs/archive/a880f49904d68b5e53338d1e8c7bf80f59903928.tar.gz",
+      "hash": "sha256-o4FjFOUmjSRMK7dn0TFdAT0RRWUWD+WsspPHa+qEQT8="
     },
     "proxmox": {
       "type": "GitHub",
@@ -186,9 +186,9 @@
       "owner": "nixos",
       "repo": "nixpkgs",
       "branch": "nixos-unstable",
-      "revision": "52faf482a3889b7619003c0daec593a1912fddc1",
-      "url": "https://github.com/nixos/nixpkgs/archive/52faf482a3889b7619003c0daec593a1912fddc1.tar.gz",
-      "hash": "sha256-6hl6L/tRnwubHcA4pfUUtk542wn2Om+D4UnDhlDW9BE="
+      "revision": "063dece00c5a77e4a0ea24e5e5a5bd75232806f8",
+      "url": "https://github.com/nixos/nixpkgs/archive/063dece00c5a77e4a0ea24e5e5a5bd75232806f8.tar.gz",
+      "hash": "sha256-nEo1t3Q0F+0jQ36HJfbJtiRU4OI+/0jX/iITURKe3EE="
     }
   }
 }
