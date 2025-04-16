@@ -11,7 +11,7 @@ let
   lambda = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKluGTi+vGRLU2emYBhTJuEy7Qw0xq1e0Ey7wvU9xYHz";
   nuage = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEtPoZXJKPfSPGYb/H9eWL0tNSpAKM6V/AgeE1Uf2Is6";
   gallifrey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEr9QRD7QTNsAFmuJoX1mFzQ5A2ik1/ogMrvW54JMXeQ";
-  gallifrey_home = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII10x1bM8LQ0KI0eY9uvDhJW9Ic58OH/6uugR1a6OLRE julien@gustave";
+  gallifrey_home = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMAa0wll9ildhgPiV0DhgJXXtw3TQr5VkNxxxPspHSbX julien@gallifrey";
   fisher_home = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIADCpuBL/kSZShtXD6p/Nq9ok4w1DnlSoxToYgdOvUqo julien@telecom";
   akhaten = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII5W1rr+VW2TLLytoTExWg4T14lrdLFkSM4YLfbEIb2g";
   biblios = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF5//9IlSSuES0xVsqqOwpotfcajgXL0AtcySpoZ8OLJ";
