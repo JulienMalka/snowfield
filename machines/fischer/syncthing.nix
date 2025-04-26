@@ -27,6 +27,13 @@
         ];
       };
 
+      "arcadia" = {
+        id = "E5CGH2H-3XMMCKQ-5PTMKKA-4C4VDS3-JCBZGRM-4GTAWHQ-QRJ367E-BXFMUAU";
+        addresses = [
+          "tcp://arcadia.luj:22000"
+        ];
+      };
+
     };
     folders = {
       "dev" = {
@@ -34,6 +41,7 @@
         devices = [
           "gustave"
           "gallifrey"
+          "arcadia"
         ];
       };
     };
