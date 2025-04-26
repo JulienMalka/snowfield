@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
 
   luj.hmgr.julien = {
@@ -13,8 +13,22 @@
     luj.programs.fish.enable = true;
     luj.programs.dunst.enable = true;
     luj.programs.firefox.enable = true;
-    luj.emails.enable = true;
     luj.programs.hyprland.enable = true;
+
+    luj.emails.enable = true;
+
+    services.mbsync.postExec = lib.mkForce null;
+
+    services.mbsync.enable = lib.mkForce false;
+    programs.mbsync.enable = lib.mkForce false;
+    programs.notmuch.hooks.postNew = lib.mkForce "";
+
+    services.muchsync.remotes."gustave" = {
+      frequency = "minutely";
+      local.checkForModifiedFiles = true;
+      remote.checkForModifiedFiles = true;
+      remote.host = "gustave";
+    };
 
     programs.emacs = {
       enable = true;
