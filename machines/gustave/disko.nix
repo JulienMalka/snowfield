@@ -1,17 +1,18 @@
 {
   devices = {
     disk = {
-      sda = {
+      main = {
         type = "disk";
-        device = "/dev/sda";
+        device = "/dev/sdb";
         content = {
           type = "gpt";
           partitions = {
+            boot = {
+              size = "1M";
+              type = "EF02";
+            };
             ESP = {
-              priority = 1;
-              name = "ESP";
-              start = "1M";
-              end = "128M";
+              size = "512M";
               type = "EF00";
               content = {
                 type = "filesystem";
@@ -19,31 +20,56 @@
                 mountpoint = "/boot";
               };
             };
+            swap = {
+              size = "16G";
+              content = {
+                type = "swap";
+                discardPolicy = "both";
+              };
+            };
             root = {
               size = "100%";
               content = {
-                type = "btrfs";
-                extraArgs = [ "-f" ]; # Override existing partition
-                # Subvolumes must set a mountpoint in order to be mounted,
-                # unless their parent is mounted
-                subvolumes = {
-                  # Subvolume name is different from mountpoint
-                  "/root" = {
-                    mountpoint = "/";
-                  };
-                  # Subvolume name is the same as the mountpoint
-                  "/persistent" = {
-                    mountpoint = "/persistent";
-                  };
-                  "/nix" = {
-                    mountOptions = [
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                    mountpoint = "/nix";
-                  };
-                };
+                type = "lvm_pv";
+                vg = "mainpool";
               };
+            };
+          };
+        };
+      };
+    };
+    lvm_vg = {
+      mainpool = {
+        type = "lvm_vg";
+        lvs = {
+          root = {
+            size = "100G";
+            pool = "mainpool";
+            content = {
+              type = "filesystem";
+              format = "ext4";
+              mountpoint = "/";
+              mountOptions = [ "defaults" ];
+            };
+          };
+          persistent = {
+            size = "1500G";
+            pool = "mainpool";
+            content = {
+              type = "filesystem";
+              format = "ext4";
+              mountpoint = "/persistent";
+              mountOptions = [ "defaults" ];
+            };
+          };
+
+          store = {
+            size = "200G";
+            pool = "mainpool";
+            content = {
+              type = "filesystem";
+              format = "ext4";
+              mountpoint = "/nix";
             };
           };
         };
