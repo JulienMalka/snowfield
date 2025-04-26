@@ -46,6 +46,7 @@ with lib;
         mbsync = {
           enable = true;
           create = "maildir";
+          expunge = "both";
           extraConfig.channel = {
             "CopyArrivalDate" = "yes";
           };
@@ -67,6 +68,7 @@ with lib;
         mbsync = {
           enable = true;
           create = "maildir";
+          expunge = "both";
           extraConfig.channel = {
             "CopyArrivalDate" = "yes";
           };
@@ -89,6 +91,7 @@ with lib;
         mbsync = {
           enable = true;
           create = "maildir";
+          expunge = "both";
           extraConfig.channel = {
             "CopyArrivalDate" = "yes";
           };
@@ -111,6 +114,7 @@ with lib;
         mbsync = {
           enable = true;
           create = "maildir";
+          expunge = "both";
           extraConfig.channel = {
             "CopyArrivalDate" = "yes";
           };
@@ -138,6 +142,9 @@ with lib;
     programs.notmuch = {
       enable = lib.mkDefault true;
       new.tags = [ "new" ];
+      hooks.preNew = lib.mkDefault ''
+        ${pkgs.notmuch-mailmover}/bin/notmuch-mailmover --config ${./mailmover.lua}
+      '';
       hooks.postNew = lib.mkDefault ''
         ${pkgs.afew}/bin/afew --tag --new
       '';
@@ -149,13 +156,9 @@ with lib;
         [FolderNameFilter]
         maildir_separator = /
         folder_lowercases = true
-        folder_blacklist = Sent 
-        [ArchiveSentMailsFilter]
-        sent_tag = sent
         [Filter.1]
-        query = tag:archive
+        query = tag:new
         tags = -new
-        [InboxFilter]
       '';
     };
 
