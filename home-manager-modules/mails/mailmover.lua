@@ -32,6 +32,11 @@ local function is_parent_path(parent, child)
     return child:match("^" .. parent .. "/") ~= nil
 end
 
+--- Check if a folder contains "Archive" in its name
+local function contains_archive(folder)
+    return string.find(folder, "Archive") ~= nil
+end
+
 --- Generate rules based on folder structure
 local function generate_rules(maildir_path)
     local folders = get_maildir_folders(maildir_path)
@@ -96,6 +101,11 @@ local function generate_rules(maildir_path)
                 for _, tag in ipairs(subfolder_tags[folder]) do
                     table.insert(exclusion_parts, "not tag:" .. tag)
                 end
+            end
+            
+            -- Add "not tag:sent" for any folder containing "Archive"
+            if contains_archive(folder) then
+                table.insert(exclusion_parts, "not tag:sent")
             end
             
             -- Build the complete query
