@@ -93,6 +93,7 @@
         kanidm
         yubioath-flutter
         ltex-ls
+        powerline-fonts
       ]
       ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
 
