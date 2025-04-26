@@ -5,6 +5,24 @@
   inputs,
   ...
 }:
+let
+  stumpEnv = pkgs.sbcl.withPackages (
+    ps: with ps; [
+      stumpwm
+      slynk
+      clx-truetype
+    ]
+  );
+
+  stumpwm-wrapper = pkgs.writeScriptBin "stumpwm-wrapper" ''
+    #!${pkgs.bash}/bin/bash
+    exec ${stumpEnv}/bin/sbcl --load ${pkgs.writeText "stumpwm-start.lisp" ''
+      (require :asdf)
+      (asdf:load-system :stumpwm)
+      (stumpwm:stumpwm)
+    ''}
+  '';
+in
 {
   imports = [
     ./hardware.nix
@@ -34,6 +52,20 @@
   };
   boot.initrd.systemd.tpm2.enable = true;
 
+  services.xserver = {
+    enable = true;
+    displayManager.sddm.enable = true;
+  };
+
+  services.xserver.windowManager.session = lib.singleton {
+    name = "stumpwm-wrapper";
+    start = ''
+      ${stumpwm-wrapper}/bin/stumpwm-wrapper &
+      waitPID=$!
+    '';
+  };
+
+  services.picom.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -73,6 +105,13 @@
 
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = [ "nvidia" ];
+
+  hardware.nvidia.prime = {
+    offload.enable = true;
+    offload.enableOffloadCmd = true;
+    intelBusId = "PCI:0:2:0";
+    nvidiaBusId = "PCI:1:0:0";
+  };
 
   hardware.nvidia = {
 
@@ -123,6 +162,7 @@
     wl-mirror
     texlive.combined.scheme-full
     mu
+    stumpwm-wrapper
   ];
 
   networking.hosts = {
