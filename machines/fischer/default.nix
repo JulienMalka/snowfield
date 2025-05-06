@@ -6,21 +6,52 @@
   ...
 }:
 let
-  stumpEnv = pkgs.sbcl.withPackages (
-    ps: with ps; [
-      stumpwm
-      slynk
-      clx-truetype
-    ]
-  );
 
-  stumpwm-wrapper = pkgs.writeScriptBin "stumpwm-wrapper" ''
-    #!${pkgs.bash}/bin/bash
-    exec ${stumpEnv}/bin/sbcl --load ${pkgs.writeText "stumpwm-start.lisp" ''
-      (require :asdf)
-      (asdf:load-system :stumpwm)
-      (stumpwm:stumpwm)
-    ''}
+  stumpwmContrib = pkgs.fetchFromGitHub {
+    owner = "stumpwm";
+    repo = "stumpwm-contrib";
+    rev = "1e3fa7abae30e5d5498e69ba56da6a7e265144cc";
+    hash = "sha256-ewPeamcEWcvAHY1pmnbsVmej8gSt2qIo+lSMjpKwF6k=";
+
+  };
+  sbcl_stump = pkgs.sbcl_2_4_6;
+  stumpwmWithDeps = sbcl_stump.pkgs.stumpwm.overrideLispAttrs (x: {
+    lispLibs =
+      x.lispLibs
+      ++ (with sbcl_stump.pkgs; [
+        clx-truetype
+        slynk
+      ]);
+  });
+
+  stumpwmWithDepsRunnable = pkgs.runCommand "stuumpwm-with-deps-runnable" { } ''
+    mkdir -p "$out/bin" "$out/lib"
+    cp -r "${stumpwmContrib}" "contrib"
+    chmod u+rwX -R contrib
+    export HOME="$PWD"
+    FIRA_CODE_PATH="${pkgs.fira-code}/share/fonts/truetype"
+    POWERLINE_PATH="${pkgs.powerline-fonts}/share/fonts/truetype"
+    ln -s "${stumpwmWithDeps}" "$out/lib/stumpwm"
+    ${(sbcl_stump.withPackages (_: [ stumpwmWithDeps ]))}/bin/sbcl \
+        --eval '(require :asdf)'  --eval '(asdf:disable-output-translations)' \
+        --eval '(require :stumpwm)' \
+        --eval '(in-package :stumpwm)' \
+        --eval '(setf *default-package* :stumpwm)' \
+        --eval '(set-module-dir "contrib")' \
+        --eval '(defvar stumpwm::*local-module-dir* "contrib")' \
+        --eval '(load-module "mem")' \
+        --eval '(load-module "cpu")' \
+        --eval '(load-module "battery-portable")' \
+        --eval '(load-module "net")' \
+        --eval '(load-module "urgentwindows")' \
+        --eval '(load-module "ttf-fonts")' \
+        --eval '(require :slynk)' \
+        --eval '(require :clx-truetype)' \
+        --eval '(defvar *wallpaper* nil)' \
+        --eval '(setf *wallpaper* "${./wallpaper.jpeg}")' \
+        --eval "(setf clx-truetype:*font-dirs* (list \"$FIRA_CODE_PATH\" \"$POWERLINE_PATH\"))" \
+        --eval "(sb-ext:save-lisp-and-die \"$out/bin/stumpwm\" :executable t :toplevel #'stumpwm:stumpwm)"
+    test -x "$out/bin/stumpwm"
   '';
 in
 {
@@ -54,18 +85,17 @@ in
 
   services.xserver = {
     enable = true;
-    displayManager.sddm.enable = true;
+    displayManager.lightdm.enable = true;
+    windowManager.stumpwm.enable = true;
+    windowManager.stumpwm.package = stumpwmWithDepsRunnable;
   };
 
-  services.xserver.windowManager.session = lib.singleton {
-    name = "stumpwm-wrapper";
-    start = ''
-      ${stumpwm-wrapper}/bin/stumpwm-wrapper &
-      waitPID=$!
-    '';
+  services.picom = {
+    enable = true;
+    backend = "xr_glx_hybrid";
+    vSync = true;
   };
 
-  services.picom.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -94,6 +124,41 @@ in
   networking.networkmanager.dns = "systemd-resolved";
   services.resolved.enable = true;
 
+  services.autorandr = {
+    enable = true;
+    profiles = {
+      default = {
+        fingerprint = {
+          eDP-1-1 = "00ffffffffffff0006af9af900000000141f0104a51e13780363f5a854489d240e505400000001010101010101010101010101010101fa3c80b870b0244010103e002dbc1000001ac83080b870b0244010103e002dbc1000001a000000fe004a38335646804231343055414e0000000000024101b2001100000a410a20200068";
+        };
+        config = {
+          eDP-1-1.enable = true;
+        };
+      };
+      dock-julien = {
+        fingerprint = {
+          eDP-1-1 = "00ffffffffffff0006af9af900000000141f0104a51e13780363f5a854489d240e505400000001010101010101010101010101010101fa3c80b870b0244010103e002dbc1000001ac83080b870b0244010103e002dbc1000001a000000fe004a38335646804231343055414e0000000000024101b2001100000a410a20200068";
+          DP-1-5-3 = "00ffffffffffff0010ac42d1425439312021010380351e78eaa3d5ab524f9d240f5054a54b008100b300d100714fa9408180d1c00101565e00a0a0a02950302035000f282100001a000000ff004446354c5459330a2020202020000000fc0044454c4c205032343233440a20000000fd00314b1d711c000a2020202020200107020318b14d010203071112161304141f051065030c001000023a801871382d40582c45000f282100001e011d8018711c1620582c25000f282100009e011d007251d01e206e2855000f282100001e7e3900a080381f4030203a000f282100001a00000000000000000000000000000000000000000000000000000000000000c1";
+          DP-1-5-1 = "00ffffffffffff0026cd6b610f01010117210104a5351e783be725a8554ea0260d5054bfef80d140d100d1c0b30095009040818081c0565e00a0a0a02950302035000f282100001a000000ff0031323134383332333030313335000000fd00314b0f5a19000a202020202020000000fc00504c32343933510a202020202001c5020320f153101f051404131e1d121116150f0e030207060123097f0783010000394e00a0a0a02250302035000f282100001a000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000079";
+        };
+        config = {
+          eDP-1-1.enable = false;
+          DP-1-5-1 = {
+            enable = true;
+            primary = true;
+            position = "0x0";
+            mode = "2560x1440";
+          };
+          DP-1-5-3 = {
+            enable = true;
+            position = "2560x0";
+            mode = "2560x1440";
+          };
+        };
+      };
+    };
+  };
+
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
@@ -106,43 +171,50 @@ in
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = [ "nvidia" ];
 
+  services.libinput.touchpad.tapping = false;
+
   hardware.nvidia.prime = {
-    offload.enable = true;
-    offload.enableOffloadCmd = true;
+    sync.enable = true;
     intelBusId = "PCI:0:2:0";
     nvidiaBusId = "PCI:1:0:0";
   };
 
   hardware.nvidia = {
 
-    # Modesetting is required.
     modesetting.enable = true;
-
-    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-    powerManagement.enable = false;
-    # Fine-grained power management. Turns off GPU when not in use.
-    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
-    powerManagement.finegrained = false;
-
-    # Use the NVidia open source kernel module (not to be confused with the
-    # independent third-party "nouveau" open source driver).
-    # Support is limited to the Turing and later architectures. Full list of
-    # supported GPUs is at:
-    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
-    # Only available from driver 515.43.04+
-    # Do not disable this unless your GPU is unsupported or if you have a good reason to.
+    powerManagement.enable = true;
+    #powerManagement.finegrained = true;
     open = true;
-
-    # Enable the Nvidia settings menu,
-    # accessible via `nvidia-settings`.
     nvidiaSettings = true;
-
-    # Optionally, you may need to select the appropriate driver version for your specific GPU.
+    dynamicBoost.enable = true;
     package = config.boot.kernelPackages.nvidiaPackages.beta;
   };
 
+  environment.variables = {
+    # Required to run the correct GBM backend for nvidia GPUs on wayland
+    GBM_BACKEND = "nvidia-drm";
+    # Apparently, without this nouveau may attempt to be used instead
+    # (despite it being blacklisted)
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    # Hardware cursors are currently broken on wlroots
+    WLR_NO_HARDWARE_CURSORS = "1";
+  };
+
+  boot.extraModprobeConfig =
+    "options nvidia "
+    + lib.concatStringsSep " " [
+      # nvidia assume that by default your CPU does not support PAT,
+      # but this is effectively never the case in 2023
+      "NVreg_UsePageAttributeTable=1"
+      # This is sometimes needed for ddc/ci support, see
+      # https://www.ddcutil.com/nvidia/
+      #
+      # Current monitor does not support it, but this is useful for
+      # the future
+      "NVreg_RegistryDwords=RMUseSwI2c=0x01;RMI2cSpeed=100"
+    ];
+
   boot.initrd.kernelModules = [ "nvidia" ];
-  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
 
   programs.dconf.enable = true;
 
@@ -162,7 +234,7 @@ in
     wl-mirror
     texlive.combined.scheme-full
     mu
-    stumpwm-wrapper
+    stumpwmWithDepsRunnable
   ];
 
   networking.hosts = {
