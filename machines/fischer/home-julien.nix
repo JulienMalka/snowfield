@@ -53,6 +53,16 @@
       size = 15;
     };
 
+    services.screen-locker = {
+      enable = true;
+      lockCmd = "XSECURELOCK_PASSWORD_PROMPT=time_hex ${pkgs.xsecurelock}/bin/xsecurelock";
+      xautolock.enable = false; # means use xss-lock
+      xss-lock.extraOptions = [
+        "--notifier=${pkgs.xsecurelock}/libexec/xsecurelock/dimmer"
+        "-l" # prevents suspend before locker is started
+      ];
+    };
+
     home.packages =
       with pkgs;
       [
@@ -94,6 +104,7 @@
         yubioath-flutter
         ltex-ls
         powerline-fonts
+        drawio
       ]
       ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
 
