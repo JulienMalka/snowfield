@@ -57,9 +57,9 @@
       "owner": "nix-community",
       "repo": "emacs-overlay",
       "branch": "master",
-      "revision": "c2f57f602ba4f7da96ac08537240774531cb0fb3",
-      "url": "https://github.com/nix-community/emacs-overlay/archive/c2f57f602ba4f7da96ac08537240774531cb0fb3.tar.gz",
-      "hash": "sha256-PT/AKx72aC7db9xBCtj3w/hOLw7AoBESMLwW48vCMqY="
+      "revision": "7a9a25389a6ad9402f9aa5087ccb36f8383045a8",
+      "url": "https://github.com/nix-community/emacs-overlay/archive/7a9a25389a6ad9402f9aa5087ccb36f8383045a8.tar.gz",
+      "hash": "sha256-YMy01dURXhxyjx2W+Dv83b2RRnNq28K4t4+kvrRxFto="
     },
     "git-hooks": {
       "type": "GitHub",
