@@ -11,6 +11,16 @@
       "url": "https://github.com/ryantm/agenix/archive/96e078c646b711aee04b82ba01aefbff87004ded.tar.gz",
       "hash": "sha256-bHCFgGeu8XjWlVuaWzi3QONjDW3coZDqSHvnd4l7xus="
     },
+    "artiflakery": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "JulienMalka",
+      "repo": "artiflakery",
+      "branch": "main",
+      "revision": "485ef296b4f9ff7bb6edb9ff5fe525a04e422adc",
+      "url": "https://github.com/JulienMalka/artiflakery/archive/485ef296b4f9ff7bb6edb9ff5fe525a04e422adc.tar.gz",
+      "hash": "sha256-fADYwTMZuO4S1uH3RSYc9wowvGoa/55mYvG47NmVvbc="
+    },
     "buildbot-nix": {
       "type": "GitHub",
       "fetchType": "tarball",
@@ -127,9 +137,9 @@
       "owner": "nikstur",
       "repo": "lon",
       "branch": "main",
-      "revision": "ad3bc97747c651e23fbc12c70a5849d3d8e9fdf4",
-      "url": "https://github.com/nikstur/lon/archive/ad3bc97747c651e23fbc12c70a5849d3d8e9fdf4.tar.gz",
-      "hash": "sha256-MgMDxS9xiiSkL/KsCTxLrr9wd9n1S/wq4lrA/NSyqBE="
+      "revision": "d17d0fe04fb7ce15f0e2e3521b97906514ec1857",
+      "url": "https://github.com/nikstur/lon/archive/d17d0fe04fb7ce15f0e2e3521b97906514ec1857.tar.gz",
+      "hash": "sha256-3wppxmmCMoizu6aemTt2wtakXlPI4E68odEVxU2r2Uc="
     },
     "nix-index-database": {
       "type": "GitHub",
