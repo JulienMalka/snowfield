@@ -18,6 +18,7 @@
     ./nextcloud.nix
     ./glance.nix
     ./syncthing.nix
+    ./artiflakery.nix
     "${inputs.unstable}/nixos/modules/services/web-apps/readeck.nix"
   ];
 
