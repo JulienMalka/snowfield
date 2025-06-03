@@ -34,6 +34,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.buildbot-nix}/nix/master.nix")
     (import "${inputs.buildbot-nix}/nix/worker.nix")
     (import "${inputs.agenix}/modules/age.nix")
+    (import "${inputs.artiflakery}/module.nix")
     (import "${inputs.impermanence}/nixos.nix")
     (import inputs.lanzaboote).nixosModules.lanzaboote
     (import inputs.lila).nixosModules.hash-collection
@@ -52,6 +53,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           });
           # Packages comming from other repositories
           lila-build-hook = (import inputs.lila).packages.${system}.utils;
+          artiflakery = (import inputs.artiflakery).defaultPackage.${system};
           # My own packages
           keycloak-keywind = prev.pkgs.callPackage ../packages/keycloak-keywind { };
           hydrasect = prev.pkgs.callPackage ../packages/hydrasect { };
