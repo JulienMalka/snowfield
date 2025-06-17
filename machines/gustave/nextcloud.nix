@@ -20,7 +20,7 @@
     enable = true;
     configureRedis = true;
     database.createLocally = true;
-    package = pkgs.nextcloud30;
+    package = pkgs.nextcloud31;
     https = true;
     hostName = "nuage.luj.fr";
     autoUpdateApps.enable = true;
