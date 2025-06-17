@@ -37,6 +37,18 @@ in
   };
 
   age.secrets."garage-env-file".file = ../../secrets/garage-env-file.age;
+  age.secrets."book-auth" = {
+    file = ../../secrets/book-auth.age;
+    owner = "nginx";
+  };
+  age.secrets."notes-phd-auth" = {
+    file = ../../secrets/notes-phd-auth.age;
+    owner = "nginx";
+  };
+  age.secrets."notes-perso-auth" = {
+    file = ../../secrets/notes-perso-auth.age;
+    owner = "nginx";
+  };
 
   services.nginx.virtualHosts."${api_domain}" = {
     enableACME = true;
@@ -59,6 +71,53 @@ in
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
       proxy_set_header Host $host;
     '';
+  };
+
+  services.nginx.virtualHosts."hownix.works" = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/".extraConfig = ''
+      proxy_pass http://127.0.0.1:3902;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $host;
+    '';
+    locations."/book" = {
+      basicAuthFile = config.age.secrets.book-auth.path;
+      extraConfig = ''
+        proxy_pass http://127.0.0.1:3902;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+      '';
+
+    };
+  };
+
+  services.nginx.virtualHosts."notes.luj.fr" = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+      basicAuthFile = config.age.secrets.notes-perso-auth.path;
+      proxyPass = "http://127.0.0.1:3902";
+
+      extraConfig = ''
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+      '';
+    };
+  };
+
+  services.nginx.virtualHosts."phd.luj.fr" = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+      basicAuthFile = config.age.secrets.notes-phd-auth.path;
+      proxyPass = "http://127.0.0.1:3902";
+
+      extraConfig = ''
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+      '';
+    };
   };
 
   machine.meta.zones."luj.fr".A = [
