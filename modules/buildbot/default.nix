@@ -36,7 +36,7 @@ in
         "JulienMalka"
         "camillemndn"
       ];
-      evalWorkerCount = 10; # limit number of concurrent evaluations
+      evalWorkerCount = 6; # limit number of concurrent evaluations
     };
 
     systemd.services.buildbot-worker.path = lib.mkForce [
