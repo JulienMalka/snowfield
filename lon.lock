@@ -16,10 +16,10 @@
       "fetchType": "tarball",
       "owner": "JulienMalka",
       "repo": "artiflakery",
-      "branch": "main",
-      "revision": "485ef296b4f9ff7bb6edb9ff5fe525a04e422adc",
-      "url": "https://github.com/JulienMalka/artiflakery/archive/485ef296b4f9ff7bb6edb9ff5fe525a04e422adc.tar.gz",
-      "hash": "sha256-fADYwTMZuO4S1uH3RSYc9wowvGoa/55mYvG47NmVvbc="
+      "branch": "authenticated-listing",
+      "revision": "9fc2c243c0f152303c602836ccbec8c23b4743eb",
+      "url": "https://github.com/JulienMalka/artiflakery/archive/9fc2c243c0f152303c602836ccbec8c23b4743eb.tar.gz",
+      "hash": "sha256-rbm5Ws+nsguJTZ1404bGLVexpJmFyyVirdRXCvLgtJs="
     },
     "buildbot-nix": {
       "type": "GitHub",
@@ -137,9 +137,9 @@
       "owner": "nikstur",
       "repo": "lon",
       "branch": "main",
-      "revision": "d17d0fe04fb7ce15f0e2e3521b97906514ec1857",
-      "url": "https://github.com/nikstur/lon/archive/d17d0fe04fb7ce15f0e2e3521b97906514ec1857.tar.gz",
-      "hash": "sha256-3wppxmmCMoizu6aemTt2wtakXlPI4E68odEVxU2r2Uc="
+      "revision": "c29151c0adefbf2eef904a3435350356cef98da2",
+      "url": "https://github.com/nikstur/lon/archive/c29151c0adefbf2eef904a3435350356cef98da2.tar.gz",
+      "hash": "sha256-1oQ4uLI92Ih2rmNyP4wzP9xZrQp48FHirOhV/aerZPc="
     },
     "nix-index-database": {
       "type": "GitHub",
@@ -166,10 +166,10 @@
       "fetchType": "tarball",
       "owner": "nixos",
       "repo": "nixpkgs",
-      "branch": "nixos-24.11",
-      "revision": "5b35d248e9206c1f3baf8de6a7683fee126364aa",
-      "url": "https://github.com/nixos/nixpkgs/archive/5b35d248e9206c1f3baf8de6a7683fee126364aa.tar.gz",
-      "hash": "sha256-NTtKOTLQv6dPfRe00OGSywg37A1FYqldS6xiNmqBUYc="
+      "branch": "nixos-25.05",
+      "revision": "4792576cb003c994bd7cc1edada3129def20b27d",
+      "url": "https://github.com/nixos/nixpkgs/archive/4792576cb003c994bd7cc1edada3129def20b27d.tar.gz",
+      "hash": "sha256:01akq4wqkja1lkf2xnpqp8spcb1yrcvjlr2zn9g1b8x4qwj215qc"
     },
     "proxmox": {
       "type": "GitHub",
