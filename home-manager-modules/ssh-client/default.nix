@@ -12,8 +12,8 @@ with lib;
     programs.ssh = {
       enable = true;
       matchBlocks =
-        lib.mapAttrs (n: v: {
-          hostname = "${n}.${lib.snowfield.${n}.tld}";
+        lib.mapAttrs (_: v: {
+          hostname = if v.ips ? "vpn" then v.ips.vpn.ipv4 else v.ips.public.ipv4;
           user = v.sshUser;
           port = v.sshPort;
         }) lib.snowfield
@@ -34,7 +34,9 @@ with lib;
             hostname = "ssh.enst.fr";
             user = "jmalka";
           };
-
+          ferrari = {
+            hostname = "195.154.212.97";
+          };
           lame24 = {
             hostname = "lame24.enst.fr";
             user = "jmalka";
