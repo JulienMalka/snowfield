@@ -3,11 +3,6 @@
 {
   services.plausible = {
     enable = true;
-    adminUser = {
-      activate = true;
-      email = "analytics@luj.fr";
-      passwordFile = config.age.secrets.plausible-admin-password.path;
-    };
     server = {
       baseUrl = "https://probable.luj.fr";
       port = 8455;
