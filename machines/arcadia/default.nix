@@ -4,16 +4,6 @@
   lib,
   ...
 }:
-let
-  emacs-from-overlay = pkgs.emacsWithPackagesFromUsePackage {
-    config = ../../../emacs-config/ReadMe.org;
-    package = pkgs.emacs-igc;
-    alwaysEnsure = true;
-    alwaysTangle = true;
-    extraEmacsPackages = epkgs: [ epkgs.exwm ];
-  };
-
-in
 {
   imports = [
     ./hardware.nix
@@ -99,7 +89,7 @@ in
   services.xserver.windowManager.session = lib.singleton {
     name = "exwm";
     start = ''
-      ${emacs-from-overlay}/bin/emacs -l /home/julien/.emacs.d/exwm-config.el
+      ${pkgs.emacs}/bin/emacs -l /home/julien/.emacs.d/exwm-config.el
     '';
   };
 
