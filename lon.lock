@@ -86,10 +86,10 @@
       "fetchType": "tarball",
       "owner": "nix-community",
       "repo": "home-manager",
-      "branch": "release-24.11",
-      "revision": "d5f1f641b289553927b3801580598d200a501863",
-      "url": "https://github.com/nix-community/home-manager/archive/d5f1f641b289553927b3801580598d200a501863.tar.gz",
-      "hash": "sha256-ypL9WAZfmJr5V70jEVzqGjjQzF0uCkz+AFQF7n9NmNc="
+      "branch": "release-25.05",
+      "revision": "7aae0ee71a17b19708b93b3ed448a1a0952bf111",
+      "url": "https://github.com/nix-community/home-manager/archive/7aae0ee71a17b19708b93b3ed448a1a0952bf111.tar.gz",
+      "hash": "sha256-gjN3j7joRvT3a8Zgcylnd4NFsnXeDBumqiu4HmY1RIg="
     },
     "home-manager-unstable": {
       "type": "GitHub",
