@@ -21,7 +21,7 @@
     ];
     ips = {
       public.ipv4 = "82.67.34.230";
-      vpn.ipv4 = "100.64.0.2";
+      vpn.ipv4 = "100.100.45.39";
       public.ipv6 = "2a01:e0a:de4:a0e1:eb2:aaaa::46";
       vpn.ipv6 = "fd7a:115c:a1e0::27";
     };
