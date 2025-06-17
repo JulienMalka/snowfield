@@ -1,17 +1,11 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 {
   services.stalwart-mail = {
     enable = true;
-    package = pkgs.stalwart-mail.overrideAttrs (
-      _: _: {
-        patches = [ ./stalwart.patch ];
-      }
-    );
     settings = {
       authentication.fallback-admin = {
         user = "admin";
