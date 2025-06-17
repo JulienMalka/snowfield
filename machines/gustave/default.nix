@@ -19,7 +19,6 @@
     ./glance.nix
     ./syncthing.nix
     ./artiflakery.nix
-    "${inputs.unstable}/nixos/modules/services/web-apps/readeck.nix"
   ];
 
   users.users.julien.linger = true;

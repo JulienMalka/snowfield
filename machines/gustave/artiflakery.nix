@@ -10,6 +10,11 @@
     forceSSL = true;
     enableACME = true;
     locations."/" = {
+      proxyWebsockets = true;
+      proxyPass = "http://localhost:8090";
+    };
+    locations."/ws" = {
+      proxyWebsockets = true;
       proxyPass = "http://localhost:8090";
     };
   };
@@ -100,9 +105,16 @@
         flakeref = "git+ssh://forgejo@git.luj.fr/luj/assert-prez.git?ref=main";
         access = [
           "assert"
+          "phd"
+          "julien"
         ];
       };
-
+      "slides/2025/chains-april-workshop/" = {
+        flakeref = "git+ssh://forgejo@git.luj.fr/luj/chains-2025.git?ref=main";
+        access = [
+          "public"
+        ];
+      };
     };
   };
 }
