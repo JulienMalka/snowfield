@@ -122,7 +122,6 @@
   };
 
   networking.networkmanager.plugins = [ pkgs.networkmanager-openvpn ];
-  programs.ssh.startAgent = true;
 
   environment.systemPackages = with pkgs; [
     tailscale
