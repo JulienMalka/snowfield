@@ -35,7 +35,7 @@ in
 
       age.secrets.deluge-webui-password = {
         owner = cfg.user;
-        file = ../../secrets/deluge-webui-password.age;
+        file = ../../private/secrets/deluge-webui-password.age;
       };
 
       services.deluge = {

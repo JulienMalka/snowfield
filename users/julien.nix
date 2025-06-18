@@ -29,5 +29,5 @@
   nix.settings.allowed-users = [ "julien" ];
   nix.settings.trusted-users = [ "julien" ];
 
-  age.secrets.julien-password.file = ../secrets/user-julien-password.age;
+  age.secrets.julien-password.file = ../private/secrets/user-julien-password.age;
 }

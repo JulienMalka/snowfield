@@ -1,6 +1,6 @@
 { pkgs, config, ... }:
 {
-  age.secrets.forgejo_runners-token_file.file = ../../secrets/forgejo_runners-token_file.age;
+  age.secrets.forgejo_runners-token_file.file = ../../private/secrets/forgejo_runners-token_file.age;
   nix.settings.allowed-users = [ "gitea-runner" ];
   nix.settings.trusted-users = [ "gitea-runner" ];
 

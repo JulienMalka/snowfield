@@ -90,7 +90,7 @@
     };
   };
 
-  age.secrets.keycloak-db.file = ../../secrets/keycloak-db.age;
+  age.secrets.keycloak-db.file = ../../private/secrets/keycloak-db.age;
 
   services.openssh.extraConfig = ''
     HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub

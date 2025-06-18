@@ -11,7 +11,7 @@ with lib;
   config = mkIf cfg.enable {
 
     age.secrets.git-gpg-private-key = {
-      file = ../../secrets/git-gpg-private-key.age;
+      file = ../../private/secrets/git-gpg-private-key.age;
       owner = "julien";
       mode = "0440";
       group = config.users.groups.keys.name;

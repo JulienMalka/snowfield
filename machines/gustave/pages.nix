@@ -8,7 +8,7 @@ let
   allowedUpstream = "2a01:e0a:de4:a0e1:4bb5:9275:6010:e9b5/128";
 in
 {
-  age.secrets."pages-settings-file".file = ../../secrets/pages-settings-file.age;
+  age.secrets."pages-settings-file".file = ../../private/secrets/pages-settings-file.age;
 
   services.codeberg-pages = {
     enable = true;
@@ -97,7 +97,7 @@ in
     ];
 
     # Listen to ipv6 packets coming from the internet, check the SNI
-    # If they are one of the declared virtualHosts, forward them to the proxy protocol listener 
+    # If they are one of the declared virtualHosts, forward them to the proxy protocol listener
     # for that virtualHost, else forward them to the page server
     streamConfig = ''
       map $ssl_preread_server_name $sni_upstream {

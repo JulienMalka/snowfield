@@ -37,7 +37,7 @@ in
   };
 
   age.secrets."stateless-uptime-kuma-password".file =
-    ../../secrets/stateless-uptime-kuma-password.age;
+    ../../private/secrets/stateless-uptime-kuma-password.age;
   nixpkgs.overlays = [
     (import "${inputs.stateless-uptime-kuma}/overlay.nix")
   ];

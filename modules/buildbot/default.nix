@@ -55,12 +55,12 @@ in
     };
 
     age.secrets = {
-      github-token.file = ../../secrets/github-token-secret.age;
-      github-webhook-secret.file = ../../secrets/github-webhook-secret.age;
-      github-oauth-secret.file = ../../secrets/github-oauth-secret.age;
-      buildbot-nix-workers.file = ../../secrets/buildbot-nix-workers.age;
+      github-token.file = ../../private/secrets/github-token-secret.age;
+      github-webhook-secret.file = ../../private/secrets/github-webhook-secret.age;
+      github-oauth-secret.file = ../../private/secrets/github-oauth-secret.age;
+      buildbot-nix-workers.file = ../../private/secrets/buildbot-nix-workers.age;
       buildbot-nix-worker-password = {
-        file = ../../secrets/buildbot-nix-worker-password.age;
+        file = ../../private/secrets/buildbot-nix-worker-password.age;
         owner = "buildbot-worker";
       };
     };

@@ -21,7 +21,7 @@
   };
 
   age.secrets = {
-    plausible-admin-password.file = ../../secrets/plausible-password.age;
-    plausible-secret-key-base.file = ../../secrets/plausible-keybase-secret.age;
+    plausible-admin-password.file = ../../private/secrets/plausible-password.age;
+    plausible-secret-key-base.file = ../../private/secrets/plausible-keybase-secret.age;
   };
 }

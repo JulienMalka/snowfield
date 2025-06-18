@@ -16,19 +16,19 @@ with lib;
   config = mkIf cfg.enable {
 
     age.secrets.work-mail-pw = {
-      file = ../../secrets/work-mail-pw.age;
+      file = ../../private/secrets/work-mail-pw.age;
     };
 
     age.secrets.dgnum-mail-pw = {
-      file = ../../secrets/dgnum-mail-pw.age;
+      file = ../../private/secrets/dgnum-mail-pw.age;
     };
 
     age.secrets.telecom-mail-pw = {
-      file = ../../secrets/telecom-mail-pw.age;
+      file = ../../private/secrets/telecom-mail-pw.age;
     };
 
     age.secrets.ens-mail-pw = {
-      file = ../../secrets/ens-mail-pw.age;
+      file = ../../private/secrets/ens-mail-pw.age;
     };
 
     programs.mbsync = {
