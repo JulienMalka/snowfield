@@ -55,6 +55,7 @@
     step-cli
     comma-with-db
     nixos-firewall-tool
+    attic-client
   ];
 
   environment.variables.EDITOR = "nvim";
