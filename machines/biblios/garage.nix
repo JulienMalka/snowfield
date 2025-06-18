@@ -10,7 +10,7 @@ in
 {
   services.garage = {
     enable = true;
-    package = pkgs.garage_1_1_0;
+    package = pkgs.garage_1_x;
 
     settings = {
       replication_factor = 1;
