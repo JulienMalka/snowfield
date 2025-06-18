@@ -38,7 +38,7 @@
         bucket = "nextcloud-bucket";
         key = "GK5e980f5f3c7e2780b931ccd0";
         secretFile = config.age.secrets."nextcloud-s3-token".path;
-        autocreate = false;
+        verify_bucket_exists = false;
       };
 
     };

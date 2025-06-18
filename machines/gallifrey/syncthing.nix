@@ -12,7 +12,7 @@
       listenAddresses = [ "tcp://${config.machine.meta.ips.vpn.ipv4}" ];
     };
 
-    devices = {
+    settings.devices = {
       "gustave" = {
         id = "6APF3EP-TIV7ZBK-5WB5SA4-Y2K37CR-AMIB2TM-6T2VORK-UYNQO2X-TO6V2QH";
         addresses = [
@@ -28,10 +28,10 @@
       };
 
     };
-    folders = {
+    settings.folders = {
       "dev" = {
         path = "/home/julien/dev";
-        devices = [
+        settings.devices = [
           "gustave"
           "fischer"
         ];

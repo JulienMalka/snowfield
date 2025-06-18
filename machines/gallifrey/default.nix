@@ -73,9 +73,10 @@
   services.xserver = {
     enable = true;
     videoDrivers = [ "nvidia" ];
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
   };
+
+  services.desktopManager.gnome.enable = true;
+  services.displayManager.gdm.enable = true;
 
   hardware.graphics.enable = true;
   hardware.nvidia = {
