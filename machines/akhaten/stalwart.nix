@@ -12,12 +12,6 @@ in
     enable = true;
     package = pkgs.callPackage ../../private/pkgs/stalwart { };
     settings = {
-      metrics.history = {
-        enable = true;
-        store = "rocksdb";
-        retention = "90d";
-        interval = "0 * *";
-      };
       authentication.fallback-admin = {
         user = "admin";
         secret = "%{file:/var/lib/stalwart-mail/admin-hash}%";
