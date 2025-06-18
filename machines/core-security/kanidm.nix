@@ -1,7 +1,7 @@
 { pkgs, config, ... }:
 let
   certificate = config.security.acme.certs."auth.luj.fr";
-  kanidm = pkgs.kanidm_1_5;
+  kanidm = pkgs.kanidm_1_6;
 in
 {
   services.kanidm = {
