@@ -7,9 +7,9 @@
       "owner": "ryantm",
       "repo": "agenix",
       "branch": "main",
-      "revision": "4835b1dc898959d8547a871ef484930675cb47f1",
-      "url": "https://github.com/ryantm/agenix/archive/4835b1dc898959d8547a871ef484930675cb47f1.tar.gz",
-      "hash": "sha256-NwmAFuDUO/PFcgaGGr4j3ozG9Pe5hZ/ogitWhY+D81k="
+      "revision": "531beac616433bac6f9e2a19feb8e99a22a66baf",
+      "url": "https://github.com/ryantm/agenix/archive/531beac616433bac6f9e2a19feb8e99a22a66baf.tar.gz",
+      "hash": "sha256-9P1FziAwl5+3edkfFcr5HeGtQUtrSdk/MksX39GieoA="
     },
     "artiflakery": {
       "type": "GitHub",
@@ -67,9 +67,9 @@
       "owner": "nix-community",
       "repo": "emacs-overlay",
       "branch": "master",
-      "revision": "cff16fc129c76889ddfb0ebb17b53b6633c77ba5",
-      "url": "https://github.com/nix-community/emacs-overlay/archive/cff16fc129c76889ddfb0ebb17b53b6633c77ba5.tar.gz",
-      "hash": "sha256-EtSUmvOKU7mfocPNsBSmgjOcqPBKWshSN/jsxmHZqfI="
+      "revision": "90856b1b570da027a768a8b8c11d49be723a7856",
+      "url": "https://github.com/nix-community/emacs-overlay/archive/90856b1b570da027a768a8b8c11d49be723a7856.tar.gz",
+      "hash": "sha256-2CmtuWDAxP/o14TeKXQa0BtHMALKjFAmoU4DaWX78zk="
     },
     "git-hooks": {
       "type": "GitHub",
@@ -167,9 +167,9 @@
       "owner": "nixos",
       "repo": "nixpkgs",
       "branch": "nixos-25.05",
-      "revision": "6c64dabd3aa85e0c02ef1cdcb6e1213de64baee3",
-      "url": "https://github.com/nixos/nixpkgs/archive/6c64dabd3aa85e0c02ef1cdcb6e1213de64baee3.tar.gz",
-      "hash": "sha256-h/aac1dGLhS3qpaD2aZt25NdKY7b+JT0ZIP2WuGsJMU="
+      "revision": "36ab78dab7da2e4e27911007033713bab534187b",
+      "url": "https://github.com/nixos/nixpkgs/archive/36ab78dab7da2e4e27911007033713bab534187b.tar.gz",
+      "hash": "sha256-urV51uWH7fVnhIvsZIELIYalMYsyr2FCalvlRTzqWRw="
     },
     "proxmox": {
       "type": "GitHub",
@@ -196,9 +196,9 @@
       "owner": "nixos",
       "repo": "nixpkgs",
       "branch": "nixos-unstable",
-      "revision": "ee930f9755f58096ac6e8ca94a1887e0534e2d81",
-      "url": "https://github.com/nixos/nixpkgs/archive/ee930f9755f58096ac6e8ca94a1887e0534e2d81.tar.gz",
-      "hash": "sha256-Kh9K4taXbVuaLC0IL+9HcfvxsSUx8dPB5s5weJcc9pc="
+      "revision": "9e83b64f727c88a7711a2c463a7b16eedb69a84c",
+      "url": "https://github.com/nixos/nixpkgs/archive/9e83b64f727c88a7711a2c463a7b16eedb69a84c.tar.gz",
+      "hash": "sha256-v263g4GbxXv87hMXMCpjkIxd/viIF7p3JpJrwgKdNiI="
     }
   }
 }
