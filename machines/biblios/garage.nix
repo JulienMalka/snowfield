@@ -133,6 +133,12 @@ in
   machine.meta.probes.monitors."cdn.luj.fr - IPv4".accepted_statuscodes = [ "404" ];
   machine.meta.probes.monitors."cdn.luj.fr - IPv6".accepted_statuscodes = [ "404" ];
 
+  machine.meta.probes.monitors."notes.luj.fr - IPv4".accepted_statuscodes = [ "401" ];
+  machine.meta.probes.monitors."notes.luj.fr - IPv6".accepted_statuscodes = [ "401" ];
+
+  machine.meta.probes.monitors."phd.luj.fr - IPv4".accepted_statuscodes = [ "401" ];
+  machine.meta.probes.monitors."phd.luj.fr - IPv6".accepted_statuscodes = [ "401" ];
+
   machine.meta.probes.monitors = {
     "luj.fr - IPv4" = {
       url = "https://${config.machine.meta.ips.public.ipv4}";
