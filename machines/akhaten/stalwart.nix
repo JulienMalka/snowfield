@@ -1,12 +1,23 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
+let
+  stalwart-private-settings = import ../../private/pkgs/stalwart/settings.nix;
+in
 {
   services.stalwart-mail = {
     enable = true;
+    package = pkgs.callPackage ../../private/pkgs/stalwart { };
     settings = {
+      metrics.history = {
+        enable = true;
+        store = "rocksdb";
+        retention = "90d";
+        interval = "0 * *";
+      };
       authentication.fallback-admin = {
         user = "admin";
         secret = "%{file:/var/lib/stalwart-mail/admin-hash}%";
@@ -57,8 +68,7 @@
           };
         };
       };
-
-    };
+    } // stalwart-private-settings;
   };
 
   services.backup.includes = [ "/var/lib/stalwart-mail/db" ];
