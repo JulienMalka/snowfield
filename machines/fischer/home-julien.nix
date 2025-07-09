@@ -32,10 +32,7 @@
 
     programs.emacs = {
       enable = true;
-      package = pkgs.emacs-igc;
-      extraPackages = epkgs: [
-        epkgs.mu4e
-      ];
+      package = pkgs.emacs;
     };
 
     programs.mu.enable = true;
@@ -102,7 +99,7 @@
         unstable.nixfmt-rfc-style
         kanidm
         yubioath-flutter
-        ltex-ls
+        ltex-ls-plus
         powerline-fonts
         drawio
       ]
