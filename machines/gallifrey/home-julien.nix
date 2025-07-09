@@ -149,6 +149,8 @@
         ".local/share/com.ranfdev.Notify.sqlite"
       ];
       directories = [
+        ".zotero"
+        ".cache/zotero"
         "Pictures"
         "Documents"
         ".ssh"
