@@ -15,6 +15,7 @@
       forceSSL = true;
       enableACME = true;
       locations."/" = {
+        proxyWebsockets = true;
         proxyPass = "http://localhost:${toString config.services.plausible.server.port}";
       };
     };
