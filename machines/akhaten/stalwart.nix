@@ -17,6 +17,8 @@ in
         secret = "%{file:/var/lib/stalwart-mail/admin-hash}%";
       };
       lookup.default.hostname = "mail.luj.fr";
+      spam-filter.enable = false;
+      calendar.scheduling.inbound.auto-add = true;
       server = {
         http.hsts = true;
         max-connections = 8192;
