@@ -3,7 +3,7 @@
     disk = {
       main = {
         type = "disk";
-        device = "/dev/disk/by-id/nvme-CT2000P3PSSD8_2316E6CBA6BA";
+        device = "/dev/disk/by-id/nvme-SAMSUNG_MZVLC2T0HBLD-00BLL_S7SFNF0Y727248";
         content = {
           type = "gpt";
           partitions = {

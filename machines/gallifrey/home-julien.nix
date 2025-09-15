@@ -2,7 +2,7 @@
 {
 
   luj.hmgr.julien = {
-    home.stateVersion = "24.11";
+    home.stateVersion = "25.11";
     luj.programs.neovim.enable = true;
     luj.programs.ssh-client.enable = true;
     luj.programs.git.enable = true;
@@ -23,16 +23,8 @@
       remote.host = "gustave";
     };
 
-    programs.rofi = {
-      enable = true;
-      package = pkgs.rofi-wayland;
-      font = "Fira Font";
-      theme = "DarkBlue";
-    };
-
     programs.direnv = {
       enable = true;
-      enableZshIntegration = true;
       nix-direnv.enable = true;
     };
 
@@ -63,14 +55,9 @@
       plugins = with pkgs; [ obs-studio-plugins.obs-vkcapture ];
     };
 
-    programs.mu.enable = true;
-
     programs.emacs = {
       enable = true;
-      package = pkgs.emacs-igc;
-      extraPackages = epkgs: [
-        epkgs.mu4e
-      ];
+      package = pkgs.emacs30;
     };
 
     home.packages =
@@ -155,7 +142,6 @@
         "Documents"
         ".ssh"
         ".mozilla"
-        "devold"
         ".config/cosmic"
         ".local/share/direnv"
         ".local/state/cosmic-comp"
