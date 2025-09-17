@@ -8,7 +8,6 @@
   imports = [
     ./hardware.nix
     ./home-julien.nix
-    ./syncthing.nix
   ];
 
   machine.meta = {
@@ -39,6 +38,8 @@
   fileSystems."/persistent".neededForBoot = true;
 
   disko = import ./disko.nix;
+
+  virtualisation.docker.enable = true;
 
   boot.loader.systemd-boot.enable = true;
 
@@ -72,10 +73,14 @@
     ];
   };
 
+  programs.ssh.knownHosts."epyc.infra.newtype.fr".publicKey =
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOXT9Init1MhKt4rjBANLq0t0bPww/WQZ96uB4AEDrml";
+
   environment.systemPackages = with pkgs; [
     tailscale
     brightnessctl
     sbctl
+    emacs-igc
   ];
 
   security.pam.services.swaylock = { };
@@ -83,11 +88,13 @@
   services.xserver.displayManager.lightdm.enable = true;
   services.xserver.desktopManager.xterm.enable = true;
   services.xserver.enable = true;
+  services.xserver.autoRepeatDelay = 250;
+  services.xserver.autoRepeatInterval = 30;
 
   services.xserver.windowManager.session = lib.singleton {
     name = "exwm";
     start = ''
-      ${pkgs.emacs}/bin/emacs -l /home/julien/.emacs.d/exwm-config.el
+      EXWM=true ${pkgs.emacs}/bin/emacs -l /home/julien/.emacs.d/exwm-config.el
     '';
   };
 

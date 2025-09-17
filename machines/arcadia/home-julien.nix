@@ -46,6 +46,13 @@
     home.packages =
       with pkgs;
       [
+        slack
+        git-absorb
+        git-autofixup
+        emacsPackages.jinx
+        hunspellDicts.en_US
+        hunspellDicts.fr-moderne
+        emacs
         du-dust
         kitty
         jq
@@ -53,7 +60,6 @@
         fira-code
         feh
         meld
-        emacs-igc
         vlc
         jftui
         libreoffice
@@ -97,6 +103,7 @@
         ".cert/nm-openvpn/telecom-paris-ca.pem"
       ];
       directories = [
+        "dev"
         "Pictures"
         "Documents"
         ".ssh"
