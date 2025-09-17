@@ -23,7 +23,7 @@
     openssh.authorizedPrincipals = [ "julien_root" ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGa+7n7kNzb86pTqaMn554KiPrkHRGeTJ0asY1NjSbpr julien@tower"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMAa0wll9ildhgPiV0DhgJXXtw3TQr5VkNxxxPspHSbX julien@gallifrey"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFwMV/IsMl07Oa3Vw8hO4K4YLusREtNhZrYD/81/Bhqr julien@gallifrey"
     ];
   };
 }
