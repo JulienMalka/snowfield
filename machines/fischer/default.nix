@@ -70,6 +70,8 @@ in
     ips.vpn.ipv4 = "100.100.45.11";
   };
 
+  services.fwupd.enable = true;
+
   # Boot stuff
   boot.loader.systemd-boot.enable = lib.mkForce false;
   boot.lanzaboote = {
