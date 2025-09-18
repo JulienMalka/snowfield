@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }:
 let
@@ -125,6 +126,13 @@ in
   ];
   machine.meta.zones."luj.fr".AAAA = [
     config.machine.meta.ips.public.ipv6
+  ];
+
+  machine.meta.zones."hownix.works".A = lib.mkForce [
+    "37.27.243.229"
+  ];
+  machine.meta.zones."hownix.works".AAAA = lib.mkForce [
+    "2a01:4f9:c012:5c9a::1"
   ];
 
   machine.meta.probes.monitors."s3.luj.fr - IPv4".accepted_statuscodes = [ "403" ];
