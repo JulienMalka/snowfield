@@ -35,15 +35,6 @@
       package = pkgs.emacs;
     };
 
-    programs.mu.enable = true;
-
-    programs.rofi = {
-      enable = true;
-      package = pkgs.rofi-wayland;
-      font = "Fira Font";
-      theme = "DarkBlue";
-    };
-
     home.pointerCursor = {
       name = "Adwaita";
       package = pkgs.adwaita-icon-theme;

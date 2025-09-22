@@ -97,9 +97,9 @@
       "owner": "nix-community",
       "repo": "home-manager",
       "branch": "master",
-      "revision": "f35703b412c67b48e97beb6e27a6ab96a084cd37",
-      "url": "https://github.com/nix-community/home-manager/archive/f35703b412c67b48e97beb6e27a6ab96a084cd37.tar.gz",
-      "hash": "sha256-WK7tOhWwr15mipcckhDg2no/eSpM1nIh4C9le8HgHhk="
+      "revision": "bf7056c6a2d893d80db18d06d7e730d6515aaae8",
+      "url": "https://github.com/nix-community/home-manager/archive/bf7056c6a2d893d80db18d06d7e730d6515aaae8.tar.gz",
+      "hash": "sha256-TOazVsj8D1LTGQ6q8xdtfoPs9Z+PiqUS952WvZPssR0="
     },
     "impermanence": {
       "type": "GitHub",
@@ -196,9 +196,9 @@
       "owner": "nixos",
       "repo": "nixpkgs",
       "branch": "nixos-unstable",
-      "revision": "8eb28adfa3dc4de28e792e3bf49fcf9007ca8ac9",
-      "url": "https://github.com/nixos/nixpkgs/archive/8eb28adfa3dc4de28e792e3bf49fcf9007ca8ac9.tar.gz",
-      "hash": "sha256-NOrUtIhTkIIumj1E/Rsv1J37Yi3xGStISEo8tZm3KW4="
+      "revision": "8d4ddb19d03c65a36ad8d189d001dc32ffb0306b",
+      "url": "https://github.com/nixos/nixpkgs/archive/8d4ddb19d03c65a36ad8d189d001dc32ffb0306b.tar.gz",
+      "hash": "sha256-qqIJ3yxPiB0ZQTT9//nFGQYn8X/PBoJbofA7hRKZnmE="
     }
   }
 }

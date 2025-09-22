@@ -7,7 +7,7 @@
 let
   cfg = config.luj.programs.hyprland;
   terminal = "${pkgs.kitty}/bin/kitty";
-  menu = "${pkgs.rofi-wayland}/bin/rofi -no-lazy-grab -show drun";
+  menu = "${pkgs.rofi}/bin/rofi -no-lazy-grab -show drun";
 in
 with lib;
 {
