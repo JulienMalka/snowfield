@@ -24,6 +24,7 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_16;
 
   boot.initrd.postDeviceCommands = ''
     lvm lvremove --force /dev/mainpool/root || :
