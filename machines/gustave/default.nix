@@ -19,6 +19,7 @@
     ./glance.nix
     ./syncthing.nix
     ./artiflakery.nix
+    ./josh.nix
   ];
 
   users.users.julien.linger = true;
