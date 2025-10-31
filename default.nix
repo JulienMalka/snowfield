@@ -22,6 +22,8 @@ let
   );
   self = rec {
 
+    inherit lib;
+
     nixosModules = builtins.listToAttrs (
       map (x: {
         name = x;
@@ -57,7 +59,32 @@ let
           n: v: v._module.specialArgs // { lib = mkLibForMachine n; }
         ) nixosConfigurations;
       };
-    } // builtins.mapAttrs (_: v: { imports = v._module.args.modules; }) nixosConfigurations;
+    }
+    // builtins.mapAttrs (_: v: { imports = v._module.args.modules; }) nixosConfigurations;
+
+    all_secrets_nixos = lib.foldl (acc: v: lib.deepMerge acc v) { } (
+      lib.attrValues (
+        lib.mapAttrs (
+          n: v:
+          lib.mapAttrs' (
+            _: j: lib.nameValuePair (builtins.toString j.file) (j // { targets = [ n ]; })
+          ) v.config.age.secrets
+        ) nixosConfigurations
+      )
+    );
+
+    all_secrets_hm = lib.foldl (acc: v: lib.deepMerge acc v) { } (
+      lib.attrValues (
+        lib.mapAttrs (
+          n: v:
+          lib.mapAttrs' (
+            _: j: lib.nameValuePair (builtins.toString j.file) (j // { targets = [ "${n}_home" ]; })
+          ) v.config.home-manager.users.julien.age.secrets
+        ) nixosConfigurations
+      )
+    );
+
+    all_secrets = all_secrets_nixos // all_secrets_hm;
 
     packages = builtins.listToAttrs (
       builtins.map (plat: {
