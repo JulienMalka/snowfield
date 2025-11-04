@@ -11,13 +11,9 @@
     ./home-julien.nix
     ./nsd.nix
     ./borg.nix
-    # Performance is not as good as we expected, wait for pages v3
-    #    ./pages.nix
     ./readeck.nix
     ./plausible.nix
     ./nextcloud.nix
-    ./glance.nix
-    ./syncthing.nix
     ./artiflakery.nix
     ./josh.nix
   ];
@@ -37,6 +33,7 @@
     arch = "x86_64-linux";
     nixpkgs_version = inputs.nixpkgs;
     hm_version = inputs.home-manager;
+    syncthing.id = "";
     profiles = with profiles; [
       vm-simple-network
       server
