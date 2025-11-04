@@ -53,7 +53,7 @@
         hunspellDicts.en_US
         hunspellDicts.fr-moderne
         emacs
-        du-dust
+        dust
         kitty
         jq
         lazygit

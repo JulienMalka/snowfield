@@ -54,7 +54,7 @@
     home.packages =
       with pkgs;
       [
-        du-dust
+        dust
         kitty
         jq
         lazygit
