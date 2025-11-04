@@ -1,6 +1,8 @@
 {
   config,
   lib,
+  inputs,
+  pkgs,
   ...
 }:
 let
@@ -11,18 +13,17 @@ let
 in
 {
 
-  #disabledModules = [
-  # "${inputs.nixpkgs}/nixos/modules/services/networking/syncthing.nix"
-  #];
+  disabledModules = [
+    "${inputs.nixpkgs}/nixos/modules/services/networking/syncthing.nix"
+  ];
 
-  #imports = [
-  #  "${inputs.unstable}/nixos/modules/services/networking/syncthing.nix"
-
-  #];
+  imports = [
+    "${inputs.unstable}/nixos/modules/services/networking/syncthing.nix"
+  ];
 
   services.syncthing = {
     enable = true;
-    #package = pkgs.unstable.syncthing;
+    package = pkgs.unstable.syncthing;
     key = config.age.secrets."syncthing-key".path;
     cert = config.age.secrets."syncthing-cert".path;
     user = "julien";
@@ -38,14 +39,13 @@ in
     settings.devices = lib.mapAttrs (_: v: {
       inherit (v.syncthing) id;
       addresses = [ "tcp://${v.ips.vpn.ipv4}:22000" ];
-      autoAcceptFolders = true;
     }) syncthing_configured;
 
     settings.folders = {
       "dev" = {
         path = "/home/julien/dev";
         ignorePatterns = [ "nixpkgs" ];
-        settings.devices = syncthing_configured;
+        settings.devices = lib.attrNames syncthing_configured;
       };
     };
   };
