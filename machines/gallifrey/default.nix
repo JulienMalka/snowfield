@@ -10,7 +10,6 @@
   imports = [
     ./hardware.nix
     ./home-julien.nix
-    ./syncthing.nix
   ];
 
   machine.meta = {

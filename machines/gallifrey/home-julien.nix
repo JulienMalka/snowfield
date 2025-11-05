@@ -89,8 +89,6 @@
         scli
         jftui
         texlive.combined.scheme-full
-        inochi-creator
-        inochi-session
         gh
         ouch
         spotify
