@@ -17,7 +17,11 @@
     arch = "x86_64-linux";
     nixpkgs_version = inputs.unstable;
     hm_version = inputs.home-manager-unstable;
-    profiles = with profiles; [ sound ];
+    profiles = with profiles; [
+      sound
+      syncthing
+    ];
+    syncthing.id = "2ATHIGB-OEVIG7S-HHXN2C7-T7VPNJ2-UQTLQ45-HAGXL23-ZMJNNMJ-EO4EMAT";
     ips.vpn.ipv4 = "100.100.45.35";
   };
 
