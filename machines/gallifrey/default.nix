@@ -21,7 +21,7 @@
       syncthing
     ];
     syncthing.id = "2ATHIGB-OEVIG7S-HHXN2C7-T7VPNJ2-UQTLQ45-HAGXL23-ZMJNNMJ-EO4EMAT";
-    ips.vpn.ipv4 = "100.100.45.35";
+    ips.vpn.ipv4 = "100.100.45.19";
   };
 
   services.fwupd.enable = true;
