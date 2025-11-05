@@ -48,7 +48,7 @@ in
           "nixpkgs"
           "target"
         ];
-        settings.devices = lib.attrNames syncthing_configured;
+        devices = lib.attrNames syncthing_configured;
       };
     };
   };
