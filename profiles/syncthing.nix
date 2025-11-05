@@ -44,7 +44,10 @@ in
     settings.folders = {
       "dev" = {
         path = "/home/julien/dev";
-        ignorePatterns = [ "nixpkgs" ];
+        ignorePatterns = [
+          "nixpkgs"
+          "target"
+        ];
         settings.devices = lib.attrNames syncthing_configured;
       };
     };
