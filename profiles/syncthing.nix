@@ -47,6 +47,11 @@ in
         ignorePatterns = [
           "nixpkgs"
           "target"
+          ".pnpm-store"
+          "emacs-config/var"
+          "emacs-config/eln-cache"
+          "emacs-config/elpa"
+          "emacs-config/elpaca"
         ];
         devices = lib.attrNames syncthing_configured;
       };
