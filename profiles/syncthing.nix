@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  inputs,
   pkgs,
   ...
 }:
@@ -13,17 +12,9 @@ let
 in
 {
 
-  disabledModules = [
-    "${inputs.nixpkgs}/nixos/modules/services/networking/syncthing.nix"
-  ];
-
-  imports = [
-    "${inputs.unstable}/nixos/modules/services/networking/syncthing.nix"
-  ];
-
   services.syncthing = {
     enable = true;
-    package = pkgs.unstable.syncthing;
+    package = pkgs.syncthing;
     key = config.age.secrets."syncthing-key".path;
     cert = config.age.secrets."syncthing-cert".path;
     user = "julien";

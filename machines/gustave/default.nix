@@ -33,11 +33,12 @@
     arch = "x86_64-linux";
     nixpkgs_version = inputs.nixpkgs;
     hm_version = inputs.home-manager;
-    syncthing.id = "";
+    syncthing.id = "3LPQQ6G-JO4M5FH-EDGCLDO-VN2J3PR-DDPB7IS-447IUF3-BHIS6S4-NQMWNQD";
     profiles = with profiles; [
       vm-simple-network
       server
       behind-sniproxy
+      syncthing
     ];
     ips = {
       public.ipv4 = "82.67.34.230";
