@@ -49,6 +49,10 @@
 
   disko = import ./disko.nix;
 
+  services.udev.extraRules = ''
+    SUBSYSTEM=="usb", ATTR{idVendor}=="046d", ATTR{idProduct}=="c900",MODE="0666"
+  '';
+
   boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
   services.xserver = {
     enable = true;
@@ -102,6 +106,7 @@
     brightnessctl
     sbctl
     ddcutil
+    lcli
     xorg.xinit
     gnomeExtensions.dash-to-dock
     gnomeExtensions.tailscale-status
