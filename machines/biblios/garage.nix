@@ -66,7 +66,6 @@ in
   services.nginx.virtualHosts."cdn.luj.fr" = {
     enableACME = true;
     forceSSL = true;
-    serverAliases = [ "luj.fr" ];
     locations."/".extraConfig = ''
       proxy_pass http://127.0.0.1:3902;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -90,6 +89,57 @@ in
         proxy_set_header Host $host;
       '';
 
+    };
+  };
+
+  services.nginx.virtualHosts."luj.fr" = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/".extraConfig = ''
+      proxy_pass http://127.0.0.1:3902;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $host;
+    '';
+    locations."/notes" = {
+      extraConfig = ''
+        return 301 $scheme://$host/notes/;
+      '';
+    };
+
+    # Main notes application
+    locations."/notes/" = {
+      extraConfig = ''
+        proxy_pass http://100.100.45.24:3003/;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+      '';
+    };
+
+    # JavaScript/WASM bundles
+    locations."/pkg/" = {
+      extraConfig = ''
+        proxy_pass http://100.100.45.24:3003/pkg/;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+      '';
+    };
+
+    # Static assets
+    locations."/public/" = {
+      extraConfig = ''
+        proxy_pass http://100.100.45.24:3003/public/;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+      '';
+    };
+
+    # Server function endpoints
+    locations."/api/" = {
+      extraConfig = ''
+        proxy_pass http://100.100.45.24:3003/api/;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+      '';
     };
   };
 
