@@ -56,6 +56,22 @@
     nginx.subdomain = "docs";
   };
 
+  services.nginx.virtualHosts."staging-lila.luj.fr" = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+      proxyPass = "http://localhost:8004";
+    };
+  };
+
+  services.nginx.virtualHosts."slack-bot.luj.fr" = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+      proxyPass = "http://localhost:8005";
+    };
+  };
+
   security.polkit.enable = true;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
