@@ -29,6 +29,22 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  services.postgresql.enable = true;
+
+  services.hash-collection = {
+    enable = true;
+    collection-url = "https://reproducibility.nixos.social";
+    tokenFile = config.age.secrets.lila-token.path;
+    secretKeyFile = config.age.secrets.lila-key.path;
+  };
+  nix.settings.trusted-users = [
+    "queued-build-hook"
+  ];
+
+  age.secrets.lila-token.file = ./secrets/lila-token.age;
+
+  age.secrets.lila-key.file = ./secrets/lila-key.age;
+
   networking.networkmanager.enable = true;
 
   programs.ssh.knownHosts."epyc.infra.newtype.fr".publicKey =
@@ -51,6 +67,7 @@
 
   services.udev.extraRules = ''
     SUBSYSTEM=="usb", ATTR{idVendor}=="046d", ATTR{idProduct}=="c900",MODE="0666"
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c900", MODE="0666"
   '';
 
   boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
