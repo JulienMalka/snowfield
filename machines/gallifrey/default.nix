@@ -41,9 +41,19 @@
     "queued-build-hook"
   ];
 
-  age.secrets.lila-token.file = ./secrets/lila-token.age;
+  age.secrets.lila-token = {
+    file = ./secrets/lila-token.age;
+    owner = "julien";
+    group = "nixbld";
+    mode = "770";
+  };
 
-  age.secrets.lila-key.file = ./secrets/lila-key.age;
+  age.secrets.lila-key = {
+    file = ./secrets/lila-key.age;
+    owner = "julien";
+    group = "nixbld";
+    mode = "770";
+  };
 
   networking.networkmanager.enable = true;
 
