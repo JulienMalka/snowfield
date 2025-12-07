@@ -16,10 +16,10 @@
       "fetchType": "tarball",
       "owner": "JulienMalka",
       "repo": "artiflakery",
-      "branch": "authenticated-listing",
-      "revision": "9fc2c243c0f152303c602836ccbec8c23b4743eb",
-      "url": "https://github.com/JulienMalka/artiflakery/archive/9fc2c243c0f152303c602836ccbec8c23b4743eb.tar.gz",
-      "hash": "sha256-rbm5Ws+nsguJTZ1404bGLVexpJmFyyVirdRXCvLgtJs="
+      "branch": "new-pdf-viewer",
+      "revision": "5bb83b3cfcf8b1bc23612b476d50cdd3f9ab6341",
+      "url": "https://github.com/JulienMalka/artiflakery/archive/5bb83b3cfcf8b1bc23612b476d50cdd3f9ab6341.tar.gz",
+      "hash": "sha256-tinZiuVqAEXiW6h4x/U8+kVF/5zl9rbs7a+OhLY0MbY="
     },
     "buildbot-nix": {
       "type": "GitHub",
@@ -67,9 +67,9 @@
       "owner": "nix-community",
       "repo": "emacs-overlay",
       "branch": "master",
-      "revision": "ac6b5a15663639d4059c200c05f45c0a9716faf7",
-      "url": "https://github.com/nix-community/emacs-overlay/archive/ac6b5a15663639d4059c200c05f45c0a9716faf7.tar.gz",
-      "hash": "sha256-RjrXvTOmTFmuU1K77oAFh/LotHhrrexjXXAVc2+DJ4c="
+      "revision": "e9592e3ebb99753e380407dbaacc2c55dd25064f",
+      "url": "https://github.com/nix-community/emacs-overlay/archive/e9592e3ebb99753e380407dbaacc2c55dd25064f.tar.gz",
+      "hash": "sha256-h6WusG8mUo79DiP6jvosU7Sfs4bHta9JG7TOAf1d8j8="
     },
     "git-hooks": {
       "type": "GitHub",
@@ -86,10 +86,10 @@
       "fetchType": "tarball",
       "owner": "nix-community",
       "repo": "home-manager",
-      "branch": "release-25.05",
-      "revision": "44831a7eaba4360fb81f2acc5ea6de5fde90aaa3",
-      "url": "https://github.com/nix-community/home-manager/archive/44831a7eaba4360fb81f2acc5ea6de5fde90aaa3.tar.gz",
-      "hash": "sha256-WHkdBlw6oyxXIra/vQPYLtqY+3G8dUVZM8bEXk0t8x4="
+      "branch": "release-25.11",
+      "revision": "f63d0fe9d81d36e5fc95497217a72e02b8b7bcab",
+      "url": "https://github.com/nix-community/home-manager/archive/f63d0fe9d81d36e5fc95497217a72e02b8b7bcab.tar.gz",
+      "hash": "sha256-0GsEtXV9OquDQ1VclQfP16cU5VZh7NEVIOjSH4UaJuM="
     },
     "home-manager-unstable": {
       "type": "GitHub",
@@ -166,10 +166,10 @@
       "fetchType": "tarball",
       "owner": "nixos",
       "repo": "nixpkgs",
-      "branch": "nixos-25.05",
-      "revision": "1c8ba8d3f7634acac4a2094eef7c32ad9106532c",
-      "url": "https://github.com/nixos/nixpkgs/archive/1c8ba8d3f7634acac4a2094eef7c32ad9106532c.tar.gz",
-      "hash": "sha256-dY9qLD0H0zOUgU3vWacPY6Qc421BeQAfm8kBuBtPVE0="
+      "branch": "nixos-25.11",
+      "revision": "c97c47f2bac4fa59e2cbdeba289686ae615f8ed4",
+      "url": "https://github.com/nixos/nixpkgs/archive/c97c47f2bac4fa59e2cbdeba289686ae615f8ed4.tar.gz",
+      "hash": "sha256-OtzF5wBvO0jgW1WW1rQU9cMGx7zuvkF7CAVJ1ypzkxA="
     },
     "proxmox": {
       "type": "GitHub",
