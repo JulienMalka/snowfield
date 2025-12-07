@@ -5,6 +5,7 @@
   programs.rust-motd = {
     enable = true;
     order = [
+      "global"
       "filesystems"
       "memory"
       "last_login"
