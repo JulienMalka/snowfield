@@ -83,7 +83,6 @@
     tailscale
     brightnessctl
     sbctl
-    emacs-igc
   ];
 
   security.pam.services.swaylock = { };
