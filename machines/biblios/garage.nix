@@ -109,7 +109,7 @@ in
     # Main notes application
     locations."/notes/" = {
       extraConfig = ''
-        proxy_pass http://100.100.45.24:3003/;
+        proxy_pass http://100.100.45.24:3003;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $host;
       '';
