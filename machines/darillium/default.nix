@@ -16,7 +16,7 @@
     nixpkgs_version = inputs.unstable;
     hm_version = inputs.home-manager-unstable;
     ips.public.ipv4 = "127.0.0.1";
-    ips.vpn.ipv4 = "100.100.45.10";
+    ips.vpn.ipv4 = "100.100.45.26";
     profiles = with profiles; [ syncthing ];
     syncthing.id = "CCOB6HQ-VXA5XTN-NIIDYCK-MQGHI6G-6G5BGOB-JEIDJXC-FWEPINX-NM2DHAH";
 
