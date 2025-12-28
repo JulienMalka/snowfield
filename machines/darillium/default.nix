@@ -18,7 +18,7 @@
     ips.public.ipv4 = "127.0.0.1";
     ips.vpn.ipv4 = "100.100.45.10";
     profiles = with profiles; [ syncthing ];
-    syncthing.id = "PUOXK5U-OR4NX3V-ZDWWZIN-HX3AVPS-VFMPGVC-7BL3R7R-UIDRQVF-4FXEDQP";
+    syncthing.id = "CCOB6HQ-VXA5XTN-NIIDYCK-MQGHI6G-6G5BGOB-JEIDJXC-FWEPINX-NM2DHAH";
 
   };
 
