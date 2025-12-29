@@ -45,9 +45,8 @@
   programs.dconf.enable = true;
 
   boot.initrd = {
-    luks.devices.root = {
+    luks.devices.crypted = {
       crypttabExtraOpts = [ "fido2-device=auto" ];
-      device = "/dev/nvme0n1p4";
     };
     systemd.enable = true;
 
