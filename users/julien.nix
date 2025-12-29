@@ -24,6 +24,7 @@
 
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIADCpuBL/kSZShtXD6p/Nq9ok4w1DnlSoxToYgdOvUqo julien@telecom"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHH2mPgov6t7oFfEjtZr/DdJW5qSQYqbw+4uYitOCf9n julien@arcadia"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN31a7mqOInGOKj6cMeHAgSkoHuqC1xRGgXMGDWgkTPl julien@darillium"
     ];
   };
 
