@@ -20,6 +20,8 @@
 
   users.users.julien.linger = true;
 
+  boot.initrd.systemd.enable = true;
+
   services.backup.includes = [ "/home/julien/Maildir" ];
 
   services.openssh.extraConfig = ''

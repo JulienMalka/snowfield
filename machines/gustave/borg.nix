@@ -14,4 +14,17 @@
 
   environment.systemPackages = with pkgs; [ borgbackup ];
 
+  preservation = {
+    enable = true;
+    preserveAt."/persistent" = {
+      directories = [
+        {
+          directory = "/home/borg";
+          user = "borg";
+          group = "users";
+        }
+      ];
+    };
+  };
+
 }
