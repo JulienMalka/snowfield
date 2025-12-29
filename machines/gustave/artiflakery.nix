@@ -93,12 +93,16 @@
         flakeref = "git+ssh://git@gitlab.enst.fr/julien.malka/phd.git?dir=productions/slides/2024-reading-group-build-systems&ref=main";
         access = [
           "aces"
+          "phd"
+          "julien"
         ];
       };
       "slides/2024/reading-group-vulnerabilities-ssc/" = {
         flakeref = "git+ssh://git@gitlab.enst.fr/julien.malka/phd.git?dir=productions/slides/2024-reading-group-vulnerabilities-ssc&ref=main";
         access = [
           "aces"
+          "phd"
+          "julien"
         ];
       };
       "slides/2025/assert-june-workshop/" = {
