@@ -16,25 +16,12 @@
     nixpkgs_version = inputs.unstable;
     hm_version = inputs.home-manager-unstable;
     ips.public.ipv4 = "127.0.0.1";
-    ips.vpn.ipv4 = "100.100.45.26";
+    ips.vpn.ipv4 = "100.100.45.27";
     profiles = with profiles; [ syncthing ];
     syncthing.id = "CCOB6HQ-VXA5XTN-NIIDYCK-MQGHI6G-6G5BGOB-JEIDJXC-FWEPINX-NM2DHAH";
 
   };
 
-  environment.persistence."/persistent" = {
-    hideMounts = true;
-    directories = [
-      "/var/lib"
-      "/var/log"
-      "/etc/NetworkManager/system-connections"
-    ];
-    files = [
-      "/etc/machine-id"
-      "/etc/ssh/ssh_host_ed25519_key"
-      "/etc/ssh/ssh_host_ed25519_key.pub"
-    ];
-  };
   programs.fuse.userAllowOther = true;
 
   fileSystems."/persistent".neededForBoot = true;
@@ -49,11 +36,22 @@
 
   services.tailscale.enable = true;
 
+  services.userborn.enable = true;
+
   networking.networkmanager.enable = true;
 
   services.dbus.enable = true;
 
   programs.dconf.enable = true;
+
+  boot.initrd = {
+    luks.devices.root = {
+      crypttabExtraOpts = [ "fido2-device=auto" ];
+      device = "/dev/nvme0n1p4";
+    };
+    systemd.enable = true;
+
+  };
 
   security.polkit.enable = true;
 

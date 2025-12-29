@@ -19,10 +19,12 @@ in
 }:
 let
   pkgs = import nixpkgs { inherit system; };
+  preservationLib = import "${inputs.preservation}/lib.nix" { inherit (pkgs) lib; };
+  ourLib = import ./default.nix inputs self.profiles dnsLib;
 in
 import "${nixpkgs}/nixos/lib/eval-config.nix" {
   inherit system;
-  lib = pkgs.lib.extend (import ./default.nix inputs self.profiles dnsLib);
+  lib = (pkgs.lib.extend ourLib) // preservationLib;
   specialArgs = {
     inherit inputs dnsLib;
     inherit (self) nixosConfigurations profiles;
@@ -40,6 +42,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import inputs.lila).nixosModules.hash-collection
     (import "${inputs.stateless-uptime-kuma}/nixos/module.nix")
     (import "${inputs.proxmox}/modules/declarative-vms")
+    (import "${inputs.preservation}/module.nix")
     {
       home-manager.useGlobalPkgs = true;
       nixpkgs.system = system;
