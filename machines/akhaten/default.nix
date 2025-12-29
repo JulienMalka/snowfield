@@ -107,6 +107,10 @@
             PublicKey = "ElVrxNiYvV13hEDtqZNw4kLF7UiPTXziz8XgqABB0AU=";
             AllowedIPs = [ "10.100.45.3/32" ];
           }
+          {
+            PublicKey = "zoDZGWMPZ+QGAh8Ml9OospRJRlaoaWVFpU7EkdJv3XU=";
+            AllowedIPs = [ "10.100.45.4/32" ];
+          }
         ];
       };
     };
