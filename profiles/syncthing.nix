@@ -51,13 +51,18 @@ in
 
   systemd.services.syncthing.serviceConfig.StateDirectory = "syncthing";
   systemd.services.syncthing.environment.STNODEFAULTFOLDER = "true";
-  environment.persistence."/persistent".directories = [
-    {
-      directory = "/home/julien/dev";
-      user = "julien";
-      group = "users";
-    }
-  ];
+  preservation = {
+    enable = true;
+    preserveAt."/persistent" = {
+      directories = [
+        {
+          directory = "/home/julien/dev";
+          user = "julien";
+          group = "users";
+        }
+      ];
+    };
+  };
 
   age.secrets."syncthing-key".file =
     ../machines/${config.networking.hostName}/secrets/syncthing-key.age;
