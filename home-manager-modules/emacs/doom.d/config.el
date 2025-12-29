@@ -1,1 +1,0 @@
-(setq doom-theme 'catppuccin)
