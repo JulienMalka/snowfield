@@ -8,7 +8,7 @@
 let
   zonesToList = lib.mapAttrsToList (name: value: { ${name} = value; });
   zonesFromConfig = lib.mkMerge (
-    lib.fold (elem: acc: acc ++ (zonesToList elem.config.machine.meta.zones)) [ ] (
+    lib.foldr (elem: acc: acc ++ (zonesToList elem.config.machine.meta.zones)) [ ] (
       lib.attrValues nixosConfigurations
     )
   );
@@ -24,7 +24,7 @@ let
 
   isVPNDomain = domain: lib.dns.domainToZone [ "luj" ] domain != null;
 
-  zonesFromSnowField = lib.fold (elem: acc: lib.attrsets.recursiveUpdate acc elem) { } (
+  zonesFromSnowField = lib.foldr (elem: acc: lib.attrsets.recursiveUpdate acc elem) { } (
     lib.flatten (
       map (
         elem:

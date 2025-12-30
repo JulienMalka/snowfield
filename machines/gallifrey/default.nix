@@ -24,6 +24,8 @@
     ips.vpn.ipv4 = "100.100.45.19";
   };
 
+  boot.initrd.systemd.enable = true;
+
   services.fwupd.enable = true;
   networking.hostName = "gallifrey";
   boot.loader.systemd-boot.enable = true;

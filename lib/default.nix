@@ -47,7 +47,7 @@ rec {
 
   listToAttrsWithMerge =
     l:
-    mapAttrs (_: v: _prev.fold (elem: acc: elem.value // acc) { } v) (builtins.groupBy (e: e.name) l);
+    mapAttrs (_: v: _prev.foldr (elem: acc: elem.value // acc) { } v) (builtins.groupBy (e: e.name) l);
 
   mapAttrsWithMerge = f: set: listToAttrsWithMerge (map (attr: f attr set.${attr}) (attrNames set));
 

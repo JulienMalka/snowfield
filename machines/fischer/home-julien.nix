@@ -88,7 +88,7 @@
         pkgs.stable.pyright
         unstable.nixd
         unstable.nixfmt-rfc-style
-        kanidm
+        kanidm_1_8
         yubioath-flutter
         ltex-ls-plus
         powerline-fonts

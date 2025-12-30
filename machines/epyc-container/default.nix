@@ -15,6 +15,8 @@
   boot.loader.grub.enable = false;
   boot.isContainer = true;
 
+  networking.useNetworkd = true;
+
   machine.meta = {
     arch = "x86_64-linux";
     nixpkgs_version = inputs.nixpkgs;

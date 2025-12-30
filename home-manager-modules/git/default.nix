@@ -16,8 +16,17 @@ with lib;
   config = mkIf cfg.enable {
     programs.git = {
       enable = true;
-      userName = "Julien Malka";
-      userEmail = "julien@malka.sh";
+      settings = {
+        user.name = "Julien Malka";
+        user.email = "julien@malka.sh";
+        init.defaultBranch = "main";
+        diff.colorMoved = "zebra";
+        pull.rebase = true;
+        fetch.prune = true;
+        rebase.autoStash = true;
+        push.autoSetupRemote = true;
+
+      };
       signing = {
         signByDefault = true;
         key = "6FC74C847011FD83";
@@ -28,17 +37,10 @@ with lib;
           "/home/julien/dev/nixpkgs"
         ];
       };
-      delta.enable = true;
       ignores = [ ".direnv" ];
-      extraConfig = {
-        init.defaultBranch = "main";
-        diff.colorMoved = "zebra";
-        pull.rebase = true;
-        fetch.prune = true;
-        rebase.autoStash = true;
-        push.autoSetupRemote = true;
-      };
     };
+
+    programs.delta.enable = true;
 
     home.extraActivationPath = [ pkgs.gnupg ];
     home.activation = {
