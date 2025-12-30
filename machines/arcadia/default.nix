@@ -23,6 +23,8 @@
 
   };
 
+  boot.initrd.systemd.enable = true;
+
   environment.persistence."/persistent" = {
     hideMounts = true;
     directories = [
