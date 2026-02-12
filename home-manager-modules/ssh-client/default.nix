@@ -28,7 +28,7 @@ with lib;
             hashKnownHosts = false;
             userKnownHostsFile = "~/.ssh/known_hosts";
             controlMaster = "no";
-            controlPath = "~.ssh/master-%r@%n:%p";
+            controlPath = "~/.ssh/master-%r@%n:%p";
             controlPersist = "no";
           };
           sas = {
