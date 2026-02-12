@@ -15,6 +15,7 @@
     services.mbsync.enable = lib.mkForce false;
     programs.mbsync.enable = lib.mkForce false;
     programs.notmuch.hooks.postNew = lib.mkForce "";
+    programs.notmuch.hooks.preNew = lib.mkForce "";
 
     services.muchsync.remotes."gustave" = {
       frequency = "minutely";
