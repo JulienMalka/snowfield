@@ -49,7 +49,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
       networking.hostName = name;
       nixpkgs.overlays = lib.mkAfter [
         (overlay-unstable system)
-        (import "${inputs.emacs-overlay}/overlays/emacs.nix")
         (_final: prev: {
           waybar = prev.waybar.overrideAttrs (oldAttrs: {
             mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];

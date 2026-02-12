@@ -61,15 +61,15 @@
       "url": "https://github.com/JulienMalka/dns.nix/archive/922d6a72ae1f4436cc8f8e04080c50aa65e0d749.tar.gz",
       "hash": "sha256-K2X21U4sSYtEZiDM0Eg/IV4wRs80kztLi6qaVDIUCJE="
     },
-    "emacs-overlay": {
-      "type": "GitHub",
-      "fetchType": "tarball",
-      "owner": "nix-community",
-      "repo": "emacs-overlay",
-      "branch": "master",
-      "revision": "e9592e3ebb99753e380407dbaacc2c55dd25064f",
-      "url": "https://github.com/nix-community/emacs-overlay/archive/e9592e3ebb99753e380407dbaacc2c55dd25064f.tar.gz",
-      "hash": "sha256-h6WusG8mUo79DiP6jvosU7Sfs4bHta9JG7TOAf1d8j8="
+    "emacs-config": {
+      "type": "Git",
+      "fetchType": "git",
+      "branch": "main",
+      "revision": "2041e004c6dfda9e244b0f8c1f8f4c37932b06ef",
+      "url": "ssh://forgejo@git.luj.fr/luj/emacs-config.git",
+      "hash": "sha256-KAZK3Punx4rxpaFXkJ2ypuXQRaXHdM0OBwS17HymBE4=",
+      "lastModified": 1770917902,
+      "submodules": false
     },
     "git-hooks": {
       "type": "GitHub",

@@ -44,58 +44,43 @@
       };
     };
 
-    home.packages =
-      with pkgs;
-      [
-        slack
-        git-absorb
-        git-autofixup
-        emacsPackages.jinx
-        hunspellDicts.en_US
-        hunspellDicts.fr-moderne
-        emacs
-        dust
-        kitty
-        jq
-        lazygit
-        fira-code
-        feh
-        meld
-        vlc
-        jftui
-        libreoffice
-        font-awesome
-        cantarell-fonts
-        roboto
-        htop
-        evince
-        mosh
-        zotero
-        flameshot
-        kitty
-        networkmanagerapplet
-        xdg-utils
-        step-cli
-        gh
-        signal-desktop
-        scli
-        texlive.combined.scheme-full
-        unstable.nixd
-        emacs-lsp-booster
-        hunspellDicts.en_US
-        hunspellDicts.fr-moderne
-        rust-analyzer
-        cargo
-        rustc
-        pyright
-        unstable.nixfmt-rfc-style
-        i3lock
-      ]
-      ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
-    fonts.fontconfig.enable = true;
-
-    systemd.user.tmpfiles.rules = [
-      "L /home/julien/.emacs.d - - - - /home/julien/dev/emacs-config"
+    home.packages = with pkgs; [
+      slack
+      git-absorb
+      git-autofixup
+      dust
+      kitty
+      jq
+      lazygit
+      fira-code
+      feh
+      meld
+      vlc
+      jftui
+      libreoffice
+      font-awesome
+      cantarell-fonts
+      roboto
+      htop
+      evince
+      mosh
+      zotero
+      flameshot
+      networkmanagerapplet
+      xdg-utils
+      step-cli
+      gh
+      signal-desktop
+      scli
+      texlive.combined.scheme-full
+      unstable.nixd
+      rust-analyzer
+      cargo
+      rustc
+      pyright
+      unstable.nixfmt-rfc-style
+      emacs-lsp-booster
+      i3lock
     ];
 
     home.keyboard = {
