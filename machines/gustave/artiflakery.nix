@@ -51,6 +51,23 @@
           "julien"
         ];
       };
+      "papers/WIP/vulnerabilities-repro-framework/" = {
+        flakeref = "git+ssh://git@gitlab.enst.fr/minh-luan.nguyen/phd-minh-luan?dir=reports/usenix2026&ref=main";
+        access = [
+          "phd"
+          "julien"
+          "phdmln"
+        ];
+      };
+      "papers/2026/lila-reproducibility-monitoring/" = {
+        flakeref = "git+ssh://git@gitlab.enst.fr/julien.malka/phd.git?dir=productions/papers/2026-lila-reproducibility-monitoring&ref=main";
+        access = [
+          "phd"
+          "julien"
+          "public"
+        ];
+      };
+
       "posters/2024/ICSE-DS/" = {
         flakeref = "git+ssh://git@gitlab.enst.fr/julien.malka/phd.git?dir=productions/posters/2024-ICSE-DS&ref=main";
         access = [
