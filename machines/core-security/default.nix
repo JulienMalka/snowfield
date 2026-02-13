@@ -92,40 +92,127 @@
 
   age.secrets.keycloak-db.file = ../../private/secrets/keycloak-db.age;
 
-  services.openssh.extraConfig = ''
-    HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
-    HostKey /etc/ssh/ssh_host_ed25519_key
-    TrustedUserCAKeys /etc/ssh/ssh_user_key.pub
-    MaxAuthTries 20
-  '';
+  age.secrets.step-ca-intermediate-password = {
+    file = ./step-ca-intermediate-password.age;
+    owner = "step-ca";
+  };
+  age.secrets.step-ca-oidc-secret = {
+    file = ./step-ca-oidc-secret.age;
+    owner = "step-ca";
+  };
+  age.secrets.step-ca-jwk-encrypted-key = {
+    file = ./step-ca-jwk-encrypted-key.age;
+    owner = "step-ca";
+  };
 
-  services.step-ca.enable = true;
-  services.step-ca.intermediatePasswordFile = "/root/capw";
-  services.step-ca.address = "100.100.45.14";
-  services.step-ca.port = 8444;
-  services.step-ca.settings = builtins.fromJSON ''
-    {}
-  '';
-
-  systemd.services."step-ca".serviceConfig.ExecStart = [
-    "" # override upstream
-    "${pkgs.step-ca}/bin/step-ca /etc/smallstep/ca_prod.json --password-file \${CREDENTIALS_DIRECTORY}/intermediate_password"
-  ];
+  services.step-ca = {
+    enable = true;
+    address = "100.100.45.14";
+    port = 8444;
+    intermediatePasswordFile = config.age.secrets.step-ca-intermediate-password.path;
+    settings = {
+      root = "/var/lib/step-ca/.step/certs/root_ca.crt";
+      federatedRoots = null;
+      crt = "/var/lib/step-ca/.step/certs/intermediate_ca.crt";
+      key = "/var/lib/step-ca/.step/secrets/intermediate_ca_key";
+      address = ":8444";
+      dnsNames = [
+        "ca.luj"
+        "100.100.45.14"
+        "127.0.0.1"
+      ];
+      ssh = {
+        hostKey = "/var/lib/step-ca/.step/secrets/ssh_host_ca_key";
+        userKey = "/var/lib/step-ca/.step/secrets/ssh_user_ca_key";
+      };
+      logger.format = "text";
+      db = {
+        type = "badgerv2";
+        dataSource = "/var/lib/step-ca/.step/db";
+        badgerFileLoadingMode = "";
+      };
+      authority = {
+        provisioners = [
+          {
+            type = "OIDC";
+            name = "Luj SSO";
+            clientID = "step";
+            clientSecret = "@step-ca-oidc-secret@";
+            configurationEndpoint = "https://auth.luj.fr/oauth2/openid/step/.well-known/openid-configuration";
+            listenAddress = ":10000";
+            claims.enableSSHCA = true;
+          }
+          {
+            type = "JWK";
+            name = "ssh-host-provisioner";
+            key = {
+              use = "sig";
+              kty = "EC";
+              kid = "R0DKo6XYZnKj0dPc36ORzsb_ntEzKYPrKni7qpHuna4";
+              crv = "P-256";
+              alg = "ES256";
+              x = "bgFOoF_PUWZLDe9J3auTx4VOY9jXIuJHXLr70ZRSqM8";
+              y = "1dsaXCxO4D5ebyY_lEL4cjNjfDYYGBfx69qF5UGVG-U";
+            };
+            encryptedKey = "@step-ca-jwk-encrypted-key@";
+            claims.enableSSHCA = true;
+          }
+          {
+            type = "ACME";
+            name = "acme";
+            claims.defaultTLSCertDuration = "1680h";
+          }
+        ];
+        admins = [
+          {
+            subject = "ssh-host-provisioner";
+            provisioner = "ssh-host-provisioner";
+            type = "SUPER_ADMIN";
+          }
+        ];
+        template = { };
+        backdate = "1m0s";
+      };
+      tls = {
+        cipherSuites = [
+          "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256"
+          "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256"
+        ];
+        minVersion = 1.2;
+        maxVersion = 1.3;
+        renegotiation = false;
+      };
+    };
+  };
 
   services.nginx.virtualHosts."ca.luj" = {
     enableACME = true;
     forceSSL = true;
     locations."/" = {
-      proxyPass = "https://127.0.0.1:8444";
+      proxyPass = "https://100.100.45.14:8444";
     };
   };
 
-  security.acme.certs."ca.luj".server = lib.mkForce "https://127.0.0.1:8444/acme/acme/directory";
+  security.acme.certs."ca.luj".server = lib.mkForce "https://100.100.45.14:8444/acme/acme/directory";
 
   machine.meta.probes.monitors."ca.luj - IPv4".url = lib.mkForce "https://100.100.45.14/health";
   machine.meta.probes.monitors."ca.luj - IPv6".url = lib.mkForce "https://[fd7a:115c:a1e0::e]/health";
 
-  systemd.services."step-ca".after = [ "keycloak.service" ];
+  systemd.services."step-ca" = {
+    after = [ "keycloak.service" ];
+    preStart = lib.mkAfter ''
+      install -m 600 -o step-ca /etc/smallstep/ca.json /run/step-ca/ca.json
+      ${pkgs.replace-secret}/bin/replace-secret '@step-ca-oidc-secret@' '${config.age.secrets.step-ca-oidc-secret.path}' /run/step-ca/ca.json
+      ${pkgs.replace-secret}/bin/replace-secret '@step-ca-jwk-encrypted-key@' '${config.age.secrets.step-ca-jwk-encrypted-key.path}' /run/step-ca/ca.json
+    '';
+    serviceConfig = {
+      ExecStart = lib.mkForce [
+        ""
+        "${pkgs.step-ca}/bin/step-ca /run/step-ca/ca.json --password-file \${CREDENTIALS_DIRECTORY}/intermediate_password"
+      ];
+      RuntimeDirectory = "step-ca";
+    };
+  };
 
   # TODO: Remove when keycloak is update in stable channel
   nixpkgs.config.permittedInsecurePackages = [ "keycloak-23.0.6" ];

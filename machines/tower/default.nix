@@ -49,13 +49,6 @@
 
   services.tailscale.enable = true;
 
-  services.openssh.extraConfig = ''
-    HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
-    HostKey /etc/ssh/ssh_host_ed25519_key
-    TrustedUserCAKeys /etc/ssh/ssh_user_key.pub
-    MaxAuthTries 20
-  '';
-
   console.keyMap = "fr";
 
   services.openssh.enable = true;

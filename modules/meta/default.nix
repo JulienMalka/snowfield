@@ -78,7 +78,10 @@
   };
 
   config = {
-    machine.meta.profiles = [ profiles.base ];
+    machine.meta.profiles = [
+      profiles.base
+      profiles.ssh-server
+    ];
   };
 
 }

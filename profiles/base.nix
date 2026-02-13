@@ -14,7 +14,7 @@
 
   luj.nix.enable = true;
   luj.secrets.enable = true;
-  luj.ssh-server.enable = true;
+
   luj.programs.mosh.enable = true;
   luj.deployment.enable = true;
 
