@@ -111,7 +111,10 @@
     sbctl
   ];
 
-  security.pam.services.swaylock = { };
+  services.logind = {
+    lidSwitch = "suspend";
+    lidSwitchExternalPower = "suspend";
+  };
 
   services.xserver.displayManager.lightdm.enable = true;
   services.xserver.desktopManager.xterm.enable = true;

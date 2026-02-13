@@ -80,8 +80,17 @@
       pyright
       unstable.nixfmt-rfc-style
       emacs-lsp-booster
-      i3lock
     ];
+
+    services.screen-locker = {
+      enable = true;
+      lockCmd = "${pkgs.coreutils}/bin/env XSECURELOCK_PASSWORD_PROMPT=time_hex ${pkgs.xsecurelock}/bin/xsecurelock";
+      xautolock.enable = false;
+      xss-lock.extraOptions = [
+        "--notifier=${pkgs.xsecurelock}/libexec/xsecurelock/dimmer"
+        "-l"
+      ];
+    };
 
     home.keyboard = {
       layout = "fr";
