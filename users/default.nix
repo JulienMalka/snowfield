@@ -10,6 +10,7 @@
   users.defaultUserShell = pkgs.fish;
 
   programs.fish.enable = true;
+  programs.fish.useBabelfish = true;
 
   age.secrets.user-root-password.file = ../private/secrets/user-root-password.age;
 
