@@ -2,6 +2,7 @@
   config,
   lib,
   modulesPath,
+  pkgs,
   ...
 }:
 
@@ -18,6 +19,21 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+
+  boot.initrd.services.lvm.enable = true;
+
+  boot.initrd.systemd.services.rollback-root = {
+    description = "Wipe ephemeral root filesystem";
+    wantedBy = [ "initrd.target" ];
+    after = [ "dev-mainpool-root.device" ];
+    before = [ "sysroot.mount" ];
+    path = [ pkgs.e2fsprogs ];
+    unitConfig.DefaultDependencies = "no";
+    serviceConfig.Type = "oneshot";
+    script = ''
+      mkfs.ext4 -F /dev/mainpool/root
+    '';
+  };
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
