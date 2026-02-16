@@ -16,6 +16,7 @@
     ./nextcloud.nix
     ./artiflakery.nix
     ./josh.nix
+    ./cal-proxy.nix
   ];
 
   users.users.julien.linger = true;

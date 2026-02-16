@@ -62,6 +62,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           codeberg-pages-custom = prev.pkgs.callPackage ../packages/codeberg-pages-custom { };
           lcli = prev.pkgs.callPackage ../packages/lcli { };
           uptime-kuma-beta = prev.pkgs.callPackage ../packages/uptime-kuma-beta { };
+          cal-proxy = prev.pkgs.callPackage ../packages/cal-proxy { };
         })
 
         (
