@@ -24,7 +24,6 @@ with lib;
             attrNames (readDir ../../home-manager-modules)
           ))
           ++ [
-            "${inputs.impermanence}/home-manager.nix"
             "${inputs.agenix}/modules/age-home.nix"
           ];
         home.username = "${name}";

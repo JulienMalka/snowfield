@@ -41,12 +41,5 @@
 
   systemd.services.syncthing.serviceConfig.StateDirectory = "syncthing";
   systemd.services.syncthing.environment.STNODEFAULTFOLDER = "true";
-  environment.persistence."/persistent".directories = [
-    {
-      directory = "/home/julien/dev";
-      user = "julien";
-      group = "users";
-    }
-  ];
 
 }

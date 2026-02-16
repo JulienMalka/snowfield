@@ -13,7 +13,7 @@ in
   config = mkIf cfg.enable (mkMerge [
     {
 
-      environment.persistence."/persistent".directories = [
+      preservation.preserveAt."/persistent".directories = [
         {
           directory = "/home/mediaserver/downloads";
           user = "mediaserver";

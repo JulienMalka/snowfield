@@ -127,43 +127,6 @@
       "L /home/julien/.emacs.d - - - - /home/julien/dev/emacs-config"
     ];
 
-    home.persistence."/persistent/home/julien" = {
-      files = [
-        ".config/gnome-initial-setup-done"
-        ".config/background"
-        ".cert/nm-openvpn/telecom-paris-ca.pem"
-        ".local/share/com.ranfdev.Notify.sqlite"
-      ];
-      directories = [
-        ".zotero"
-        ".cache/zotero"
-        "Pictures"
-        "Documents"
-        ".ssh"
-        ".mozilla"
-        ".config/cosmic"
-        ".local/share/direnv"
-        ".local/state/cosmic-comp"
-        ".local/share/atuin"
-        ".local/share/firefoxpwa"
-        ".config/Signal"
-        ".cache/spotify"
-        ".config/spotify"
-        ".config/autostart"
-        ".config/borg"
-        ".config/pika-backup"
-        ".config/Element"
-        ".step"
-        ".gnupg"
-        "Zotero"
-        ".config/dconf"
-        ".local/share/keyrings"
-        ".cache/mu"
-        "Maildir"
-      ];
-      allowOther = true;
-    };
-
     home.keyboard = {
       layout = "fr";
     };

@@ -152,8 +152,8 @@
     };
   };
 
-  environment.persistence."/persistent" = {
-    hideMounts = true;
+  preservation.enable = true;
+  preservation.preserveAt."/persistent" = {
     directories = [
       "/var/lib"
       "/var/log"
@@ -164,9 +164,16 @@
       "/etc/ssh/ssh_host_ed25519_key"
       "/etc/ssh/ssh_host_ed25519_key.pub"
     ];
+    users.julien = {
+      directories = [
+        ".ssh"
+        ".local/share/direnv"
+        ".gnupg"
+        ".local/share/keyrings"
+        "Maildir"
+      ];
+    };
   };
-
-  fileSystems."/srv".neededForBoot = true;
 
   environment.systemPackages = [ pkgs.tailscale ];
 

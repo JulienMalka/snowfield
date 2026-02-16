@@ -25,8 +25,8 @@
 
   boot.initrd.systemd.enable = true;
 
-  environment.persistence."/persistent" = {
-    hideMounts = true;
+  preservation.enable = true;
+  preservation.preserveAt."/persistent" = {
     directories = [
       "/var/lib"
       "/var/log"
@@ -37,6 +37,34 @@
       "/etc/ssh/ssh_host_ed25519_key"
       "/etc/ssh/ssh_host_ed25519_key.pub"
     ];
+    users.julien = {
+      directories = [
+        "dev"
+        "Pictures"
+        "Documents"
+        ".ssh"
+        ".mozilla"
+        ".local/share/direnv"
+        ".local/share/atuin"
+        ".local/share/firefoxpwa"
+        ".config/Signal"
+        ".cache/spotify"
+        ".config/spotify"
+        ".config/autostart"
+        ".config/borg"
+        ".config/Element"
+        ".step"
+        ".gnupg"
+        "Zotero"
+        ".config/dconf"
+        ".local/share/keyrings"
+        "Maildir"
+      ];
+      files = [
+        ".config/background"
+        ".cert/nm-openvpn/telecom-paris-ca.pem"
+      ];
+    };
   };
   programs.fuse.userAllowOther = true;
 

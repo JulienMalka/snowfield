@@ -37,7 +37,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.buildbot-nix}/nix/worker.nix")
     (import "${inputs.agenix}/modules/age.nix")
     (import "${inputs.artiflakery}/module.nix")
-    (import "${inputs.impermanence}/nixos.nix")
+
     (import inputs.lanzaboote { }).nixosModules.lanzaboote
     (import inputs.lila).nixosModules.hash-collection
     (import "${inputs.stateless-uptime-kuma}/nixos/module.nix")

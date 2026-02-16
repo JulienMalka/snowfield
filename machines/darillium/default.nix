@@ -29,6 +29,20 @@
 
   programs.fuse.userAllowOther = true;
 
+  preservation.enable = true;
+  preservation.preserveAt."/persistent" = {
+    directories = [
+      "/var/lib"
+      "/var/log"
+      "/etc/NetworkManager/system-connections"
+    ];
+    files = [
+      "/etc/machine-id"
+      "/etc/ssh/ssh_host_ed25519_key"
+      "/etc/ssh/ssh_host_ed25519_key.pub"
+    ];
+  };
+
   fileSystems."/persistent".neededForBoot = true;
 
   disko = import ./disko.nix;

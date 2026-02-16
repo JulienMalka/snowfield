@@ -21,8 +21,8 @@
 
   disko = import ./disko.nix;
 
-  environment.persistence."/persistent" = {
-    hideMounts = true;
+  preservation.enable = true;
+  preservation.preserveAt."/persistent" = {
     directories = [
       "/var/lib"
       "/var/log"
