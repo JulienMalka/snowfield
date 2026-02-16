@@ -8,6 +8,7 @@
     luj.programs.git.enable = true;
     luj.programs.kitty.enable = true;
     luj.programs.fish.enable = true;
+    luj.programs.pass.enable = true;
     luj.emails.enable = true;
 
     services.mbsync.postExec = lib.mkForce null;
