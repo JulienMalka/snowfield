@@ -21,7 +21,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_id }}
+          }}/actions/runs/${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
@@ -50,7 +50,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_id }}
+          }}/actions/runs/${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
@@ -79,7 +79,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_id }}
+          }}/actions/runs/${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
@@ -108,7 +108,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_id }}
+          }}/actions/runs/${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
@@ -137,7 +137,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_id }}
+          }}/actions/runs/${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
@@ -166,7 +166,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_id }}
+          }}/actions/runs/${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
@@ -195,7 +195,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_id }}
+          }}/actions/runs/${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
@@ -224,7 +224,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_id }}
+          }}/actions/runs/${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
@@ -253,7 +253,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_id }}
+          }}/actions/runs/${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
@@ -282,7 +282,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_id }}
+          }}/actions/runs/${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
@@ -311,7 +311,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_id }}
+          }}/actions/runs/${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
@@ -340,7 +340,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_id }}
+          }}/actions/runs/${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
@@ -369,7 +369,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_id }}
+          }}/actions/runs/${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
