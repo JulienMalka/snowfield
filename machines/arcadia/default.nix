@@ -76,8 +76,6 @@
 
   boot.loader.systemd-boot.enable = true;
 
-  networking.wireless.enable = false;
-
   services.tailscale.enable = true;
 
   networking.networkmanager.enable = true;
