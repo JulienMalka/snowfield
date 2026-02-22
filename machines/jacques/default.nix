@@ -18,6 +18,7 @@
     hm_version = inputs.home-manager;
     profiles = with profiles; [
       server
+      monitoring
     ];
     ips.public.ipv4 = "34.51.244.108";
   };
