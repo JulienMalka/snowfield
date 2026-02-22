@@ -18,6 +18,7 @@
       vm-simple-network
       server
       behind-sniproxy
+      monitoring
     ];
     ips = {
       public.ipv4 = "82.67.34.230";
@@ -26,6 +27,8 @@
       vpn.ipv6 = "fd7a:115c:a1e0::27";
     };
   };
+
+  boot.initrd.systemd.enable = true;
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -49,8 +52,6 @@
       "/etc/ssh/ssh_host_ed25519_key.pub"
     ];
   };
-
-  fileSystems."/srv".neededForBoot = true;
 
   services.tailscale.enable = true;
 

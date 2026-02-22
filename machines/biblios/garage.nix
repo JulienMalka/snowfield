@@ -58,6 +58,9 @@ in
       proxyPass = "http://127.0.0.1:3900";
       extraConfig = ''
         proxy_max_temp_file_size 0;
+        proxy_request_buffering off;
+        proxy_read_timeout 3600s;
+        proxy_send_timeout 3600s;
         client_max_body_size 5G;
       '';
     };
