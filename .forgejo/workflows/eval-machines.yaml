@@ -18,7 +18,7 @@ jobs:
       run: nix-build -A checks.machines.akhaten --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
-        GH_TOKEN: ${{ secrets.GITHUB_STATUS_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
           }}/actions/runs/${{ github.run_id }}
@@ -47,7 +47,7 @@ jobs:
       run: nix-build -A checks.machines.arcadia --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
-        GH_TOKEN: ${{ secrets.GITHUB_STATUS_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
           }}/actions/runs/${{ github.run_id }}
@@ -76,7 +76,7 @@ jobs:
       run: nix-build -A checks.machines.biblios --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
-        GH_TOKEN: ${{ secrets.GITHUB_STATUS_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
           }}/actions/runs/${{ github.run_id }}
@@ -105,7 +105,7 @@ jobs:
       run: nix-build -A checks.machines.core-data --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
-        GH_TOKEN: ${{ secrets.GITHUB_STATUS_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
           }}/actions/runs/${{ github.run_id }}
@@ -134,7 +134,7 @@ jobs:
       run: nix-build -A checks.machines.core-security --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
-        GH_TOKEN: ${{ secrets.GITHUB_STATUS_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
           }}/actions/runs/${{ github.run_id }}
@@ -163,7 +163,7 @@ jobs:
       run: nix-build -A checks.machines.darillium --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
-        GH_TOKEN: ${{ secrets.GITHUB_STATUS_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
           }}/actions/runs/${{ github.run_id }}
@@ -192,7 +192,7 @@ jobs:
       run: nix-build -A checks.machines.epyc-container --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
-        GH_TOKEN: ${{ secrets.GITHUB_STATUS_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
           }}/actions/runs/${{ github.run_id }}
@@ -221,7 +221,7 @@ jobs:
       run: nix-build -A checks.machines.fischer --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
-        GH_TOKEN: ${{ secrets.GITHUB_STATUS_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
           }}/actions/runs/${{ github.run_id }}
@@ -250,7 +250,7 @@ jobs:
       run: nix-build -A checks.machines.gallifrey --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
-        GH_TOKEN: ${{ secrets.GITHUB_STATUS_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
           }}/actions/runs/${{ github.run_id }}
@@ -279,7 +279,7 @@ jobs:
       run: nix-build -A checks.machines.gustave --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
-        GH_TOKEN: ${{ secrets.GITHUB_STATUS_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
           }}/actions/runs/${{ github.run_id }}
@@ -308,7 +308,7 @@ jobs:
       run: nix-build -A checks.machines.jacques --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
-        GH_TOKEN: ${{ secrets.GITHUB_STATUS_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
           }}/actions/runs/${{ github.run_id }}
@@ -337,7 +337,7 @@ jobs:
       run: nix-instantiate -A checks.machines.lambda
     - env:
         COMMIT_SHA: ${{ github.sha }}
-        GH_TOKEN: ${{ secrets.GITHUB_STATUS_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
           }}/actions/runs/${{ github.run_id }}
@@ -366,7 +366,7 @@ jobs:
       run: nix-build -A checks.machines.tower --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
-        GH_TOKEN: ${{ secrets.GITHUB_STATUS_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
         JOB_STATUS: ${{ job.status }}
         RUN_URL: ${{ github.server_url }}/${{ github.repository 
           }}/actions/runs/${{ github.run_id }}
