@@ -1,0 +1,206 @@
+###
+# This file was automatically generated with nix-actions.
+jobs:
+  akhaten:
+    name: Build akhaten
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      name: Fetch private submodules
+      run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
+    - name: Build akhaten
+      run: nix-build -A checks.machines.akhaten --no-out-link
+  arcadia:
+    name: Build arcadia
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      name: Fetch private submodules
+      run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
+    - name: Build arcadia
+      run: nix-build -A checks.machines.arcadia --no-out-link
+  biblios:
+    name: Build biblios
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      name: Fetch private submodules
+      run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
+    - name: Build biblios
+      run: nix-build -A checks.machines.biblios --no-out-link
+  core-data:
+    name: Build core-data
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      name: Fetch private submodules
+      run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
+    - name: Build core-data
+      run: nix-build -A checks.machines.core-data --no-out-link
+  core-security:
+    name: Build core-security
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      name: Fetch private submodules
+      run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
+    - name: Build core-security
+      run: nix-build -A checks.machines.core-security --no-out-link
+  darillium:
+    name: Build darillium
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      name: Fetch private submodules
+      run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
+    - name: Build darillium
+      run: nix-build -A checks.machines.darillium --no-out-link
+  epyc-container:
+    name: Build epyc-container
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      name: Fetch private submodules
+      run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
+    - name: Build epyc-container
+      run: nix-build -A checks.machines.epyc-container --no-out-link
+  fischer:
+    name: Build fischer
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      name: Fetch private submodules
+      run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
+    - name: Build fischer
+      run: nix-build -A checks.machines.fischer --no-out-link
+  gallifrey:
+    name: Build gallifrey
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      name: Fetch private submodules
+      run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
+    - name: Build gallifrey
+      run: nix-build -A checks.machines.gallifrey --no-out-link
+  gustave:
+    name: Build gustave
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      name: Fetch private submodules
+      run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
+    - name: Build gustave
+      run: nix-build -A checks.machines.gustave --no-out-link
+  jacques:
+    name: Build jacques
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      name: Fetch private submodules
+      run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
+    - name: Build jacques
+      run: nix-build -A checks.machines.jacques --no-out-link
+  lambda:
+    name: Eval lambda (aarch64)
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      name: Fetch private submodules
+      run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
+    - name: Evaluate lambda
+      run: nix-instantiate -A checks.machines.lambda
+  tower:
+    name: Build tower
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      name: Fetch private submodules
+      run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
+    - name: Build tower
+      run: nix-build -A checks.machines.tower --no-out-link
+name: Evaluate and build machines
+on:
+  pull_request:
+    branches:
+    - main
+  push:
+    branches:
+    - main

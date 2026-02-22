@@ -1,0 +1,18 @@
+###
+# This file was automatically generated with nix-actions.
+jobs:
+  check_workflows:
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v3
+    - name: Check that the workflows are up to date
+      run: "nix-shell ci.nix -A check-workflows --run 'set -o pipefail\nset -o nounset\n\
+        set -o errexit\n[ $(git status --porcelain | wc -l) -eq 0 ]'"
+name: Check workflows
+on:
+  pull_request:
+    branches:
+    - main
+  push:
+    paths:
+    - workflows/*
