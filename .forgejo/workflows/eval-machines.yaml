@@ -18,16 +18,24 @@ jobs:
       run: nix-build -A checks.machines.akhaten --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
+        FORGEJO_TOKEN: ${{ github.token }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
+        JOB_NAME: ${{ github.job }}
         JOB_STATUS: ${{ job.status }}
-        RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_number }}
+        RUN_NUMBER: ${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H
-        \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
-        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$RUN_URL\\\
+        fi\n\nFORGEJO_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY\"\nTARGET_URL=\"\
+        $FORGEJO_URL/actions/runs/$RUN_NUMBER\"\n\n# Try to resolve the exact job
+        URL via Forgejo API\nJOBS=$(curl -sS -H \"Authorization: token $FORGEJO_TOKEN\"\
+        \ \\\n  \"$GITHUB_SERVER_URL/api/v1/repos/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs\"\
+        \ 2>/dev/null) || true\nif [ -n \"$JOBS\" ]; then\n  JOB_URL=$(echo \"$JOBS\"\
+        \ | jq -r --arg name \"$JOB_NAME\" \\\n    '.jobs[] | select(.name == $name)
+        | .html_url' 2>/dev/null | head -1) || true\n  [ -n \"$JOB_URL\" ] && TARGET_URL=\"\
+        $JOB_URL\"\nfi\n\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\"\
+        \ \\\n  -H \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
+        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
         \",\\\"context\\\":\\\"forgejo/akhaten\\\",\\\"description\\\":\\\"akhaten\\\
         \"}\"\n"
   arcadia:
@@ -47,16 +55,24 @@ jobs:
       run: nix-build -A checks.machines.arcadia --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
+        FORGEJO_TOKEN: ${{ github.token }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
+        JOB_NAME: ${{ github.job }}
         JOB_STATUS: ${{ job.status }}
-        RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_number }}
+        RUN_NUMBER: ${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H
-        \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
-        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$RUN_URL\\\
+        fi\n\nFORGEJO_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY\"\nTARGET_URL=\"\
+        $FORGEJO_URL/actions/runs/$RUN_NUMBER\"\n\n# Try to resolve the exact job
+        URL via Forgejo API\nJOBS=$(curl -sS -H \"Authorization: token $FORGEJO_TOKEN\"\
+        \ \\\n  \"$GITHUB_SERVER_URL/api/v1/repos/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs\"\
+        \ 2>/dev/null) || true\nif [ -n \"$JOBS\" ]; then\n  JOB_URL=$(echo \"$JOBS\"\
+        \ | jq -r --arg name \"$JOB_NAME\" \\\n    '.jobs[] | select(.name == $name)
+        | .html_url' 2>/dev/null | head -1) || true\n  [ -n \"$JOB_URL\" ] && TARGET_URL=\"\
+        $JOB_URL\"\nfi\n\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\"\
+        \ \\\n  -H \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
+        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
         \",\\\"context\\\":\\\"forgejo/arcadia\\\",\\\"description\\\":\\\"arcadia\\\
         \"}\"\n"
   biblios:
@@ -76,16 +92,24 @@ jobs:
       run: nix-build -A checks.machines.biblios --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
+        FORGEJO_TOKEN: ${{ github.token }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
+        JOB_NAME: ${{ github.job }}
         JOB_STATUS: ${{ job.status }}
-        RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_number }}
+        RUN_NUMBER: ${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H
-        \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
-        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$RUN_URL\\\
+        fi\n\nFORGEJO_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY\"\nTARGET_URL=\"\
+        $FORGEJO_URL/actions/runs/$RUN_NUMBER\"\n\n# Try to resolve the exact job
+        URL via Forgejo API\nJOBS=$(curl -sS -H \"Authorization: token $FORGEJO_TOKEN\"\
+        \ \\\n  \"$GITHUB_SERVER_URL/api/v1/repos/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs\"\
+        \ 2>/dev/null) || true\nif [ -n \"$JOBS\" ]; then\n  JOB_URL=$(echo \"$JOBS\"\
+        \ | jq -r --arg name \"$JOB_NAME\" \\\n    '.jobs[] | select(.name == $name)
+        | .html_url' 2>/dev/null | head -1) || true\n  [ -n \"$JOB_URL\" ] && TARGET_URL=\"\
+        $JOB_URL\"\nfi\n\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\"\
+        \ \\\n  -H \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
+        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
         \",\\\"context\\\":\\\"forgejo/biblios\\\",\\\"description\\\":\\\"biblios\\\
         \"}\"\n"
   core-data:
@@ -105,16 +129,24 @@ jobs:
       run: nix-build -A checks.machines.core-data --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
+        FORGEJO_TOKEN: ${{ github.token }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
+        JOB_NAME: ${{ github.job }}
         JOB_STATUS: ${{ job.status }}
-        RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_number }}
+        RUN_NUMBER: ${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H
-        \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
-        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$RUN_URL\\\
+        fi\n\nFORGEJO_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY\"\nTARGET_URL=\"\
+        $FORGEJO_URL/actions/runs/$RUN_NUMBER\"\n\n# Try to resolve the exact job
+        URL via Forgejo API\nJOBS=$(curl -sS -H \"Authorization: token $FORGEJO_TOKEN\"\
+        \ \\\n  \"$GITHUB_SERVER_URL/api/v1/repos/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs\"\
+        \ 2>/dev/null) || true\nif [ -n \"$JOBS\" ]; then\n  JOB_URL=$(echo \"$JOBS\"\
+        \ | jq -r --arg name \"$JOB_NAME\" \\\n    '.jobs[] | select(.name == $name)
+        | .html_url' 2>/dev/null | head -1) || true\n  [ -n \"$JOB_URL\" ] && TARGET_URL=\"\
+        $JOB_URL\"\nfi\n\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\"\
+        \ \\\n  -H \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
+        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
         \",\\\"context\\\":\\\"forgejo/core-data\\\",\\\"description\\\":\\\"core-data\\\
         \"}\"\n"
   core-security:
@@ -134,16 +166,24 @@ jobs:
       run: nix-build -A checks.machines.core-security --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
+        FORGEJO_TOKEN: ${{ github.token }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
+        JOB_NAME: ${{ github.job }}
         JOB_STATUS: ${{ job.status }}
-        RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_number }}
+        RUN_NUMBER: ${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H
-        \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
-        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$RUN_URL\\\
+        fi\n\nFORGEJO_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY\"\nTARGET_URL=\"\
+        $FORGEJO_URL/actions/runs/$RUN_NUMBER\"\n\n# Try to resolve the exact job
+        URL via Forgejo API\nJOBS=$(curl -sS -H \"Authorization: token $FORGEJO_TOKEN\"\
+        \ \\\n  \"$GITHUB_SERVER_URL/api/v1/repos/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs\"\
+        \ 2>/dev/null) || true\nif [ -n \"$JOBS\" ]; then\n  JOB_URL=$(echo \"$JOBS\"\
+        \ | jq -r --arg name \"$JOB_NAME\" \\\n    '.jobs[] | select(.name == $name)
+        | .html_url' 2>/dev/null | head -1) || true\n  [ -n \"$JOB_URL\" ] && TARGET_URL=\"\
+        $JOB_URL\"\nfi\n\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\"\
+        \ \\\n  -H \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
+        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
         \",\\\"context\\\":\\\"forgejo/core-security\\\",\\\"description\\\":\\\"\
         core-security\\\"}\"\n"
   darillium:
@@ -163,16 +203,24 @@ jobs:
       run: nix-build -A checks.machines.darillium --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
+        FORGEJO_TOKEN: ${{ github.token }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
+        JOB_NAME: ${{ github.job }}
         JOB_STATUS: ${{ job.status }}
-        RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_number }}
+        RUN_NUMBER: ${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H
-        \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
-        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$RUN_URL\\\
+        fi\n\nFORGEJO_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY\"\nTARGET_URL=\"\
+        $FORGEJO_URL/actions/runs/$RUN_NUMBER\"\n\n# Try to resolve the exact job
+        URL via Forgejo API\nJOBS=$(curl -sS -H \"Authorization: token $FORGEJO_TOKEN\"\
+        \ \\\n  \"$GITHUB_SERVER_URL/api/v1/repos/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs\"\
+        \ 2>/dev/null) || true\nif [ -n \"$JOBS\" ]; then\n  JOB_URL=$(echo \"$JOBS\"\
+        \ | jq -r --arg name \"$JOB_NAME\" \\\n    '.jobs[] | select(.name == $name)
+        | .html_url' 2>/dev/null | head -1) || true\n  [ -n \"$JOB_URL\" ] && TARGET_URL=\"\
+        $JOB_URL\"\nfi\n\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\"\
+        \ \\\n  -H \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
+        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
         \",\\\"context\\\":\\\"forgejo/darillium\\\",\\\"description\\\":\\\"darillium\\\
         \"}\"\n"
   epyc-container:
@@ -192,16 +240,24 @@ jobs:
       run: nix-build -A checks.machines.epyc-container --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
+        FORGEJO_TOKEN: ${{ github.token }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
+        JOB_NAME: ${{ github.job }}
         JOB_STATUS: ${{ job.status }}
-        RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_number }}
+        RUN_NUMBER: ${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H
-        \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
-        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$RUN_URL\\\
+        fi\n\nFORGEJO_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY\"\nTARGET_URL=\"\
+        $FORGEJO_URL/actions/runs/$RUN_NUMBER\"\n\n# Try to resolve the exact job
+        URL via Forgejo API\nJOBS=$(curl -sS -H \"Authorization: token $FORGEJO_TOKEN\"\
+        \ \\\n  \"$GITHUB_SERVER_URL/api/v1/repos/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs\"\
+        \ 2>/dev/null) || true\nif [ -n \"$JOBS\" ]; then\n  JOB_URL=$(echo \"$JOBS\"\
+        \ | jq -r --arg name \"$JOB_NAME\" \\\n    '.jobs[] | select(.name == $name)
+        | .html_url' 2>/dev/null | head -1) || true\n  [ -n \"$JOB_URL\" ] && TARGET_URL=\"\
+        $JOB_URL\"\nfi\n\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\"\
+        \ \\\n  -H \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
+        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
         \",\\\"context\\\":\\\"forgejo/epyc-container\\\",\\\"description\\\":\\\"\
         epyc-container\\\"}\"\n"
   fischer:
@@ -221,16 +277,24 @@ jobs:
       run: nix-build -A checks.machines.fischer --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
+        FORGEJO_TOKEN: ${{ github.token }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
+        JOB_NAME: ${{ github.job }}
         JOB_STATUS: ${{ job.status }}
-        RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_number }}
+        RUN_NUMBER: ${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H
-        \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
-        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$RUN_URL\\\
+        fi\n\nFORGEJO_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY\"\nTARGET_URL=\"\
+        $FORGEJO_URL/actions/runs/$RUN_NUMBER\"\n\n# Try to resolve the exact job
+        URL via Forgejo API\nJOBS=$(curl -sS -H \"Authorization: token $FORGEJO_TOKEN\"\
+        \ \\\n  \"$GITHUB_SERVER_URL/api/v1/repos/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs\"\
+        \ 2>/dev/null) || true\nif [ -n \"$JOBS\" ]; then\n  JOB_URL=$(echo \"$JOBS\"\
+        \ | jq -r --arg name \"$JOB_NAME\" \\\n    '.jobs[] | select(.name == $name)
+        | .html_url' 2>/dev/null | head -1) || true\n  [ -n \"$JOB_URL\" ] && TARGET_URL=\"\
+        $JOB_URL\"\nfi\n\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\"\
+        \ \\\n  -H \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
+        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
         \",\\\"context\\\":\\\"forgejo/fischer\\\",\\\"description\\\":\\\"fischer\\\
         \"}\"\n"
   gallifrey:
@@ -250,16 +314,24 @@ jobs:
       run: nix-build -A checks.machines.gallifrey --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
+        FORGEJO_TOKEN: ${{ github.token }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
+        JOB_NAME: ${{ github.job }}
         JOB_STATUS: ${{ job.status }}
-        RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_number }}
+        RUN_NUMBER: ${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H
-        \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
-        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$RUN_URL\\\
+        fi\n\nFORGEJO_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY\"\nTARGET_URL=\"\
+        $FORGEJO_URL/actions/runs/$RUN_NUMBER\"\n\n# Try to resolve the exact job
+        URL via Forgejo API\nJOBS=$(curl -sS -H \"Authorization: token $FORGEJO_TOKEN\"\
+        \ \\\n  \"$GITHUB_SERVER_URL/api/v1/repos/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs\"\
+        \ 2>/dev/null) || true\nif [ -n \"$JOBS\" ]; then\n  JOB_URL=$(echo \"$JOBS\"\
+        \ | jq -r --arg name \"$JOB_NAME\" \\\n    '.jobs[] | select(.name == $name)
+        | .html_url' 2>/dev/null | head -1) || true\n  [ -n \"$JOB_URL\" ] && TARGET_URL=\"\
+        $JOB_URL\"\nfi\n\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\"\
+        \ \\\n  -H \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
+        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
         \",\\\"context\\\":\\\"forgejo/gallifrey\\\",\\\"description\\\":\\\"gallifrey\\\
         \"}\"\n"
   gustave:
@@ -279,16 +351,24 @@ jobs:
       run: nix-build -A checks.machines.gustave --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
+        FORGEJO_TOKEN: ${{ github.token }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
+        JOB_NAME: ${{ github.job }}
         JOB_STATUS: ${{ job.status }}
-        RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_number }}
+        RUN_NUMBER: ${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H
-        \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
-        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$RUN_URL\\\
+        fi\n\nFORGEJO_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY\"\nTARGET_URL=\"\
+        $FORGEJO_URL/actions/runs/$RUN_NUMBER\"\n\n# Try to resolve the exact job
+        URL via Forgejo API\nJOBS=$(curl -sS -H \"Authorization: token $FORGEJO_TOKEN\"\
+        \ \\\n  \"$GITHUB_SERVER_URL/api/v1/repos/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs\"\
+        \ 2>/dev/null) || true\nif [ -n \"$JOBS\" ]; then\n  JOB_URL=$(echo \"$JOBS\"\
+        \ | jq -r --arg name \"$JOB_NAME\" \\\n    '.jobs[] | select(.name == $name)
+        | .html_url' 2>/dev/null | head -1) || true\n  [ -n \"$JOB_URL\" ] && TARGET_URL=\"\
+        $JOB_URL\"\nfi\n\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\"\
+        \ \\\n  -H \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
+        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
         \",\\\"context\\\":\\\"forgejo/gustave\\\",\\\"description\\\":\\\"gustave\\\
         \"}\"\n"
   jacques:
@@ -308,16 +388,24 @@ jobs:
       run: nix-build -A checks.machines.jacques --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
+        FORGEJO_TOKEN: ${{ github.token }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
+        JOB_NAME: ${{ github.job }}
         JOB_STATUS: ${{ job.status }}
-        RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_number }}
+        RUN_NUMBER: ${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H
-        \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
-        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$RUN_URL\\\
+        fi\n\nFORGEJO_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY\"\nTARGET_URL=\"\
+        $FORGEJO_URL/actions/runs/$RUN_NUMBER\"\n\n# Try to resolve the exact job
+        URL via Forgejo API\nJOBS=$(curl -sS -H \"Authorization: token $FORGEJO_TOKEN\"\
+        \ \\\n  \"$GITHUB_SERVER_URL/api/v1/repos/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs\"\
+        \ 2>/dev/null) || true\nif [ -n \"$JOBS\" ]; then\n  JOB_URL=$(echo \"$JOBS\"\
+        \ | jq -r --arg name \"$JOB_NAME\" \\\n    '.jobs[] | select(.name == $name)
+        | .html_url' 2>/dev/null | head -1) || true\n  [ -n \"$JOB_URL\" ] && TARGET_URL=\"\
+        $JOB_URL\"\nfi\n\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\"\
+        \ \\\n  -H \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
+        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
         \",\\\"context\\\":\\\"forgejo/jacques\\\",\\\"description\\\":\\\"jacques\\\
         \"}\"\n"
   lambda:
@@ -337,16 +425,24 @@ jobs:
       run: nix-instantiate -A checks.machines.lambda
     - env:
         COMMIT_SHA: ${{ github.sha }}
+        FORGEJO_TOKEN: ${{ github.token }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
+        JOB_NAME: ${{ github.job }}
         JOB_STATUS: ${{ job.status }}
-        RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_number }}
+        RUN_NUMBER: ${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H
-        \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
-        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$RUN_URL\\\
+        fi\n\nFORGEJO_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY\"\nTARGET_URL=\"\
+        $FORGEJO_URL/actions/runs/$RUN_NUMBER\"\n\n# Try to resolve the exact job
+        URL via Forgejo API\nJOBS=$(curl -sS -H \"Authorization: token $FORGEJO_TOKEN\"\
+        \ \\\n  \"$GITHUB_SERVER_URL/api/v1/repos/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs\"\
+        \ 2>/dev/null) || true\nif [ -n \"$JOBS\" ]; then\n  JOB_URL=$(echo \"$JOBS\"\
+        \ | jq -r --arg name \"$JOB_NAME\" \\\n    '.jobs[] | select(.name == $name)
+        | .html_url' 2>/dev/null | head -1) || true\n  [ -n \"$JOB_URL\" ] && TARGET_URL=\"\
+        $JOB_URL\"\nfi\n\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\"\
+        \ \\\n  -H \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
+        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
         \",\\\"context\\\":\\\"forgejo/lambda\\\",\\\"description\\\":\\\"lambda\\\
         \"}\"\n"
   tower:
@@ -366,16 +462,24 @@ jobs:
       run: nix-build -A checks.machines.tower --no-out-link
     - env:
         COMMIT_SHA: ${{ github.sha }}
+        FORGEJO_TOKEN: ${{ github.token }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
+        JOB_NAME: ${{ github.job }}
         JOB_STATUS: ${{ job.status }}
-        RUN_URL: ${{ github.server_url }}/${{ github.repository 
-          }}/actions/runs/${{ github.run_number }}
+        RUN_NUMBER: ${{ github.run_number }}
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H
-        \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
-        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$RUN_URL\\\
+        fi\n\nFORGEJO_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY\"\nTARGET_URL=\"\
+        $FORGEJO_URL/actions/runs/$RUN_NUMBER\"\n\n# Try to resolve the exact job
+        URL via Forgejo API\nJOBS=$(curl -sS -H \"Authorization: token $FORGEJO_TOKEN\"\
+        \ \\\n  \"$GITHUB_SERVER_URL/api/v1/repos/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs\"\
+        \ 2>/dev/null) || true\nif [ -n \"$JOBS\" ]; then\n  JOB_URL=$(echo \"$JOBS\"\
+        \ | jq -r --arg name \"$JOB_NAME\" \\\n    '.jobs[] | select(.name == $name)
+        | .html_url' 2>/dev/null | head -1) || true\n  [ -n \"$JOB_URL\" ] && TARGET_URL=\"\
+        $JOB_URL\"\nfi\n\ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\"\
+        \ \\\n  -H \"Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
+        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
         \",\\\"context\\\":\\\"forgejo/tower\\\",\\\"description\\\":\\\"tower\\\"\
         }\"\n"
 name: Evaluate and build machines
