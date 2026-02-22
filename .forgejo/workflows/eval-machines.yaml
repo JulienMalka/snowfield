@@ -24,7 +24,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/1\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/0\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -53,7 +53,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/2\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/1\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -82,7 +82,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/3\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/2\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -111,7 +111,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/4\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/3\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -140,7 +140,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/5\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/4\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -169,7 +169,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/6\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/5\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -198,7 +198,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/7\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/6\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -227,7 +227,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/8\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/7\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -256,7 +256,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/9\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/8\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -285,7 +285,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/10\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/9\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -314,7 +314,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/11\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/10\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -343,7 +343,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/12\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/11\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -372,7 +372,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/13\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/12\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
