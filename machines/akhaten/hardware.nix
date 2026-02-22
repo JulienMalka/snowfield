@@ -15,11 +15,18 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  boot.initrd.postDeviceCommands = ''
-    lvm lvremove --force /dev/mainpool/root || :
-    yes | lvm lvcreate --size 100G --name root mainpool
-    ${pkgs.e2fsprogs}/bin/mkfs.ext4 /dev/mainpool/root
-  '';
+  boot.initrd.systemd.services.rollback-root = {
+    description = "Wipe ephemeral root filesystem";
+    wantedBy = [ "initrd.target" ];
+    after = [ "dev-mainpool-root.device" ];
+    before = [ "sysroot.mount" ];
+    path = [ pkgs.e2fsprogs ];
+    unitConfig.DefaultDependencies = "no";
+    serviceConfig.Type = "oneshot";
+    script = ''
+      mkfs.ext4 -F /dev/mainpool/root
+    '';
+  };
 
   networking.useDHCP = lib.mkDefault true;
 

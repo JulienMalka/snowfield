@@ -16,11 +16,15 @@
       public.ipv6 = "2001:0bc8:3d24::45";
       vpn.ipv4 = "100.100.45.33";
     };
-    profiles = with profiles; [ server ];
+    profiles = with profiles; [
+      server
+      monitoring
+    ];
   };
 
   disko = import ./disko.nix;
 
+  boot.initrd.systemd.enable = true;
   preservation.enable = true;
   preservation.preserveAt."/persistent" = {
     directories = [
@@ -35,7 +39,7 @@
     ];
   };
 
-  fileSystems."/srv".neededForBoot = true;
+  #  fileSystems."/srv".neededForBoot = true;
   fileSystems."/persistent".neededForBoot = true;
 
   services.fail2ban.enable = true;
