@@ -15,7 +15,13 @@ jobs:
         ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
         ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
     - name: Build akhaten
-      run: nix-build -A checks.machines.akhaten --no-out-link
+      run: nix-build -A checks.machines.akhaten --out-link result-akhaten
+    - env:
+        STORE_ENDPOINT: https://cache.luj.fr/snowfield
+        STORE_PASSWORD: ${{ secrets.SNIX_CACHE_PASSWORD }}
+        STORE_USER: ci
+      name: Push to cache
+      run: bash scripts/push-to-cache.sh ./result-akhaten
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -44,7 +50,13 @@ jobs:
         ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
         ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
     - name: Build arcadia
-      run: nix-build -A checks.machines.arcadia --no-out-link
+      run: nix-build -A checks.machines.arcadia --out-link result-arcadia
+    - env:
+        STORE_ENDPOINT: https://cache.luj.fr/snowfield
+        STORE_PASSWORD: ${{ secrets.SNIX_CACHE_PASSWORD }}
+        STORE_USER: ci
+      name: Push to cache
+      run: bash scripts/push-to-cache.sh ./result-arcadia
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -73,7 +85,13 @@ jobs:
         ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
         ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
     - name: Build biblios
-      run: nix-build -A checks.machines.biblios --no-out-link
+      run: nix-build -A checks.machines.biblios --out-link result-biblios
+    - env:
+        STORE_ENDPOINT: https://cache.luj.fr/snowfield
+        STORE_PASSWORD: ${{ secrets.SNIX_CACHE_PASSWORD }}
+        STORE_USER: ci
+      name: Push to cache
+      run: bash scripts/push-to-cache.sh ./result-biblios
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -102,7 +120,13 @@ jobs:
         ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
         ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
     - name: Build core-data
-      run: nix-build -A checks.machines.core-data --no-out-link
+      run: nix-build -A checks.machines.core-data --out-link result-core-data
+    - env:
+        STORE_ENDPOINT: https://cache.luj.fr/snowfield
+        STORE_PASSWORD: ${{ secrets.SNIX_CACHE_PASSWORD }}
+        STORE_USER: ci
+      name: Push to cache
+      run: bash scripts/push-to-cache.sh ./result-core-data
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -131,7 +155,14 @@ jobs:
         ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
         ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
     - name: Build core-security
-      run: nix-build -A checks.machines.core-security --no-out-link
+      run: nix-build -A checks.machines.core-security --out-link 
+        result-core-security
+    - env:
+        STORE_ENDPOINT: https://cache.luj.fr/snowfield
+        STORE_PASSWORD: ${{ secrets.SNIX_CACHE_PASSWORD }}
+        STORE_USER: ci
+      name: Push to cache
+      run: bash scripts/push-to-cache.sh ./result-core-security
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -160,7 +191,13 @@ jobs:
         ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
         ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
     - name: Build darillium
-      run: nix-build -A checks.machines.darillium --no-out-link
+      run: nix-build -A checks.machines.darillium --out-link result-darillium
+    - env:
+        STORE_ENDPOINT: https://cache.luj.fr/snowfield
+        STORE_PASSWORD: ${{ secrets.SNIX_CACHE_PASSWORD }}
+        STORE_USER: ci
+      name: Push to cache
+      run: bash scripts/push-to-cache.sh ./result-darillium
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -189,7 +226,14 @@ jobs:
         ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
         ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
     - name: Build epyc-container
-      run: nix-build -A checks.machines.epyc-container --no-out-link
+      run: nix-build -A checks.machines.epyc-container --out-link 
+        result-epyc-container
+    - env:
+        STORE_ENDPOINT: https://cache.luj.fr/snowfield
+        STORE_PASSWORD: ${{ secrets.SNIX_CACHE_PASSWORD }}
+        STORE_USER: ci
+      name: Push to cache
+      run: bash scripts/push-to-cache.sh ./result-epyc-container
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -218,7 +262,13 @@ jobs:
         ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
         ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
     - name: Build fischer
-      run: nix-build -A checks.machines.fischer --no-out-link
+      run: nix-build -A checks.machines.fischer --out-link result-fischer
+    - env:
+        STORE_ENDPOINT: https://cache.luj.fr/snowfield
+        STORE_PASSWORD: ${{ secrets.SNIX_CACHE_PASSWORD }}
+        STORE_USER: ci
+      name: Push to cache
+      run: bash scripts/push-to-cache.sh ./result-fischer
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -247,7 +297,13 @@ jobs:
         ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
         ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
     - name: Build gallifrey
-      run: nix-build -A checks.machines.gallifrey --no-out-link
+      run: nix-build -A checks.machines.gallifrey --out-link result-gallifrey
+    - env:
+        STORE_ENDPOINT: https://cache.luj.fr/snowfield
+        STORE_PASSWORD: ${{ secrets.SNIX_CACHE_PASSWORD }}
+        STORE_USER: ci
+      name: Push to cache
+      run: bash scripts/push-to-cache.sh ./result-gallifrey
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -276,7 +332,13 @@ jobs:
         ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
         ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
     - name: Build gustave
-      run: nix-build -A checks.machines.gustave --no-out-link
+      run: nix-build -A checks.machines.gustave --out-link result-gustave
+    - env:
+        STORE_ENDPOINT: https://cache.luj.fr/snowfield
+        STORE_PASSWORD: ${{ secrets.SNIX_CACHE_PASSWORD }}
+        STORE_USER: ci
+      name: Push to cache
+      run: bash scripts/push-to-cache.sh ./result-gustave
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -305,7 +367,13 @@ jobs:
         ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
         ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
     - name: Build jacques
-      run: nix-build -A checks.machines.jacques --no-out-link
+      run: nix-build -A checks.machines.jacques --out-link result-jacques
+    - env:
+        STORE_ENDPOINT: https://cache.luj.fr/snowfield
+        STORE_PASSWORD: ${{ secrets.SNIX_CACHE_PASSWORD }}
+        STORE_USER: ci
+      name: Push to cache
+      run: bash scripts/push-to-cache.sh ./result-jacques
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -363,7 +431,13 @@ jobs:
         ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
         ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
     - name: Build tower
-      run: nix-build -A checks.machines.tower --no-out-link
+      run: nix-build -A checks.machines.tower --out-link result-tower
+    - env:
+        STORE_ENDPOINT: https://cache.luj.fr/snowfield
+        STORE_PASSWORD: ${{ secrets.SNIX_CACHE_PASSWORD }}
+        STORE_USER: ci
+      name: Push to cache
+      run: bash scripts/push-to-cache.sh ./result-tower
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
