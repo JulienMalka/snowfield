@@ -2,8 +2,6 @@
 set -euo pipefail
 export LC_NUMERIC=C
 
-PARALLEL=${PARALLEL:-32}
-
 if [ -z "${STORE_ENDPOINT:-}" ] || [ -z "${STORE_USER:-}" ]; then
   echo "push-to-cache: STORE_ENDPOINT or STORE_USER not set, skipping" >&2
   exit 0
@@ -83,63 +81,76 @@ echo "${bold}Enumerating closure...${reset}"
 mapfile -t all_paths < <(nix path-info --extra-experimental-features nix-command -r "$@" 2>/dev/null)
 total=${#all_paths[@]}
 echo "  ${total} paths in closure"
+
+# --- get sizes for all paths in one batch ---
+declare -A path_sizes
+while IFS=$'\t' read -r p sz; do
+  path_sizes["$p"]=${sz:-0}
+done < <(nix path-info --extra-experimental-features nix-command -s "${all_paths[@]}" 2>/dev/null | awk '{print $1 "\t" $2}')
+
+total_bytes=0
+for sz in "${path_sizes[@]}"; do
+  total_bytes=$((total_bytes + sz))
+done
+echo "  $(human_size $total_bytes) total"
 echo
 
-# --- check which paths are already cached (parallel) ---
-echo "${bold}Checking remote cache (${PARALLEL} parallel)...${reset}"
-cached_list=$(mktemp)
+# --- check which paths are already cached ---
+# Use the signing endpoint (public read) to check narinfo existence
+SIGNING_URL="${STORE_ENDPOINT}.signing"
+echo "${bold}Checking cache...${reset}"
 
-check_one() {
-  local p=$1 netrc=$2 endpoint=$3
+check_narinfo() {
+  local p=$1
   local hash
   hash=$(basename "$p" | cut -c1-32)
-  status=$(curl -sS -o /dev/null -w "%{http_code}" --netrc-file "$netrc" "${endpoint}/${hash}.narinfo" 2>/dev/null) || true
-  if [ "$status" = "200" ]; then
-    echo "$p"
-  fi
+  local http_code attempt
+  for attempt in 1 2 3; do
+    http_code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 10 \
+      "${SIGNING_URL}/${hash}.narinfo" 2>/dev/null) || http_code="000"
+    # 200 = cached, 404 = not cached, anything else = retry
+    if [ "$http_code" = "200" ]; then
+      return
+    elif [ "$http_code" = "404" ]; then
+      echo "$p"
+      return
+    fi
+    sleep 1
+  done
+  # after 3 retries, assume not cached
+  echo "$p"
 }
-export -f check_one
+export -f check_narinfo
+export SIGNING_URL
 
-printf '%s\n' "${all_paths[@]}" \
-  | xargs -P "$PARALLEL" -I{} bash -c 'check_one "$@"' _ {} "$NETRC" "$STORE_ENDPOINT" \
-  > "$cached_list"
-
-already_cached=$(wc -l < "$cached_list")
-
-# build the to_upload list by diffing
-mapfile -t to_upload < <(comm -23 <(printf '%s\n' "${all_paths[@]}" | sort) <(sort "$cached_list"))
-rm -f "$cached_list"
+mapfile -t to_upload < <(printf '%s\n' "${all_paths[@]}" \
+  | xargs -P 10 -I{} bash -c 'check_narinfo "$@"' _ {})
 
 upload_count=${#to_upload[@]}
-echo "  ${green}${already_cached} already in cache${reset}"
-echo "  ${yellow}${upload_count} to upload${reset}"
+upload_bytes=0
+for p in "${to_upload[@]}"; do
+  upload_bytes=$((upload_bytes + ${path_sizes["$p"]:-0}))
+done
+cached_count=$((total - upload_count))
+
+echo "  ${green}${cached_count}${reset} already cached"
+echo "  ${bold}${upload_count}${reset} to upload ($(human_size $upload_bytes))"
 echo
 
 if [ "$upload_count" -eq 0 ]; then
-  echo "${green}${bold}Nothing to upload, cache is up to date.${reset}"
+  echo "${bold}Nothing to upload, all paths already cached.${reset}"
   exit 0
 fi
 
-# --- compute total size ---
-total_bytes=0
-declare -A path_sizes
-while IFS=$'\t' read -r p sz; do
-  sz=${sz:-0}
-  path_sizes["$p"]=$sz
-  total_bytes=$((total_bytes + sz))
-done < <(nix path-info --extra-experimental-features nix-command -s "${to_upload[@]}" 2>/dev/null | awk '{print $1 "\t" $2}')
-
-echo "${bold}Uploading ${upload_count} paths ($(human_size $total_bytes))${reset}"
+# --- upload, letting nix copy handle dedup ---
+echo "${bold}Pushing ${upload_count} paths ($(human_size $upload_bytes))...${reset}"
 echo
 
-# --- upload all at once, track progress via verbose output ---
 uploaded=0
 uploaded_bytes=0
-failures=0
 start_ts=$(date +%s%N)
 declare -A seen_paths
 
-# nix copy -v prints "copying path '<path>' to '...'" for each path
 exec 3< <(nix copy --extra-experimental-features nix-command \
   --to "$CACHE_URL" --netrc-file "$NETRC" \
   -v "${to_upload[@]}" 2>&1; echo "EXIT:$?")
@@ -170,9 +181,12 @@ exec 3<&-
 end_ts=$(date +%s%N)
 elapsed_s=$(echo "($end_ts - $start_ts) / 1000000000" | bc -l)
 
+actual_cached=$((total - uploaded))
+
 echo
 if [ "${exit_code:-0}" -eq 0 ]; then
-  echo "${bold}Summary:${reset} uploaded $(human_size $total_bytes) in $(printf "%.0f" "$elapsed_s")s ($(human_speed "$total_bytes" "$elapsed_s") avg)"
+  echo "${bold}Summary:${reset} ${uploaded} uploaded ($(human_size $uploaded_bytes)), ${actual_cached} already cached"
+  echo "  $(printf "%.0f" "$elapsed_s")s elapsed ($(human_speed "$uploaded_bytes" "$elapsed_s") avg)"
 else
   echo "${yellow}${bold}Summary:${reset} upload failed (exit $exit_code), ${uploaded}/${upload_count} paths copied"
   exit 1
