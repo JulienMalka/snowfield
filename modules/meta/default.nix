@@ -66,6 +66,11 @@
               };
             };
 
+            extraExporters = mkOption {
+              description = "Extra exporters scraped by vmagent";
+              default = { };
+            };
+
             defaultInterface = mkOption {
               description = "default interface of the machine";
               default = "ens18";
