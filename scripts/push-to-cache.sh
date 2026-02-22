@@ -120,7 +120,7 @@ if [ "$upload_count" -eq 0 ]; then
   exit 0
 fi
 
-# --- compute sizes in one batch ---
+# --- compute total size ---
 total_bytes=0
 declare -A path_sizes
 while IFS=$'\t' read -r p sz; do
@@ -132,32 +132,41 @@ done < <(nix path-info --extra-experimental-features nix-command -s "${to_upload
 echo "${bold}Uploading ${upload_count} paths ($(human_size $total_bytes))${reset}"
 echo
 
-# --- upload one by one ---
-uploaded_bytes=0
+# --- upload all at once, track progress via verbose output ---
+uploaded=0
 failures=0
-i=0
+start_ts=$(date +%s%N)
 
-for p in "${to_upload[@]}"; do
-  i=$((i + 1))
-  sz=${path_sizes["$p"]:-0}
-  name=$(path_name "$p")
-  printf "${dim}[%d/%d]${reset} %s ${dim}(%s)${reset} " "$i" "$upload_count" "$name" "$(human_size "$sz")"
+# nix copy -v prints "copying path '<path>' to '...'" for each path
+exec 3< <(nix copy --extra-experimental-features nix-command \
+  --to "$CACHE_URL" --netrc-file "$NETRC" \
+  -v "${to_upload[@]}" 2>&1; echo "EXIT:$?")
 
-  start_ts=$(date +%s%N)
-  if nix copy --extra-experimental-features nix-command \
-       --to "$CACHE_URL" --netrc-file "$NETRC" "$p" 2>/dev/null; then
-    end_ts=$(date +%s%N)
-    elapsed_s=$(echo "($end_ts - $start_ts) / 1000000000" | bc -l)
-    uploaded_bytes=$((uploaded_bytes + sz))
-    printf "${green}done${reset} ${dim}%s${reset}\n" "$(human_speed "$sz" "$elapsed_s")"
-  else
-    failures=$((failures + 1))
-    printf "${yellow}failed${reset}\n"
+while IFS= read -r line <&3; do
+  if [[ "$line" == EXIT:* ]]; then
+    exit_code="${line#EXIT:}"
+    break
+  fi
+  if [[ "$line" == *"copying path"* ]]; then
+    path=$(echo "$line" | sed "s/.*'\(\/nix\/store\/[^']*\)'.*/\1/")
+    if [ -n "$path" ]; then
+      uploaded=$((uploaded + 1))
+      name=$(path_name "$path")
+      sz=${path_sizes["$path"]:-0}
+      printf "${dim}[%d/%d]${reset} %s ${dim}(%s)${reset} ${green}done${reset}\n" \
+        "$uploaded" "$upload_count" "$name" "$(human_size "$sz")"
+    fi
   fi
 done
+exec 3<&-
+
+end_ts=$(date +%s%N)
+elapsed_s=$(echo "($end_ts - $start_ts) / 1000000000" | bc -l)
 
 echo
-echo "${bold}Summary:${reset} uploaded $(human_size $uploaded_bytes), ${failures} failures"
-if [ "$failures" -gt 0 ]; then
+if [ "${exit_code:-0}" -eq 0 ]; then
+  echo "${bold}Summary:${reset} uploaded $(human_size $total_bytes) in $(printf "%.0f" "$elapsed_s")s ($(human_speed "$total_bytes" "$elapsed_s") avg)"
+else
+  echo "${yellow}${bold}Summary:${reset} upload failed (exit $exit_code), ${uploaded}/${upload_count} paths copied"
   exit 1
 fi
