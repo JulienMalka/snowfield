@@ -12,9 +12,11 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Fetch private submodules
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
-    - name: Build akhaten
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+    - env:
+        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
+      name: Build akhaten
       run: nix-build -A checks.machines.akhaten --out-link result-akhaten
     - env:
         STORE_ENDPOINT: https://cache.luj.fr/snowfield
@@ -47,9 +49,11 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Fetch private submodules
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
-    - name: Build arcadia
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+    - env:
+        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
+      name: Build arcadia
       run: nix-build -A checks.machines.arcadia --out-link result-arcadia
     - env:
         STORE_ENDPOINT: https://cache.luj.fr/snowfield
@@ -82,9 +86,11 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Fetch private submodules
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
-    - name: Build biblios
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+    - env:
+        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
+      name: Build biblios
       run: nix-build -A checks.machines.biblios --out-link result-biblios
     - env:
         STORE_ENDPOINT: https://cache.luj.fr/snowfield
@@ -117,9 +123,11 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Fetch private submodules
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
-    - name: Build core-data
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+    - env:
+        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
+      name: Build core-data
       run: nix-build -A checks.machines.core-data --out-link result-core-data
     - env:
         STORE_ENDPOINT: https://cache.luj.fr/snowfield
@@ -152,9 +160,11 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Fetch private submodules
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
-    - name: Build core-security
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+    - env:
+        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
+      name: Build core-security
       run: nix-build -A checks.machines.core-security --out-link 
         result-core-security
     - env:
@@ -188,9 +198,11 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Fetch private submodules
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
-    - name: Build darillium
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+    - env:
+        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
+      name: Build darillium
       run: nix-build -A checks.machines.darillium --out-link result-darillium
     - env:
         STORE_ENDPOINT: https://cache.luj.fr/snowfield
@@ -223,9 +235,11 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Fetch private submodules
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
-    - name: Build epyc-container
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+    - env:
+        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
+      name: Build epyc-container
       run: nix-build -A checks.machines.epyc-container --out-link 
         result-epyc-container
     - env:
@@ -259,9 +273,11 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Fetch private submodules
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
-    - name: Build fischer
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+    - env:
+        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
+      name: Build fischer
       run: nix-build -A checks.machines.fischer --out-link result-fischer
     - env:
         STORE_ENDPOINT: https://cache.luj.fr/snowfield
@@ -294,9 +310,11 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Fetch private submodules
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
-    - name: Build gallifrey
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+    - env:
+        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
+      name: Build gallifrey
       run: nix-build -A checks.machines.gallifrey --out-link result-gallifrey
     - env:
         STORE_ENDPOINT: https://cache.luj.fr/snowfield
@@ -329,9 +347,11 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Fetch private submodules
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
-    - name: Build gustave
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+    - env:
+        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
+      name: Build gustave
       run: nix-build -A checks.machines.gustave --out-link result-gustave
     - env:
         STORE_ENDPOINT: https://cache.luj.fr/snowfield
@@ -364,9 +384,11 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Fetch private submodules
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
-    - name: Build jacques
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+    - env:
+        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
+      name: Build jacques
       run: nix-build -A checks.machines.jacques --out-link result-jacques
     - env:
         STORE_ENDPOINT: https://cache.luj.fr/snowfield
@@ -399,9 +421,11 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Fetch private submodules
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
-    - name: Evaluate lambda
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+    - env:
+        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
+      name: Evaluate lambda
       run: nix-instantiate -A checks.machines.lambda
     - env:
         COMMIT_SHA: ${{ github.sha }}
@@ -428,9 +452,11 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Fetch private submodules
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nGIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\" git submodule update --init --recursive\n"
-    - name: Build tower
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
+        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+    - env:
+        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
+      name: Build tower
       run: nix-build -A checks.machines.tower --out-link result-tower
     - env:
         STORE_ENDPOINT: https://cache.luj.fr/snowfield
