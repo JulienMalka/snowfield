@@ -134,8 +134,10 @@ echo
 
 # --- upload all at once, track progress via verbose output ---
 uploaded=0
+uploaded_bytes=0
 failures=0
 start_ts=$(date +%s%N)
+declare -A seen_paths
 
 # nix copy -v prints "copying path '<path>' to '...'" for each path
 exec 3< <(nix copy --extra-experimental-features nix-command \
@@ -149,12 +151,17 @@ while IFS= read -r line <&3; do
   fi
   if [[ "$line" == *"copying path"* ]]; then
     path=$(echo "$line" | sed "s/.*'\(\/nix\/store\/[^']*\)'.*/\1/")
-    if [ -n "$path" ]; then
+    if [ -n "$path" ] && [ -z "${seen_paths["$path"]+x}" ]; then
+      seen_paths["$path"]=1
       uploaded=$((uploaded + 1))
-      name=$(path_name "$path")
       sz=${path_sizes["$path"]:-0}
-      printf "${dim}[%d/%d]${reset} %s ${dim}(%s)${reset} ${green}done${reset}\n" \
-        "$uploaded" "$upload_count" "$name" "$(human_size "$sz")"
+      uploaded_bytes=$((uploaded_bytes + sz))
+      name=$(path_name "$path")
+      now_ts=$(date +%s%N)
+      elapsed_s=$(echo "($now_ts - $start_ts) / 1000000000" | bc -l)
+      speed=$(human_speed "$uploaded_bytes" "$elapsed_s")
+      printf "${dim}[%d/%d]${reset} %s ${dim}(%s)${reset} ${green}done${reset} ${dim}%s avg${reset}\n" \
+        "$uploaded" "$upload_count" "$name" "$(human_size "$sz")" "$speed"
     fi
   fi
 done
