@@ -411,7 +411,7 @@ jobs:
         \",\\\"context\\\":\\\"forgejo/jacques\\\",\\\"description\\\":\\\"jacques\\\
         \"}\"\n"
   lambda:
-    name: Eval lambda (aarch64)
+    name: Build lambda
     runs-on: epyc
     steps:
     - uses: actions/checkout@v6
@@ -425,8 +425,14 @@ jobs:
         ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
-      name: Evaluate lambda
-      run: nix-instantiate -A checks.machines.lambda
+      name: Build lambda
+      run: nix-build -A checks.machines.lambda --out-link result-lambda
+    - env:
+        STORE_ENDPOINT: https://cache.luj.fr/snowfield
+        STORE_PASSWORD: ${{ secrets.SNIX_CACHE_PASSWORD }}
+        STORE_USER: ci
+      name: Push to cache
+      run: bash scripts/push-to-cache.sh ./result-lambda
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
