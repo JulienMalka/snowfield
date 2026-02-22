@@ -41,6 +41,30 @@
       "/etc/ssh/ssh_host_ed25519_key"
       "/etc/ssh/ssh_host_ed25519_key.pub"
     ];
+    users.julien = {
+      directories = [
+        ".ssh"
+        ".mozilla"
+        ".config/mozilla"
+        ".local/share/mozilla"
+        ".local/state/mozilla"
+        ".cache/mozilla"
+        ".gnupg"
+        ".local/share/direnv"
+        ".config/Signal"
+        ".config/dconf"
+        ".local/share/keyrings"
+        ".cache/mu"
+        ".step"
+        ".zotero"
+        ".cache/zotero"
+        "Zotero"
+        "Maildir"
+        "Documents"
+        "Pictures"
+        "dev"
+      ];
+    };
   };
 
   fileSystems."/persistent".neededForBoot = true;
@@ -53,8 +77,6 @@
   virtualisation.docker.enable = true;
 
   boot.loader.systemd-boot.enable = true;
-
-  networking.wireless.enable = false;
 
   services.tailscale.enable = true;
 
