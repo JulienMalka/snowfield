@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
+export LC_NUMERIC=C
+
+PARALLEL=${PARALLEL:-32}
 
 if [ -z "${STORE_ENDPOINT:-}" ] || [ -z "${STORE_USER:-}" ]; then
   echo "push-to-cache: STORE_ENDPOINT or STORE_USER not set, skipping" >&2
@@ -17,16 +20,17 @@ if [ $# -eq 0 ]; then
 fi
 
 # --- setup netrc ---
-cleanup() { rm -f .netrc; }
+NETRC=$(mktemp)
+cleanup() { rm -f "$NETRC"; }
 trap cleanup EXIT
 
 host=$(echo "$STORE_ENDPOINT" | sed 's|https\?://||;s|/.*||')
-cat > .netrc <<EOF
+cat > "$NETRC" <<EOF
 machine $host
 login $STORE_USER
 password $STORE_PASSWORD
 EOF
-chmod 600 .netrc
+chmod 600 "$NETRC"
 
 CACHE_URL="${STORE_ENDPOINT}?compression=none"
 
@@ -35,7 +39,6 @@ bold=$'\033[1m'
 dim=$'\033[2m'
 green=$'\033[32m'
 yellow=$'\033[33m'
-cyan=$'\033[36m'
 reset=$'\033[0m'
 
 human_size() {
@@ -68,9 +71,11 @@ human_speed() {
   fi
 }
 
-# strip /nix/store/<hash>- prefix, keep just the name
+# strip /nix/store/<32-char-hash>- prefix, keep the package name
 path_name() {
-  echo "${1##/nix/store/*-}"
+  local base
+  base=$(basename "$1")
+  echo "${base:33}"
 }
 
 # --- enumerate closure ---
@@ -80,19 +85,30 @@ total=${#all_paths[@]}
 echo "  ${total} paths in closure"
 echo
 
-# --- check which paths are already cached ---
-echo "${bold}Checking remote cache...${reset}"
-to_upload=()
-already_cached=0
-for p in "${all_paths[@]}"; do
+# --- check which paths are already cached (parallel) ---
+echo "${bold}Checking remote cache (${PARALLEL} parallel)...${reset}"
+cached_list=$(mktemp)
+
+check_one() {
+  local p=$1 netrc=$2 endpoint=$3
+  local hash
   hash=$(basename "$p" | cut -c1-32)
-  status=$(curl -sS -o /dev/null -w "%{http_code}" --netrc-file .netrc "${STORE_ENDPOINT}/${hash}.narinfo" 2>/dev/null) || true
+  status=$(curl -sS -o /dev/null -w "%{http_code}" --netrc-file "$netrc" "${endpoint}/${hash}.narinfo" 2>/dev/null) || true
   if [ "$status" = "200" ]; then
-    already_cached=$((already_cached + 1))
-  else
-    to_upload+=("$p")
+    echo "$p"
   fi
-done
+}
+export -f check_one
+
+printf '%s\n' "${all_paths[@]}" \
+  | xargs -P "$PARALLEL" -I{} bash -c 'check_one "$@"' _ {} "$NETRC" "$STORE_ENDPOINT" \
+  > "$cached_list"
+
+already_cached=$(wc -l < "$cached_list")
+
+# build the to_upload list by diffing
+mapfile -t to_upload < <(comm -23 <(printf '%s\n' "${all_paths[@]}" | sort) <(sort "$cached_list"))
+rm -f "$cached_list"
 
 upload_count=${#to_upload[@]}
 echo "  ${green}${already_cached} already in cache${reset}"
@@ -104,15 +120,14 @@ if [ "$upload_count" -eq 0 ]; then
   exit 0
 fi
 
-# --- compute total size to upload ---
+# --- compute sizes in one batch ---
 total_bytes=0
 declare -A path_sizes
-for p in "${to_upload[@]}"; do
-  sz=$(nix path-info --extra-experimental-features nix-command -S "$p" 2>/dev/null | awk '{print $2}')
+while IFS=$'\t' read -r p sz; do
   sz=${sz:-0}
   path_sizes["$p"]=$sz
   total_bytes=$((total_bytes + sz))
-done
+done < <(nix path-info --extra-experimental-features nix-command -s "${to_upload[@]}" 2>/dev/null | awk '{print $1 "\t" $2}')
 
 echo "${bold}Uploading ${upload_count} paths ($(human_size $total_bytes))${reset}"
 echo
@@ -124,13 +139,13 @@ i=0
 
 for p in "${to_upload[@]}"; do
   i=$((i + 1))
-  sz=${path_sizes["$p"]}
+  sz=${path_sizes["$p"]:-0}
   name=$(path_name "$p")
   printf "${dim}[%d/%d]${reset} %s ${dim}(%s)${reset} " "$i" "$upload_count" "$name" "$(human_size "$sz")"
 
   start_ts=$(date +%s%N)
   if nix copy --extra-experimental-features nix-command \
-       --to "$CACHE_URL" --netrc-file .netrc "$p" 2>/dev/null; then
+       --to "$CACHE_URL" --netrc-file "$NETRC" "$p" 2>/dev/null; then
     end_ts=$(date +%s%N)
     elapsed_s=$(echo "($end_ts - $start_ts) / 1000000000" | bc -l)
     uploaded_bytes=$((uploaded_bytes + sz))
