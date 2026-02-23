@@ -13,6 +13,8 @@ with lib;
     enable = mkEnableOption "enable mail management";
   };
 
+  imports = [ ../../private/private-mail.nix ];
+
   config = mkIf cfg.enable {
 
     age.secrets.work-mail-pw = {
