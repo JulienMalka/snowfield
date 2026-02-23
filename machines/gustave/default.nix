@@ -17,6 +17,7 @@
     ./artiflakery.nix
     ./josh.nix
     ./cal-proxy.nix
+    ./snix-cache.nix
   ];
 
   users.users.julien.linger = true;
@@ -35,6 +36,7 @@
       server
       behind-sniproxy
       syncthing
+      monitoring
     ];
     ips = {
       public.ipv4 = "82.67.34.230";
@@ -90,7 +92,7 @@
         MTUBytes = "1300";
       };
       wireguardConfig = {
-        PrivateKeyFile = "/srv/wg-private";
+        PrivateKeyFile = "/persistent/srv/wg-private";
         ListenPort = 51820;
       };
       wireguardPeers = [
@@ -105,17 +107,8 @@
   };
   systemd.network.networks."30-wg0" = {
     matchConfig.Name = "wg0";
-    addresses = [
-      {
-        Address = "10.100.45.2/24";
-        AddPrefixRoute = false;
-      }
-    ];
-    routes = [
-      {
-        Gateway = "10.100.45.1";
-        Destination = "10.100.45.0/24";
-      }
+    address = [
+      "10.100.45.2/24"
     ];
     DHCP = "no";
     networkConfig = {
@@ -143,6 +136,7 @@
   };
 
   services.openssh.ports = [ 22 ];
+  services.openssh.settings.PerSourcePenaltyExemptList = "2001:bc8:38ee:100:f837:7fff:fe77:7154";
 
   services.nginx.virtualHosts."git.luj.fr" = {
     forceSSL = true;
@@ -156,14 +150,24 @@
   preservation.enable = true;
   preservation.preserveAt."/persistent" = {
     directories = [
-      "/var/lib"
-      "/var/log"
-      "/srv"
+      {
+        directory = "/var/lib";
+        inInitrd = true;
+      }
+      { directory = "/var/log"; }
+      {
+        directory = "/srv";
+        inInitrd = true;
+      }
     ];
     files = [
       "/etc/machine-id"
-      "/etc/ssh/ssh_host_ed25519_key"
+      {
+        file = "/etc/ssh/ssh_host_ed25519_key";
+        mode = "0600";
+      }
       "/etc/ssh/ssh_host_ed25519_key.pub"
+      "/etc/ssh/ssh_host_ed25519_key-cert.pub"
     ];
     users.julien = {
       directories = [
