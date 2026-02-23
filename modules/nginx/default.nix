@@ -76,23 +76,30 @@ in
                       }
                     '';
                   };
-                  "${name} - IPv6" = {
-                    url = "https://[${
-                      if (hasSuffix "luj" name) then
-                        config.machine.meta.ips.vpn.ipv6
-                      else
-                        config.machine.meta.ips.public.ipv6
-                    }]";
-                    type = "http";
-                    accepted_statuscodes = [ "200-299" ];
-                    notificationIDList = [ 1 ];
-                    headers = ''
+                  "${name} - IPv6" =
+                    lib.mkIf
+                      (
+                        if (hasSuffix "luj" name) then
+                          (config.machine.meta.ips.vpn ? ipv6)
+                        else
+                          (config.machine.meta.ips.public ? ipv6)
+                      )
                       {
-                        "Host": "${name}"
-                      }
-                    '';
-
-                  };
+                        url = "https://[${
+                          if (hasSuffix "luj" name) then
+                            config.machine.meta.ips.vpn.ipv6
+                          else
+                            config.machine.meta.ips.public.ipv6
+                        }]";
+                        type = "http";
+                        accepted_statuscodes = [ "200-299" ];
+                        notificationIDList = [ 1 ];
+                        headers = ''
+                          {
+                            "Host": "${name}"
+                          }
+                        '';
+                      };
                 };
                 security.acme.certs = lib.optionalAttrs (hasSuffix "luj" name) {
                   "${name}".server = lib.mkIf (hasSuffix "luj" name) "https://ca.luj/acme/acme/directory";
