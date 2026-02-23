@@ -31,6 +31,6 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe";
 
   age.secrets.forgejo-runner-token = {
-    file = ../../private/secrets/forgejo-runner-epyc-token.age;
+    file = ./forgejo-runner-epyc-token.age;
   };
 }

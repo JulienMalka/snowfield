@@ -10,10 +10,9 @@ jobs:
         fetch-depth: 0
     - env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-      name: Fetch private submodules
+      name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build akhaten
@@ -47,10 +46,9 @@ jobs:
         fetch-depth: 0
     - env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-      name: Fetch private submodules
+      name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build arcadia
@@ -84,10 +82,9 @@ jobs:
         fetch-depth: 0
     - env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-      name: Fetch private submodules
+      name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build biblios
@@ -121,10 +118,9 @@ jobs:
         fetch-depth: 0
     - env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-      name: Fetch private submodules
+      name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build core-data
@@ -158,10 +154,9 @@ jobs:
         fetch-depth: 0
     - env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-      name: Fetch private submodules
+      name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build core-security
@@ -196,10 +191,9 @@ jobs:
         fetch-depth: 0
     - env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-      name: Fetch private submodules
+      name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build darillium
@@ -233,10 +227,9 @@ jobs:
         fetch-depth: 0
     - env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-      name: Fetch private submodules
+      name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build epyc-container
@@ -271,10 +264,9 @@ jobs:
         fetch-depth: 0
     - env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-      name: Fetch private submodules
+      name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build fischer
@@ -308,10 +300,9 @@ jobs:
         fetch-depth: 0
     - env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-      name: Fetch private submodules
+      name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build gallifrey
@@ -345,10 +336,9 @@ jobs:
         fetch-depth: 0
     - env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-      name: Fetch private submodules
+      name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build gustave
@@ -382,10 +372,9 @@ jobs:
         fetch-depth: 0
     - env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-      name: Fetch private submodules
+      name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build jacques
@@ -419,10 +408,9 @@ jobs:
         fetch-depth: 0
     - env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-      name: Fetch private submodules
+      name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build lambda
@@ -456,10 +444,9 @@ jobs:
         fetch-depth: 0
     - env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-      name: Fetch private submodules
+      name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\nexport GIT_SSH_COMMAND=\"\
-        ssh -i ~/.ssh/deploy_key\"\ngit submodule update --init --recursive\n"
+        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build tower

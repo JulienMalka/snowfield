@@ -2,6 +2,7 @@
   pkgs,
   config,
   lib,
+  inputs,
   ...
 }:
 let
@@ -13,24 +14,28 @@ with lib;
     enable = mkEnableOption "enable mail management";
   };
 
-  imports = [ ../../private/private-mail.nix ];
+  imports = [ "${inputs.snowfield-private}/private-mail.nix" ];
 
   config = mkIf cfg.enable {
 
+    age.secrets.geosurge-mail-pw = {
+      file = lib.mkForce ./geosurge-mail-pw.age;
+    };
+
     age.secrets.work-mail-pw = {
-      file = ../../private/secrets/work-mail-pw.age;
+      file = ./work-mail-pw.age;
     };
 
     age.secrets.dgnum-mail-pw = {
-      file = ../../private/secrets/dgnum-mail-pw.age;
+      file = ./dgnum-mail-pw.age;
     };
 
     age.secrets.telecom-mail-pw = {
-      file = ../../private/secrets/telecom-mail-pw.age;
+      file = ./telecom-mail-pw.age;
     };
 
     age.secrets.ens-mail-pw = {
-      file = ../../private/secrets/ens-mail-pw.age;
+      file = ./ens-mail-pw.age;
     };
 
     programs.mbsync = {

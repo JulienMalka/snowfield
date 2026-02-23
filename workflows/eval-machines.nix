@@ -20,15 +20,13 @@ let
       fetch-depth = 0;
     })
     {
-      name = "Fetch private submodules";
+      name = "Configure SSH for private inputs";
       env.DEPLOY_KEY = nix-actions.lib.secret "DEPLOY_KEY";
       run = ''
         mkdir -p ~/.ssh
         echo "$DEPLOY_KEY" > ~/.ssh/deploy_key
         chmod 600 ~/.ssh/deploy_key
         ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null
-        export GIT_SSH_COMMAND="ssh -i ~/.ssh/deploy_key"
-        git submodule update --init --recursive
       '';
     }
   ];

@@ -2,15 +2,16 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 let
-  stalwart-private-settings = import ../../private/pkgs/stalwart/settings.nix;
+  stalwart-private-settings = import "${inputs.snowfield-private}/pkgs/stalwart/settings.nix";
 in
 {
   services.stalwart-mail = {
     enable = true;
-    package = pkgs.callPackage ../../private/pkgs/stalwart { };
+    package = pkgs.callPackage "${inputs.snowfield-private}/pkgs/stalwart" { };
     settings = {
       authentication.fallback-admin = {
         user = "admin";
@@ -64,13 +65,14 @@ in
           };
         };
       };
-    } // stalwart-private-settings;
+    }
+    // stalwart-private-settings;
   };
 
   services.backup.includes = [ "/var/lib/stalwart-mail/db" ];
 
   age.secrets.stalwart-admin-hash = {
-    file = ../../private/secrets/stalwart-admin.age;
+    file = ./stalwart-admin.age;
     path = "/var/lib/stalwart-mail/admin-hash";
     owner = "stalwart-mail";
     group = "stalwart-mail";

@@ -60,6 +60,6 @@ pkgs.mkShell {
     ${pre-commit-hook.shellHook}
     ${ci.workflowInstall.shellHook}
     repo_root="$(git rev-parse --show-toplevel 2>/dev/null || printf '%s' "$PWD")"
-    export RULES="$repo_root/private/secrets/secrets.nix"
+    export RULES="$repo_root/secrets/secrets.nix"
   '';
 }

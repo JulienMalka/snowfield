@@ -5,13 +5,13 @@
   environment.systemPackages = [ config.services.nextcloud.occ ];
 
   age.secrets."nextcloud-admin-password" = {
-    file = ../../private/secrets/nextcloud-admin-password.age;
+    file = ./nextcloud-admin-password.age;
     owner = "nextcloud";
     group = "nextcloud";
   };
 
   age.secrets."nextcloud-s3-token" = {
-    file = ../../private/secrets/nextcloud-s3-token.age;
+    file = ./nextcloud-s3-token.age;
     owner = "nextcloud";
     group = "nextcloud";
   };

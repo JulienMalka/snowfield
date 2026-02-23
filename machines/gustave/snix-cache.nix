@@ -41,11 +41,11 @@ in
     forceSSL = true;
   };
 
-  age.secrets.snix-cache-signing-key.file = ../../private/secrets/snix-cache-signing-key.age;
+  age.secrets.snix-cache-signing-key.file = ./snix-cache-signing-key.age;
   age.secrets.snix-cache-upload-htpasswd = {
-    file = ../../private/secrets/snix-cache-upload-htpasswd.age;
+    file = ./snix-cache-upload-htpasswd.age;
     owner = "nginx";
     group = "nginx";
   };
-  age.secrets.snix-cache-composition.file = ../../private/secrets/snix-cache-composition.age;
+  age.secrets.snix-cache-composition.file = ./snix-cache-composition.age;
 }

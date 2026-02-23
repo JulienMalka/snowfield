@@ -211,6 +211,16 @@
       "lastModified": 1757537951,
       "submodules": false
     },
+    "snowfield-private": {
+      "type": "Git",
+      "fetchType": "git",
+      "branch": "main",
+      "revision": "9ac80ca042a6e82856c3363985a43d3deae87c87",
+      "url": "ssh://forgejo@git.luj.fr/luj/snowfield-private.git",
+      "hash": "sha256-EZoE++JHVsEzD89UTPiPGm+E1hAp4HMZtFM3GM8CAWw=",
+      "lastModified": 1771789620,
+      "submodules": false
+    },
     "stateless-uptime-kuma": {
       "type": "Git",
       "fetchType": "git",

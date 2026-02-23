@@ -46,6 +46,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.snix-cache}/nix/module.nix")
     {
       home-manager.useGlobalPkgs = true;
+      home-manager.extraSpecialArgs = { inherit inputs; };
       nixpkgs.system = system;
       networking.hostName = name;
       nixpkgs.overlays = lib.mkAfter [

@@ -72,12 +72,12 @@ in
   config = lib.mkIf (cfg.includes != [ ]) {
 
     age.secrets."borg-ssh-key" = {
-      file = ../../private/secrets/borg-ssh-priv.age;
+      file = ./borg-ssh-priv.age;
       owner = "root";
       mode = "0600";
     };
 
-    age.secrets."borg-encryption-secret".file = ../../private/secrets/borg-encryption-secret.age;
+    age.secrets."borg-encryption-secret".file = ./borg-encryption-secret.age;
 
     programs.ssh.knownHosts."${if port != 22 then "[${host}]:${port}" else host}" = {
       publicKey = "${hostPublicKey}";

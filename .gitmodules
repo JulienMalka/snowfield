@@ -1,3 +1,0 @@
-[submodule "private"]
-	path = private
-	url = ssh://forgejo@git.luj.fr/luj/snowfield-private.git

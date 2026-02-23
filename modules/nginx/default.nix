@@ -154,7 +154,7 @@ in
     security.acme.acceptTerms = true;
 
     age.secrets.nginx-cert = {
-      file = ../../private/secrets/404-ssl-certificate-cert.age;
+      file = ./404-ssl-certificate-cert.age;
       path = "/var/lib/acme/default/cert.pem";
       owner = "acme";
       group = "nginx";
@@ -163,7 +163,7 @@ in
     };
 
     age.secrets.nginx-key = {
-      file = ../../private/secrets/404-ssl-certificate-key.age;
+      file = ./404-ssl-certificate-key.age;
       path = "/var/lib/acme/default/key.pem";
       owner = "acme";
       group = "nginx";

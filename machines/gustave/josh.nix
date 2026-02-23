@@ -6,7 +6,7 @@
   };
 
   age.secrets."notes-phd-auth" = {
-    file = ../../private/secrets/notes-phd-auth.age;
+    file = ../biblios/notes-phd-auth.age;
     owner = "nginx";
   };
 

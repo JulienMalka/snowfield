@@ -37,17 +37,17 @@ in
     environmentFile = config.age.secrets."garage-env-file".path;
   };
 
-  age.secrets."garage-env-file".file = ../../private/secrets/garage-env-file.age;
+  age.secrets."garage-env-file".file = ./garage-env-file.age;
   age.secrets."book-auth" = {
-    file = ../../private/secrets/book-auth.age;
+    file = ./book-auth.age;
     owner = "nginx";
   };
   age.secrets."notes-phd-auth" = {
-    file = ../../private/secrets/notes-phd-auth.age;
+    file = ./notes-phd-auth.age;
     owner = "nginx";
   };
   age.secrets."notes-perso-auth" = {
-    file = ../../private/secrets/notes-perso-auth.age;
+    file = ./notes-perso-auth.age;
     owner = "nginx";
   };
 

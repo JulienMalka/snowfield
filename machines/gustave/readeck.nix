@@ -1,7 +1,7 @@
 { config, ... }:
 {
 
-  age.secrets."readeck-config".file = ../../private/secrets/readeck-config.age;
+  age.secrets."readeck-config".file = ./readeck-config.age;
 
   services.nginx.virtualHosts."read.luj" = {
     forceSSL = true;

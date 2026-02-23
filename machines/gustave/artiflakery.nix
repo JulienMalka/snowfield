@@ -2,7 +2,7 @@
 {
 
   age.secrets."artiflakery-auth" = {
-    file = ../../private/secrets/artiflakery-auth.age;
+    file = ./artiflakery-auth.age;
     owner = "artiflakery";
   };
 
