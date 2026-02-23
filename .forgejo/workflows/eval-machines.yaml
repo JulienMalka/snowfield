@@ -467,18 +467,13 @@ jobs:
     runs-on: epyc
     steps:
     - uses: actions/checkout@v6
-      with:
-        fetch-depth: 0
     - env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-      name: Configure SSH for private inputs
+      name: Fast-forward deploy branch
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
         echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
-        \ >> ~/.ssh/known_hosts\n"
-    - env:
-        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
-      name: Fast-forward deploy branch
-      run: git push origin HEAD:deploy
+        \ >> ~/.ssh/known_hosts\nGIT_SSH_COMMAND=\"ssh -i ~/.ssh/deploy_key\" git
+        push ssh://forgejo@git.luj.fr/luj/snowfield.git HEAD:deploy\n"
   tower:
     name: Build tower
     runs-on: epyc
