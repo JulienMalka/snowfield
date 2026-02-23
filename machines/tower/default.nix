@@ -20,6 +20,7 @@
       vm-simple-network
       server
       behind-sniproxy
+      monitoring
     ];
     ips = {
       public.ipv4 = "82.67.34.230";
@@ -130,44 +131,6 @@
 
   systemd.services.nginx.serviceConfig.ProtectHome = "read-only";
   systemd.services.nginx.serviceConfig.ReadWritePaths = [ "/home/gitlab-runner/artifacts" ];
-
-  services.grafana.enable = true;
-  services.grafana.settings.server.http_port = 3000;
-  services.prometheus = {
-    enable = true;
-    pushgateway.enable = true;
-    scrapeConfigs = [
-      {
-        job_name = "push";
-        static_configs = [ { targets = [ "127.0.0.1:9091" ]; } ];
-      }
-    ];
-  };
-
-  services.nginx.virtualHosts."data.julienmalka.me" = {
-    forceSSL = true;
-    enableACME = true;
-    locations."/" = {
-      proxyPass = "http://localhost:3000";
-      proxyWebsockets = true;
-    };
-  };
-
-  services.nginx.virtualHosts."prometheus.julienmalka.me" = {
-    forceSSL = true;
-    enableACME = true;
-    locations."/" = {
-      proxyPass = "http://localhost:9090";
-    };
-  };
-
-  services.nginx.virtualHosts."push.julienmalka.me" = {
-    forceSSL = true;
-    enableACME = true;
-    locations."/" = {
-      proxyPass = "http://localhost:9091";
-    };
-  };
 
   networking.firewall.allowedTCPPorts = [
     80
