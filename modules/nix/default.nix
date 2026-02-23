@@ -27,8 +27,13 @@ with lib;
       settings = {
         builders-use-substitutes = true;
         auto-optimise-store = true;
-        substituters = [ "https://cache.nixos.org" ];
-        trusted-public-keys = [ "attic-exec:W1PQ0txRf4qpCIlNLscD/Xw1GwGoBij73JSum/I8Xt4=" ];
+        substituters = [
+          "https://cache.nixos.org"
+          "https://cache.luj.fr/snowfield.signing"
+        ];
+        trusted-public-keys = [
+          "cache.luj.fr-1:C4ZpEGda4niPPcPtSMTzfiz1OLl8a+HzSdq1hUhAh6w="
+        ];
       };
     };
   };
