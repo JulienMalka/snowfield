@@ -10,13 +10,18 @@
     ./hardware.nix
     ./home-julien.nix
     ./uptime-kuma.nix
+    ./victoria-metrics.nix
+    ./grafana.nix
   ];
 
   machine.meta = {
     arch = "aarch64-linux";
     nixpkgs_version = inputs.nixpkgs;
     hm_version = inputs.home-manager;
-    profiles = with profiles; [ server ];
+    profiles = with profiles; [
+      server
+      monitoring
+    ];
     ips = {
       public.ipv4 = "141.145.197.219";
       vpn.ipv4 = "100.100.45.13";
