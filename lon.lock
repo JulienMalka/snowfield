@@ -65,10 +65,10 @@
       "type": "Git",
       "fetchType": "git",
       "branch": "main",
-      "revision": "a9a0604329a8903dab25ee0ba4c3e9750612712e",
+      "revision": "6c3d58a97063932c6dba161f98023449a96f290a",
       "url": "ssh://forgejo@git.luj.fr/luj/emacs-config.git",
-      "hash": "sha256-7/z7zzt0B4li9JMR/fPB1P+CkeEuAP0w5ZMwI0l6A/g=",
-      "lastModified": 1770997310,
+      "hash": "sha256-co33iXs2VIpYQuDi5itmI3ao73I8Xezt6VKAYedDTIQ=",
+      "lastModified": 1771447323,
       "submodules": false
     },
     "git-hooks": {
@@ -140,6 +140,16 @@
       "revision": "95d7c72d75a15493916915f9c01d5e8552df2ff9",
       "url": "https://github.com/nikstur/lon/archive/95d7c72d75a15493916915f9c01d5e8552df2ff9.tar.gz",
       "hash": "sha256-5tAtAKHYxccaFXEBrpav5pKoFTpXVw1tj9UzX3Jub0k="
+    },
+    "nix-actions": {
+      "type": "Git",
+      "fetchType": "git",
+      "branch": "main",
+      "revision": "06847b3256df402da0475dccb290832ec92a9f8c",
+      "url": "https://git.dgnum.eu/DGNum/nix-actions.git",
+      "hash": "sha256-2xOZdKiUfcriQFKG37vY96dgCJLndhLa7cGacq8+SA8=",
+      "lastModified": 1746294989,
+      "submodules": false
     },
     "nix-index-database": {
       "type": "GitHub",
