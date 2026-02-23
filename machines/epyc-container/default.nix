@@ -9,11 +9,12 @@
 {
   imports = [
     ./home-julien.nix
-
+    ./forgejo-runner.nix
   ];
 
   boot.loader.grub.enable = false;
-  boot.isContainer = true;
+  boot.isNspawnContainer = true;
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   networking.useNetworkd = true;
 
@@ -69,8 +70,17 @@
 
   systemd.network.enable = true;
   services.resolved.enable = true;
+
+  # Bind-mount a resolv.conf into the Nix build sandbox
+  # (the sandbox has no /etc/resolv.conf by default)
+  nix.settings.extra-sandbox-paths = [
+    "/etc/resolv.conf=${pkgs.writeText "sandbox-resolv.conf" ''
+      nameserver 2001:4860:4860::6464
+      nameserver 2001:4860:4860::64
+    ''}"
+  ];
   systemd.network.networks."10-host01" = {
-    matchConfig.Name = "host01";
+    matchConfig.Name = "host0";
 
     dns = [
       # DNS64 servers
