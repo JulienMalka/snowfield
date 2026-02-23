@@ -43,12 +43,14 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.stateless-uptime-kuma}/nixos/module.nix")
     (import "${inputs.proxmox}/modules/declarative-vms")
     (import "${inputs.preservation}/module.nix")
+    (import "${inputs.snix-cache}/nix/module.nix")
     {
       home-manager.useGlobalPkgs = true;
       nixpkgs.system = system;
       networking.hostName = name;
       nixpkgs.overlays = lib.mkAfter [
         (overlay-unstable system)
+        (import "${inputs.snix-cache}/nix/overlay.nix")
         (_final: prev: {
           waybar = prev.waybar.overrideAttrs (oldAttrs: {
             mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
