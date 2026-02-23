@@ -61,37 +61,6 @@
     environmentFile = "/var/lib/vaultwarden.env";
   };
 
-  services.keycloak = {
-    enable = true;
-    database.createLocally = true;
-    database.passwordFile = "/run/agenix/keycloak-db";
-    settings = {
-      hostname = "https://auth.julienmalka.me";
-      hostname-admin-url = "https://auth.julienmalka.me";
-      http-port = 8080;
-      proxy-headers = "forwarded";
-      http-enabled = true;
-    };
-    themes = {
-      keywind = pkgs.keycloak-keywind;
-    };
-  };
-
-  services.nginx.virtualHosts."auth.julienmalka.me" = {
-    forceSSL = true;
-    enableACME = true;
-    locations."/" = {
-      proxyPass = "http://127.0.0.1:8080";
-      extraConfig = ''
-        proxy_buffer_size   128k;
-        proxy_buffers   4 256k;
-        proxy_busy_buffers_size   256k;
-      '';
-    };
-  };
-
-  age.secrets.keycloak-db.file = ../../private/secrets/keycloak-db.age;
-
   age.secrets.step-ca-intermediate-password = {
     file = ./step-ca-intermediate-password.age;
     owner = "step-ca";
@@ -199,7 +168,7 @@
   machine.meta.probes.monitors."ca.luj - IPv6".url = lib.mkForce "https://[fd7a:115c:a1e0::e]/health";
 
   systemd.services."step-ca" = {
-    after = [ "keycloak.service" ];
+    after = [ "kanidm.service" ];
     preStart = lib.mkAfter ''
       install -m 600 -o step-ca /etc/smallstep/ca.json /run/step-ca/ca.json
       ${pkgs.replace-secret}/bin/replace-secret '@step-ca-oidc-secret@' '${config.age.secrets.step-ca-oidc-secret.path}' /run/step-ca/ca.json
@@ -213,9 +182,6 @@
       RuntimeDirectory = "step-ca";
     };
   };
-
-  # TODO: Remove when keycloak is update in stable channel
-  nixpkgs.config.permittedInsecurePackages = [ "keycloak-23.0.6" ];
 
   system.stateVersion = "22.11";
 }
