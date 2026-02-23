@@ -16,6 +16,25 @@ in
 
   config = mkIf cfg.enable {
 
+    nixpkgs.overlays = [
+      (_final: prev: {
+        python3 = prev.python3.override {
+          packageOverrides = _pyFinal: pyPrev: {
+            buildPythonPackage =
+              args:
+              pyPrev.buildPythonPackage (
+                args
+                // lib.optionalAttrs (args ? pname && args.pname == "buildbot-gitea" && !(args ? pyproject)) {
+                  pyproject = true;
+                  build-system = [ pyPrev.setuptools ];
+                }
+              );
+          };
+        };
+        python3Packages = _final.python3.pkgs;
+      })
+    ];
+
     services.buildbot-nix.master = {
       enable = true;
       domain = "ci.julienmalka.me";
