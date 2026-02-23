@@ -191,6 +191,16 @@
       "url": "https://github.com/saumonnet/proxmox-nixos/archive/3be878a84866b9ef9214b8ea6f53630f47f4b192.tar.gz",
       "hash": "sha256-Oq4aCjczgnFQqFNWZ6Ablg6x9579CO8tyBktYDYiZEs="
     },
+    "snix-cache": {
+      "type": "Git",
+      "fetchType": "git",
+      "branch": "main",
+      "revision": "cf2e1433a66b0b2130ef82c8d87bee477a7d1db8",
+      "url": "https://git.dgnum.eu/DGNum/snix-cache.git",
+      "hash": "sha256-F2jJv5Yu6/zZAoJvtlvnYQQb6la1GFv0E7ctaOF0+Cg=",
+      "lastModified": 1757537951,
+      "submodules": false
+    },
     "stateless-uptime-kuma": {
       "type": "Git",
       "fetchType": "git",
