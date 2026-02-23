@@ -30,7 +30,7 @@ password $STORE_PASSWORD
 EOF
 chmod 600 "$NETRC"
 
-CACHE_URL="${STORE_ENDPOINT}?compression=none"
+CACHE_URL="${STORE_ENDPOINT}.signing?compression=none"
 
 # --- formatting helpers ---
 bold=$'\033[1m'
