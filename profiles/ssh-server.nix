@@ -15,6 +15,12 @@ in
     settings.PasswordAuthentication = false;
     settings.PermitRootLogin = "yes";
     openFirewall = true;
+    hostKeys = [
+      {
+        type = "ed25519";
+        path = "/etc/ssh/ssh_host_ed25519_key";
+      }
+    ];
   };
 
   environment.etc."ssh/ssh_user_key.pub" = lib.mkIf hasVPN {
