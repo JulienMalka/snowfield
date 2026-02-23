@@ -44,6 +44,11 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.proxmox}/modules/declarative-vms")
     (import "${inputs.preservation}/module.nix")
     (import "${inputs.snix-cache}/nix/module.nix")
+    (import "${inputs.comin}/nix/module.nix" {
+      self = {
+        packages.${system}.comin = pkgs.callPackage "${inputs.comin}/nix/package.nix" { };
+      };
+    })
     {
       home-manager.useGlobalPkgs = true;
       home-manager.extraSpecialArgs = { inherit inputs; };

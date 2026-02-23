@@ -26,7 +26,7 @@ let
         mkdir -p ~/.ssh
         echo "$DEPLOY_KEY" > ~/.ssh/deploy_key
         chmod 600 ~/.ssh/deploy_key
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null
+        echo "git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe" >> ~/.ssh/known_hosts
       '';
     }
   ];
@@ -59,25 +59,41 @@ in
     pull_request.branches = [ "main" ];
   };
 
-  jobs = lib.genAttrs allMachines (machine: {
-    name = "Build ${machine}";
-    runs-on = "epyc";
-    steps = checkout ++ [
-      {
-        name = "Build ${machine}";
-        env.GIT_SSH_COMMAND = "ssh -i ~/.ssh/deploy_key";
-        run = "nix-build -A checks.machines.${machine} --out-link result-${machine}";
-      }
-      {
-        name = "Push to cache";
-        env = {
-          STORE_ENDPOINT = "https://cache.luj.fr/snowfield";
-          STORE_USER = "ci";
-          STORE_PASSWORD = nix-actions.lib.secret "SNIX_CACHE_PASSWORD";
-        };
-        run = "bash scripts/push-to-cache.sh ./result-${machine}";
-      }
-      (reportStatus machine)
-    ];
-  });
+  jobs =
+    lib.genAttrs allMachines (machine: {
+      name = "Build ${machine}";
+      runs-on = "epyc";
+      steps = checkout ++ [
+        {
+          name = "Build ${machine}";
+          env.GIT_SSH_COMMAND = "ssh -i ~/.ssh/deploy_key";
+          run = "nix-build -A checks.machines.${machine} --out-link result-${machine}";
+        }
+        {
+          name = "Push to cache";
+          env = {
+            STORE_ENDPOINT = "https://cache.luj.fr/snowfield";
+            STORE_USER = "ci";
+            STORE_PASSWORD = nix-actions.lib.secret "SNIX_CACHE_PASSWORD";
+          };
+          run = "bash scripts/push-to-cache.sh ./result-${machine}";
+        }
+        (reportStatus machine)
+      ];
+    })
+    // {
+      promote = {
+        name = "Promote to deploy";
+        runs-on = "epyc";
+        needs = allMachines;
+        "if" = nix-actions.lib.expr "github.event_name == 'push'";
+        steps = checkout ++ [
+          {
+            name = "Fast-forward deploy branch";
+            env.GIT_SSH_COMMAND = "ssh -i ~/.ssh/deploy_key";
+            run = "git push origin HEAD:deploy";
+          }
+        ];
+      };
+    };
 }

@@ -1,4 +1,6 @@
 {
+  imports = [ ./comin.nix ];
+
   deployment.tags = [ "server" ];
 
   # Nice motd

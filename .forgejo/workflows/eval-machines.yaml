@@ -12,7 +12,8 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
+        echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
+        \ >> ~/.ssh/known_hosts\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build akhaten
@@ -48,7 +49,8 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
+        echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
+        \ >> ~/.ssh/known_hosts\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build arcadia
@@ -84,7 +86,8 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
+        echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
+        \ >> ~/.ssh/known_hosts\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build biblios
@@ -120,7 +123,8 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
+        echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
+        \ >> ~/.ssh/known_hosts\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build core-data
@@ -156,7 +160,8 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
+        echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
+        \ >> ~/.ssh/known_hosts\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build core-security
@@ -193,7 +198,8 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
+        echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
+        \ >> ~/.ssh/known_hosts\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build darillium
@@ -229,7 +235,8 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
+        echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
+        \ >> ~/.ssh/known_hosts\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build epyc-container
@@ -266,7 +273,8 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
+        echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
+        \ >> ~/.ssh/known_hosts\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build fischer
@@ -302,7 +310,8 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
+        echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
+        \ >> ~/.ssh/known_hosts\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build gallifrey
@@ -338,7 +347,8 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
+        echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
+        \ >> ~/.ssh/known_hosts\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build gustave
@@ -374,7 +384,8 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
+        echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
+        \ >> ~/.ssh/known_hosts\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build jacques
@@ -410,7 +421,8 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
+        echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
+        \ >> ~/.ssh/known_hosts\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build lambda
@@ -435,6 +447,38 @@ jobs:
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
         \",\\\"context\\\":\\\"forgejo/lambda\\\",\\\"description\\\":\\\"lambda\\\
         \"}\"\n"
+  promote:
+    if: ${{ github.event_name == 'push' }}
+    name: Promote to deploy
+    needs:
+    - akhaten
+    - arcadia
+    - biblios
+    - core-data
+    - core-security
+    - darillium
+    - epyc-container
+    - fischer
+    - gallifrey
+    - gustave
+    - jacques
+    - lambda
+    - tower
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      name: Configure SSH for private inputs
+      run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
+        echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
+        \ >> ~/.ssh/known_hosts\n"
+    - env:
+        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
+      name: Fast-forward deploy branch
+      run: git push origin HEAD:deploy
   tower:
     name: Build tower
     runs-on: epyc
@@ -446,7 +490,8 @@ jobs:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       name: Configure SSH for private inputs
       run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
-        ssh-keyscan git.luj.fr >> ~/.ssh/known_hosts 2>/dev/null\n"
+        echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
+        \ >> ~/.ssh/known_hosts\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
       name: Build tower
