@@ -18,6 +18,7 @@
     ./josh.nix
     ./cal-proxy.nix
     ./snix-cache.nix
+    ./luj-website.nix
   ];
 
   users.users.julien.linger = true;

@@ -20,7 +20,7 @@ let
     biblios = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF5//9IlSSuES0xVsqqOwpotfcajgXL0AtcySpoZ8OLJ";
     epyc-container = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINv4nyfI5UOETIG11JqF/jQE6/Rb7v9osmdKlY3PT/fl";
     darillium = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBUIJCkSbeFwxDdPJBAS4xhBNEzJ5Kx1yCm1UGRwBMzq";
-    darillium_home = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN31a7mqOInGOKj6cMeHAgSkoHuqC1xRGgXMGDWgkTPl";
+    darillium_home = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID/FdA1KyU7U6K4YicQLLHeBf/1LRlMk7vPa1h1IGsfM";
     jacques = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBBgWu3hLZ5Rfp3lH6I03ZabztLo5E8GQhZCWVePNEHe";
   };
   secrets_owners = [
