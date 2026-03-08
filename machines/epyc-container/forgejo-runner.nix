@@ -23,6 +23,7 @@
         jq
         bc
         gawk
+        awscli
       ];
     };
   };
