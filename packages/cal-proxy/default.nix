@@ -10,7 +10,7 @@ python3Packages.buildPythonApplication {
   src = builtins.fetchGit {
     url = "ssh://forgejo@git.luj.fr/luj/cal-proxy.git";
     ref = "main";
-    rev = "59629a23b0e5bc37a93ded5516f2c9e8992d8fe8";
+    rev = "93ec9a0b8661f53d1b5358ef3fd2be3b17e2894a";
   };
 
   pyproject = true;
