@@ -37,8 +37,14 @@
       "/etc/NetworkManager/system-connections"
     ];
     files = [
-      "/etc/machine-id"
-      "/etc/ssh/ssh_host_ed25519_key"
+      {
+        file = "/etc/machine-id";
+        inInitrd = true;
+      }
+      {
+        file = "/etc/ssh/ssh_host_ed25519_key";
+        mode = "0600";
+      }
       "/etc/ssh/ssh_host_ed25519_key.pub"
     ];
     users.julien = {
@@ -161,6 +167,8 @@
   services.xserver.windowManager.session = lib.singleton {
     name = "exwm";
     start = ''
+      export SSH_AUTH_SOCK="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/gcr/ssh"
+      ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd SSH_AUTH_SOCK
       EMACS_EXWM=1 ${(import inputs.emacs-config).packages.${pkgs.system}.default}/bin/emacs
     '';
   };
@@ -216,5 +224,6 @@
   };
 
   services.gnome.gnome-keyring.enable = true;
+  security.pam.services.lightdm.enableGnomeKeyring = true;
   system.stateVersion = "26.05";
 }
