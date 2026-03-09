@@ -17,6 +17,7 @@ let
   bootstrap = pkgs.callPackage scripts/bootstrap-machine.nix { inherit nixos-anywhere; };
   snowfield = pkgs.callPackage scripts/snowfield.nix { };
   lon = pkgs.callPackage "${inputs.lon}/nix/packages/lon.nix" { };
+  niks3 = pkgs.callPackage "${inputs.niks3}/nix/packages/niks3.nix" { };
   ci = import ./ci.nix;
   pre-commit-hook =
     (import (
@@ -55,6 +56,7 @@ pkgs.mkShell {
     snowfield
     pkgs.statix
     lon
+    niks3
   ];
   shellHook = ''
     ${pre-commit-hook.shellHook}

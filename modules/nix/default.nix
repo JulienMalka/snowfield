@@ -29,7 +29,7 @@ with lib;
         auto-optimise-store = true;
         substituters = [
           "https://cache.nixos.org"
-          "https://cache.luj.fr/snowfield.signing"
+          "https://cache.luj.fr"
         ];
         trusted-public-keys = [
           "cache.luj.fr-1:C4ZpEGda4niPPcPtSMTzfiz1OLl8a+HzSdq1hUhAh6w="

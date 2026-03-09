@@ -75,10 +75,10 @@
       "type": "Git",
       "fetchType": "git",
       "branch": "main",
-      "revision": "6c3d58a97063932c6dba161f98023449a96f290a",
+      "revision": "4db63e56b1b11fecff63762088ac47e0f4dcc485",
       "url": "ssh://forgejo@git.luj.fr/luj/emacs-config.git",
-      "hash": "sha256-co33iXs2VIpYQuDi5itmI3ao73I8Xezt6VKAYedDTIQ=",
-      "lastModified": 1771447323,
+      "hash": "sha256-3dxNm8pHV2LbcPjivbEfTEbSI5RA08uXq8KwjDAv/MY=",
+      "lastModified": 1772655484,
       "submodules": false
     },
     "git-hooks": {
@@ -151,6 +151,26 @@
       "url": "https://github.com/nikstur/lon/archive/aaa92719d71c6a58a34aa311c90f1413a71c3050.tar.gz",
       "hash": "sha256-2l+6J9RyYY7oTIIn8QJX+6j/Luo1Dl9UFoi7uzF/73c="
     },
+    "luj-website": {
+      "type": "Git",
+      "fetchType": "git",
+      "branch": "main",
+      "revision": "0410187dc15c27f2ff60228a54ae90169ca1a01b",
+      "url": "git@github.com:JulienMalka/luj-website.git",
+      "hash": "sha256-GWt/cDJc2XNap7xShUhcqabfPDzy31oWfEVvbHyeykM=",
+      "lastModified": 1773021402,
+      "submodules": false
+    },
+    "niks3": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "Mic92",
+      "repo": "niks3",
+      "branch": "main",
+      "revision": "1d944b98cb0ae7592e7fb7a49263872bcace63dd",
+      "url": "https://github.com/Mic92/niks3/archive/1d944b98cb0ae7592e7fb7a49263872bcace63dd.tar.gz",
+      "hash": "sha256-dx9Jvm2DMkRId3n3we3I3PCMyH8djrVPEws69Ie+7Ek="
+    },
     "nix-actions": {
       "type": "Git",
       "fetchType": "git",
@@ -210,16 +230,6 @@
       "revision": "c1f79f104930347a0b84abbca0d42884063a8c09",
       "url": "https://github.com/saumonnet/proxmox-nixos/archive/c1f79f104930347a0b84abbca0d42884063a8c09.tar.gz",
       "hash": "sha256-wjwCj70iiFXoAasQto+3jTaA4wCMOAs/rdX+nsmtBrQ="
-    },
-    "snix-cache": {
-      "type": "Git",
-      "fetchType": "git",
-      "branch": "main",
-      "revision": "cf2e1433a66b0b2130ef82c8d87bee477a7d1db8",
-      "url": "https://git.dgnum.eu/DGNum/snix-cache.git",
-      "hash": "sha256-F2jJv5Yu6/zZAoJvtlvnYQQb6la1GFv0E7ctaOF0+Cg=",
-      "lastModified": 1757537951,
-      "submodules": false
     },
     "snowfield-private": {
       "type": "Git",

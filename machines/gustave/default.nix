@@ -17,7 +17,7 @@
     ./artiflakery.nix
     ./josh.nix
     ./cal-proxy.nix
-    ./snix-cache.nix
+    ./niks3.nix
     ./luj-website.nix
   ];
 

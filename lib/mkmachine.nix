@@ -43,7 +43,8 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.stateless-uptime-kuma}/nixos/module.nix")
     (import "${inputs.proxmox}/modules/declarative-vms")
     (import "${inputs.preservation}/module.nix")
-    (import "${inputs.snix-cache}/nix/module.nix")
+    (import "${inputs.luj-website}/nix/module.nix")
+    (import "${inputs.niks3}/nix/nixosModules/niks3.nix")
     (import "${inputs.comin}/nix/module.nix" {
       self = {
         packages.${system}.comin = pkgs.callPackage "${inputs.comin}/nix/package.nix" { };
@@ -56,7 +57,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
       networking.hostName = name;
       nixpkgs.overlays = lib.mkAfter [
         (overlay-unstable system)
-        (import "${inputs.snix-cache}/nix/overlay.nix")
+
         (_final: prev: {
           waybar = prev.waybar.overrideAttrs (oldAttrs: {
             mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
@@ -73,6 +74,10 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           openclaw = prev.pkgs.unstable.callPackage ../packages/openclaw { };
           gh-proxy = prev.pkgs.callPackage ../packages/gh-proxy { };
           cal-proxy = prev.pkgs.callPackage ../packages/cal-proxy { };
+          luj-website = prev.pkgs.callPackage "${inputs.luj-website}/nix/package.nix" {
+            src = inputs.luj-website;
+            inherit (prev.unstable) cargo-leptos;
+          };
         })
 
         (
