@@ -19,7 +19,7 @@
       {
         name = "origin";
         url = "https://git.luj.fr/luj/snowfield.git";
-        poller.period = 300;
+        poller.period = 60;
         auth.access_token_path = config.age.secrets.comin-forgejo-token.path;
         branches = {
           main.name = "deploy";
