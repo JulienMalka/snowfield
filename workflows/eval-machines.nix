@@ -72,9 +72,8 @@ in
         {
           name = "Push to cache";
           env = {
-            STORE_ENDPOINT = "https://cache.luj.fr/snowfield";
-            STORE_USER = "ci";
-            STORE_PASSWORD = nix-actions.lib.secret "SNIX_CACHE_PASSWORD";
+            NIKS3_SERVER_URL = "https://cache.luj.fr";
+            NIKS3_AUTH_TOKEN = nix-actions.lib.secret "NIKS3_API_TOKEN";
           };
           run = "bash scripts/push-to-cache.sh ./result-${machine}";
         }
@@ -87,11 +86,21 @@ in
         runs-on = "epyc";
         needs = allMachines;
         "if" = nix-actions.lib.expr "github.event_name == 'push'";
-        steps = checkout ++ [
+        steps = [
+          (nix-actions.lib.steps.checkout {
+            __version = "v6";
+            fetch-depth = 0;
+          })
           {
             name = "Fast-forward deploy branch";
-            env.GIT_SSH_COMMAND = "ssh -i ~/.ssh/deploy_key";
-            run = "git push origin HEAD:deploy";
+            env.DEPLOY_KEY = nix-actions.lib.secret "DEPLOY_KEY";
+            run = ''
+              mkdir -p ~/.ssh
+              echo "$DEPLOY_KEY" > ~/.ssh/deploy_key
+              chmod 600 ~/.ssh/deploy_key
+              echo "git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe" >> ~/.ssh/known_hosts
+              GIT_SSH_COMMAND="ssh -i ~/.ssh/deploy_key" git push ssh://forgejo@git.luj.fr/luj/snowfield.git HEAD:deploy
+            '';
           }
         ];
       };

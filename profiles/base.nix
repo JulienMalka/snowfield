@@ -49,13 +49,11 @@
 
   environment.systemPackages = with pkgs; [
     neovim
-    #attic-client
     kitty
     tailscale
     step-cli
     comma-with-db
     nixos-firewall-tool
-    attic-client
   ];
 
   environment.variables.EDITOR = "nvim";
