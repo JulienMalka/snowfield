@@ -22,6 +22,7 @@
       vm-simple-network
       server
       behind-sniproxy
+      monitoring
     ];
     ips = {
       public.ipv4 = "82.67.34.230";
