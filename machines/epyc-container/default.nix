@@ -27,6 +27,7 @@
     };
     profiles = with profiles; [
       server
+      monitoring
     ];
   };
 
