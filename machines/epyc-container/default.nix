@@ -2,7 +2,6 @@
   inputs,
   profiles,
   lib,
-  config,
   pkgs,
   ...
 }:
@@ -41,30 +40,6 @@
   '';
 
   deployment.targetHost = lib.mkForce "2001:bc8:38ee:100:f837:7fff:fe77:7154";
-
-  services.hash-collection = {
-    enable = true;
-    collection-url = "https://reproducibility.nixos.social";
-    tokenFile = config.age.secrets.lila-token.path;
-    secretKeyFile = config.age.secrets.lila-key.path;
-  };
-  nix.settings.trusted-users = [
-    "queued-build-hook"
-  ];
-
-  age.secrets.lila-token = {
-    file = ./secrets/lila-token.age;
-    owner = "julien";
-    group = "nixbld";
-    mode = "770";
-  };
-
-  age.secrets.lila-key = {
-    file = ./secrets/lila-key.age;
-    owner = "julien";
-    group = "nixbld";
-    mode = "770";
-  };
 
   networking.useHostResolvConf = false;
 
