@@ -1,6 +1,5 @@
 {
   pkgs,
-  home,
   lib,
   config,
   ...
@@ -155,7 +154,7 @@ with lib;
         vim-devicons
         zig-vim
         vim-scriptease
-        semshi
+
         coc-prettier
         coc-pyright
         coc-rust-analyzer

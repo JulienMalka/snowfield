@@ -67,6 +67,14 @@ require("catppuccin").setup({
 })
 
 require("nvim-tree").setup()
+require('telescope').setup{
+    defaults = {
+        layout_strategy = 'horizontal',
+        layout_config = {
+            preview_cutoff = 0,
+        },
+    },
+}
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', 'ff', builtin.find_files, {})
 vim.keymap.set('n', 'fg', builtin.live_grep, {})
@@ -81,12 +89,12 @@ require("bufferline").setup{}
 require('colorizer').setup()
 
 -- Treesitter settings
-require'nvim-treesitter.configs'.setup {
-    ensure_installed = "", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-    highlight = {
-        enable = true
-    },
-}
+vim.treesitter.start = vim.treesitter.start or function() end
+vim.api.nvim_create_autocmd("FileType", {
+    callback = function()
+        pcall(vim.treesitter.start)
+    end,
+})
 
 
 
