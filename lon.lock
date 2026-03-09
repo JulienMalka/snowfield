@@ -156,7 +156,7 @@
       "fetchType": "git",
       "branch": "main",
       "revision": "0410187dc15c27f2ff60228a54ae90169ca1a01b",
-      "url": "git@github.com:JulienMalka/luj-website.git",
+      "url": "ssh://forgejo@git.luj.fr/luj/luj-website.git",
       "hash": "sha256-GWt/cDJc2XNap7xShUhcqabfPDzy31oWfEVvbHyeykM=",
       "lastModified": 1773021402,
       "submodules": false
