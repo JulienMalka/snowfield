@@ -3,6 +3,8 @@
 
   deployment.tags = [ "server" ];
 
+  nix.settings.always-allow-substitutes = true;
+
   # Nice motd
   programs.rust-motd = {
     enable = true;
