@@ -112,6 +112,12 @@ let
       }) machines_plats
     );
 
+    # comin's nix executor appends both .toplevel and .config.services.comin.machineId
+    # to systemAttr, so we need an attrset with both at the same level
+    cominConfigurations = builtins.mapAttrs (
+      _: v: v.config.system.build // { inherit (v) config; }
+    ) nixosConfigurations;
+
     checks = {
       inherit packages;
       machines = lib.mapAttrs (_: v: v.config.system.build.toplevel) nixosConfigurations;

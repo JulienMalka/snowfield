@@ -10,7 +10,7 @@
     enable = true;
     package = pkgs.callPackage "${inputs.comin}/nix/package.nix" { };
     repositoryType = "nix";
-    systemAttr = "nixosConfigurations.${config.networking.hostName}";
+    systemAttr = "cominConfigurations.${config.networking.hostName}";
     exporter = {
       listen_address = "127.0.0.1";
       port = 4243;
