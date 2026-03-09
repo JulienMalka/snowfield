@@ -75,7 +75,7 @@ in
             NIKS3_SERVER_URL = "https://cache.luj.fr";
             NIKS3_AUTH_TOKEN = nix-actions.lib.secret "NIKS3_API_TOKEN";
           };
-          run = "nix-shell -I nixpkgs=${inputs.nixpkgs} -p 'callPackage ${inputs.niks3}/nix/packages/niks3.nix {}' --run 'bash scripts/push-to-cache.sh ./result-${machine}'";
+          run = "nix-shell -I nixpkgs=${inputs.nixpkgs} -p 'callPackage ${inputs.niks3}/nix/packages/niks3.nix {}' -p util-linux --run 'bash scripts/push-to-cache.sh ./result-${machine}'";
         }
         (reportStatus machine)
       ];

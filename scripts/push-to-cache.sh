@@ -24,4 +24,17 @@ echo -n "$NIKS3_AUTH_TOKEN" > "$TOKEN_FILE"
 chmod 600 "$TOKEN_FILE"
 
 export NIKS3_AUTH_TOKEN_FILE="$TOKEN_FILE"
-exec niks3 push --server-url "$NIKS3_SERVER_URL" "$@"
+
+LOCK_FILE=/tmp/push-to-cache.lock
+JOB_NAME="${GITHUB_JOB:-unknown}"
+
+if ! flock --nonblock "$LOCK_FILE" true 2>/dev/null; then
+  HOLDER=$(cat "$LOCK_FILE" 2>/dev/null || echo "unknown")
+  echo "Waiting for lock (held by: $HOLDER)..."
+fi
+
+exec flock "$LOCK_FILE" bash -c "
+  echo '$JOB_NAME' > '$LOCK_FILE'
+  echo 'Lock acquired, pushing...'
+  niks3 push --server-url '$NIKS3_SERVER_URL' \"\$@\"
+" _ "$@"
