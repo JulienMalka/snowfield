@@ -22,7 +22,11 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: bash scripts/push-to-cache.sh ./result-akhaten
+      run: nix-shell -I 
+        nixpkgs=/nix/store/wl5m60vn27dl0dnqrwif4jam4zy86inq-source -p 
+        'callPackage 
+        /nix/store/4hi6hn9c9ryj6cwln3qm9w85b03fp5ma-source/nix/packages/niks3.nix
+        {}' --run 'bash scripts/push-to-cache.sh ./result-akhaten'
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -58,7 +62,11 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: bash scripts/push-to-cache.sh ./result-arcadia
+      run: nix-shell -I 
+        nixpkgs=/nix/store/wl5m60vn27dl0dnqrwif4jam4zy86inq-source -p 
+        'callPackage 
+        /nix/store/4hi6hn9c9ryj6cwln3qm9w85b03fp5ma-source/nix/packages/niks3.nix
+        {}' --run 'bash scripts/push-to-cache.sh ./result-arcadia'
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -94,7 +102,11 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: bash scripts/push-to-cache.sh ./result-biblios
+      run: nix-shell -I 
+        nixpkgs=/nix/store/wl5m60vn27dl0dnqrwif4jam4zy86inq-source -p 
+        'callPackage 
+        /nix/store/4hi6hn9c9ryj6cwln3qm9w85b03fp5ma-source/nix/packages/niks3.nix
+        {}' --run 'bash scripts/push-to-cache.sh ./result-biblios'
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -130,7 +142,11 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: bash scripts/push-to-cache.sh ./result-core-data
+      run: nix-shell -I 
+        nixpkgs=/nix/store/wl5m60vn27dl0dnqrwif4jam4zy86inq-source -p 
+        'callPackage 
+        /nix/store/4hi6hn9c9ryj6cwln3qm9w85b03fp5ma-source/nix/packages/niks3.nix
+        {}' --run 'bash scripts/push-to-cache.sh ./result-core-data'
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -167,7 +183,11 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: bash scripts/push-to-cache.sh ./result-core-security
+      run: nix-shell -I 
+        nixpkgs=/nix/store/wl5m60vn27dl0dnqrwif4jam4zy86inq-source -p 
+        'callPackage 
+        /nix/store/4hi6hn9c9ryj6cwln3qm9w85b03fp5ma-source/nix/packages/niks3.nix
+        {}' --run 'bash scripts/push-to-cache.sh ./result-core-security'
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -203,7 +223,11 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: bash scripts/push-to-cache.sh ./result-darillium
+      run: nix-shell -I 
+        nixpkgs=/nix/store/wl5m60vn27dl0dnqrwif4jam4zy86inq-source -p 
+        'callPackage 
+        /nix/store/4hi6hn9c9ryj6cwln3qm9w85b03fp5ma-source/nix/packages/niks3.nix
+        {}' --run 'bash scripts/push-to-cache.sh ./result-darillium'
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -240,7 +264,11 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: bash scripts/push-to-cache.sh ./result-epyc-container
+      run: nix-shell -I 
+        nixpkgs=/nix/store/wl5m60vn27dl0dnqrwif4jam4zy86inq-source -p 
+        'callPackage 
+        /nix/store/4hi6hn9c9ryj6cwln3qm9w85b03fp5ma-source/nix/packages/niks3.nix
+        {}' --run 'bash scripts/push-to-cache.sh ./result-epyc-container'
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -276,7 +304,11 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: bash scripts/push-to-cache.sh ./result-fischer
+      run: nix-shell -I 
+        nixpkgs=/nix/store/wl5m60vn27dl0dnqrwif4jam4zy86inq-source -p 
+        'callPackage 
+        /nix/store/4hi6hn9c9ryj6cwln3qm9w85b03fp5ma-source/nix/packages/niks3.nix
+        {}' --run 'bash scripts/push-to-cache.sh ./result-fischer'
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -312,7 +344,11 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: bash scripts/push-to-cache.sh ./result-gallifrey
+      run: nix-shell -I 
+        nixpkgs=/nix/store/wl5m60vn27dl0dnqrwif4jam4zy86inq-source -p 
+        'callPackage 
+        /nix/store/4hi6hn9c9ryj6cwln3qm9w85b03fp5ma-source/nix/packages/niks3.nix
+        {}' --run 'bash scripts/push-to-cache.sh ./result-gallifrey'
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -348,7 +384,11 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: bash scripts/push-to-cache.sh ./result-gustave
+      run: nix-shell -I 
+        nixpkgs=/nix/store/wl5m60vn27dl0dnqrwif4jam4zy86inq-source -p 
+        'callPackage 
+        /nix/store/4hi6hn9c9ryj6cwln3qm9w85b03fp5ma-source/nix/packages/niks3.nix
+        {}' --run 'bash scripts/push-to-cache.sh ./result-gustave'
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -384,7 +424,11 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: bash scripts/push-to-cache.sh ./result-jacques
+      run: nix-shell -I 
+        nixpkgs=/nix/store/wl5m60vn27dl0dnqrwif4jam4zy86inq-source -p 
+        'callPackage 
+        /nix/store/4hi6hn9c9ryj6cwln3qm9w85b03fp5ma-source/nix/packages/niks3.nix
+        {}' --run 'bash scripts/push-to-cache.sh ./result-jacques'
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -420,7 +464,11 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: bash scripts/push-to-cache.sh ./result-lambda
+      run: nix-shell -I 
+        nixpkgs=/nix/store/wl5m60vn27dl0dnqrwif4jam4zy86inq-source -p 
+        'callPackage 
+        /nix/store/4hi6hn9c9ryj6cwln3qm9w85b03fp5ma-source/nix/packages/niks3.nix
+        {}' --run 'bash scripts/push-to-cache.sh ./result-lambda'
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
@@ -485,7 +533,11 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: bash scripts/push-to-cache.sh ./result-tower
+      run: nix-shell -I 
+        nixpkgs=/nix/store/wl5m60vn27dl0dnqrwif4jam4zy86inq-source -p 
+        'callPackage 
+        /nix/store/4hi6hn9c9ryj6cwln3qm9w85b03fp5ma-source/nix/packages/niks3.nix
+        {}' --run 'bash scripts/push-to-cache.sh ./result-tower'
     - env:
         COMMIT_SHA: ${{ github.sha }}
         GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
