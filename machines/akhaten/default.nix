@@ -33,10 +33,17 @@
       "/srv"
     ];
     files = [
-      "/etc/machine-id"
-      "/etc/ssh/ssh_host_ed25519_key"
+      {
+        file = "/etc/machine-id";
+        inInitrd = true;
+      }
+      {
+        file = "/etc/ssh/ssh_host_ed25519_key";
+        mode = "0600";
+      }
       "/etc/ssh/ssh_host_ed25519_key.pub"
     ];
+
   };
 
   #  fileSystems."/srv".neededForBoot = true;
