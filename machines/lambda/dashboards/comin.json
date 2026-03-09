@@ -151,7 +151,7 @@
         },
         "overrides": []
       },
-      "gridPos": { "h": 6, "w": 24, "x": 0, "y": 4 },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 4 },
       "id": 4,
       "options": {
         "showHeader": true,
@@ -209,7 +209,7 @@
         },
         "overrides": []
       },
-      "gridPos": { "h": 6, "w": 24, "x": 0, "y": 10 },
+      "gridPos": { "h": 6, "w": 24, "x": 0, "y": 14 },
       "id": 5,
       "options": {
         "legend": { "calcs": [], "displayMode": "list", "placement": "bottom" },
