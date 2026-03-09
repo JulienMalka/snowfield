@@ -11,7 +11,7 @@ in
 {
   services.garage = {
     enable = true;
-    package = pkgs.garage_1;
+    package = pkgs.garage_2;
 
     settings = {
       replication_factor = 1;
@@ -95,57 +95,6 @@ in
     };
   };
 
-  services.nginx.virtualHosts."luj.fr" = {
-    enableACME = true;
-    forceSSL = true;
-    locations."/".extraConfig = ''
-      proxy_pass http://127.0.0.1:3902;
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header Host $host;
-    '';
-    locations."/notes" = {
-      extraConfig = ''
-        return 301 $scheme://$host/notes/;
-      '';
-    };
-
-    # Main notes application
-    locations."/notes/" = {
-      extraConfig = ''
-        proxy_pass http://100.100.45.24:3003;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Host $host;
-      '';
-    };
-
-    # JavaScript/WASM bundles
-    locations."/pkg/" = {
-      extraConfig = ''
-        proxy_pass http://100.100.45.24:3003/pkg/;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Host $host;
-      '';
-    };
-
-    # Static assets
-    locations."/public/" = {
-      extraConfig = ''
-        proxy_pass http://100.100.45.24:3003/public/;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Host $host;
-      '';
-    };
-
-    # Server function endpoints
-    locations."/api/" = {
-      extraConfig = ''
-        proxy_pass http://100.100.45.24:3003/api/;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Host $host;
-      '';
-    };
-  };
-
   services.nginx.virtualHosts."notes.luj.fr" = {
     enableACME = true;
     forceSSL = true;
@@ -174,13 +123,6 @@ in
     };
   };
 
-  machine.meta.zones."luj.fr".A = [
-    config.machine.meta.ips.public.ipv4
-  ];
-  machine.meta.zones."luj.fr".AAAA = [
-    config.machine.meta.ips.public.ipv6
-  ];
-
   machine.meta.zones."hownix.works".A = lib.mkForce [
     "35.205.222.138"
   ];
@@ -196,30 +138,5 @@ in
 
   machine.meta.probes.monitors."phd.luj.fr - IPv4".accepted_statuscodes = [ "401" ];
   machine.meta.probes.monitors."phd.luj.fr - IPv6".accepted_statuscodes = [ "401" ];
-
-  machine.meta.probes.monitors = {
-    "luj.fr - IPv4" = {
-      url = "https://${config.machine.meta.ips.public.ipv4}";
-      type = "http";
-      accepted_statuscodes = [ "200-299" ];
-      notificationIDList = [ 1 ];
-      headers = ''
-        {
-          "Host": "luj.fr"
-        }
-      '';
-    };
-    "luj.fr - IPv6" = {
-      url = "https://[${config.machine.meta.ips.public.ipv6}]";
-      type = "http";
-      accepted_statuscodes = [ "200-299" ];
-      notificationIDList = [ 1 ];
-      headers = ''
-        {
-          "Host": "luj.fr"
-        }
-      '';
-    };
-  };
 
 }
