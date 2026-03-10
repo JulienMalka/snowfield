@@ -99,7 +99,7 @@ in
               echo "$DEPLOY_KEY" > ~/.ssh/deploy_key
               chmod 600 ~/.ssh/deploy_key
               echo "git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe" >> ~/.ssh/known_hosts
-              GIT_SSH_COMMAND="ssh -i ~/.ssh/deploy_key" git push --force ssh://forgejo@git.luj.fr/luj/snowfield.git HEAD:deploy
+              GIT_SSH_COMMAND="ssh -i ~/.ssh/deploy_key" git push ssh://forgejo@git.luj.fr/luj/snowfield.git HEAD:deploy
             '';
           }
         ];
