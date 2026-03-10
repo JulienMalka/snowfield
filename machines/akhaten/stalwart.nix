@@ -19,6 +19,7 @@ in
       };
       lookup.default.hostname = "mail.luj.fr";
       spam-filter.enable = false;
+      spam-filter.resource = lib.mkForce "";
       calendar.scheduling.inbound.auto-add = true;
       server = {
         http.hsts = true;
