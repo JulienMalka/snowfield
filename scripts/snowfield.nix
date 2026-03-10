@@ -123,15 +123,13 @@ writeShellApplication {
       esac
     }
 
-    # Extract the snowfield git rev from a NixOS system store path
-    # e.g. /nix/store/...-nixos-system-core-security-25.11-c45c942-dirty → c45c942
+    # Extract the snowfield git rev from nixos-version --configuration-revision output
+    # Returns the short rev (e.g. "c45c942"), stripping any "-dirty" suffix
     extract_snowfield_rev() {
-      local path="$1"
-      # Remove -dirty suffix
-      local clean="''${path%-dirty}"
-      # The rev is the last dash-separated segment
-      local rev="''${clean##*-}"
-      echo "$rev"
+      local raw="$1"
+      # Remove -dirty suffix if present
+      local clean="''${raw%-dirty}"
+      echo "$clean"
     }
 
     # Get the nixpkgs revision from lon.lock at a given snowfield commit
@@ -213,7 +211,7 @@ writeShellApplication {
             -o StrictHostKeyChecking=no \
             -o UserKnownHostsFile=/dev/null \
             -o LogLevel=ERROR \
-            "root@$host" 'readlink /run/current-system' > "$ssh_dir/$machine" 2>/dev/null \
+            "root@$host" 'nixos-version --configuration-revision' > "$ssh_dir/$machine" 2>/dev/null \
           || echo "unreachable" > "$ssh_dir/$machine"
         ) &
         bg_pids+=($!)
@@ -242,23 +240,23 @@ writeShellApplication {
         channel=$(jq -r --arg m "$machine" '.[$m].channel' < "$meta")
         branch=$(jq -r --arg m "$machine" '.[$m].branch' < "$meta")
 
-        local store_path=""
+        local raw_rev=""
         if [[ -f "$ssh_dir/$machine" ]]; then
-          store_path=$(tr -d '[:space:]' < "$ssh_dir/$machine")
+          raw_rev=$(tr -d '[:space:]' < "$ssh_dir/$machine")
         fi
 
         local ud="''${upstream_dates[$branch]:-}"
 
         # Unreachable
-        if [[ -z "$store_path" || "$store_path" == "unreachable" ]]; then
+        if [[ -z "$raw_rev" || "$raw_rev" == "unreachable" ]]; then
           printf '%-17s %-10s %-10s %-10s %-12s %-12s %s\n' \
             "$machine" "$channel" "-" "-" "-" "$(format_date "$ud")" "$(print_drift 12 "-")"
           continue
         fi
 
-        # Extract snowfield rev from store path
+        # Extract snowfield rev from configuration revision
         local sf_rev
-        sf_rev=$(extract_snowfield_rev "$store_path")
+        sf_rev=$(extract_snowfield_rev "$raw_rev")
 
         if [[ -z "$sf_rev" ]]; then
           printf '%-17s %-10s %-10s %-10s %-12s %-12s %s\n' \
