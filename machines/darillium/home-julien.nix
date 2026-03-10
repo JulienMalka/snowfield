@@ -78,7 +78,7 @@
       cargo
       rustc
       pyright
-      unstable.nixfmt-rfc-style
+      unstable.nixfmt
       emacs-lsp-booster
     ];
 

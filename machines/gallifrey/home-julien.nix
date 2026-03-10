@@ -113,7 +113,7 @@
         notify-client
         emacs-lsp-booster
         pyright
-        nixfmt-rfc-style
+        nixfmt
         slack
         haskell-language-server
         aporetic

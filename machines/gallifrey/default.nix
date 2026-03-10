@@ -156,7 +156,7 @@
     sbctl
     ddcutil
     lcli
-    xorg.xinit
+    xinit
     gnomeExtensions.dash-to-dock
     gnomeExtensions.tailscale-status
     gnomeExtensions.appindicator

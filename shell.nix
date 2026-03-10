@@ -40,7 +40,7 @@ let
           rfc101 = {
             enable = true;
             name = "RFC-101 formatting";
-            entry = "${pkgs.lib.getExe pkgs.nixfmt-rfc-style}";
+            entry = "${pkgs.lib.getExe pkgs.nixfmt}";
             files = "\\.nix$";
           };
           commitizen.enable = true;

@@ -87,8 +87,8 @@
         emacs-lsp-booster
         pkgs.stable.pyright
         unstable.nixd
-        unstable.nixfmt-rfc-style
-        kanidm_1_8
+        unstable.nixfmt
+        kanidm_1_9
         yubioath-flutter
         ltex-ls-plus
         powerline-fonts

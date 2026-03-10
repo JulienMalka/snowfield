@@ -87,7 +87,7 @@
         cargo
         rustc
         pyright
-        unstable.nixfmt-rfc-style
+        unstable.nixfmt
         i3lock
       ]
       ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);

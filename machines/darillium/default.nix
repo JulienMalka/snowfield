@@ -153,9 +153,9 @@
     sbctl
   ];
 
-  services.logind = {
-    lidSwitch = "suspend";
-    lidSwitchExternalPower = "suspend";
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend";
+    HandleLidSwitchExternalPower = "suspend";
   };
 
   services.xserver.displayManager.lightdm.enable = true;

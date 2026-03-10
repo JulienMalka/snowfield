@@ -168,7 +168,7 @@ with lib;
         ormolu
         ccls
         gopls
-        unstable.nixfmt-rfc-style
+        unstable.nixfmt
       ];
 
       extraConfig = ''

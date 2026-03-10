@@ -9,7 +9,7 @@ let
   stalwart-private-settings = import "${inputs.snowfield-private}/pkgs/stalwart/settings.nix";
 in
 {
-  services.stalwart-mail = {
+  services.stalwart = {
     enable = true;
     package = pkgs.callPackage "${inputs.snowfield-private}/pkgs/stalwart" { };
     settings = {

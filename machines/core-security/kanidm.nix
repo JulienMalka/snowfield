@@ -5,7 +5,7 @@ in
 {
   services.kanidm = {
     enableServer = true;
-    package = pkgs.kanidmWithSecretProvisioning_1_8;
+    package = pkgs.kanidmWithSecretProvisioning_1_9;
     serverSettings = rec {
       domain = "auth.luj.fr";
       origin = "https://${domain}";
@@ -147,7 +147,7 @@ in
     };
   };
 
-  environment.systemPackages = [ pkgs.kanidmWithSecretProvisioning_1_8 ];
+  environment.systemPackages = [ pkgs.kanidmWithSecretProvisioning_1_9 ];
 
   users.users.kanidm.extraGroups = [ certificate.group ];
 
