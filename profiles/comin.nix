@@ -15,6 +15,22 @@
       listen_address = "127.0.0.1";
       port = 4243;
     };
+    postDeploymentCommand = pkgs.writers.writeBash "comin-notify" ''
+            failed=$(systemctl list-units --failed --no-legend --plain | awk '{print $1}')
+            if [ -n "$failed" ]; then
+              ${lib.getExe pkgs.curl} \
+                -s \
+                -H "Authorization: Bearer $(cat ${config.age.secrets.ntfy-token.path})" \
+                -H "Title: Failed units on $(hostname)" \
+                -H "Priority: high" \
+                -H "Tags: warning" \
+                -d "After commit ''${COMIN_GIT_SHA:0:8} - $COMIN_GIT_MSG
+
+      Failed units:
+      $failed" \
+                https://notifications.julienmalka.me/deployments
+            fi
+    '';
     remotes = [
       {
         name = "origin";
@@ -35,6 +51,7 @@
   };
 
   age.secrets.comin-forgejo-token.file = ./comin-forgejo-token.age;
+  age.secrets.ntfy-token.file = ./ntfy-token.age;
 
   age.secrets.comin-deploy-key = {
     file = ./comin-deploy-key.age;
