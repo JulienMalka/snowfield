@@ -207,9 +207,9 @@
       "owner": "nixos",
       "repo": "nixpkgs",
       "branch": "nixos-25.11",
-      "revision": "71caefce12ba78d84fe618cf61644dce01cf3a96",
-      "url": "https://github.com/nixos/nixpkgs/archive/71caefce12ba78d84fe618cf61644dce01cf3a96.tar.gz",
-      "hash": "sha256-yf3iYLGbGVlIthlQIk5/4/EQDZNNEmuqKZkQssMljuw="
+      "revision": "44bae273f9f82d480273bab26f5c50de3724f52f",
+      "url": "https://github.com/nixos/nixpkgs/archive/44bae273f9f82d480273bab26f5c50de3724f52f.tar.gz",
+      "hash": "sha256-vMrm7Pk2hjBRPnCSjhq1pH0bg350Z+pXhqZ9ICiqqCs="
     },
     "preservation": {
       "type": "GitHub",
