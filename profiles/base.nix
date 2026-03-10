@@ -88,13 +88,6 @@
         };
       };
 
-  system.nixos.label = "${config.system.nixos.release}-${
-    let
-      repo = builtins.fetchGit ../.;
-    in
-    repo.dirtyShortRev or repo.shortRev
-  }";
-
   security.pki.certificates = [
     ''
       -----BEGIN CERTIFICATE-----
