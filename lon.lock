@@ -134,12 +134,12 @@
     "lila": {
       "type": "GitHub",
       "fetchType": "tarball",
-      "owner": "JulienMalka",
+      "owner": "nix-community",
       "repo": "lila",
-      "branch": "update-queued-build-hook",
-      "revision": "2efeef82d770982688aedb700c2a7321cd1acfee",
-      "url": "https://github.com/JulienMalka/lila/archive/2efeef82d770982688aedb700c2a7321cd1acfee.tar.gz",
-      "hash": "sha256-KPMydZ5KH/KGphQaNoizLBR6xvu9Xia5F78xUl3VreE="
+      "branch": "fix-nix-import",
+      "revision": "10e1cb2daa9f371b3b9c50eca7fad423e1c00fec",
+      "url": "https://github.com/nix-community/lila/archive/10e1cb2daa9f371b3b9c50eca7fad423e1c00fec.tar.gz",
+      "hash": "sha256-JHqttf+Vv+DvFXvr1HP/7YImB07Npz9fjVvnXy0AcTo="
     },
     "lon": {
       "type": "GitHub",
