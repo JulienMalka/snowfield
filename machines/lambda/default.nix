@@ -56,7 +56,7 @@
       behind-proxy = true;
       upstream-base-url = "https://ntfy.sh";
       base-url = "https://notifications.julienmalka.me";
-      auth-file = "/srv/ntfy/user.db";
+      auth-file = "/var/lib/ntfy-sh/user.db";
       auth-default-access = "deny-all";
     };
   };
