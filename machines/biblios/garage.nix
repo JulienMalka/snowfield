@@ -15,7 +15,7 @@ in
 
     settings = {
       replication_factor = 1;
-      db_engine = "lmdb";
+      db_engine = "sqlite";
       compression_level = 0;
       s3_api = {
         s3_region = "paris";
