@@ -165,10 +165,10 @@
       "type": "Git",
       "fetchType": "git",
       "branch": "main",
-      "revision": "0410187dc15c27f2ff60228a54ae90169ca1a01b",
+      "revision": "27718d645f4e926852d375a79ff0ccf10fa7715d",
       "url": "ssh://forgejo@git.luj.fr/luj/luj-website.git",
-      "hash": "sha256-GWt/cDJc2XNap7xShUhcqabfPDzy31oWfEVvbHyeykM=",
-      "lastModified": 1773021402,
+      "hash": "sha256-eBGr8A64LkE6TiAZ2Mt6XF0vpnh4ql5OZH4eAovUEBU=",
+      "lastModified": 1773336488,
       "submodules": false
     },
     "niks3": {
