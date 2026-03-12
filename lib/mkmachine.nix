@@ -74,6 +74,9 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           openclaw = prev.pkgs.unstable.callPackage ../packages/openclaw { };
           gh-proxy = prev.pkgs.callPackage ../packages/gh-proxy { };
           cal-proxy = prev.pkgs.callPackage ../packages/cal-proxy { };
+          claude-code = prev.pkgs.callPackage "${inputs.llm-agents}/packages/claude-code/package.nix" {
+            wrapBuddy = prev.pkgs.callPackage "${inputs.llm-agents}/packages/wrapBuddy/package.nix" { };
+          };
           luj-website = prev.pkgs.callPackage "${inputs.luj-website}/nix/package.nix" {
             src = inputs.luj-website;
             inherit (prev.unstable) cargo-leptos;

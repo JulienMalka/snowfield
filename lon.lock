@@ -141,6 +141,16 @@
       "url": "https://github.com/nix-community/lila/archive/10e1cb2daa9f371b3b9c50eca7fad423e1c00fec.tar.gz",
       "hash": "sha256-JHqttf+Vv+DvFXvr1HP/7YImB07Npz9fjVvnXy0AcTo="
     },
+    "llm-agents": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "numtide",
+      "repo": "llm-agents.nix",
+      "branch": "main",
+      "revision": "e21490459caf641e19cac7ad7679f1121d643e0c",
+      "url": "https://github.com/numtide/llm-agents.nix/archive/e21490459caf641e19cac7ad7679f1121d643e0c.tar.gz",
+      "hash": "sha256-kwETflAbufOL32E1dRkJDTgcroafwN8HZqxjAaLItJw="
+    },
     "lon": {
       "type": "GitHub",
       "fetchType": "tarball",

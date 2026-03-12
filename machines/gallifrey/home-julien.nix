@@ -65,6 +65,7 @@
     home.packages =
       with pkgs;
       [
+        claude-code
         dust
         kitty
         jq

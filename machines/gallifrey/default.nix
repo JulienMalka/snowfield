@@ -193,6 +193,7 @@
         ".local/share/direnv"
         ".local/state/cosmic-comp"
         ".local/share/atuin"
+        ".claude"
         ".local/share/firefoxpwa"
         ".config/Signal"
         ".cache/spotify"

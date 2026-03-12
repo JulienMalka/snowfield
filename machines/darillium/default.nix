@@ -57,6 +57,8 @@
         ".cache/mozilla"
         ".gnupg"
         ".local/share/direnv"
+        ".local/share/atuin"
+        ".claude"
         ".config/Signal"
         ".config/dconf"
         ".local/share/keyrings"

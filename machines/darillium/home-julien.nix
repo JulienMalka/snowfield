@@ -34,6 +34,11 @@
       nix-direnv.enable = true;
     };
 
+    programs.atuin = {
+      enable = true;
+      enableFishIntegration = true;
+    };
+
     home.pointerCursor = {
       name = "Adwaita";
       package = pkgs.adwaita-icon-theme;
@@ -45,6 +50,7 @@
     };
 
     home.packages = with pkgs; [
+      claude-code
       slack
       git-absorb
       git-autofixup
