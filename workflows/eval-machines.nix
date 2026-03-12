@@ -73,6 +73,7 @@ in
         {
           name = "Push sources to cache";
           env = {
+            GIT_SSH_COMMAND = "ssh -i ~/.ssh/deploy_key";
             NIKS3_SERVER_URL = "https://cache.luj.fr";
             NIKS3_AUTH_TOKEN = nix-actions.lib.secret "NIKS3_API_TOKEN";
           };

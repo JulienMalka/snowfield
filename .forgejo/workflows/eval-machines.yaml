@@ -531,6 +531,7 @@ jobs:
       run: nix-instantiate --eval -E 'builtins.attrValues (import ./lon.nix)' > 
         /dev/null
     - env:
+        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push sources to cache
