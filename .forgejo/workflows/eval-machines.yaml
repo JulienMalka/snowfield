@@ -3,6 +3,8 @@
 jobs:
   akhaten:
     name: Build akhaten
+    needs:
+    - prefetch-sources
     runs-on: epyc
     steps:
     - uses: actions/checkout@v6
@@ -23,9 +25,9 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/zb8d5ywpiz2s0vgfrj62m0niln774w0a-source -p 
+        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
         'callPackage 
-        /nix/store/jswbh2bb0iah7vlmcyl7l4xs4s6gmj4r-source/nix/packages/niks3.nix
+        /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh ./result-akhaten'
     - env:
         COMMIT_SHA: ${{ github.sha }}
@@ -35,7 +37,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/0\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/1\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -43,6 +45,8 @@ jobs:
         \"}\"\n"
   arcadia:
     name: Build arcadia
+    needs:
+    - prefetch-sources
     runs-on: epyc
     steps:
     - uses: actions/checkout@v6
@@ -63,9 +67,9 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/zb8d5ywpiz2s0vgfrj62m0niln774w0a-source -p 
+        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
         'callPackage 
-        /nix/store/jswbh2bb0iah7vlmcyl7l4xs4s6gmj4r-source/nix/packages/niks3.nix
+        /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh ./result-arcadia'
     - env:
         COMMIT_SHA: ${{ github.sha }}
@@ -75,7 +79,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/1\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/2\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -83,6 +87,8 @@ jobs:
         \"}\"\n"
   biblios:
     name: Build biblios
+    needs:
+    - prefetch-sources
     runs-on: epyc
     steps:
     - uses: actions/checkout@v6
@@ -103,9 +109,9 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/zb8d5ywpiz2s0vgfrj62m0niln774w0a-source -p 
+        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
         'callPackage 
-        /nix/store/jswbh2bb0iah7vlmcyl7l4xs4s6gmj4r-source/nix/packages/niks3.nix
+        /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh ./result-biblios'
     - env:
         COMMIT_SHA: ${{ github.sha }}
@@ -115,7 +121,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/2\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/3\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -123,6 +129,8 @@ jobs:
         \"}\"\n"
   core-data:
     name: Build core-data
+    needs:
+    - prefetch-sources
     runs-on: epyc
     steps:
     - uses: actions/checkout@v6
@@ -143,9 +151,9 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/zb8d5ywpiz2s0vgfrj62m0niln774w0a-source -p 
+        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
         'callPackage 
-        /nix/store/jswbh2bb0iah7vlmcyl7l4xs4s6gmj4r-source/nix/packages/niks3.nix
+        /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh 
         ./result-core-data'
     - env:
@@ -156,7 +164,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/3\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/4\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -164,6 +172,8 @@ jobs:
         \"}\"\n"
   core-security:
     name: Build core-security
+    needs:
+    - prefetch-sources
     runs-on: epyc
     steps:
     - uses: actions/checkout@v6
@@ -185,9 +195,9 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/zb8d5ywpiz2s0vgfrj62m0niln774w0a-source -p 
+        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
         'callPackage 
-        /nix/store/jswbh2bb0iah7vlmcyl7l4xs4s6gmj4r-source/nix/packages/niks3.nix
+        /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh 
         ./result-core-security'
     - env:
@@ -198,7 +208,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/4\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/5\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -206,6 +216,8 @@ jobs:
         core-security\\\"}\"\n"
   darillium:
     name: Build darillium
+    needs:
+    - prefetch-sources
     runs-on: epyc
     steps:
     - uses: actions/checkout@v6
@@ -226,9 +238,9 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/zb8d5ywpiz2s0vgfrj62m0niln774w0a-source -p 
+        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
         'callPackage 
-        /nix/store/jswbh2bb0iah7vlmcyl7l4xs4s6gmj4r-source/nix/packages/niks3.nix
+        /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh 
         ./result-darillium'
     - env:
@@ -239,7 +251,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/5\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/6\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -247,6 +259,8 @@ jobs:
         \"}\"\n"
   epyc-container:
     name: Build epyc-container
+    needs:
+    - prefetch-sources
     runs-on: epyc
     steps:
     - uses: actions/checkout@v6
@@ -268,9 +282,9 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/zb8d5ywpiz2s0vgfrj62m0niln774w0a-source -p 
+        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
         'callPackage 
-        /nix/store/jswbh2bb0iah7vlmcyl7l4xs4s6gmj4r-source/nix/packages/niks3.nix
+        /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh 
         ./result-epyc-container'
     - env:
@@ -281,7 +295,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/6\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/7\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -289,6 +303,8 @@ jobs:
         epyc-container\\\"}\"\n"
   fischer:
     name: Build fischer
+    needs:
+    - prefetch-sources
     runs-on: epyc
     steps:
     - uses: actions/checkout@v6
@@ -309,9 +325,9 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/zb8d5ywpiz2s0vgfrj62m0niln774w0a-source -p 
+        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
         'callPackage 
-        /nix/store/jswbh2bb0iah7vlmcyl7l4xs4s6gmj4r-source/nix/packages/niks3.nix
+        /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh ./result-fischer'
     - env:
         COMMIT_SHA: ${{ github.sha }}
@@ -321,7 +337,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/7\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/8\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -329,6 +345,8 @@ jobs:
         \"}\"\n"
   gallifrey:
     name: Build gallifrey
+    needs:
+    - prefetch-sources
     runs-on: epyc
     steps:
     - uses: actions/checkout@v6
@@ -349,9 +367,9 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/zb8d5ywpiz2s0vgfrj62m0niln774w0a-source -p 
+        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
         'callPackage 
-        /nix/store/jswbh2bb0iah7vlmcyl7l4xs4s6gmj4r-source/nix/packages/niks3.nix
+        /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh 
         ./result-gallifrey'
     - env:
@@ -362,7 +380,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/8\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/9\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -370,6 +388,8 @@ jobs:
         \"}\"\n"
   gustave:
     name: Build gustave
+    needs:
+    - prefetch-sources
     runs-on: epyc
     steps:
     - uses: actions/checkout@v6
@@ -390,9 +410,9 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/zb8d5ywpiz2s0vgfrj62m0niln774w0a-source -p 
+        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
         'callPackage 
-        /nix/store/jswbh2bb0iah7vlmcyl7l4xs4s6gmj4r-source/nix/packages/niks3.nix
+        /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh ./result-gustave'
     - env:
         COMMIT_SHA: ${{ github.sha }}
@@ -402,7 +422,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/9\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/10\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -410,6 +430,8 @@ jobs:
         \"}\"\n"
   jacques:
     name: Build jacques
+    needs:
+    - prefetch-sources
     runs-on: epyc
     steps:
     - uses: actions/checkout@v6
@@ -430,9 +452,9 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/zb8d5ywpiz2s0vgfrj62m0niln774w0a-source -p 
+        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
         'callPackage 
-        /nix/store/jswbh2bb0iah7vlmcyl7l4xs4s6gmj4r-source/nix/packages/niks3.nix
+        /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh ./result-jacques'
     - env:
         COMMIT_SHA: ${{ github.sha }}
@@ -442,7 +464,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/10\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/11\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -450,6 +472,8 @@ jobs:
         \"}\"\n"
   lambda:
     name: Build lambda
+    needs:
+    - prefetch-sources
     runs-on: epyc
     steps:
     - uses: actions/checkout@v6
@@ -470,9 +494,9 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/zb8d5ywpiz2s0vgfrj62m0niln774w0a-source -p 
+        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
         'callPackage 
-        /nix/store/jswbh2bb0iah7vlmcyl7l4xs4s6gmj4r-source/nix/packages/niks3.nix
+        /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh ./result-lambda'
     - env:
         COMMIT_SHA: ${{ github.sha }}
@@ -482,12 +506,40 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/11\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/12\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
         \",\\\"context\\\":\\\"forgejo/lambda\\\",\\\"description\\\":\\\"lambda\\\
         \"}\"\n"
+  prefetch-sources:
+    name: Prefetch sources
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      name: Configure SSH for private inputs
+      run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
+        echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
+        \ >> ~/.ssh/known_hosts\n"
+    - env:
+        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
+      name: Fetch all lon inputs
+      run: nix-instantiate --eval -E 'builtins.attrValues (import ./lon.nix)' > 
+        /dev/null
+    - env:
+        NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
+        NIKS3_SERVER_URL: https://cache.luj.fr
+      name: Push sources to cache
+      run: "SOURCES=$(nix-instantiate --eval --strict -E 'builtins.concatStringsSep
+        \" \" (map toString (builtins.attrValues (import ./lon.nix)))')\nSOURCES=${SOURCES%\\\
+        \"}\nSOURCES=${SOURCES#\\\"}\nnix-shell -I nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source
+        \\\n  -p 'callPackage /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
+        {}' \\\n  -p util-linux \\\n  --run \"bash scripts/push-to-cache.sh $SOURCES\"\
+        \n"
   promote:
     if: ${{ github.event_name == 'push' }}
     name: Promote to deploy
@@ -519,6 +571,8 @@ jobs:
         push ssh://forgejo@git.luj.fr/luj/snowfield.git HEAD:deploy\n"
   tower:
     name: Build tower
+    needs:
+    - prefetch-sources
     runs-on: epyc
     steps:
     - uses: actions/checkout@v6
@@ -539,9 +593,9 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/zb8d5ywpiz2s0vgfrj62m0niln774w0a-source -p 
+        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
         'callPackage 
-        /nix/store/jswbh2bb0iah7vlmcyl7l4xs4s6gmj4r-source/nix/packages/niks3.nix
+        /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh ./result-tower'
     - env:
         COMMIT_SHA: ${{ github.sha }}
@@ -551,7 +605,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/12\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/13\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
