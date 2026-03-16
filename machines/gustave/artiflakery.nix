@@ -59,6 +59,14 @@
           "phdmln"
         ];
       };
+      "papers/WIP/denise-fdroid-analysis/" = {
+        flakeref = "git+ssh://git@github.com/dennnanni/thesis.git?dir=paper/source&ref=master";
+        access = [
+          "phd"
+          "julien"
+          "denise"
+        ];
+      };
       "papers/2026/lila-reproducibility-monitoring/" = {
         flakeref = "git+ssh://git@gitlab.enst.fr/julien.malka/phd.git?dir=productions/papers/2026-lila-reproducibility-monitoring&ref=main";
         access = [
