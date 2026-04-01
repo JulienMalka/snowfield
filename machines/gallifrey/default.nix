@@ -19,6 +19,7 @@
     profiles = with profiles; [
       sound
       syncthing
+      emacs
     ];
     syncthing.id = "2ATHIGB-OEVIG7S-HHXN2C7-T7VPNJ2-UQTLQ45-HAGXL23-ZMJNNMJ-EO4EMAT";
     ips.vpn.ipv4 = "100.100.45.19";
@@ -177,8 +178,14 @@
       "/etc/NetworkManager/system-connections"
     ];
     files = [
-      "/etc/machine-id"
-      "/etc/ssh/ssh_host_ed25519_key"
+      {
+        file = "/etc/machine-id";
+        inInitrd = true;
+      }
+      {
+        file = "/etc/ssh/ssh_host_ed25519_key";
+        mode = "0600";
+      }
       "/etc/ssh/ssh_host_ed25519_key.pub"
     ];
     users.julien = {
