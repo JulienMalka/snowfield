@@ -28,9 +28,15 @@
   preservation.enable = true;
   preservation.preserveAt."/persistent" = {
     directories = [
-      "/var/lib"
+      {
+        directory = "/var/lib";
+        inInitrd = true;
+      }
       "/var/log"
-      "/srv"
+      {
+        directory = "/srv";
+        inInitrd = true;
+      }
     ];
     files = [
       {
