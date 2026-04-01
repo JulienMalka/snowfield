@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.luj.programs.ssh-client;
   caConfig = import ../../lib/ca-config.nix;
@@ -29,7 +34,7 @@ with lib;
           user = v.sshUser;
           port = v.sshPort;
           extraOptions.HostKeyAlias = "${name}.luj";
-          proxyCommand = "step ssh proxycommand --provisioner 'Luj SSO' --ca-url ${caConfig.stepCAUrl} --root /etc/step/certs/root_ca.crt %r %h %p";
+          proxyCommand = "${pkgs.step-cli}/bin/step ssh proxycommand --provisioner 'Luj SSO' --ca-url ${caConfig.stepCAUrl} --root /etc/step/certs/root_ca.crt %r %h %p";
         }) lib.snowfield
         // {
           "*" = {
