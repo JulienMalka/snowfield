@@ -18,7 +18,7 @@ with lib;
     programs.kitty = {
       enable = true;
       settings = {
-        wayland_titlebar_color = "background";
+        hide_window_decorations = true;
         shell_integration = "no-cursor";
         window_padding_width = 3;
         font_size = 10;

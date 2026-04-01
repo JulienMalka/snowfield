@@ -26,7 +26,8 @@ with lib;
     };
     qt = {
       enable = true;
-      platformTheme.name = "gtk";
+      platformTheme.name = "gnome";
+      style.name = "adwaita-dark";
     };
   };
 }
