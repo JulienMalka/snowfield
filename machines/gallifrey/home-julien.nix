@@ -57,76 +57,59 @@
       package = pkgs.stable.obs-studio;
     };
 
-    programs.emacs = {
-      enable = true;
-      package = pkgs.emacs30;
-    };
-
-    home.packages =
-      with pkgs;
-      [
-        claude-code
-        dust
-        kitty
-        jq
-        lazygit
-        fira-code
-        feh
-        meld
-        jetbrains-mono
-        cantarell-fonts
-        unstable.nixd
-        libreoffice
-        signal-desktop
-        font-awesome
-        nodejs
-        htop
-        evince
-        mosh
-        flameshot
-        kitty
-        networkmanagerapplet
-        element-desktop
-        xdg-utils
-        step-cli
-        scli
-        jftui
-        texlive.combined.scheme-full
-        gh
-        ouch
-        spotify
-        nautilus
-        pika-backup
-        mpv
-        zotero
-        emacsPackages.jinx
-        hunspellDicts.en_US
-        hunspellDicts.fr-moderne
-        forge-sparks
-        citations
-        blanket
-        fragments
-        metadata-cleaner
-        gnome-obfuscate
-        warp
-        tuba
-        resources
-        notify-client
-        emacs-lsp-booster
-        pyright
-        nixfmt
-        slack
-        haskell-language-server
-        aporetic
-        notmuch
-        muchsync
-      ]
-      ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
-
-    fonts.fontconfig.enable = true;
-
-    systemd.user.tmpfiles.rules = [
-      "L /home/julien/.emacs.d - - - - /home/julien/dev/emacs-config"
+    home.packages = with pkgs; [
+      claude-code
+      dust
+      kitty
+      jq
+      lazygit
+      fira-code
+      feh
+      meld
+      jetbrains-mono
+      cantarell-fonts
+      unstable.nixd
+      libreoffice
+      signal-desktop
+      font-awesome
+      nodejs
+      htop
+      evince
+      mosh
+      flameshot
+      kitty
+      networkmanagerapplet
+      element-desktop
+      xdg-utils
+      step-cli
+      scli
+      jftui
+      texlive.combined.scheme-full
+      gh
+      ouch
+      spotify
+      nautilus
+      pika-backup
+      mpv
+      zotero
+      forge-sparks
+      citations
+      blanket
+      fragments
+      metadata-cleaner
+      gnome-obfuscate
+      warp
+      tuba
+      resources
+      notify-client
+      emacs-lsp-booster
+      pyright
+      nixfmt
+      slack
+      haskell-language-server
+      aporetic
+      notmuch
+      muchsync
     ];
 
     home.keyboard = {
