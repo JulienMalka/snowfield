@@ -1,5 +1,6 @@
 { config, pkgs, ... }:
 {
+  environment.systemPackages = [ pkgs.luj-website ];
   age.secrets."luj-website-s3" = {
     file = ./luj-website-s3.age;
   };
@@ -55,6 +56,18 @@
     locations."/" = {
       proxyPass = "http://127.0.0.1:3001";
       proxyWebsockets = true;
+    };
+  };
+
+  services.nginx.virtualHosts."iljuj.fr" = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:3001";
+      proxyWebsockets = true;
+      extraConfig = ''
+        proxy_set_header Host $host;
+      '';
     };
   };
 }
