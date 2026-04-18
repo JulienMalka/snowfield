@@ -22,6 +22,16 @@
   users.users.artiflakery.isSystemUser = lib.mkForce false;
   users.users.artiflakery.isNormalUser = lib.mkForce true;
 
+  luj.hmgr.artiflakery = {
+    home.homeDirectory = lib.mkForce "/var/lib/artiflakery";
+    programs.ssh = {
+      enable = true;
+      matchBlocks."git.luj.fr" = {
+        identityFile = "/var/lib/artiflakery/.ssh/id_ed25519";
+      };
+    };
+  };
+
   services.artiflakery = {
     enable = true;
     authFile = config.age.secrets."artiflakery-auth".path;
@@ -140,6 +150,12 @@
       };
       "slides/2025/chains-april-workshop/" = {
         flakeref = "git+ssh://forgejo@git.luj.fr/luj/chains-2025.git?ref=main";
+        access = [
+          "public"
+        ];
+      };
+      "slides/2026/lila-msr/" = {
+        flakeref = "git+ssh://forgejo@git.luj.fr/luj/slides-lila-msr.git?ref=main";
         access = [
           "public"
         ];

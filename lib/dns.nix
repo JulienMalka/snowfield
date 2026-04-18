@@ -11,6 +11,7 @@ rec {
     "luj"
     "malka.sh"
     "hownix.works"
+    "iljuj.fr"
   ];
 
   isVPNDomain = hasSuffix "luj";
