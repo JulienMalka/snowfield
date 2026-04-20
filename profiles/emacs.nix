@@ -37,10 +37,10 @@ in
     ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
 
     fonts.fontconfig.enable = true;
-
-    systemd.user.tmpfiles.rules = [
-      "L /home/julien/.emacs.d - - - - /home/julien/dev/emacs-config"
-    ];
   };
+
+  preservation.preserveAt."/persistent".users.julien.directories = [
+    ".emacs.d"
+  ];
 
 }
