@@ -17,8 +17,10 @@
     ./artiflakery.nix
     ./josh.nix
     ./cal-proxy.nix
+    ./cal-diy.nix
     ./niks3.nix
     ./luj-website.nix
+    ./windmill.nix
   ];
 
   users.users.julien.linger = true;
