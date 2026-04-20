@@ -32,6 +32,7 @@ in
           "luj"
           "camille"
         ];
+        "lasuite-meet_users".members = [ "luj" ];
       };
 
       persons.luj = {
@@ -48,6 +49,7 @@ in
           "grafana_users"
           "grafana_admins"
           "headscale_users"
+          "lasuite-meet_users"
         ];
       };
 
@@ -131,6 +133,21 @@ in
           ];
         };
 
+        lasuite-meet = {
+          displayName = "La Suite Meet";
+          originUrl = "https://visio.luj.fr/api/v1.0/callback/";
+          originLanding = "https://visio.luj.fr/";
+          basicSecretFile = config.age.secrets.kanidm-oauth2-lasuite-meet.path;
+          allowInsecureClientDisablePkce = true;
+          preferShortUsername = true;
+          scopeMaps.lasuite-meet_users = [
+            "openid"
+            "email"
+            "profile"
+            "groups"
+          ];
+        };
+
         step = {
           public = true;
           displayName = "Step CA";
@@ -177,6 +194,10 @@ in
   };
   age.secrets.kanidm-oauth2-headscale = {
     file = ./kanidm-oauth2-headscale.age;
+    owner = "kanidm";
+  };
+  age.secrets.kanidm-oauth2-lasuite-meet = {
+    file = ./kanidm-oauth2-lasuite-meet.age;
     owner = "kanidm";
   };
 }

@@ -21,6 +21,7 @@
     ./niks3.nix
     ./luj-website.nix
     ./windmill.nix
+    ./lasuite-meet.nix
   ];
 
   users.users.julien.linger = true;
