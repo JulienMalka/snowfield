@@ -75,10 +75,10 @@
       "type": "Git",
       "fetchType": "git",
       "branch": "main",
-      "revision": "2e39f6a760ddc8ac7c74bb757fad0d3a1f19f20d",
+      "revision": "c49441ba56260e9b5594e4afe01d4d5d9ff7cafb",
       "url": "ssh://forgejo@git.luj.fr/luj/emacs-config.git",
-      "hash": "sha256-mJcOEpOKgqSNuAYn+IXYCisIFY6YKiYiwUv46rKT3ys=",
-      "lastModified": 1773335774,
+      "hash": "sha256-VpMkAwAIehSPQofC/QuScxaSecsoJfCTPZq4cCPLnGc=",
+      "lastModified": 1776537645,
       "submodules": false
     },
     "git-hooks": {
@@ -147,9 +147,9 @@
       "owner": "numtide",
       "repo": "llm-agents.nix",
       "branch": "main",
-      "revision": "dfe7089b3cb1766cf40dccd4378f240356bcf2b2",
-      "url": "https://github.com/numtide/llm-agents.nix/archive/dfe7089b3cb1766cf40dccd4378f240356bcf2b2.tar.gz",
-      "hash": "sha256-s83aVJRJmR2sa9otxXnefohasKuRJACZv7zDh0FHzdg="
+      "revision": "e69fff4e65dbdf4a87ee4bdeaa4ea0fe156ae8f5",
+      "url": "https://github.com/numtide/llm-agents.nix/archive/e69fff4e65dbdf4a87ee4bdeaa4ea0fe156ae8f5.tar.gz",
+      "hash": "sha256-68F6nNwHcuweEv5XWefCGvBujN4n+oCbuq1ZG+S7pCk="
     },
     "lon": {
       "type": "GitHub",
@@ -165,10 +165,10 @@
       "type": "Git",
       "fetchType": "git",
       "branch": "main",
-      "revision": "85fdd35abf4b4127962e7e067395b4b8d022d00f",
+      "revision": "d68523a58d10d6d2dcda87db1ed02639cef60c25",
       "url": "ssh://forgejo@git.luj.fr/luj/luj-website.git",
-      "hash": "sha256-Sh9xKafI+HBNlI7Ct75F5GXKRDkhq4po4OS7IHJFYVk=",
-      "lastModified": 1773607629,
+      "hash": "sha256-m1TS1EzhMS9jpjZCSZQy9dOQDS79P3TycH8oWS+mXzg=",
+      "lastModified": 1775733285,
       "submodules": false
     },
     "niks3": {
@@ -221,6 +221,16 @@
       "url": "https://github.com/nixos/nixpkgs/archive/0590cd39f728e129122770c029970378a79d076a.tar.gz",
       "hash": "sha256-BHoB/XpbqoZkVYZCfXJXfkR+GXFqwb/4zbWnOr2cRcU="
     },
+    "noctalia": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "noctalia-dev",
+      "repo": "noctalia-shell",
+      "branch": "main",
+      "revision": "cd4ec47e962ce9c0615471244e47c35e516f0a23",
+      "url": "https://github.com/noctalia-dev/noctalia-shell/archive/cd4ec47e962ce9c0615471244e47c35e516f0a23.tar.gz",
+      "hash": "sha256-esDIZSkoB57G87x/ylDs3UCMpIPLelHOGKEwaoyh34U="
+    },
     "preservation": {
       "type": "GitHub",
       "fetchType": "tarball",
@@ -245,10 +255,10 @@
       "type": "Git",
       "fetchType": "git",
       "branch": "main",
-      "revision": "727c17b8c3a71dc2679c2e47049357b604796145",
+      "revision": "b0ac24b78ec624095f5500ffdaf1cce94b8b6e56",
       "url": "ssh://forgejo@git.luj.fr/luj/snowfield-private.git",
-      "hash": "sha256-28rCJiD0S5slgs3oKZbzJKlZ7peWdrPvMwR230aXj2k=",
-      "lastModified": 1773174022,
+      "hash": "sha256-1v2KOBzjy/WvCBczJ866+lL0dIiJwOIKQB1yuG9S8x4=",
+      "lastModified": 1774687269,
       "submodules": false
     },
     "stateless-uptime-kuma": {
@@ -267,9 +277,9 @@
       "owner": "nixos",
       "repo": "nixpkgs",
       "branch": "nixos-unstable",
-      "revision": "62dc67aa6a52b4364dd75994ec00b51fbf474e50",
-      "url": "https://github.com/nixos/nixpkgs/archive/62dc67aa6a52b4364dd75994ec00b51fbf474e50.tar.gz",
-      "hash": "sha256-FIqHByVqxCprNjor1NqF80F2QQoiiyqanNNefdlvOg4="
+      "revision": "8110df5ad7abf5d4c0f6fb0f8f978390e77f9685",
+      "url": "https://github.com/nixos/nixpkgs/archive/8110df5ad7abf5d4c0f6fb0f8f978390e77f9685.tar.gz",
+      "hash": "sha256-D3Q07BbIA2KnTcSXIqqu9P586uWxN74zNoCH3h2ESHg="
     }
   }
 }
