@@ -15,22 +15,19 @@ with lib;
 
   config = {
     home-manager.useGlobalPkgs = true;
-    home-manager.users = lib.mapAttrs (
-      name: value:
-      {
-        imports =
-          with builtins;
-          (map (x: ../../home-manager-modules + "/${x}/default.nix") (
-            attrNames (readDir ../../home-manager-modules)
-          ))
-          ++ [
-            "${inputs.agenix}/modules/age-home.nix"
-          ];
-        home.username = "${name}";
-        home.homeDirectory = "/home/${name}";
-        home.stateVersion = "21.05";
-      }
-      // value
-    ) cfg;
+    home-manager.users = lib.mapAttrs (name: value: {
+      imports =
+        with builtins;
+        (map (x: ../../home-manager-modules + "/${x}/default.nix") (
+          attrNames (readDir ../../home-manager-modules)
+        ))
+        ++ [
+          "${inputs.agenix}/modules/age-home.nix"
+          value
+        ];
+      home.username = "${name}";
+      home.homeDirectory = lib.mkDefault "/home/${name}";
+      home.stateVersion = lib.mkDefault "21.05";
+    }) cfg;
   };
 }
