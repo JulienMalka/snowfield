@@ -1,5 +1,6 @@
 {
   pkgs,
+  config,
   inputs,
   profiles,
   lib,
@@ -62,6 +63,8 @@
         ".config/Signal"
         ".config/dconf"
         ".local/share/keyrings"
+        ".config/noctalia"
+        ".cache/noctalia"
         ".cache/mu"
         ".step"
         ".zotero"
@@ -79,12 +82,59 @@
 
   disko = import ./disko.nix;
 
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver
+      vpl-gpu-rt
+      intel-compute-runtime
+    ];
+  };
+  environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
+  hardware.enableRedistributableFirmware = true;
+
+  boot.extraModprobeConfig = ''
+    options iwlwifi power_save=0 disable_11be=Y
+  '';
+
+  # Fix a problem with the firmware
+  systemd.services.iwlwifi-tso-fix = {
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${pkgs.ethtool}/bin/ethtool -K wlp0s20f3 tso off gso off";
+    };
+  };
+
   services.blueman.enable = true;
   hardware.bluetooth.enable = true;
 
   virtualisation.docker.enable = true;
 
   boot.loader.systemd-boot.enable = true;
+
+  boot.kernelParams = [
+    "xe.enable_psr=0"
+    "intel_idle.max_cstate=1"
+  ];
+
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+  };
+
+  services.ollama = {
+    enable = true;
+    package = pkgs.ollama-vulkan;
+    environmentVariables = {
+      OLLAMA_VULKAN = "1";
+      OLLAMA_FLASH_ATTENTION = "0";
+      GGML_VK_DISABLE_INTEGER_DOT_PRODUCT = "1";
+    };
+  };
 
   services.tailscale.enable = true;
 
@@ -99,9 +149,9 @@
   boot.initrd = {
     luks.devices.crypted = {
       crypttabExtraOpts = [ "fido2-device=auto" ];
+      bypassWorkqueues = true;
     };
     systemd.enable = true;
-
   };
 
   security.polkit.enable = true;
@@ -111,7 +161,7 @@
     buildMachines = [
       {
         hostName = "epyc.infra.newtype.fr";
-        maxJobs = 100;
+        maxJobs = 16;
         systems = [
           "x86_64-linux"
         ];
@@ -150,9 +200,19 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID2z+S1+Q1hvLP5BTr36ao/NTy4Szo2OGq2iguwL4/zp";
 
   environment.systemPackages = with pkgs; [
+    android-tools
     tailscale
     brightnessctl
     sbctl
+    wl-clipboard
+    wlr-randr
+    grim
+    slurp
+    kanshi
+    fuzzel
+    waylock
+    swayidle
+    xwayland-satellite
   ];
 
   services.logind.settings.Login = {
@@ -160,72 +220,88 @@
     HandleLidSwitchExternalPower = "suspend";
   };
 
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.desktopManager.xterm.enable = true;
-  services.xserver.enable = true;
-  services.xserver.autoRepeatDelay = 250;
-  services.xserver.autoRepeatInterval = 30;
+  programs.reka =
+    let
+      emacs-config-pkgs = (import inputs.emacs-config).packages.${pkgs.system};
+      emacs-config = emacs-config-pkgs.default;
+      emacs-initEl = emacs-config-pkgs.initEl;
+      emacs-earlyInitDir = emacs-config-pkgs.earlyInitDir;
+      inherit (pkgs) reka;
 
-  services.xserver.windowManager.session = lib.singleton {
-    name = "exwm";
-    start = ''
-      export SSH_AUTH_SOCK="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/gcr/ssh"
-      ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd SSH_AUTH_SOCK
-      EMACS_EXWM=1 ${(import inputs.emacs-config).packages.${pkgs.system}.default}/bin/emacs
-    '';
-  };
+      rekaAllDeps = [ reka ] ++ (reka.propagatedUserEnvPkgs or reka.propagatedBuildInputs or [ ]);
+      rekaLoadFlags = lib.concatMapStrings (p: ''-L "${p}/share/emacs/site-lisp" '') rekaAllDeps;
 
-  services.autorandr = {
+      wrappedEmacs =
+        pkgs.runCommand "emacs-with-reka"
+          {
+            nativeBuildInputs = [ pkgs.makeWrapper ];
+            meta.mainProgram = "emacs";
+          }
+          ''
+            mkdir -p $out/bin
+            for f in ${emacs-config}/bin/*; do
+              name="$(basename "$f")"
+              case "$name" in
+                emacsclient*)
+                  # emacsclient doesn't support --eval/--init-directory at launch
+                  ln -s "$f" "$out/bin/$name"
+                  ;;
+                *)
+                  makeWrapper "$f" "$out/bin/$name" \
+                    --add-flags '${rekaLoadFlags}' \
+                    --add-flags '--eval "(require (quote reka))"' \
+                    --add-flags '--eval "(reka-enable)"'
+                  ;;
+              esac
+            done
+            ln -s ${emacs-config}/share $out/share 2>/dev/null || true
+          '';
+    in
+    {
+      enable = true;
+      debug = false;
+      launchCommand = "${wrappedEmacs}/bin/emacs --init-directory ${emacs-earlyInitDir} --load ${emacs-initEl}";
+    };
+
+  services.greetd = {
     enable = true;
-    profiles = {
-      mobile = {
-        fingerprint = {
-          "eDP-1" =
-            "00ffffffffffff0009e5ca0c0000000003220104a51e1378071eeba3564d9b240d515400000001010101010101010101010101010101333f80dc70b03c40302036002ebc1000001a000000fd00283c4c4c10010a202020202020000000fe00424f452043510a202020202020000000fc004e4531343057554d2d4e364d0a01a37020790200250109f77702f77702283c80810015741a00000301283c00006a496a493c000000008d0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000b790";
-        };
-        config = {
-          "eDP-1" = {
-            enable = true;
-            primary = true;
-            position = "0x0";
-            mode = "1920x1200";
-          };
-        };
-      };
-      docked = {
-        fingerprint = {
-          "eDP-1" =
-            "00ffffffffffff0009e5ca0c0000000003220104a51e1378071eeba3564d9b240d515400000001010101010101010101010101010101333f80dc70b03c40302036002ebc1000001a000000fd00283c4c4c10010a202020202020000000fe00424f452043510a202020202020000000fc004e4531343057554d2d4e364d0a01a37020790200250109f77702f77702283c80810015741a00000301283c00006a496a493c000000008d0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000b790";
-          "DP-1-1" =
-            "00ffffffffffff0010acbca1425051302821010380351e78ee9025ac524f9e250f5054a54b00714f8180a9c0d1c00101010101010101023a801871382d40582c45000f282100001e000000ff00444744574e4d330a2020202020000000fc0044454c4c20553234323248450a000000fd00384c1e5311000a20202020202001a202031ff14c0005040302071601141f1213230907078301000065030c001000023a801871382d40582c45000f282100001e011d8018711c1620582c25000f282100009e011d007251d01e20462855000f282100001e8c0ad08a20e02d10103e96000f2821000018000000000000000000000000000000000000000000000000ef";
-          "DP-1-2" =
-            "00ffffffffffff00220e6234010101012f1d0104a53420783a5595a9544c9e240d5054a10800b30095008100d1c0a9c081c0a9408180283c80a070b023403020360006442100001a000000fd00323c1e5011010a202020202020000000fc0048502045323433690a20202020000000ff0036434d393437303658350a20200011";
-        };
-        config = {
-          "eDP-1".enable = false;
-          "DP-1-1" = {
-            enable = true;
-            primary = true;
-            position = "0x0";
-            mode = "1920x1080";
-          };
-          "DP-1-2" = {
-            enable = true;
-            position = "1920x0";
-            mode = "1920x1200";
-          };
-        };
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --sessions ${config.services.displayManager.sessionData.desktops}/share/wayland-sessions";
+        user = "greeter";
       };
     };
   };
 
-  services.picom = {
-    enable = true;
-    backend = "glx";
-    vSync = true;
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    MOZ_ENABLE_WAYLAND = "1";
+    XKB_DEFAULT_LAYOUT = "fr";
+    QT_QPA_PLATFORM = "wayland";
   };
 
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    pulse.enable = true;
+    wireplumber.enable = true;
+  };
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = [
+      pkgs.xdg-desktop-portal-gtk
+      pkgs.xdg-desktop-portal-wlr
+    ];
+    config.reka = {
+      default = [ "gtk" ];
+      "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
+      "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
+    };
+  };
+
+  services.gnome.at-spi2-core.enable = true;
   services.gnome.gnome-keyring.enable = true;
-  security.pam.services.lightdm.enableGnomeKeyring = true;
+  security.pam.services.greetd.enableGnomeKeyring = true;
   system.stateVersion = "26.05";
 }
