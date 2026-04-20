@@ -74,6 +74,9 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           openclaw = prev.pkgs.unstable.callPackage ../packages/openclaw { };
           gh-proxy = prev.pkgs.callPackage ../packages/gh-proxy { };
           cal-proxy = prev.pkgs.callPackage ../packages/cal-proxy { };
+          cal-diy = prev.pkgs.callPackage ../packages/cal-diy { };
+          reka = prev.pkgs.callPackage ../packages/reka { };
+          inherit (prev.pkgs) river;
           claude-code = prev.pkgs.callPackage "${inputs.llm-agents}/packages/claude-code/package.nix" {
             wrapBuddy = prev.pkgs.callPackage "${inputs.llm-agents}/packages/wrapBuddy/package.nix" { };
           };
