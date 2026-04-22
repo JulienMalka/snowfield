@@ -4,27 +4,28 @@
 { lib, modulesPath, ... }:
 
 {
-  imports =
-    [
-      (modulesPath + "/profiles/qemu-guest.nix")
-    ];
+  imports = [
+    (modulesPath + "/profiles/qemu-guest.nix")
+  ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "virtio_pci" "usbhid" ];
+  boot.initrd.availableKernelModules = [
+    "xhci_pci"
+    "virtio_pci"
+    "usbhid"
+  ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    {
-      device = "/dev/disk/by-uuid/c871e9a2-0c67-47cb-9b02-da0e4a9d1382";
-      fsType = "ext4";
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/c871e9a2-0c67-47cb-9b02-da0e4a9d1382";
+    fsType = "ext4";
+  };
 
-  fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-uuid/B73C-FA15";
-      fsType = "vfat";
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/B73C-FA15";
+    fsType = "vfat";
+  };
 
   swapDevices = [ ];
 

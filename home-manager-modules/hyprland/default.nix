@@ -9,13 +9,12 @@ let
   terminal = "${pkgs.kitty}/bin/kitty";
   menu = "${pkgs.rofi}/bin/rofi -no-lazy-grab -show drun";
 in
-with lib;
 {
   options.luj.programs.hyprland = {
-    enable = mkEnableOption "Enable HyprLand";
+    enable = lib.mkEnableOption "Enable HyprLand";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     wayland.windowManager.hyprland = {
       enable = true;
       package = pkgs.unstable.hyprland;

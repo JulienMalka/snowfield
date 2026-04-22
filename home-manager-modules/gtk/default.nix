@@ -7,13 +7,12 @@
 let
   cfg = config.luj.programs.gtk;
 in
-with lib;
 {
   options.luj.programs.gtk = {
-    enable = mkEnableOption "Enable gtk customizations";
+    enable = lib.mkEnableOption "Enable gtk customizations";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     gtk = {
       enable = true;
       theme = {

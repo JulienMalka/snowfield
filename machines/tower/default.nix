@@ -10,6 +10,8 @@
     ./hardware.nix
     ./home-julien.nix
     ./forgejo-runner.nix
+    ./buildbot.nix
+    ./gitlab-runner.nix
   ];
 
   machine.meta = {
@@ -21,6 +23,7 @@
       server
       behind-sniproxy
       monitoring
+      remote-builders
     ];
     ips = {
       public.ipv4 = "82.67.34.230";
@@ -36,11 +39,8 @@
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
 
-  networking.hostName = "tower";
-
   networking.useNetworkd = true;
 
-  luj.buildbot.enable = true;
   luj.nginx.enable = true;
 
   environment.systemPackages = with pkgs; [
@@ -63,38 +63,32 @@
     root = "/srv/photos";
   };
 
-  nix = {
-    distributedBuilds = true;
-    buildMachines = [
-      {
-        hostName = "epyc.infra.newtype.fr";
-        maxJobs = 100;
-        systems = [
-          "x86_64-linux"
-          "aarch64-linux"
-        ];
-        sshUser = "root";
-        sshKey = "/home/julien/.ssh/id_ed25519";
-        supportedFeatures = [
-          "nixos-test"
-          "benchmark"
-          "big-parallel"
-          "kvm"
-        ];
-        speedFactor = 2;
-      }
-      {
-        hostName = "darwin-build-box.winter.cafe";
-        maxJobs = 4;
-        sshKey = "/home/julien/.ssh/id_ed25519";
-        sshUser = "julienmalka";
-        systems = [
-          "aarch64-darwin"
-          "x86_64-darwin"
-        ];
-      }
+  luj.remote-builders.epyc = {
+    enable = true;
+    systems = [
+      "x86_64-linux"
+      "aarch64-linux"
+    ];
+    extraFeatures = [
+      "benchmark"
+      "big-parallel"
     ];
   };
+
+  # darwin-build-box is not in the remote-builders profile because only tower
+  # delegates to it; the host key pin lives next to the buildMachines entry.
+  nix.buildMachines = [
+    {
+      hostName = "darwin-build-box.winter.cafe";
+      maxJobs = 4;
+      sshKey = "/home/julien/.ssh/id_ed25519";
+      sshUser = "julienmalka";
+      systems = [
+        "aarch64-darwin"
+        "x86_64-darwin"
+      ];
+    }
+  ];
 
   programs.ssh.extraConfig = ''
     Host lambda
@@ -103,17 +97,6 @@
       User root
       Port 45
   '';
-
-  services.nix-gitlab-runner = {
-    enable = true;
-    registrationConfigFile = "/var/lib/gitlab-runner/gitlab_runner";
-    packages = with pkgs; [
-      coreutils
-      su
-      bash
-      git
-    ];
-  };
 
   services.nginx.virtualHosts."phd.julienmalka.me" = {
     basicAuthFile = "/home/gitlab-runner/nginx_auth";

@@ -58,33 +58,43 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
       nixpkgs.overlays = lib.mkAfter [
         (overlay-unstable system)
 
-        (_final: prev: {
-          waybar = prev.waybar.overrideAttrs (oldAttrs: {
-            mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-          });
-          # Packages comming from other repositories
-          lila-build-hook = (import inputs.lila).packages.${system}.utils;
-          artiflakery = (import inputs.artiflakery).defaultPackage.${system};
-          # My own packages
-          keycloak-keywind = prev.pkgs.callPackage ../packages/keycloak-keywind { };
-          hydrasect = prev.pkgs.callPackage ../packages/hydrasect { };
-          codeberg-pages-custom = prev.pkgs.callPackage ../packages/codeberg-pages-custom { };
-          lcli = prev.pkgs.callPackage ../packages/lcli { };
-          uptime-kuma-beta = prev.pkgs.callPackage ../packages/uptime-kuma-beta { };
-          openclaw = prev.pkgs.unstable.callPackage ../packages/openclaw { };
-          gh-proxy = prev.pkgs.callPackage ../packages/gh-proxy { };
-          cal-proxy = prev.pkgs.callPackage ../packages/cal-proxy { };
-          cal-diy = prev.pkgs.callPackage ../packages/cal-diy { };
-          reka = prev.pkgs.callPackage ../packages/reka { };
-          inherit (prev.pkgs.unstable) river;
-          claude-code = prev.pkgs.callPackage "${inputs.llm-agents}/packages/claude-code/package.nix" {
-            wrapBuddy = prev.pkgs.callPackage "${inputs.llm-agents}/packages/wrapBuddy/package.nix" { };
-          };
-          luj-website = prev.pkgs.callPackage "${inputs.luj-website}/nix/package.nix" {
-            src = inputs.luj-website;
-            inherit (prev.unstable) cargo-leptos;
-          };
-        })
+        # Local packages in ../packages/ are auto-imported by directory name.
+        # Packages listed in `unstablePackages` are called via the unstable
+        # nixpkgs scope; the rest use the machine's default channel.
+        (
+          _final: prev:
+          let
+            unstablePackages = [ "openclaw" ];
+            callLocal =
+              name:
+              let
+                scope = if builtins.elem name unstablePackages then prev.pkgs.unstable else prev.pkgs;
+              in
+              scope.callPackage (../packages + "/${name}") { };
+            localPackages = lib.genAttrs (builtins.attrNames (
+              lib.filterAttrs (_: v: v == "directory") (builtins.readDir ../packages)
+            )) callLocal;
+          in
+          localPackages
+          // {
+            waybar = prev.waybar.overrideAttrs (oldAttrs: {
+              mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
+            });
+
+            lila-build-hook = (import inputs.lila).packages.${system}.utils;
+            artiflakery = (import inputs.artiflakery).defaultPackage.${system};
+
+            inherit (prev.pkgs.unstable) river;
+
+            claude-code = prev.pkgs.callPackage "${inputs.llm-agents}/packages/claude-code/package.nix" {
+              wrapBuddy = prev.pkgs.callPackage "${inputs.llm-agents}/packages/wrapBuddy/package.nix" { };
+            };
+            luj-website = prev.pkgs.callPackage "${inputs.luj-website}/nix/package.nix" {
+              src = inputs.luj-website;
+              inherit (prev.unstable) cargo-leptos;
+            };
+          }
+        )
 
         (
           _final: prev:

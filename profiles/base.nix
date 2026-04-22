@@ -12,11 +12,38 @@
     ../users/julien.nix
   ];
 
-  luj.nix.enable = true;
-  luj.secrets.enable = true;
-
-  luj.programs.mosh.enable = true;
   luj.deployment.enable = true;
+
+  nixpkgs.config.allowUnfree = true;
+  nix = {
+    package = pkgs.unstable.lix;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+    nixPath = [
+      "nixpkgs=${config.machine.meta.nixpkgs_version}"
+      "nixos=${config.machine.meta.nixpkgs_version}"
+    ];
+    settings = {
+      builders-use-substitutes = true;
+      auto-optimise-store = true;
+      substituters = [
+        "https://cache.nixos.org"
+        "https://cache.luj.fr"
+      ];
+      trusted-public-keys = [
+        "cache.luj.fr-1:C4ZpEGda4niPPcPtSMTzfiz1OLl8a+HzSdq1hUhAh6w="
+      ];
+    };
+  };
+
+  programs.mosh.enable = true;
+  networking.firewall.allowedUDPPortRanges = [
+    {
+      from = 60000;
+      to = 61000;
+    }
+  ];
 
   time.timeZone = "Europe/Paris";
   i18n.defaultLocale = "en_US.UTF-8";

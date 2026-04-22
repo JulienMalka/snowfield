@@ -1,21 +1,29 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.luj.programs.zsh;
   inherit (pkgs) fetchFromGitHub;
 in
-with lib;
 {
   options.luj.programs.zsh = {
-    enable = mkEnableOption "Enable Zsh";
+    enable = lib.mkEnableOption "Enable Zsh";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     programs.zsh = {
       enable = true;
       enableCompletion = true;
       enableAutosuggestions = true;
-      history = { save = 1000000; extended = true; ignoreDups = true; };
+      history = {
+        save = 1000000;
+        extended = true;
+        ignoreDups = true;
+      };
       initExtra = ''
         setopt notify autopushd
         unsetopt autocd beep
@@ -42,7 +50,6 @@ with lib;
 
         SU = "systemctl --user";
         SS = "sudo systemctl";
-
 
         weather = "curl wttr.in";
         v6 = "curl api6.ipify.org";
@@ -178,6 +185,10 @@ with lib;
     # Misc
     programs.lesspipe.enable = true;
 
-    home.packages = with pkgs; [ unstable.eza python3 libnotify ];
+    home.packages = with pkgs; [
+      unstable.eza
+      python3
+      libnotify
+    ];
   };
 }

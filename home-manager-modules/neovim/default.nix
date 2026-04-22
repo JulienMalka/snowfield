@@ -7,13 +7,12 @@
 let
   cfg = config.luj.programs.neovim;
 in
-with lib;
 {
   options.luj.programs.neovim = {
-    enable = mkEnableOption "activate neovim program";
+    enable = lib.mkEnableOption "activate neovim program";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     home.packages = with pkgs; [
       git

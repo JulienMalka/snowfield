@@ -1,3 +1,18 @@
+# Re-orders agenix systemd services around systemd-sysusers.
+#
+# agenix-install-secrets normally runs `After=sysinit.target` and chowns secrets
+# to target users. When `systemd.sysusers` or `services.userborn` is enabled,
+# those users are created by systemd-sysusers.service (which itself runs early
+# in sysinit.target), so the chown races and agenix picks up nonexistent uids.
+# See agenix#236 and the associated nixpkgs discussion.
+#
+# Workaround: install secrets before sysusers, then chown them in a dedicated
+# service that waits for sysusers to finish. Drop this module once agenix ships
+# a native fix (the `systemd.services.agenix-install-secrets` override is the
+# load-bearing piece to delete first).
+#
+# Activates only when one of the two user-creation services is enabled and the
+# machine actually declares agenix secrets — other hosts get an empty config.
 {
   config,
   pkgs,

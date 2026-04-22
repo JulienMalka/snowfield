@@ -7,18 +7,17 @@
 let
   cfg = config.luj.programs.kitty;
 in
-with lib;
 {
   options.luj.programs.kitty = {
-    enable = mkEnableOption "Enable Kitty";
+    enable = lib.mkEnableOption "Enable Kitty";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     programs.kitty = {
       enable = true;
       settings = {
-        hide_window_decorations = true;
+        #hide_window_decorations = true;
         shell_integration = "no-cursor";
         window_padding_width = 3;
         font_size = 10;

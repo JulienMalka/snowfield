@@ -5,71 +5,63 @@
 }:
 
 let
+  inherit (lib) mkIf mkOption types;
+
   cfg = config.services.backup;
-  # We backup on gustave
+
+  # Push backups to gustave, whose SSH public key we pin here so that the
+  # borgbackup job can come up before its first interactive ssh run.
   host = "gustave.luj";
-  port = "45";
+  port = toString config.machine.meta.sshPort;
   hostPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe";
+
   sshKey = config.age.secrets."borg-ssh-key".path;
   secretPath = config.age.secrets."borg-encryption-secret".path;
 
 in
 {
-  options.services.backup =
-    with lib;
-    with types;
-    {
-      quota = mkOption {
-        type = nullOr str;
-        default = null;
-        example = "90G";
-        description = ''
-          Quota for the borg repository. Useful to prevent the target disk from running full and ensuring borg keeps some space to work with.
-        '';
-      };
-
-      includes = mkOption {
-        type = listOf path;
-        default = [ ];
-        description = ''
-          Paths to include in the backup.
-        '';
-      };
-
-      excludes = mkOption {
-        type = listOf path;
-        default = [ ];
-        description = ''
-          Paths to exclude in the backup.
-        '';
-      };
-
-      preHook = mkOption {
-        type = lines;
-        default = "";
-        description = ''
-          Shell commands to run before the backup.
-        '';
-      };
-
-      postHook = mkOption {
-        type = lines;
-        default = "";
-        description = ''
-          Shell commands to run after the backup.
-        '';
-      };
-
-      wantedUnits = mkOption {
-        type = listOf str;
-        default = [ ];
-        description = ''
-          List of units to require before starting the backup.
-        '';
-      };
+  options.services.backup = {
+    quota = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      example = "90G";
+      description = ''
+        Quota for the borg repository. Useful to prevent the target disk from running full and ensuring borg keeps some space to work with.
+      '';
     };
 
-  config = lib.mkIf (cfg.includes != [ ]) {
+    includes = mkOption {
+      type = types.listOf types.path;
+      default = [ ];
+      description = "Paths to include in the backup.";
+    };
+
+    excludes = mkOption {
+      type = types.listOf types.path;
+      default = [ ];
+      description = "Paths to exclude in the backup.";
+    };
+
+    preHook = mkOption {
+      type = types.lines;
+      default = "";
+      description = "Shell commands to run before the backup.";
+    };
+
+    postHook = mkOption {
+      type = types.lines;
+      default = "";
+      description = "Shell commands to run after the backup.";
+    };
+
+    wantedUnits = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      description = "List of units to require before starting the backup.";
+    };
+  };
+
+  config = mkIf (cfg.includes != [ ]) {
 
     age.secrets."borg-ssh-key" = {
       file = ./borg-ssh-priv.age;
@@ -79,8 +71,8 @@ in
 
     age.secrets."borg-encryption-secret".file = ./borg-encryption-secret.age;
 
-    programs.ssh.knownHosts."${if port != 22 then "[${host}]:${port}" else host}" = {
-      publicKey = "${hostPublicKey}";
+    programs.ssh.knownHosts."${if port != "22" then "[${host}]:${port}" else host}" = {
+      publicKey = hostPublicKey;
     };
 
     systemd.services.borgbackup-job-state = {

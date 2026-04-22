@@ -35,15 +35,11 @@ let
     };
 
 in
-with lib;
 {
-  options = {
-    machine.meta.zones = mkOption {
-      type = types.attrsOf (
-        recursiveUpdate dnsLib.types.zone { getSubModules = [ getSubmodulesCustom ]; }
-      );
-      default = { };
-    };
+  options.machine.meta.zones = lib.mkOption {
+    type = lib.types.attrsOf (
+      lib.recursiveUpdate dnsLib.types.zone { getSubModules = [ getSubmodulesCustom ]; }
+    );
+    default = { };
   };
-
 }

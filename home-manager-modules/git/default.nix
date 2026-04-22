@@ -7,13 +7,12 @@
 let
   cfg = config.luj.programs.git;
 in
-with lib;
 {
   options.luj.programs.git = {
-    enable = mkEnableOption "Enable git program";
+    enable = lib.mkEnableOption "Enable git program";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.git = {
       enable = true;
       settings = {

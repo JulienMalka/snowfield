@@ -9,6 +9,8 @@
   imports = [
     ./hardware.nix
     ./home-julien.nix
+    ./nginx.nix
+    ./homepage.nix
     ./nsd.nix
     ./borg.nix
     ./readeck.nix
@@ -22,6 +24,10 @@
     ./luj-website.nix
     ./windmill.nix
     ./lasuite-meet.nix
+    ./mediaserver.nix
+    ./docs.nix
+    ./irc.nix
+    ./preservation.nix
   ];
 
   users.users.julien.linger = true;
@@ -36,11 +42,12 @@
     hm_version = inputs.home-manager;
     syncthing.id = "3LPQQ6G-JO4M5FH-EDGCLDO-VN2J3PR-DDPB7IS-447IUF3-BHIS6S4-NQMWNQD";
     profiles = with profiles; [
-      vm-simple-network
-      server
       behind-sniproxy
-      syncthing
       monitoring
+      preservation
+      server
+      syncthing
+      vm-simple-network
     ];
     ips = {
       public.ipv4 = "82.67.34.230";
@@ -50,28 +57,6 @@
       vpn.ipv6 = "fd7a:115c:a1e0::18";
     };
 
-  };
-
-  luj.docs = {
-    enable = true;
-    nginx.enable = true;
-    nginx.subdomain = "docs";
-  };
-
-  services.nginx.virtualHosts."staging-lila.luj.fr" = {
-    enableACME = true;
-    forceSSL = true;
-    locations."/" = {
-      proxyPass = "http://localhost:8004";
-    };
-  };
-
-  services.nginx.virtualHosts."slack-bot.luj.fr" = {
-    enableACME = true;
-    forceSSL = true;
-    locations."/" = {
-      proxyPass = "http://localhost:8005";
-    };
   };
 
   security.polkit.enable = true;
@@ -142,67 +127,9 @@
   services.openssh.ports = [ 22 ];
   services.openssh.settings.PerSourcePenaltyExemptList = "2001:bc8:38ee:100:f837:7fff:fe77:7154";
 
-  services.nginx.virtualHosts."git.luj.fr" = {
-    forceSSL = true;
-    enableACME = true;
-    locations."/" = {
-      proxyPass = "http://localhost:3000";
-      proxyWebsockets = true;
-    };
-  };
-
-  preservation.enable = true;
-  preservation.preserveAt."/persistent" = {
-    directories = [
-      {
-        directory = "/var/lib";
-        inInitrd = true;
-      }
-      { directory = "/var/log"; }
-      {
-        directory = "/srv";
-        inInitrd = true;
-      }
-    ];
-    files = [
-      "/etc/machine-id"
-      {
-        file = "/etc/ssh/ssh_host_ed25519_key";
-        mode = "0600";
-      }
-      "/etc/ssh/ssh_host_ed25519_key.pub"
-      "/etc/ssh/ssh_host_ed25519_key-cert.pub"
-    ];
-    users.julien = {
-      directories = [
-        ".ssh"
-        ".local/share/direnv"
-        ".gnupg"
-        ".local/share/keyrings"
-        "Maildir"
-      ];
-    };
-  };
-
   environment.systemPackages = [ pkgs.tailscale ];
 
   services.tailscale.enable = true;
-
-  luj.irc = {
-    enable = true;
-    nginx = {
-      enable = true;
-      subdomain = "irc";
-    };
-  };
-
-  luj.homepage.enable = true;
-  luj.mediaserver = {
-    enable = true;
-    tv.enable = true;
-    music.enable = false;
-  };
-  luj.deluge.interface = "wg0";
 
   networking.firewall.allowedTCPPorts = [ 51820 ];
   networking.firewall.allowedUDPPorts = [ 51820 ];

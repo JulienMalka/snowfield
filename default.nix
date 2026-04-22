@@ -1,120 +1,60 @@
 let
   inputs = import ./lon.nix;
-  inputs_final = inputs;
   dnsLib = (import inputs.dns).lib;
-  lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib inputs_final self.profiles dnsLib);
+  lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib inputs self.profiles dnsLib);
   mkLibForMachine =
     machine:
     (import "${lib.snowfield.${machine}.nixpkgs_version}/lib").extend (
-      import ./lib inputs_final self.profiles dnsLib
+      import ./lib inputs self.profiles dnsLib
     );
   machines_plats = lib.lists.unique (
-    lib.mapAttrsToList (_name: value: value.arch) (
-      lib.filterAttrs (_n: v: builtins.hasAttr "arch" v) lib.snowfield
-    )
+    lib.mapAttrsToList (_: v: v.arch) (lib.filterAttrs (_: v: v ? arch) lib.snowfield)
   );
 
-  nixpkgs_plats = builtins.listToAttrs (
-    builtins.map (plat: {
-      name = plat;
-      value = import inputs.nixpkgs { system = plat; };
-    }) machines_plats
-  );
+  nixpkgs_plats = lib.genAttrs machines_plats (system: import inputs.nixpkgs { inherit system; });
+
   self = rec {
 
     inherit lib;
 
-    nixosModules = builtins.listToAttrs (
-      map (x: {
-        name = x;
-        value = import (./modules + "/${x}");
-      }) (builtins.attrNames (builtins.readDir ./modules))
-    );
+    nixosModules = lib.importDir ./modules;
 
-    profiles = builtins.listToAttrs (
-      map (x: {
-        name = lib.strings.removeSuffix ".nix" x;
-        value = import (./profiles + "/${x}");
-      }) (builtins.attrNames (builtins.readDir ./profiles))
-    );
+    profiles = lib.importNixFiles ./profiles;
 
-    nixosConfigurations = builtins.mapAttrs (
+    nixosConfigurations = lib.mapAttrs (
       name: value:
-      (lib.mkMachine {
+      lib.mkMachine {
         inherit name self dnsLib;
         host-config = value;
-        modules = builtins.attrValues nixosModules ++ lib.snowfield.${name}.profiles;
+        modules = lib.attrValues nixosModules ++ lib.snowfield.${name}.profiles;
         nixpkgs = lib.snowfield.${name}.nixpkgs_version;
         system = lib.snowfield.${name}.arch;
         home-manager = lib.snowfield.${name}.hm_version;
-      })
-    ) (lib.importConfig ./machines);
+      }
+    ) (lib.importDir ./machines);
 
     colmena = {
       meta = {
-        nodeNixpkgs = builtins.mapAttrs (
-          n: _: import lib.snowfield.${n}.nixpkgs_version
-        ) nixosConfigurations;
-        nodeSpecialArgs = builtins.mapAttrs (
+        nodeNixpkgs = lib.mapAttrs (n: _: import lib.snowfield.${n}.nixpkgs_version) nixosConfigurations;
+        nodeSpecialArgs = lib.mapAttrs (
           n: v: v._module.specialArgs // { lib = mkLibForMachine n; }
         ) nixosConfigurations;
       };
     }
-    // builtins.mapAttrs (_: v: { imports = v._module.args.modules; }) nixosConfigurations;
+    // lib.mapAttrs (_: v: { imports = v._module.args.modules; }) nixosConfigurations;
 
-    all_secrets_nixos = lib.foldl (acc: v: lib.deepMerge acc v) { } (
-      lib.attrValues (
-        lib.mapAttrs (
-          n: v:
-          lib.mapAttrs' (
-            _: j: lib.nameValuePair (builtins.toString j.file) (j // { targets = [ n ]; })
-          ) v.config.age.secrets
-        ) nixosConfigurations
-      )
-    );
+    all_secrets = lib.collectSecrets nixosConfigurations;
 
-    all_secrets_hm = lib.foldl (acc: v: lib.deepMerge acc v) { } (
-      lib.attrValues (
-        lib.mapAttrs (
-          n: v:
-          lib.mapAttrs' (
-            _: j: lib.nameValuePair (builtins.toString j.file) (j // { targets = [ "${n}_home" ]; })
-          ) v.config.home-manager.users.julien.age.secrets
-        ) nixosConfigurations
-      )
-    );
-
-    all_secrets = all_secrets_nixos // all_secrets_hm;
-
-    packages = builtins.listToAttrs (
-      builtins.map (plat: {
-        name = plat;
-        value =
-          lib.filterAttrs
-            (
-              _name: value:
-              (
-                !lib.hasAttrByPath [
-                  "meta"
-                  "platforms"
-                ] value
-              )
-              || builtins.elem plat value.meta.platforms
-            )
-            (
-              builtins.listToAttrs (
-                builtins.map (e: {
-                  name = e;
-                  value = nixpkgs_plats.${plat}.callPackage (./packages + "/${e}") { };
-                }) (builtins.attrNames (builtins.readDir ./packages))
-              )
-            );
-      }) machines_plats
+    packages = lib.genAttrs machines_plats (
+      plat:
+      lib.filterAttrs (
+        _: v: !(lib.hasAttrByPath [ "meta" "platforms" ] v) || builtins.elem plat v.meta.platforms
+      ) (lib.mapAttrs (_: drv: nixpkgs_plats.${plat}.callPackage drv { }) (lib.importDir ./packages))
     );
 
     # comin's nix executor appends both .toplevel and .config.services.comin.machineId
     # to systemAttr, so we need an attrset with both at the same level
-    cominConfigurations = builtins.mapAttrs (
+    cominConfigurations = lib.mapAttrs (
       _: v: v.config.system.build // { inherit (v) config; }
     ) nixosConfigurations;
 

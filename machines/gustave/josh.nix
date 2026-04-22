@@ -1,8 +1,25 @@
-{ config, ... }:
+{ config, pkgs, ... }:
+
+let
+  port = 5674;
+  remote = "https://git.luj.fr";
+in
 {
-  services.josh = {
-    enable = true;
-    remote = "https://git.luj.fr";
+
+  systemd.services.josh = {
+    description = "josh - partial cloning of monorepos";
+    wantedBy = [ "multi-user.target" ];
+    path = [
+      pkgs.git
+      pkgs.bash
+    ];
+
+    serviceConfig = {
+      DynamicUser = true;
+      StateDirectory = "josh";
+      Restart = "always";
+      ExecStart = "${pkgs.josh}/bin/josh-proxy --no-background --local /var/lib/josh --port ${toString port} --remote ${remote} --require-auth";
+    };
   };
 
   age.secrets."notes-phd-auth" = {
@@ -15,20 +32,17 @@
     owner = "nginx";
   };
 
-  services.nginx.virtualHosts = {
-    "code.luj.fr" = {
-      forceSSL = true;
-      enableACME = true;
-      locations."~ ^/luj/notes\.git:workspace=phd\.git" = {
-        basicAuthFile = config.age.secrets.notes-phd-auth.path;
-        # Included file contains the token to connect to upstream forge
-        # and sets it as a basic auth header
-        extraConfig = ''
-          proxy_pass http://127.0.0.1:5674;
-          include ${config.age.secrets.nginx-git-token.path};
-        '';
-      };
+  services.nginx.virtualHosts."code.luj.fr" = {
+    forceSSL = true;
+    enableACME = true;
+    locations."~ ^/luj/notes\\.git:workspace=phd\\.git" = {
+      basicAuthFile = config.age.secrets.notes-phd-auth.path;
+      # Included file holds the upstream forge token and injects it as a basic
+      # auth header on the proxy request.
+      extraConfig = ''
+        proxy_pass http://127.0.0.1:${toString port};
+        include ${config.age.secrets.nginx-git-token.path};
+      '';
     };
   };
-
 }

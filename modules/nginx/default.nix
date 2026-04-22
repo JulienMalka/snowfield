@@ -1,24 +1,62 @@
 systemArgs@{ lib, config, ... }:
-with lib;
 let
+  inherit (lib)
+    mkIf
+    mkMerge
+    mkOption
+    mkEnableOption
+    optionalAttrs
+    types
+    ;
+  inherit (lib.strings) hasInfix;
+  inherit (lib.dns)
+    isVPNDomain
+    allowedDomains
+    domainToZone
+    getDomainPrefix
+    domainToRecords
+    ;
+
   cfg = config.luj.nginx;
+
   mergeSub =
     f:
-    lib.mkMerge (
+    mkMerge (
       map (sub: f (sub.systemConfig systemArgs)) (lib.attrValues config.services.nginx.virtualHosts)
     );
 
   recordsFromDomain =
     domain:
-    mapAttrs' (
+    lib.mapAttrs' (
       n: v:
-      nameValuePair (dns.domainToZone dns.allowedDomains n) (
+      lib.nameValuePair (domainToZone allowedDomains n) (
         let
-          subdomain = dns.getDomainPrefix dns.allowedDomains n;
+          subdomain = getDomainPrefix allowedDomains n;
         in
-        if elem subdomain dns.allowedDomains then v else { subdomains."${subdomain}" = v; }
+        if lib.elem subdomain allowedDomains then v else { subdomains."${subdomain}" = v; }
       )
-    ) (dns.domainToRecords domain config.machine.meta (dns.isVPNDomain domain));
+    ) (domainToRecords domain config.machine.meta (isVPNDomain domain));
+
+  # A vhost's name determines whether its probes target the VPN or public IP
+  # stack. Build one monitor per address family, emitted via mkIf so IPv6 is
+  # silently dropped when the host doesn't advertise an address in that family.
+  mkMonitor =
+    name: family:
+    let
+      ips = if isVPNDomain name then config.machine.meta.ips.vpn else config.machine.meta.ips.public;
+      bracketed = if family == "ipv6" then "[${ips.${family} or ""}]" else (ips.${family} or "");
+    in
+    mkIf (ips ? ${family}) {
+      url = "https://${bracketed}";
+      type = "http";
+      accepted_statuscodes = [ "200-299" ];
+      notificationIDList = [ 1 ];
+      headers = ''
+        {
+          "Host": "${name}"
+        }
+      '';
+    };
 
 in
 {
@@ -32,81 +70,45 @@ in
       };
     };
 
-    # Awesome NixOS crimes
-    services.nginx.virtualHosts = lib.mkOption {
-      type = lib.types.attrsOf (
-        lib.types.submodule (
-          {
-            name,
-            ...
-          }:
+    # Extend every virtualHost with a synthetic `systemConfig` field — a function
+    # from module args to a partial NixOS config. The nginx module then folds
+    # those contributions into `machine.meta.*`, `security.acme.*`, etc. This
+    # lets a vhost declared deep in a service module propagate DNS records and
+    # monitoring probes without each module knowing about them.
+    services.nginx.virtualHosts = mkOption {
+      type = types.attrsOf (
+        types.submodule (
+          { name, ... }:
           {
             options = {
-              systemConfig = lib.mkOption {
+              systemConfig = mkOption {
                 internal = true;
-                type = types.unspecified; # A function from module arguments to config.
+                # A function from module arguments to a partial NixOS config.
+                type = types.unspecified;
               };
             };
             config = {
-              locations."/".extraConfig = lib.mkIf (lib.hasSuffix "luj" name) ''
+              locations."/".extraConfig = mkIf (isVPNDomain name) ''
                 allow 100.100.45.0/24;
                 allow fd7a:115c:a1e0::/48;
                 deny all;
               '';
 
-              extraConfig = lib.mkIf (lib.hasSuffix "luj" name) ''
+              extraConfig = mkIf (isVPNDomain name) ''
                 ssl_stapling off;
               '';
 
               systemConfig = _: {
-                machine.meta.probes.monitors = lib.mkIf (name != "default") {
-                  "${name} - IPv4" = {
-                    url = "https://${
-                      if (hasSuffix "luj" name) then
-                        config.machine.meta.ips.vpn.ipv4
-                      else
-                        config.machine.meta.ips.public.ipv4
-                    }";
-                    type = "http";
-                    accepted_statuscodes = [ "200-299" ];
-                    notificationIDList = [ 1 ];
-                    headers = ''
-                      {
-                        "Host": "${name}"
-                      }
-                    '';
-                  };
-                  "${name} - IPv6" =
-                    lib.mkIf
-                      (
-                        if (hasSuffix "luj" name) then
-                          (config.machine.meta.ips.vpn ? ipv6)
-                        else
-                          (config.machine.meta.ips.public ? ipv6)
-                      )
-                      {
-                        url = "https://[${
-                          if (hasSuffix "luj" name) then
-                            config.machine.meta.ips.vpn.ipv6
-                          else
-                            config.machine.meta.ips.public.ipv6
-                        }]";
-                        type = "http";
-                        accepted_statuscodes = [ "200-299" ];
-                        notificationIDList = [ 1 ];
-                        headers = ''
-                          {
-                            "Host": "${name}"
-                          }
-                        '';
-                      };
-                };
-                security.acme.certs = lib.optionalAttrs (hasSuffix "luj" name) {
-                  "${name}".server = lib.mkIf (hasSuffix "luj" name) "https://ca.luj/acme/acme/directory";
+                machine.meta.probes.monitors = mkIf (name != "default") {
+                  "${name} - IPv4" = mkMonitor name "ipv4";
+                  "${name} - IPv6" = mkMonitor name "ipv6";
                 };
 
-                machine.meta.zones = lib.optionalAttrs (name != "default") (recordsFromDomain name);
+                security.acme.certs = optionalAttrs (isVPNDomain name) {
+                  ${name}.server = "https://ca.luj/acme/acme/directory";
+                };
 
+                machine.meta.zones = optionalAttrs (name != "default") (recordsFromDomain name);
               };
             };
           }
@@ -150,7 +152,7 @@ in
     };
 
     security.acme.certs = mergeSub (c: c.security.acme.certs);
-    security.acme.defaults.email = "${cfg.email}";
+    security.acme.defaults.email = cfg.email;
     security.acme.acceptTerms = true;
 
     age.secrets.nginx-cert = {

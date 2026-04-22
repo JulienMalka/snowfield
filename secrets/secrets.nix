@@ -23,6 +23,9 @@ let
     darillium_home = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID/FdA1KyU7U6K4YicQLLHeBf/1LRlMk7vPa1h1IGsfM";
     jacques = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBBgWu3hLZ5Rfp3lH6I03ZabztLo5E8GQhZCWVePNEHe";
   };
+  # Personal-device fleet — these hosts hold every secret so that `agenix -e`
+  # can be run interactively from any of them without stepping the rekeying
+  # flow up to a per-secret ACL.
   secrets_owners = [
     keys.arcadia
     keys.fischer

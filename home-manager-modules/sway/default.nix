@@ -1,23 +1,27 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.luj.programs.sway;
   inherit (cfg) modifier;
   terminal = "kitty";
 in
-with lib;
 {
   options.luj.programs.sway = {
-    enable = mkEnableOption "Enable SwayWM";
-    modifier = mkOption {
+    enable = lib.mkEnableOption "Enable SwayWM";
+    modifier = lib.mkOption {
       type = lib.types.str;
       default = "Mod1";
     };
-    background = mkOption {
-      type = types.path;
+    background = lib.mkOption {
+      type = lib.types.path;
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     wayland.windowManager.sway = {
       enable = true;
       package = pkgs.swayfx;
@@ -76,7 +80,6 @@ with lib;
           "${modifier}+Shift+k" = "move up";
           "${modifier}+Shift+l" = "move right";
 
-
           "${modifier}+q" = "kill";
           "${modifier}+space" = "exec rofi -show run";
           "${modifier}+Return" = "exec ${terminal}";
@@ -99,33 +102,32 @@ with lib;
       extraOptions = [ "--unsupported-gpu" ];
     };
 
-    programs.swaylock =
-      {
-        enable = true;
-        package = pkgs.swaylock-effects;
-        settings = {
-          screenshots = true;
-          clock = true;
-          indicator = true;
-          indicator-radius = 200;
-          indicator-thickness = 20;
-          grace = 0;
-          grace-no-mouse = true;
-          grace-no-touch = true;
-          line-uses-ring = false;
-          ignore-empty-password = true;
-          show-failed-attempts = false;
+    programs.swaylock = {
+      enable = true;
+      package = pkgs.swaylock-effects;
+      settings = {
+        screenshots = true;
+        clock = true;
+        indicator = true;
+        indicator-radius = 200;
+        indicator-thickness = 20;
+        grace = 0;
+        grace-no-mouse = true;
+        grace-no-touch = true;
+        line-uses-ring = false;
+        ignore-empty-password = true;
+        show-failed-attempts = false;
 
-          font = "Fira Code";
-          timestr = "%H:%M";
-          datestr = "";
-          effect-blur = "8x5";
-          effect-vignette = "0.5:0.5";
-          color = "00000000";
-
-        };
+        font = "Fira Code";
+        timestr = "%H:%M";
+        datestr = "";
+        effect-blur = "8x5";
+        effect-vignette = "0.5:0.5";
+        color = "00000000";
 
       };
+
+    };
 
   };
 }

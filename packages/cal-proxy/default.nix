@@ -23,9 +23,10 @@ python3Packages.buildPythonApplication {
     pyyaml
   ];
 
-  meta = with lib; {
+  meta = {
     description = "Calendar invitation proxy for Stalwart mail server";
-    license = licenses.mit;
+    license = lib.licenses.mit;
     mainProgram = "cal-proxy";
+    platforms = lib.platforms.unix;
   };
 }

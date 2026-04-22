@@ -2,13 +2,12 @@
 let
   cfg = config.luj.programs.emacs;
 in
-with lib;
 {
   options.luj.programs.emacs = {
-    enable = mkEnableOption "Enable Emacs";
+    enable = lib.mkEnableOption "Enable Emacs";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     services.emacs.enable = true;
 

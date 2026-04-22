@@ -7,14 +7,13 @@
 let
   cfg = config.luj.programs.waybar;
 in
-with lib;
 {
   options.luj.programs.waybar = {
-    enable = mkEnableOption "Enable waybar";
-    interfaceName = mkOption { type = lib.types.str; };
+    enable = lib.mkEnableOption "Enable waybar";
+    interfaceName = lib.mkOption { type = lib.types.str; };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.waybar = {
       enable = true;
       systemd.enable = true;

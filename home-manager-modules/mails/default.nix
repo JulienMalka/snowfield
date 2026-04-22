@@ -8,15 +8,14 @@
 let
   cfg = config.luj.emails;
 in
-with lib;
 {
   options.luj.emails = {
-    enable = mkEnableOption "enable mail management";
+    enable = lib.mkEnableOption "enable mail management";
   };
 
   imports = [ "${inputs.snowfield-private}/private-mail.nix" ];
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     age.secrets.geosurge-mail-pw = {
       file = lib.mkForce ./geosurge-mail-pw.age;

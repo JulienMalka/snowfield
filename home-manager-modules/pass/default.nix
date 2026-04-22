@@ -1,14 +1,18 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.luj.programs.pass;
 in
-with lib;
 {
   options.luj.programs.pass = {
-    enable = mkEnableOption "Enable pass";
+    enable = lib.mkEnableOption "Enable pass";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.rbw = {
       enable = true;
       settings = {

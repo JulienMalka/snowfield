@@ -7,13 +7,12 @@
 let
   cfg = config.luj.programs.fish;
 in
-with lib;
 {
   options.luj.programs.fish = {
-    enable = mkEnableOption "Enable fish";
+    enable = lib.mkEnableOption "Enable fish";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     programs.fish = {
       enable = true;

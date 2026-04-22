@@ -1,17 +1,17 @@
 { lib, config, ... }:
-with lib;
 let
   cfg = config.luj.deployment;
+  meta = config.machine.meta;
 in
 {
 
-  options.luj.deployment.enable = mkEnableOption "activate deployment on machine";
+  options.luj.deployment.enable = lib.mkEnableOption "activate deployment on machine";
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     deployment = {
-      targetHost = lib.mkDefault config.machine.meta.ips.vpn.ipv4;
-      targetPort = lib.mkDefault 45;
+      targetHost = lib.mkDefault meta.ips.vpn.ipv4;
+      targetPort = lib.mkDefault meta.sshPort;
       targetUser = lib.mkDefault "root";
       allowLocalDeployment = lib.mkDefault true;
       buildOnTarget = lib.mkDefault true;

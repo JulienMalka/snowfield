@@ -25,7 +25,7 @@
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGa+7n7kNzb86pTqaMn554KiPrkHRGeTJ0asY1NjSbpr julien@tower"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFwMV/IsMl07Oa3Vw8hO4K4YLusREtNhZrYD/81/Bhqr julien@gallifrey"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID/FdA1KyU7U6K4YicQLLHeBf/1LRlMk7vPa1h1IGsfM"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID/FdA1KyU7U6K4YicQLLHeBf/1LRlMk7vPa1h1IGsfM julien@darillium"
     ];
   };
 }

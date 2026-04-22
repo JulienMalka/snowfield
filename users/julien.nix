@@ -32,4 +32,11 @@
   nix.settings.trusted-users = [ "julien" ];
 
   age.secrets.julien-password.file = ./user-julien-password.age;
+
+  age.secrets.git-gpg-private-key = {
+    file = ./git-gpg-private-key.age;
+    owner = "julien";
+    mode = "0440";
+    group = config.users.groups.keys.name;
+  };
 }

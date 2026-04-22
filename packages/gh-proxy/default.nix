@@ -23,9 +23,10 @@ python3Packages.buildPythonApplication {
     cryptography
   ];
 
-  meta = with lib; {
+  meta = {
     description = "Read-only GitHub API proxy for gh CLI";
-    license = licenses.mit;
+    license = lib.licenses.mit;
     mainProgram = "gh-proxy";
+    platforms = lib.platforms.unix;
   };
 }

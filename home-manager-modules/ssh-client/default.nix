@@ -8,13 +8,12 @@ let
   cfg = config.luj.programs.ssh-client;
   caConfig = import ../../lib/ca-config.nix;
 in
-with lib;
 {
   options.luj.programs.ssh-client = {
-    enable = mkEnableOption "Enable ssh client";
+    enable = lib.mkEnableOption "Enable ssh client";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     home.file.".ssh/known_hosts_ca".text =
       let
         fleetHosts = builtins.attrNames lib.snowfield;

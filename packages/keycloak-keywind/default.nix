@@ -1,4 +1,8 @@
-{ stdenv, fetchFromGitHub }:
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+}:
 
 stdenv.mkDerivation {
   pname = "keywind-theme";
@@ -15,4 +19,11 @@ stdenv.mkDerivation {
     mkdir $out
     cp -r ./theme/keywind/* $out
   '';
+
+  meta = {
+    description = "Tailwind CSS-based login theme for Keycloak";
+    homepage = "https://github.com/lukin/keywind";
+    license = lib.licenses.mit;
+    platforms = lib.platforms.all;
+  };
 }

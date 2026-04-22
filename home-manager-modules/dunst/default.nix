@@ -2,13 +2,12 @@
 let
   cfg = config.luj.programs.dunst;
 in
-with lib;
 {
   options.luj.programs.dunst = {
-    enable = mkEnableOption "Enable Dunst";
+    enable = lib.mkEnableOption "Enable Dunst";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     services.dunst = {
       enable = true;

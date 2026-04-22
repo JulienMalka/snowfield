@@ -2,18 +2,9 @@ let
   inputs = import ./lon.nix;
   pkgs = import inputs.unstable { };
   nixos-anywhere = pkgs.callPackage "${inputs.nixos-anywhere}/src/default.nix" { };
-  ragenixSrc = builtins.fetchGit {
-    url = "git+ssh://git@github.com/geosurge-ai/ragenix.git";
-    rev = "7bcb863c1ca86bac082f7a46c9ba945a9b4bbeb9";
-    allRefs = true;
-  };
-  ragenix = pkgs.ragenix.overrideAttrs (_: {
-    src = ragenixSrc;
-    cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
-      src = ragenixSrc;
-      hash = "sha256-liimzFjEqgwB15VUfcwu1CRFEeDyXJ6fsH3pzfUPeKo=";
-    };
-  });
+  # ragenix from nixpkgs. If you need a local fork, override via shell.nix in
+  # a gitignored file or re-add the fetchGit here.
+  ragenix = pkgs.ragenix;
   bootstrap = pkgs.callPackage scripts/bootstrap-machine.nix { inherit nixos-anywhere; };
   snowfield = pkgs.callPackage scripts/snowfield.nix { };
   lon = pkgs.callPackage "${inputs.lon}/nix/packages/lon.nix" { };
