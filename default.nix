@@ -84,7 +84,7 @@ let
       )
     );
 
-    all_secrets = all_secrets_nixos // all_secrets_hm;
+    all_secrets = lib.deepMerge all_secrets_nixos all_secrets_hm;
 
     packages = builtins.listToAttrs (
       builtins.map (plat: {
