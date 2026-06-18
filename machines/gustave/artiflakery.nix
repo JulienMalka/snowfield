@@ -160,6 +160,12 @@
           "public"
         ];
       };
+      "slides/2026/polyseed/" = {
+        flakeref = "git+ssh://forgejo@git.luj.fr/luj/slides-polyseed.git?ref=main";
+        access = [
+          "julien"
+        ];
+      };
     };
   };
 }
