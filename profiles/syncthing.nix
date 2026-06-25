@@ -43,6 +43,13 @@ in
           "emacs-config/eln-cache"
           "emacs-config/elpa"
           "emacs-config/elpaca"
+          ".direnv"
+          "__pycache__"
+          "polyseed/seed-builder/output*"
+          "polyseed/seed-builder/stage"
+          "polyseed/seed-builder-llvm/output"
+          "polyseed/seed-builder-llvm/stage"
+          "polyseed/analysis/repos"
         ];
         devices = lib.attrNames syncthing_configured;
       };
