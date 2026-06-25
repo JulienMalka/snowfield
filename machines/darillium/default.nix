@@ -26,6 +26,8 @@
 
   };
 
+  services.pcscd.enable = true;
+
   services.libinput.touchpad.tapping = false;
 
   programs.fuse.userAllowOther = true;
@@ -66,6 +68,7 @@
         ".config/noctalia"
         ".cache/noctalia"
         ".cache/mu"
+        ".cache/mujmap"
         ".step"
         ".zotero"
         ".cache/zotero"
@@ -197,7 +200,7 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOXT9Init1MhKt4rjBANLq0t0bPww/WQZ96uB4AEDrml";
 
   programs.ssh.knownHosts."builder.luj.fr".publicKey =
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID2z+S1+Q1hvLP5BTr36ao/NTy4Szo2OGq2iguwL4/zp";
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHMepLlD+WZ620xPPjSm2EBBpWo31fIDbaoyVXDn2/0g";
 
   environment.systemPackages = with pkgs; [
     android-tools
