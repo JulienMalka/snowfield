@@ -27,6 +27,7 @@ let
             "idrac"
             "pve"
             "tor"
+            "rspamd"
           ])
           && cfg.enable
         ) (config.services.prometheus.exporters // config.machine.meta.extraExporters)
