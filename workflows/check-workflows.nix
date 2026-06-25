@@ -4,7 +4,7 @@
   name = "Check workflows";
   on = {
     pull_request.branches = [ "main" ];
-    push.paths = [ "workflows/*" ];
+    push.branches = [ "main" ];
   };
 
   jobs.check_workflows = {

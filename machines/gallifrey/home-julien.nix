@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
 
   luj.hmgr.julien = {
@@ -10,20 +10,7 @@
     luj.programs.fish.enable = true;
     luj.programs.pass.enable = true;
     luj.emails.enable = true;
-
-    services.mbsync.postExec = lib.mkForce null;
-
-    services.mbsync.enable = lib.mkForce false;
-    programs.mbsync.enable = lib.mkForce false;
-    programs.notmuch.hooks.postNew = lib.mkForce "";
-    programs.notmuch.hooks.preNew = lib.mkForce "";
-
-    services.muchsync.remotes."gustave" = {
-      frequency = "minutely";
-      local.checkForModifiedFiles = true;
-      remote.checkForModifiedFiles = true;
-      remote.host = "gustave";
-    };
+    luj.emails.mujmap.enable = true;
 
     programs.direnv = {
       enable = true;
@@ -58,6 +45,7 @@
     };
 
     home.packages = with pkgs; [
+      bottles
       claude-code
       dust
       kitty
@@ -109,7 +97,6 @@
       haskell-language-server
       aporetic
       notmuch
-      muchsync
     ];
 
     home.keyboard = {

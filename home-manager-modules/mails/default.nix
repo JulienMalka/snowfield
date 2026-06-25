@@ -14,7 +14,10 @@ with lib;
     enable = mkEnableOption "enable mail management";
   };
 
-  imports = [ "${inputs.snowfield-private}/private-mail.nix" ];
+  imports = [
+    "${inputs.snowfield-private}/private-mail.nix"
+    ./mujmap.nix
+  ];
 
   config = mkIf cfg.enable {
 
@@ -38,50 +41,21 @@ with lib;
       file = ./ens-mail-pw.age;
     };
 
-    programs.mbsync = {
+    programs.msmtp.enable = true;
+
+    programs.notmuch = {
       enable = lib.mkDefault true;
-      package = pkgs.unstable.isync;
+      new.tags = [ "new" ];
     };
 
-    programs.msmtp.enable = true;
     accounts.email = {
-      accounts.ens = {
-        notmuch.enable = true;
-        folders.inbox = "INBOX";
-        address = "julien.malka@ens.fr";
-        imap.host = "clipper.ens.fr";
-        mbsync = {
-          enable = true;
-          create = "maildir";
-          expunge = "both";
-          extraConfig.channel = {
-            "CopyArrivalDate" = "yes";
-          };
-        };
-        msmtp.enable = true;
-        primary = true;
-        realName = "Julien Malka";
-        passwordCommand = "${pkgs.coreutils}/bin/cat ${config.age.secrets.ens-mail-pw.path}";
-        smtp = {
-          host = "clipper.ens.fr";
-        };
-        userName = "jmalka";
-      };
       accounts.work = {
         notmuch.enable = true;
         folders.inbox = "INBOX";
         address = "julien@malka.sh";
         imap.host = "mail.luj.fr";
-        mbsync = {
-          enable = true;
-          create = "maildir";
-          expunge = "both";
-          extraConfig.channel = {
-            "CopyArrivalDate" = "yes";
-          };
-        };
         msmtp.enable = true;
-        primary = false;
+        primary = true;
         realName = "Julien Malka";
         passwordCommand = "${pkgs.coreutils}/bin/cat ${config.age.secrets.work-mail-pw.path}";
         smtp = {
@@ -95,14 +69,6 @@ with lib;
         folders.inbox = "INBOX";
         address = "julien.malka@telecom-paris.fr";
         imap.host = "z.imt.fr";
-        mbsync = {
-          enable = true;
-          create = "maildir";
-          expunge = "both";
-          extraConfig.channel = {
-            "CopyArrivalDate" = "yes";
-          };
-        };
         msmtp.enable = true;
         primary = false;
         realName = "Julien Malka";
@@ -118,14 +84,6 @@ with lib;
         folders.inbox = "INBOX";
         address = "luj@dgnum.eu";
         imap.host = "kurisu.lahfa.xyz";
-        mbsync = {
-          enable = true;
-          create = "maildir";
-          expunge = "both";
-          extraConfig.channel = {
-            "CopyArrivalDate" = "yes";
-          };
-        };
         msmtp.enable = true;
         primary = false;
         realName = "Julien Malka";
@@ -136,37 +94,6 @@ with lib;
         userName = "luj@dgnum.eu";
       };
 
-    };
-
-    services.mbsync = {
-      enable = lib.mkDefault true;
-      frequency = "minutely";
-      package = pkgs.unstable.isync;
-    };
-
-    services.mbsync.postExec = lib.mkDefault "${pkgs.notmuch}/bin/notmuch new";
-
-    programs.notmuch = {
-      enable = lib.mkDefault true;
-      new.tags = [ "new" ];
-      hooks.preNew = lib.mkDefault ''
-        ${pkgs.notmuch-mailmover}/bin/notmuch-mailmover --config ${./mailmover.lua}
-      '';
-      hooks.postNew = lib.mkDefault ''
-        ${pkgs.afew}/bin/afew --tag --new
-      '';
-    };
-
-    programs.afew = {
-      enable = true;
-      extraConfig = ''
-        [FolderNameFilter]
-        maildir_separator = /
-        folder_lowercases = true
-        [Filter.1]
-        query = tag:new
-        tags = -new
-      '';
     };
 
   };

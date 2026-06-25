@@ -5,6 +5,7 @@
     ./home-julien.nix
     ./stalwart.nix
     ./nsd.nix
+    ./mbsync.nix
   ];
 
   machine.meta = {

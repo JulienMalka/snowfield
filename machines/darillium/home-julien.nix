@@ -1,6 +1,5 @@
 {
   pkgs,
-  lib,
   inputs,
   ...
 }:
@@ -22,21 +21,7 @@
     luj.programs.pass.enable = true;
 
     luj.emails.enable = true;
-
-    services.mbsync.postExec = lib.mkForce null;
-
-    services.mbsync.enable = lib.mkForce false;
-    programs.mbsync.enable = lib.mkForce false;
-    programs.notmuch.hooks.postNew = lib.mkForce "";
-    programs.notmuch.hooks.preNew = lib.mkForce "";
-
-    services.muchsync.remotes."gustave" = {
-      frequency = "minutely";
-      local.checkForModifiedFiles = true;
-      remote.checkForModifiedFiles = true;
-      remote.host = "gustave";
-      sshCommand = "${pkgs.coreutils}/bin/env PATH=${pkgs.xdg-utils}/bin:${pkgs.firefox}/bin:$PATH ${pkgs.openssh}/bin/ssh -CTaxq";
-    };
+    luj.emails.mujmap.enable = true;
 
     programs.direnv = {
       enable = true;
@@ -86,7 +71,7 @@
               {
                 id = "CustomButton";
                 icon = "search";
-                textCommand = "notmuch count tag:unread and tag:inbox and tag:telecom and folder:telecom/INBOX";
+                textCommand = "notmuch count tag:unread and tag:inbox and path:tp/**";
                 textIntervalMs = 30000;
                 hideMode = "hidden";
                 leftClickExec = "emacsclient -e '(notmuch)'";
@@ -94,7 +79,7 @@
               {
                 id = "CustomButton";
                 icon = "briefcase";
-                textCommand = "notmuch count tag:unread and tag:inbox and tag:work and folder:work/INBOX";
+                textCommand = "notmuch count tag:unread and tag:inbox and path:malka/**";
                 textIntervalMs = 30000;
                 hideMode = "hidden";
                 leftClickExec = "emacsclient -e '(notmuch)'";
@@ -102,7 +87,7 @@
               {
                 id = "CustomButton";
                 icon = "device-floppy";
-                textCommand = "notmuch count tag:unread and tag:inbox and tag:dgnum and folder:dgnum/INBOX";
+                textCommand = "notmuch count tag:unread and tag:inbox and path:dgnum/**";
                 textIntervalMs = 30000;
                 hideMode = "hidden";
                 leftClickExec = "emacsclient -e '(notmuch)'";

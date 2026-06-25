@@ -428,6 +428,50 @@ jobs:
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
         \",\\\"context\\\":\\\"forgejo/gustave\\\",\\\"description\\\":\\\"gustave\\\
         \"}\"\n"
+  inference01:
+    name: Build inference01
+    needs:
+    - prefetch-sources
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      name: Configure SSH for private inputs
+      run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
+        echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
+        \ >> ~/.ssh/known_hosts\n"
+    - env:
+        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
+      name: Build inference01
+      run: nix-build -A checks.machines.inference01 --out-link 
+        result-inference01
+    - env:
+        NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
+        NIKS3_SERVER_URL: https://cache.luj.fr
+      name: Push to cache
+      run: nix-shell -I 
+        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
+        'callPackage 
+        /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
+        {}' -p util-linux --run 'bash scripts/push-to-cache.sh 
+        ./result-inference01'
+    - env:
+        COMMIT_SHA: ${{ github.sha }}
+        GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
+        JOB_STATUS: ${{ job.status }}
+        RUN_NUMBER: ${{ github.run_number }}
+      if: always()
+      name: Report status to GitHub
+      run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/11\"\
+        \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
+        Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
+        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
+        \",\\\"context\\\":\\\"forgejo/inference01\\\",\\\"description\\\":\\\"inference01\\\
+        \"}\"\n"
   jacques:
     name: Build jacques
     needs:
@@ -464,7 +508,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/11\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/12\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -506,7 +550,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/12\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/13\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -555,6 +599,7 @@ jobs:
     - fischer
     - gallifrey
     - gustave
+    - inference01
     - jacques
     - lambda
     - tower
@@ -606,7 +651,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/13\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/14\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
