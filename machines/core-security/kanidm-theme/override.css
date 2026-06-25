@@ -1,0 +1,195 @@
+:root {
+  --ctp-crust:    #11111b;
+  --ctp-mantle:   #181825;
+  --ctp-base:     #1e1e2e;
+  --ctp-surface0: #313244;
+  --ctp-surface1: #45475a;
+  --ctp-surface2: #585b70;
+
+  /* text */
+  --ctp-overlay0: #6c7086;
+  --ctp-overlay1: #7f849c;
+  --ctp-overlay2: #9399b2;
+  --ctp-subtext0: #a6adc8;
+  --ctp-subtext1: #bac2de;
+  --ctp-text:     #cdd6f4;
+
+  /* accents */
+  --ctp-mauve:    #cba6f7;
+  --ctp-blue:     #89b4fa;
+  --ctp-lavender: #b4befe;
+  --ctp-sapphire: #74c7ec;
+  --ctp-sky:      #89dceb;
+  --ctp-teal:     #94e2d5;
+  --ctp-green:    #a6e3a1;
+  --ctp-yellow:   #f9e2af;
+  --ctp-peach:    #fab387;
+  --ctp-maroon:   #eba0ac;
+  --ctp-red:      #f38ba8;
+  --ctp-pink:     #f5c2e7;
+
+  --bs-body-bg: var(--ctp-base);
+  --bs-body-color: var(--ctp-text);
+  --bs-secondary-bg: var(--ctp-surface0);
+  --bs-tertiary-bg: var(--ctp-mantle);
+  --bs-border-color: var(--ctp-surface1);
+  --bs-emphasis-color: var(--ctp-text);
+
+  --bs-primary: var(--ctp-mauve);
+  --bs-primary-rgb: 203, 166, 247;
+  --bs-secondary: var(--ctp-sapphire);
+  --bs-secondary-rgb: 116, 199, 236;
+  --bs-success: var(--ctp-green);
+  --bs-success-rgb: 166, 227, 161;
+  --bs-info: var(--ctp-sky);
+  --bs-info-rgb: 137, 220, 235;
+  --bs-warning: var(--ctp-yellow);
+  --bs-warning-rgb: 249, 226, 175;
+  --bs-danger: var(--ctp-red);
+  --bs-danger-rgb: 243, 139, 168;
+
+  --bs-link-color: var(--ctp-blue);
+  --bs-link-color-rgb: 137, 180, 250;
+  --bs-link-hover-color: var(--ctp-lavender);
+  --bs-link-hover-color-rgb: 180, 190, 254;
+}
+
+.btn-primary {
+  background-color: var(--ctp-mauve);
+  border-color: var(--ctp-mauve);
+  color: var(--ctp-base);
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: var(--ctp-lavender);
+  border-color: var(--ctp-lavender);
+  color: var(--ctp-base);
+}
+
+.btn-secondary {
+  background-color: var(--ctp-surface1);
+  border-color: var(--ctp-surface1);
+  color: var(--ctp-text);
+}
+.btn-secondary:hover,
+.btn-secondary:focus {
+  background-color: var(--ctp-surface2);
+  border-color: var(--ctp-surface2);
+  color: var(--ctp-text);
+}
+
+.btn-outline-primary {
+  color: var(--ctp-mauve);
+  border-color: var(--ctp-mauve);
+}
+.btn-outline-primary:hover {
+  background-color: var(--ctp-mauve);
+  color: var(--ctp-base);
+}
+
+.form-control,
+.form-select {
+  background-color: var(--ctp-surface0);
+  color: var(--ctp-text);
+  border-color: var(--ctp-surface1);
+}
+.form-control:focus,
+.form-select:focus {
+  background-color: var(--ctp-surface0);
+  color: var(--ctp-text);
+  border-color: var(--ctp-mauve);
+  box-shadow: 0 0 0 0.25rem rgba(203, 166, 247, 0.25);
+}
+.form-control::placeholder {
+  color: var(--ctp-overlay1);
+}
+
+.card {
+  background-color: var(--ctp-surface0);
+  border-color: var(--ctp-surface1);
+  color: var(--ctp-text);
+}
+.card-header,
+.card-footer {
+  background-color: var(--ctp-mantle);
+  border-color: var(--ctp-surface1);
+}
+
+.navbar {
+  background-color: var(--ctp-mantle) !important;
+  border-bottom: 1px solid var(--ctp-surface1);
+}
+.navbar-brand,
+.nav-link {
+  color: var(--ctp-text) !important;
+}
+.nav-link:hover {
+  color: var(--ctp-mauve) !important;
+}
+
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--ctp-text);
+  --bs-table-border-color: var(--ctp-surface1);
+  --bs-table-striped-bg: var(--ctp-surface0);
+}
+
+.alert-success {
+  background-color: rgba(166, 227, 161, 0.1);
+  border-color: var(--ctp-green);
+  color: var(--ctp-green);
+}
+.alert-info {
+  background-color: rgba(137, 220, 235, 0.1);
+  border-color: var(--ctp-sky);
+  color: var(--ctp-sky);
+}
+.alert-warning {
+  background-color: rgba(249, 226, 175, 0.1);
+  border-color: var(--ctp-yellow);
+  color: var(--ctp-yellow);
+}
+.alert-danger {
+  background-color: rgba(243, 139, 168, 0.1);
+  border-color: var(--ctp-red);
+  color: var(--ctp-red);
+}
+
+code, kbd, pre, samp {
+  color: var(--ctp-peach);
+  background-color: var(--ctp-mantle);
+}
+
+.modal-content,
+.dropdown-menu {
+  background-color: var(--ctp-surface0);
+  border-color: var(--ctp-surface1);
+  color: var(--ctp-text);
+}
+.dropdown-item {
+  color: var(--ctp-text);
+}
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: var(--ctp-surface1);
+  color: var(--ctp-mauve);
+}
+
+::selection {
+  background-color: var(--ctp-mauve);
+  color: var(--ctp-base);
+}
+
+.kanidm_logo {
+  width: 100% !important;
+  height: auto !important;
+  max-width: 320px;
+  object-fit: contain;
+  margin-bottom: 1.5rem;
+}
+
+.form-signin form,
+.form-signin .form-control {
+  width: 100%;
+}

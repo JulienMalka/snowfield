@@ -5,7 +5,11 @@ in
 {
   services.kanidm = {
     enableServer = true;
-    package = pkgs.kanidmWithSecretProvisioning_1_9;
+    package = pkgs.kanidmWithSecretProvisioning_1_9.overrideAttrs (old: {
+      postPatch = (old.postPatch or "") + ''
+        cp ${./kanidm-theme/override.css} server/core/static/override.css
+      '';
+    });
     serverSettings = rec {
       domain = "auth.luj.fr";
       origin = "https://${domain}";
