@@ -18,6 +18,8 @@
       LEPTOS_SITE_ADDR = "127.0.0.1:3001";
       LEPTOS_SITE_ROOT = "${pkgs.luj-website}/share/luj-website/site";
       S3_BUCKET = "luj-org-notes";
+      ASSETS_BUCKET = "luj-org-notes";
+      ASSETS_PREFIX = "assets";
       AWS_ENDPOINT_URL = "https://s3.luj.fr";
       AWS_REGION = "paris";
     };
@@ -49,6 +51,8 @@
       LockPersonality = true;
     };
   };
+
+  services.nginx.recommendedBrotliSettings = true;
 
   services.nginx.virtualHosts."luj.fr" = {
     enableACME = true;
