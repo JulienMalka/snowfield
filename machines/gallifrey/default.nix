@@ -64,7 +64,7 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOXT9Init1MhKt4rjBANLq0t0bPww/WQZ96uB4AEDrml";
 
   programs.ssh.knownHosts."builder.luj.fr".publicKey =
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID2z+S1+Q1hvLP5BTr36ao/NTy4Szo2OGq2iguwL4/zp";
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHMepLlD+WZ620xPPjSm2EBBpWo31fIDbaoyVXDn2/0g";
 
   networking.networkmanager.dns = "systemd-resolved";
   services.resolved.enable = true;
@@ -95,7 +95,10 @@
   services.desktopManager.gnome.enable = true;
   services.displayManager.gdm.enable = true;
 
-  hardware.graphics.enable = true;
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true; # 32-bit GL/Vulkan (incl. nvidia) for Wine/DXVK under Bottles
+  };
   hardware.nvidia = {
     modesetting.enable = true;
     open = false;
@@ -147,7 +150,7 @@
     ];
   };
 
-  machine.meta.zones."luj.fr".subdomains.builder.A = [ "34.142.35.193" ];
+  machine.meta.zones."luj.fr".subdomains.builder.A = [ "34.13.40.72" ];
 
   networking.networkmanager.plugins = [ pkgs.networkmanager-openvpn ];
 
@@ -213,6 +216,7 @@
         ".gnupg"
         "Zotero"
         ".config/dconf"
+        ".local/share/bottles" # Bottles prefixes, runners, dxvk, app installs
         ".local/share/keyrings"
         ".cache/mu"
         "Maildir"
