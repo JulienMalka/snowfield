@@ -21,6 +21,12 @@ in
       spam-filter.enable = false;
       spam-filter.resource = lib.mkForce "";
       calendar.scheduling.inbound.auto-add = true;
+
+      jmap.max-concurrent-requests = 32;
+      jmap.max-concurrent-uploads = 16;
+
+      http.rate-limit.account = "100000/1m";
+      http.rate-limit.anonymous = "100000/1m";
       server = {
         http.hsts = true;
         max-connections = 8192;
@@ -118,7 +124,10 @@ in
         target = "mail.luj.fr.";
       }
     ];
-    TXT = [ "v=spf1 mx ra=postmaster -all" ];
+    TXT = [
+      "v=spf1 mx ra=postmaster -all"
+      "google-site-verification=r7Sp8fxg7mOz_kWSCpqpaMXEjipKwPX6aYB_cAk5rTU"
+    ];
     subdomains = {
       "mail" = {
         A = [ config.machine.meta.ips.public.ipv4 ];
@@ -253,6 +262,81 @@ in
       "mta-sts".CNAME = [ "mail.luj.fr." ];
     };
 
+  };
+
+  machine.meta.zones."iljuj.fr" = {
+    NS = lib.mkForce [
+      "ns1.luj.fr."
+      "ns2.luj.fr."
+    ];
+    MX = [
+      {
+        preference = 10;
+        exchange = "mail.luj.fr.";
+      }
+    ];
+    SRV = [
+      {
+        service = "jmap";
+        proto = "tcp";
+        port = 443;
+        target = "mail.luj.fr.";
+      }
+      {
+        service = "caldavs";
+        proto = "tcp";
+        port = 443;
+        target = "mail.luj.fr.";
+      }
+      {
+        service = "carddavs";
+        proto = "tcp";
+        port = 443;
+        target = "mail.luj.fr.";
+      }
+      {
+        service = "imaps";
+        proto = "tcp";
+        port = 993;
+        target = "mail.luj.fr.";
+      }
+      {
+        service = "imap";
+        proto = "tcp";
+        port = 143;
+        target = "mail.luj.fr.";
+      }
+      {
+        service = "submissions";
+        proto = "tcp";
+        port = 465;
+        target = "mail.luj.fr.";
+      }
+      {
+        service = "submission";
+        proto = "tcp";
+        port = 587;
+        target = "mail.luj.fr.";
+      }
+    ];
+    TXT = [ "v=spf1 mx ra=postmaster -all" ];
+    subdomains = {
+      "mail".CNAME = [ "mail.luj.fr." ];
+      "202605e._domainkey".TXT = [
+        "v=DKIM1; k=ed25519; h=sha256; p=5GEYqLE+K1g92kPXlnf7oAuHuz+gaZqJtsROpj6Nx+Y="
+      ];
+      "202605r._domainkey".TXT = [
+        "v=DKIM1; k=rsa; h=sha256; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvFAk2WGbr6TEkSDFDh1YiKH+2y3wReq4FFb66FNh0FEMUMZ5Glf94utE+oaWDD8ZIGcfX9yrVxI6fncri57tf5b6txnKJ93fMsadCikfms9DkYRzDQ8Q+0Yqrm5fviK/w01JwmkG4KmtFN82Jxum+ZBFacp/Zir/1f7FINAu7NFgXlF5NspK1SVt3eWMrtRS889g2takts5BxMak4d8Tbe3dp6WkPV8v6LO7cbiTU6mMknBrLw0VEezv5tdN78X37/tCoWJdsToH4N3F+doUY+XGy/apWze0mSiDyXQAB1+vGYPT98u/glWHdhnymfpPyzgGbb0OolbrxKM+pdV66wIDAQAB"
+      ];
+      "_mta-sts".TXT = [ "v=STSv1; id=17428246908727558748" ];
+      "_dmarc".TXT = [
+        "v=DMARC1; p=reject; rua=mailto:postmaster@iljuj.fr; ruf=mailto:postmaster@iljuj.fr"
+      ];
+      "_smtp._tls".TXT = [ "v=TLSRPTv1; rua=mailto:postmaster@iljuj.fr" ];
+      "autoconfig".CNAME = [ "mail.luj.fr." ];
+      "autodiscover".CNAME = [ "mail.luj.fr." ];
+      "mta-sts".CNAME = [ "mail.luj.fr." ];
+    };
   };
 
   networking.firewall.allowedTCPPorts = [
