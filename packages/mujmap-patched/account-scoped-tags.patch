@@ -1,0 +1,201 @@
+diff --git a/src/local.rs b/src/local.rs
+index 0264af9..ef8a652 100644
+--- a/src/local.rs
++++ b/src/local.rs
+@@ -172,6 +172,48 @@ impl Local {
+         self.db.all_tags()
+     }
+ 
++    /// Return the set of tags applied to any message that lives **exclusively**
++    /// in this account's maildir.
++    ///
++    /// Used by `sync::sync()` to compute the set of tags that may need new
++    /// mailboxes created on the JMAP server. The actual push at
++    /// `remote::update()` is already safe — it only assigns mailbox memberships
++    /// for mailboxes that exist on this principal — so this function's only
++    /// job is to keep mailbox *creation* scoped to the current account.
++    ///
++    /// Notmuch deduplicates by Message-Id and unions tags across all files of
++    /// a deduped message. A list mail received on two principals (same
++    /// Message-Id, two file copies) therefore carries the tags of *both*
++    /// account's mailbox structures on the single notmuch object. Including
++    /// such messages here would cause one account to try to create the other
++    /// account's mailboxes (e.g. dgnum trying to create `Archive/K-Fet/Chefs`
++    /// because the deduped ens copy contributes that tag). Filtering to
++    /// exclusive-residents avoids that smear.
++    ///
++    /// Trade-off: a tag applied *only* to a cross-account-deduped message
++    /// won't trigger mailbox creation on any principal. This matches the
++    /// design intent — cross-account tag propagation is out of scope here
++    /// and should be handled by an explicit allowlist mechanism if needed.
++    pub fn all_tags_in_account(&self) -> Result<HashSet<String>, notmuch::Error> {
++        let query = self.db.create_query(&self.all_mail_query)?;
++        query.set_omit_excluded(Exclude::False);
++        let messages = query.search_messages()?;
++        let mut tags = HashSet::new();
++        for message in messages {
++            let exclusive = message
++                .filenames()
++                .into_iter()
++                .all(|p| p.starts_with(&self.mail_cur_dir));
++            if !exclusive {
++                continue;
++            }
++            for tag in message.tags() {
++                tags.insert(tag);
++            }
++        }
++        Ok(tags)
++    }
++
+     /// Begin atomic database operation.
+     pub fn begin_atomic(&self) -> Result<(), notmuch::Error> {
+         self.db.begin_atomic()
+@@ -270,10 +312,22 @@ impl Local {
+             .collect()
+     }
+ 
++    /// Update `email`'s notmuch tags to reflect `tags` as the new ground truth
++    /// for THIS principal, while preserving tags that belong to other
++    /// principals on cross-account-deduplicated notmuch documents.
++    ///
++    /// `owned_tags` is the set of tag names that map to this principal's
++    /// mailboxes (plus role-derived keyword tags like `unread`/`flagged`/
++    /// `replied`/`passed`/`draft` which are universal across principals).
++    /// Tag removal is restricted to this set, so a tag like `Archive/FAI`
++    /// which lives on the dgnum principal but not on malka will NOT be
++    /// stripped from a deduped doc when mujmap-malka syncs — preserving
++    /// dgnum's view of the message.
+     pub fn update_email_tags(
+         &self,
+         email: &Email,
+         tags: HashSet<&str>,
++        owned_tags: &HashSet<String>,
+     ) -> Result<(), notmuch::Error> {
+         if let Some(message) = self.get_message(&email.message_id)? {
+             // Build diffs for tags and apply them.
+@@ -283,6 +337,9 @@ impl Local {
+                 .iter()
+                 .map(|tag| tag.as_str())
+                 .filter(|tag| !tags.contains(tag) && !AUTOMATIC_TAGS.contains(tag))
++                // Only remove tags this principal "owns" — leaves foreign-
++                // principal tags untouched on deduped docs.
++                .filter(|tag| owned_tags.contains(*tag))
+                 .collect();
+             let tags_to_add: Vec<&str> = tags
+                 .iter()
+diff --git a/src/sync.rs b/src/sync.rs
+index 2a829b6..2bb2954 100644
+--- a/src/sync.rs
++++ b/src/sync.rs
+@@ -459,6 +459,38 @@ pub fn sync(
+                     })
+                     .collect::<Result<HashMap<_, _>>>()?;
+ 
++                // Tags this principal "owns" — i.e., tags whose presence/
++                // absence on a notmuch document should be authoritatively
++                // determined by this account's JMAP state. update_email_tags
++                // is restricted to modifying tags in this set; foreign tags
++                // (from other principals' mailbox names on cross-account-
++                // deduped docs) are preserved untouched.
++                let owned_tags: HashSet<String> = {
++                    let mut t: HashSet<String> = mailboxes
++                        .mailboxes_by_id
++                        .values()
++                        .map(|m| m.tag.clone())
++                        .collect();
++                    // Universal JMAP keyword-derived tags.
++                    t.insert("draft".to_string());
++                    t.insert("flagged".to_string());
++                    t.insert("passed".to_string());
++                    t.insert("replied".to_string());
++                    t.insert("unread".to_string());
++                    // Role-keyword config tags (active when the corresponding
++                    // mailbox doesn't exist, but harmless to include either way).
++                    if !config.tags.spam.is_empty() {
++                        t.insert(config.tags.spam.clone());
++                    }
++                    if !config.tags.important.is_empty() {
++                        t.insert(config.tags.important.clone());
++                    }
++                    if !config.tags.phishing.is_empty() {
++                        t.insert(config.tags.phishing.clone());
++                    }
++                    t
++                };
++
+                 // Update local emails with remote tags.
+                 //
+                 // XXX: If the server contains two or more of a message which notmuch considers a
+@@ -496,7 +528,7 @@ pub fn sync(
+                     }
+ 
+                     local
+-                        .update_email_tags(local_email, tags)
++                        .update_email_tags(local_email, tags, &owned_tags)
+                         .context(UpdateLocalEmailSnafu {})?;
+ 
+                     // In `update' notmuch may have renamed the file on disk when setting maildir
+@@ -574,12 +606,45 @@ pub fn sync(
+                     &new_email.cache_path.to_string_lossy(),
+                     &new_email.maildir_path.to_string_lossy(),
+                 );
+-                fs::rename(&new_email.cache_path, &new_email.maildir_path).context(
+-                    RenameMailFileSnafu {
+-                        from: &new_email.cache_path,
+-                        to: &new_email.maildir_path,
+-                    },
+-                )?;
++                // Try rename first (cheap when cache and maildir are on the
++                // same mount). Fall back to copy+remove if rename trips on
++                // EXDEV — happens when the two paths are on different bind
++                // mounts even if backed by the same underlying filesystem
++                // (e.g. NixOS impermanence setups where ~/.cache/mujmap and
++                // ~/Maildir are separate bind mounts of /persistent). Without
++                // this fallback, mujmap aborts mid-sync and leaves the
++                // maildir entry as the pre-rename symlink into the cache.
++                if let Err(e) = fs::rename(&new_email.cache_path, &new_email.maildir_path) {
++                    // EXDEV = 18 on Linux. std::io::ErrorKind::CrossesDevices is
++                    // still unstable as of 1.70, so we test the raw errno
++                    // directly to avoid pulling in `libc` just for one constant.
++                    let is_exdev = e.raw_os_error() == Some(18);
++                    if !is_exdev {
++                        return Err(e).context(RenameMailFileSnafu {
++                            from: &new_email.cache_path,
++                            to: &new_email.maildir_path,
++                        });
++                    }
++                    // CRITICAL: maildir_path is currently a SYMLINK pointing to
++                    // cache_path (created earlier in the sync as a placeholder).
++                    // `fs::copy(cache, symlink)` would follow the symlink and
++                    // write cache_path to itself (no-op data, just a touch),
++                    // then `fs::remove_file(cache)` would leave a broken
++                    // symlink in the maildir. Unlink the symlink first so the
++                    // copy creates a real file at maildir_path.
++                    fs::remove_file(&new_email.maildir_path).context(RemoveMailFileSnafu {
++                        path: &new_email.maildir_path,
++                    })?;
++                    fs::copy(&new_email.cache_path, &new_email.maildir_path).context(
++                        RenameMailFileSnafu {
++                            from: &new_email.cache_path,
++                            to: &new_email.maildir_path,
++                        },
++                    )?;
++                    fs::remove_file(&new_email.cache_path).context(RemoveMailFileSnafu {
++                        path: &new_email.cache_path,
++                    })?;
++                }
+             }
+ 
+             // Delete the destroyed email files.
+@@ -594,8 +659,9 @@ pub fn sync(
+     if !args.dry_run {
+         // Ensure that for every tag, there exists a corresponding mailbox.
+         let tags_with_missing_mailboxes: Vec<String> = local
+-            .all_tags()
++            .all_tags_in_account()
+             .context(IndexTagsSnafu {})?
++            .into_iter()
+             .filter(|tag| {
+                 let tag = tag.as_str();
+                 // Any tags which *can* be mapped to a keyword do not require a mailbox.

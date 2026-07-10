@@ -3,7 +3,14 @@ inputs: lib:
 let
   overlay-unstable = arch: _final: _prev: {
     stable = import inputs.nixpkgs { system = arch; };
-    unstable = import inputs.unstable { system = arch; };
+    unstable = import inputs.unstable {
+      system = arch;
+      config.allowUnfreePredicate =
+        pkg:
+        builtins.elem (lib.getName pkg) [
+          "open-webui"
+        ];
+    };
   };
 in
 
@@ -75,16 +82,17 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           gh-proxy = prev.pkgs.callPackage ../packages/gh-proxy { };
           cal-proxy = prev.pkgs.callPackage ../packages/cal-proxy { };
           cal-diy = prev.pkgs.callPackage ../packages/cal-diy { };
+          terminus = prev.pkgs.callPackage ../packages/terminus { };
+          widget-server = prev.pkgs.callPackage ../packages/widget-server { };
+          whisperx-api-server = prev.pkgs.callPackage ../packages/whisperx-api-server { };
           reka = prev.pkgs.callPackage ../packages/reka { };
           mujmap-patched = prev.pkgs.callPackage ../packages/mujmap-patched { };
+          litellm-patched = prev.pkgs.unstable.callPackage ../packages/litellm-patched { };
           inherit (prev.pkgs.unstable) river;
           claude-code = prev.pkgs.callPackage "${inputs.llm-agents}/packages/claude-code/package.nix" {
             wrapBuddy = prev.pkgs.callPackage "${inputs.llm-agents}/packages/wrapBuddy/package.nix" { };
           };
-          luj-website = prev.pkgs.callPackage "${inputs.luj-website}/nix/package.nix" {
-            src = inputs.luj-website;
-            inherit (prev.unstable) cargo-leptos;
-          };
+          luj-website = (import "${inputs.luj-website}").packages.${system}.default;
         })
 
         (

@@ -25,7 +25,6 @@
     ./litellm.nix
     ./open-webui.nix
     ./terminus.nix
-    #    ./widget.nix
   ];
 
   users.users.julien.linger = true;
