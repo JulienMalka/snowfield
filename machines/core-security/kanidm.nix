@@ -36,7 +36,16 @@ in
           "luj"
           "camille"
         ];
-        "lasuite-meet_users".members = [ "luj" ];
+        "lasuite-meet_users".members = [
+          "luj"
+          "camille"
+        ];
+        "inference_users".members = [
+          "luj"
+          "camille"
+          "sofia"
+        ];
+        "litellm_admins".members = [ "luj" ];
       };
 
       persons.luj = {
@@ -54,13 +63,41 @@ in
           "grafana_admins"
           "headscale_users"
           "lasuite-meet_users"
+          "inference_users"
+          "litellm_admins"
         ];
       };
 
       persons.camille = {
         displayName = "Camille";
+        mailAddresses = [ "camillemondon@online.fr" ];
         groups = [
           "headscale_users"
+          "inference_users"
+        ];
+      };
+
+      persons.sofia = {
+        displayName = "Sofia Bobadilla";
+        mailAddresses = [ "sofbob@kth.se" ];
+        groups = [
+          "inference_users"
+        ];
+      };
+
+      persons.aman = {
+        displayName = "Aman Sharma";
+        mailAddresses = [ "amansha@kth.se" ];
+        groups = [
+          "inference_users"
+        ];
+      };
+
+      persons.martin = {
+        displayName = "Martin Monperrus";
+        mailAddresses = [ "monperrus@kth.se" ];
+        groups = [
+          "inference_users"
         ];
       };
 
@@ -152,6 +189,45 @@ in
           ];
         };
 
+        litellm = {
+          displayName = "LiteLLM";
+          originUrl = "https://inference.luj.fr/sso/callback";
+          originLanding = "https://inference.luj.fr/";
+          basicSecretFile = config.age.secrets.kanidm-oauth2-litellm.path;
+          allowInsecureClientDisablePkce = true;
+          preferShortUsername = true;
+          scopeMaps.inference_users = [
+            "openid"
+            "email"
+            "profile"
+            "groups"
+          ];
+          claimMaps.litellm_role = {
+            joinType = "ssv";
+            valuesByGroup.litellm_admins = [ "proxy_admin" ];
+          };
+        };
+
+        open-webui = {
+          displayName = "Open WebUI";
+          originUrl = "https://chat.inference.luj.fr/oauth/oidc/callback";
+          originLanding = "https://chat.inference.luj.fr/";
+          basicSecretFile = config.age.secrets.kanidm-oauth2-open-webui.path;
+          allowInsecureClientDisablePkce = true;
+          preferShortUsername = true;
+          scopeMaps.inference_users = [
+            "openid"
+            "email"
+            "profile"
+            "groups"
+            "offline_access"
+          ];
+          claimMaps.litellm_role = {
+            joinType = "ssv";
+            valuesByGroup.litellm_admins = [ "proxy_admin" ];
+          };
+        };
+
         step = {
           public = true;
           displayName = "Step CA";
@@ -204,4 +280,15 @@ in
     file = ./kanidm-oauth2-lasuite-meet.age;
     owner = "kanidm";
   };
+  age.secrets.kanidm-oauth2-litellm = {
+    file = ./kanidm-oauth2-litellm.age;
+    owner = "kanidm";
+  };
+  age.secrets.kanidm-oauth2-open-webui = {
+    file = ./kanidm-oauth2-open-webui.age;
+    owner = "kanidm";
+  };
+
+  environment.etc."kanidm/luj-logo.png".source = ./kanidm-theme/luj-logo.png;
+
 }

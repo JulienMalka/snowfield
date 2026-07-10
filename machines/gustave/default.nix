@@ -22,6 +22,10 @@
     ./luj-website.nix
     ./windmill.nix
     ./lasuite-meet.nix
+    ./litellm.nix
+    ./open-webui.nix
+    ./terminus.nix
+    #    ./widget.nix
   ];
 
   users.users.julien.linger = true;
