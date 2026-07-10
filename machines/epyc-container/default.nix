@@ -8,7 +8,9 @@
 {
   imports = [
     ./home-julien.nix
+    ./home-windmill.nix
     ./forgejo-runner.nix
+    ./windmill-worker.nix
   ];
 
   boot.loader.grub.enable = false;
@@ -24,6 +26,7 @@
     ips = {
       public.ipv6 = "2001:bc8:38ee:100:f837:7fff:fe77:7154";
       public.ipv4 = "192.168.0.1";
+      vpn.ipv4 = "100.100.45.8";
     };
     profiles = with profiles; [
       server
@@ -40,7 +43,7 @@
     ${pkgs.coreutils}/bin/ln -fs $systemConfig/init /sbin/init
   '';
 
-  deployment.targetHost = lib.mkForce "2001:bc8:38ee:100:f837:7fff:fe77:7154";
+  #  deployment.targetHost = lib.mkForce "2001:bc8:38ee:100:f837:7fff:fe77:7154";
 
   networking.useHostResolvConf = false;
 
