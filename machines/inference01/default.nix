@@ -10,7 +10,6 @@
     ./home-julien.nix
     ./vllm.nix
     ./whisperx.nix
-    ./nginx.nix
     ./hotspot.nix
     "${inputs.nixos-dgx-spark}/modules/dgx-spark.nix"
   ];

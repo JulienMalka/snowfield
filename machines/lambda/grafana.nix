@@ -24,6 +24,11 @@ in
       security = {
         admin_user = "admin";
         admin_password = "$__file{/run/credentials/grafana.service/ADMIN_PASSWORD}";
+        # 26.05 dropped the default; keep the historical value so the secrets
+        # already encrypted in the DB stay readable. Every secret here comes
+        # from a file provider at runtime, so nothing sensitive rides on it.
+        # Rotating means re-encrypting the DB — see the 26.05 release notes.
+        secret_key = "SW2YcwTIb9zpOOhoPsMm";
       };
 
       "auth.generic_oauth" = {

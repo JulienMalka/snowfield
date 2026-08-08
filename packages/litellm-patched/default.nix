@@ -13,6 +13,10 @@ let
   prisma-with-litellm-client = python3Packages.prisma.overridePythonAttrs (old: {
     pname = "prisma-with-litellm-client";
 
+    # The installed dist-info is still named "prisma"; the metadata check would
+    # look for a distribution matching our renamed pname and fail.
+    dontCheckPythonMetadata = true;
+
     nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ prisma_6 ];
 
     env = (old.env or { }) // {
@@ -119,7 +123,16 @@ litellm.overridePythonAttrs (old: {
 
   postFixup = (old.postFixup or "") + ''
     wrapProgram "$out/bin/litellm" \
-      --prefix PATH : ${lib.makeBinPath [ openssl ]} \
+      --prefix PATH : ${
+        lib.makeBinPath [
+          openssl
+          # litellm shells out to `prisma db push` at startup to sync the DB
+          # schema (see --use_prisma_db_push in machines/gustave/litellm.nix).
+          # Without the CLI on PATH that subprocess call raises FileNotFoundError
+          # and the schema silently never migrates.
+          prisma_6
+        ]
+      } \
       --set PRISMA_QUERY_ENGINE_BINARY     ${prisma-engines_6}/bin/query-engine \
       --set PRISMA_QUERY_ENGINE_LIBRARY    ${prisma-engines_6}/lib/libquery_engine.node \
       --set PRISMA_SCHEMA_ENGINE_BINARY    ${prisma-engines_6}/bin/schema-engine \

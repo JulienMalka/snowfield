@@ -86,6 +86,15 @@
     KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c900", MODE="0666"
   '';
 
+  # Pulls recordings off the TP-7 while it sits plugged in. Runs as a user
+  # service, since this machine has a graphical session; its udev rules also
+  # keep gvfs off the device, which would otherwise win the race for the USB
+  # interface whenever the recorder switches to MTP mode.
+  services.tp7-sync = {
+    enable = true;
+    settings.destination = "/home/julien/Recordings/tp7";
+  };
+
   boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
   services.xserver = {
     enable = true;

@@ -225,7 +225,7 @@
 
   programs.reka =
     let
-      emacs-config-pkgs = (import inputs.emacs-config).packages.${pkgs.system};
+      emacs-config-pkgs = (import inputs.emacs-config).packages.${pkgs.stdenv.hostPlatform.system};
       emacs-config = emacs-config-pkgs.default;
       emacs-initEl = emacs-config-pkgs.initEl;
       emacs-earlyInitDir = emacs-config-pkgs.earlyInitDir;

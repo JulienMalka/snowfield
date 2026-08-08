@@ -23,10 +23,11 @@ with lib;
           variant = "macchiato";
         };
       };
+      gtk4.theme = config.gtk.theme;
     };
     qt = {
       enable = true;
-      platformTheme.name = "gnome";
+      platformTheme.name = "adwaita";
       style.name = "adwaita-dark";
     };
   };

@@ -171,7 +171,18 @@ in
           "$(cat ${config.age.secrets.kanidm-oauth2-litellm.path})" \
           > /run/litellm/oidc.env
       '';
-      ExecStart = "${pkgs.litellm-patched}/bin/litellm --config ${configFile} --port 4000 --host 127.0.0.1";
+      # --use_prisma_db_push: the default migration path needs the
+      # `litellm_proxy_extras` package, which isn't in nixpkgs; without it
+      # litellm logs "Database migration failed but continuing startup" and the
+      # schema drifts silently across upgrades until queries hit missing
+      # columns. `prisma db push` derives the schema from litellm's own
+      # schema.prisma instead, so no extra package is needed.
+      #
+      # Caveat: db push runs with --accept-data-loss, so it syncs the DB *down*
+      # as well as up. Before rolling litellm back to an older version, set
+      # DISABLE_SCHEMA_UPDATE=true, or the downgrade will drop the columns and
+      # tables the newer schema had added.
+      ExecStart = "${pkgs.litellm-patched}/bin/litellm --config ${configFile} --port 4000 --host 127.0.0.1 --use_prisma_db_push";
       Restart = "on-failure";
       RestartSec = 5;
       WorkingDirectory = "/var/lib/litellm";

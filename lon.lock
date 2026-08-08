@@ -75,10 +75,10 @@
       "type": "Git",
       "fetchType": "git",
       "branch": "main",
-      "revision": "13dcb2bdc5b31f67981a60ff8edb578ca8d1b85d",
+      "revision": "b48c8a45628485bbe678927f84981479bf5371f4",
       "url": "ssh://forgejo@git.luj.fr/luj/emacs-config.git",
-      "hash": "sha256-YE101PpScfmff32kn0cBn3sYK0UP+6s14UQB6zaRVb4=",
-      "lastModified": 1778523445,
+      "hash": "sha256-QQ7C/dV4roL+LgAVTh/9yvxmOdFErNYzMjVW9rjJn0Y=",
+      "lastModified": 1785749447,
       "submodules": false
     },
     "git-hooks": {
@@ -96,10 +96,10 @@
       "fetchType": "tarball",
       "owner": "nix-community",
       "repo": "home-manager",
-      "branch": "release-25.11",
-      "revision": "5c0f63f8d55040a7eed69df7e3fcdd15dfb5a04c",
-      "url": "https://github.com/nix-community/home-manager/archive/5c0f63f8d55040a7eed69df7e3fcdd15dfb5a04c.tar.gz",
-      "hash": "sha256-rK0507bDuWBrZo+0zts9bCs/+RRUEHuvFE5DHWPxX/Q="
+      "branch": "release-26.05",
+      "revision": "3cd22efe6471dc7365c822bd9ad73a21e55f38fb",
+      "url": "https://github.com/nix-community/home-manager/archive/3cd22efe6471dc7365c822bd9ad73a21e55f38fb.tar.gz",
+      "hash": "sha256-qajyHfZY29G2oEQk+uHxmsJcRoBUBXP9maTpFlwP/dI="
     },
     "home-manager-unstable": {
       "type": "GitHub",
@@ -107,9 +107,9 @@
       "owner": "nix-community",
       "repo": "home-manager",
       "branch": "master",
-      "revision": "c8f0b8ed441c95bfeaf33555e7631044bb09f384",
-      "url": "https://github.com/nix-community/home-manager/archive/c8f0b8ed441c95bfeaf33555e7631044bb09f384.tar.gz",
-      "hash": "sha256-dk8lIk0UnO8GD3e7e3HM1vSYXpbEDmhy67w7KztfdCg="
+      "revision": "10174c0fe02099dbdee2bf918f1a92659fc9217f",
+      "url": "https://github.com/nix-community/home-manager/archive/10174c0fe02099dbdee2bf918f1a92659fc9217f.tar.gz",
+      "hash": "sha256-SnFtgFiAhlwOlaEuFZoVYjOxqfYoiLtHJoFGuyEgHUE="
     },
     "impermanence": {
       "type": "GitHub",
@@ -127,9 +127,9 @@
       "owner": "nix-community",
       "repo": "lanzaboote",
       "branch": "master",
-      "revision": "dbe5112de965bbbbff9f0729a9789c20a65ab047",
-      "url": "https://github.com/nix-community/lanzaboote/archive/dbe5112de965bbbbff9f0729a9789c20a65ab047.tar.gz",
-      "hash": "sha256-1TnGN26vnCEQk5m4AavJZxGZTb/6aZyphemRPRwFUfs="
+      "revision": "f142433bdbeffd2af51231e0aff7162c2bfbf6ef",
+      "url": "https://github.com/nix-community/lanzaboote/archive/f142433bdbeffd2af51231e0aff7162c2bfbf6ef.tar.gz",
+      "hash": "sha256-5/wlGe3a4ucxvYq2cuAAsuSFWKcIttQ6En83MLlV2jY="
     },
     "lila": {
       "type": "GitHub",
@@ -147,9 +147,9 @@
       "owner": "numtide",
       "repo": "llm-agents.nix",
       "branch": "main",
-      "revision": "2296793afdc076c2fd495ac21b914c26a9f2bf0e",
-      "url": "https://github.com/numtide/llm-agents.nix/archive/2296793afdc076c2fd495ac21b914c26a9f2bf0e.tar.gz",
-      "hash": "sha256-MeaRZmdyd9FaM1BY+GIp/OkhYdqqYd03kIAmoNWlz0E="
+      "revision": "6e9f6664e72433966557ab83a7c3e8c0bbf64a44",
+      "url": "https://github.com/numtide/llm-agents.nix/archive/6e9f6664e72433966557ab83a7c3e8c0bbf64a44.tar.gz",
+      "hash": "sha256-WDGDMsPXxceC0k1ktqcobmwE4GCTrzzULUKlp1CzSKQ="
     },
     "lon": {
       "type": "GitHub",
@@ -165,10 +165,10 @@
       "type": "Git",
       "fetchType": "git",
       "branch": "main",
-      "revision": "c3f2ad1b71e4d403717075bf16ce53099ca9671b",
+      "revision": "72b21263fa006aacd356d69c46493986ebafa4be",
       "url": "ssh://forgejo@git.luj.fr/luj/luj-website.git",
-      "hash": "sha256-utExRss2gxMBlXiHb7f+dPXRLKj5ocIZTbYkT5QFRs0=",
-      "lastModified": 1778451494,
+      "hash": "sha256-tRcvoUgmLr1bJ6Do1/k0V691V64A4TjI1bIDVJ6zYbA=",
+      "lastModified": 1785488340,
       "submodules": false
     },
     "niks3": {
@@ -236,10 +236,10 @@
       "fetchType": "tarball",
       "owner": "nixos",
       "repo": "nixpkgs",
-      "branch": "nixos-25.11",
-      "revision": "0590cd39f728e129122770c029970378a79d076a",
-      "url": "https://github.com/nixos/nixpkgs/archive/0590cd39f728e129122770c029970378a79d076a.tar.gz",
-      "hash": "sha256-BHoB/XpbqoZkVYZCfXJXfkR+GXFqwb/4zbWnOr2cRcU="
+      "branch": "nixos-26.05",
+      "revision": "445d861c6d31b4af0c79d8d4be2331f762a361d7",
+      "url": "https://github.com/nixos/nixpkgs/archive/445d861c6d31b4af0c79d8d4be2331f762a361d7.tar.gz",
+      "hash": "sha256-HFQhkQcl5D1hUNoen3SGHCSFCt2Bg6uP+HgbrnA3InQ="
     },
     "noctalia": {
       "type": "GitHub",
@@ -250,16 +250,6 @@
       "revision": "cd4ec47e962ce9c0615471244e47c35e516f0a23",
       "url": "https://github.com/noctalia-dev/noctalia-shell/archive/cd4ec47e962ce9c0615471244e47c35e516f0a23.tar.gz",
       "hash": "sha256-esDIZSkoB57G87x/ylDs3UCMpIPLelHOGKEwaoyh34U="
-    },
-    "pam-multiparty": {
-      "type": "Git",
-      "fetchType": "git",
-      "branch": "main",
-      "revision": "c596ead1d56537c93241f9429e3e073d17f60a21",
-      "url": "ssh://forgejo@git.luj.fr/luj/pam-multiparty.git",
-      "hash": "sha256-Rlv9PzJ3az6O+R6WidwQQ1mtCDbIQxS2zrc9WaN6bDk=",
-      "lastModified": 1778569032,
-      "submodules": false
     },
     "preservation": {
       "type": "GitHub",
@@ -307,9 +297,9 @@
       "owner": "nixos",
       "repo": "nixpkgs",
       "branch": "nixos-unstable",
-      "revision": "567a49d1913ce81ac6e9582e3553dd90a955875f",
-      "url": "https://github.com/nixos/nixpkgs/archive/567a49d1913ce81ac6e9582e3553dd90a955875f.tar.gz",
-      "hash": "sha256-lrp67w8AulE9Ks53n27I45ADSzbOCn4H+CNW1Ck8B+8="
+      "revision": "624af665418d3c65d544145b4d34ad696439570e",
+      "url": "https://github.com/nixos/nixpkgs/archive/624af665418d3c65d544145b4d34ad696439570e.tar.gz",
+      "hash": "sha256-m0pDuRJG7EDo9ri+4Ksu83VsI+PlxNC9lNBfydejce4="
     }
   }
 }

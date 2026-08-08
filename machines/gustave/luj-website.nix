@@ -57,10 +57,31 @@
   services.nginx.virtualHosts."luj.fr" = {
     enableACME = true;
     forceSSL = true;
+    # HSTS: everything under luj.fr is already HTTPS-only (forceSSL on
+    # every vhost), so committing browsers to HTTPS is safe. No `preload`
+    # — that is an irreversible submission to the browser preload list.
+    extraConfig = ''
+      add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    '';
     locations."/" = {
       proxyPass = "http://127.0.0.1:3001";
       proxyWebsockets = true;
     };
+  };
+
+  # Canonical host is the apex; redirect www so the two never split link
+  # equity or serve duplicate content. DNS for this subdomain is derived
+  # automatically from the vhost declaration (same as the other
+  # *.luj.fr vhosts on this machine).
+  services.nginx.virtualHosts."www.luj.fr" = {
+    enableACME = true;
+    forceSSL = true;
+    # NB: not `globalRedirect` — the luj.nginx module (modules/nginx)
+    # unconditionally materialises an (empty) `locations."/"` on every
+    # vhost, and `globalRedirect` renders its own separate `location /`,
+    # producing a duplicate `location "/"` that nginx rejects. Expressing
+    # the redirect as a location merges into that single `/` block.
+    locations."/".return = "301 https://luj.fr$request_uri";
   };
 
   services.nginx.virtualHosts."iljuj.fr" = {

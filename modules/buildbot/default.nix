@@ -23,11 +23,16 @@ in
             buildPythonPackage =
               args:
               pyPrev.buildPythonPackage (
-                args
-                // lib.optionalAttrs (args ? pname && args.pname == "buildbot-gitea" && !(args ? pyproject)) {
-                  pyproject = true;
-                  build-system = [ pyPrev.setuptools ];
-                }
+                # Packages using the finalAttrs pattern pass a function, which
+                # has no attributes to patch — hand those through untouched.
+                if !(builtins.isAttrs args) then
+                  args
+                else
+                  args
+                  // lib.optionalAttrs (args ? pname && args.pname == "buildbot-gitea" && !(args ? pyproject)) {
+                    pyproject = true;
+                    build-system = [ pyPrev.setuptools ];
+                  }
               );
           };
         };

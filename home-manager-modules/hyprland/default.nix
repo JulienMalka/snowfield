@@ -18,6 +18,7 @@ with lib;
   config = mkIf cfg.enable {
     wayland.windowManager.hyprland = {
       enable = true;
+      configType = "hyprlang";
       package = pkgs.unstable.hyprland;
       systemd = {
         enable = true;
@@ -159,7 +160,7 @@ with lib;
 
     home.packages = with pkgs; [
       qt6.qtwayland
-      libsForQt5.qt5.qtwayland
+      qt5.qtwayland
       hyprpaper
     ];
 

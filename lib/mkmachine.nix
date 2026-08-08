@@ -87,8 +87,18 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           whisperx-api-server = prev.pkgs.callPackage ../packages/whisperx-api-server { };
           reka = prev.pkgs.callPackage ../packages/reka { };
           mujmap-patched = prev.pkgs.callPackage ../packages/mujmap-patched { };
+          tp7-sync = prev.pkgs.callPackage ../packages/tp7-sync { };
           litellm-patched = prev.pkgs.unstable.callPackage ../packages/litellm-patched { };
           inherit (prev.pkgs.unstable) river;
+          eca = prev.pkgs.callPackage "${inputs.llm-agents}/packages/eca/package.nix" {
+            wrapBuddy = prev.pkgs.callPackage "${inputs.llm-agents}/packages/wrapBuddy/package.nix" { };
+            versionCheckHomeHook =
+              prev.pkgs.callPackage "${inputs.llm-agents}/packages/versionCheckHomeHook/package.nix"
+                { };
+            flake.lib = import "${inputs.llm-agents}/lib/default.nix" {
+              inputs.nixpkgs.lib = prev.lib;
+            };
+          };
           claude-code = prev.pkgs.callPackage "${inputs.llm-agents}/packages/claude-code/package.nix" {
             wrapBuddy = prev.pkgs.callPackage "${inputs.llm-agents}/packages/wrapBuddy/package.nix" { };
           };
@@ -101,8 +111,8 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
             generated = import "${inputs.nix-index-database}/generated.nix";
             nix-index-database =
               (prev.fetchurl {
-                url = generated.url + prev.stdenv.system;
-                hash = generated.hashes.${prev.stdenv.system};
+                url = generated.url + prev.stdenv.hostPlatform.system;
+                hash = generated.hashes.${prev.stdenv.hostPlatform.system};
               }).overrideAttrs
                 {
                   __structuredAttrs = true;

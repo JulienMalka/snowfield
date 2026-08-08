@@ -1,3 +1,4 @@
+# [[file:../../org/20260720T150500==public--how-my-backups-work__infra_backups.org::*The other end of the pipe][The other end of the pipe:1]]
 { pkgs, ... }:
 {
   users.users.borg = {
@@ -13,7 +14,9 @@
   users.groups.borg = { };
 
   environment.systemPackages = with pkgs; [ borgbackup ];
+  # The other end of the pipe:1 ends here
 
+  # [[file:../../org/20260720T150500==public--how-my-backups-work__infra_backups.org::*The other end of the pipe][The other end of the pipe:2]]
   preservation = {
     enable = true;
     preserveAt."/persistent" = {
@@ -28,3 +31,4 @@
   };
 
 }
+# The other end of the pipe:2 ends here

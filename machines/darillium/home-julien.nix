@@ -144,6 +144,7 @@
 
     home.packages = with pkgs; [
       claude-code
+      eca
       slack
       git-absorb
       git-autofixup
@@ -181,16 +182,10 @@
 
     services.swayidle = {
       enable = true;
-      events = [
-        {
-          event = "before-sleep";
-          command = "${pkgs.waylock}/bin/waylock -fork-on-lock";
-        }
-        {
-          event = "lock";
-          command = "${pkgs.waylock}/bin/waylock -fork-on-lock";
-        }
-      ];
+      events = {
+        before-sleep = "${pkgs.waylock}/bin/waylock -fork-on-lock";
+        lock = "${pkgs.waylock}/bin/waylock -fork-on-lock";
+      };
       timeouts = [
         {
           timeout = 300;

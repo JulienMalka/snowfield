@@ -28,61 +28,61 @@ with lib;
       enable = true;
       enableDefaultConfig = false;
 
-      matchBlocks =
+      settings =
         lib.mapAttrs (name: v: {
-          hostname = if v.ips ? "vpn" then v.ips.vpn.ipv4 else v.ips.public.ipv4;
-          user = v.sshUser;
-          port = v.sshPort;
-          extraOptions.HostKeyAlias = "${name}.luj";
-          proxyCommand = "${pkgs.step-cli}/bin/step ssh proxycommand --provisioner 'Luj SSO' --ca-url ${caConfig.stepCAUrl} --root /etc/step/certs/root_ca.crt %r %h %p";
+          HostName = if v.ips ? "vpn" then v.ips.vpn.ipv4 else v.ips.public.ipv4;
+          User = v.sshUser;
+          Port = v.sshPort;
+          HostKeyAlias = "${name}.luj";
+          ProxyCommand = "${pkgs.step-cli}/bin/step ssh proxycommand --provisioner 'Luj SSO' --ca-url ${caConfig.stepCAUrl} --root /etc/step/certs/root_ca.crt %r %h %p";
         }) lib.snowfield
         // {
           "*" = {
-            forwardAgent = false;
-            addKeysToAgent = "no";
-            compression = false;
-            serverAliveInterval = 0;
-            serverAliveCountMax = 3;
-            hashKnownHosts = false;
-            userKnownHostsFile = "~/.ssh/known_hosts ~/.ssh/known_hosts_ca";
-            controlMaster = "no";
-            controlPath = "~/.ssh/master-%r@%n:%p";
-            controlPersist = "no";
+            ForwardAgent = false;
+            AddKeysToAgent = "no";
+            Compression = false;
+            ServerAliveInterval = 0;
+            ServerAliveCountMax = 3;
+            HashKnownHosts = false;
+            UserKnownHostsFile = "~/.ssh/known_hosts ~/.ssh/known_hosts_ca";
+            ControlMaster = "no";
+            ControlPath = "~/.ssh/master-%r@%n:%p";
+            ControlPersist = "no";
           };
           sas = {
-            hostname = "sas.eleves.ens.fr";
-            user = "jmalka";
+            HostName = "sas.eleves.ens.fr";
+            User = "jmalka";
           };
           router = {
-            hostname = "vpn.saumon.network";
+            HostName = "vpn.saumon.network";
           };
           mails = {
-            hostname = "192.168.0.76";
-            proxyJump = "router";
+            HostName = "192.168.0.76";
+            ProxyJump = "router";
           };
 
           proxy-telecom = {
-            hostname = "ssh.enst.fr";
-            user = "jmalka";
+            HostName = "ssh.enst.fr";
+            User = "jmalka";
           };
           ferrari = {
-            hostname = "195.154.212.97";
+            HostName = "195.154.212.97";
           };
           lame24 = {
-            hostname = "lame24.enst.fr";
-            user = "jmalka";
-            proxyJump = "proxy-telecom";
+            HostName = "lame24.enst.fr";
+            User = "jmalka";
+            ProxyJump = "proxy-telecom";
           };
 
           epyc = {
-            hostname = "epyc.infra.newtype.fr";
-            user = "luj";
-            proxyJump = "tower";
+            HostName = "epyc.infra.newtype.fr";
+            User = "luj";
+            ProxyJump = "tower";
           };
 
           exps = {
-            hostname = "192.168.0.240";
-            proxyJump = "router";
+            HostName = "192.168.0.240";
+            ProxyJump = "router";
           };
 
         };

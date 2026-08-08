@@ -17,14 +17,41 @@
   librsvg,
   pixman,
   openssl,
-  prisma,
-  prisma-engines,
+  prisma_6,
+  prisma-engines_6,
   inter,
   webappUrl ? "https://meet.luj.fr",
 }:
 
 let
-  yarn-berry = yarn-berry_4;
+  # nixpkgs 26.05 makes the unsuffixed `prisma`/`prisma-engines` point at
+  # Prisma 7, which dropped the Rust query engine entirely (no
+  # libquery_engine.node / query-engine, only schema-engine). cal.diy bundles
+  # @prisma/client@6.x, so pin to the Prisma 6 engines/CLI that still ship the
+  # query engine this build wires up via PRISMA_QUERY_ENGINE_* below.
+  prisma = prisma_6;
+  prisma-engines = prisma-engines_6;
+
+  # nixpkgs 26.05 ships yarn-berry 4.14.1, which bumped LOCKFILE_VERSION to 9
+  # and added LOCKFILE_MIGRATION_RULES (approvedGitRepositories, enableScripts)
+  # whose selectors (`v < 9`) match cal.diy's version-8 lockfile. That makes
+  # yarn try to migrate and re-resolve the whole tree against the registry at
+  # build time, which fails in the offline sandbox — and nixpkgs' patched
+  # yarnBerryConfigHook first throws the confusing "expects lockfile version 8,
+  # but found lockfile version 8". Pin yarn to 4.12.0 — the version cal.diy
+  # declares in packageManager / .yarn/releases — whose migration rules only
+  # fire for `v < 8`, so a v8 lockfile is left untouched and resolution stays
+  # fully offline. The rust-based fetchYarnBerryDeps is unaffected (cacheVersion
+  # 10 is constant across berry 4.x), so the offlineCache hash is unchanged.
+  yarn-berry = yarn-berry_4.overrideAttrs (_old: {
+    version = "4.12.0";
+    src = fetchFromGitHub {
+      owner = "yarnpkg";
+      repo = "berry";
+      tag = "@yarnpkg/cli/4.12.0";
+      hash = "sha256-HuUqk4g+MaDI7r1cKAwAtQeNrJ6G9T9IdPgybv2W2pU=";
+    };
+  });
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "cal-diy";

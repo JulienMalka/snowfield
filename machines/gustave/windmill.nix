@@ -17,7 +17,7 @@ let
     git
     gh
     nix
-    nixfmt-rfc-style
+    nixfmt
     nixpkgs-review
     bash
     bubblewrap

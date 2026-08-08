@@ -1,3 +1,4 @@
+# [[file:../../org/20260720T151500==public--navidrome__infra_module.org::*The knobs][The knobs:1]]
 {
   lib,
   pkgs,
@@ -30,7 +31,9 @@ in
     nginx.enable = mkEnableOption "activate nginx";
     nginx.subdomain = mkOption { type = types.str; };
   };
+  # The knobs:1 ends here
 
+  # [[file:../../org/20260720T151500==public--navidrome__infra_module.org::*The service][The service:1]]
   config = mkIf cfg.enable (mkMerge [
     {
 
@@ -56,3 +59,4 @@ in
     (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))
   ]);
 }
+# The service:1 ends here

@@ -24,6 +24,7 @@ with lib;
 
     programs.neovim = {
       enable = true;
+      withRuby = true;
       package = pkgs.neovim-unwrapped;
       viAlias = true;
       vimAlias = true;

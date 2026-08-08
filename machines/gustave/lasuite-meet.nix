@@ -34,8 +34,7 @@ in
   services.lasuite-meet = {
     enable = true;
     domain = "visio.luj.fr";
-    backendPackage = pkgs.unstable.lasuite-meet;
-    frontendPackage = pkgs.unstable.lasuite-meet-frontend;
+    package = pkgs.unstable.lasuite-meet;
     settings.LIVEKIT_API_URL = "https://visio.luj.fr/livekit";
     postgresql.createLocally = true;
     redis.createLocally = true;

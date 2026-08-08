@@ -25,7 +25,7 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
+        nixpkgs=/nix/store/dkxbk4sjs8p64vybnaby5mj3nl1rr31g-source -p 
         'callPackage 
         /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh ./result-akhaten'
@@ -67,7 +67,7 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
+        nixpkgs=/nix/store/dkxbk4sjs8p64vybnaby5mj3nl1rr31g-source -p 
         'callPackage 
         /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh ./result-arcadia'
@@ -109,7 +109,7 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
+        nixpkgs=/nix/store/dkxbk4sjs8p64vybnaby5mj3nl1rr31g-source -p 
         'callPackage 
         /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh ./result-biblios'
@@ -151,7 +151,7 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
+        nixpkgs=/nix/store/dkxbk4sjs8p64vybnaby5mj3nl1rr31g-source -p 
         'callPackage 
         /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh 
@@ -195,7 +195,7 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
+        nixpkgs=/nix/store/dkxbk4sjs8p64vybnaby5mj3nl1rr31g-source -p 
         'callPackage 
         /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh 
@@ -238,7 +238,7 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
+        nixpkgs=/nix/store/dkxbk4sjs8p64vybnaby5mj3nl1rr31g-source -p 
         'callPackage 
         /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh 
@@ -282,7 +282,7 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
+        nixpkgs=/nix/store/dkxbk4sjs8p64vybnaby5mj3nl1rr31g-source -p 
         'callPackage 
         /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh 
@@ -325,7 +325,7 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
+        nixpkgs=/nix/store/dkxbk4sjs8p64vybnaby5mj3nl1rr31g-source -p 
         'callPackage 
         /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh ./result-fischer'
@@ -367,7 +367,7 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
+        nixpkgs=/nix/store/dkxbk4sjs8p64vybnaby5mj3nl1rr31g-source -p 
         'callPackage 
         /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh 
@@ -410,7 +410,7 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
+        nixpkgs=/nix/store/dkxbk4sjs8p64vybnaby5mj3nl1rr31g-source -p 
         'callPackage 
         /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh ./result-gustave'
@@ -453,7 +453,7 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
+        nixpkgs=/nix/store/dkxbk4sjs8p64vybnaby5mj3nl1rr31g-source -p 
         'callPackage 
         /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh 
@@ -496,7 +496,7 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
+        nixpkgs=/nix/store/dkxbk4sjs8p64vybnaby5mj3nl1rr31g-source -p 
         'callPackage 
         /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh ./result-jacques'
@@ -538,7 +538,7 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
+        nixpkgs=/nix/store/dkxbk4sjs8p64vybnaby5mj3nl1rr31g-source -p 
         'callPackage 
         /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh ./result-lambda'
@@ -581,7 +581,7 @@ jobs:
       name: Push sources to cache
       run: "SOURCES=$(nix-instantiate --eval --strict -E 'builtins.concatStringsSep
         \" \" (map toString (builtins.attrValues (import ./lon.nix)))')\nSOURCES=${SOURCES%\\\
-        \"}\nSOURCES=${SOURCES#\\\"}\nnix-shell -I nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source
+        \"}\nSOURCES=${SOURCES#\\\"}\nnix-shell -I nixpkgs=/nix/store/dkxbk4sjs8p64vybnaby5mj3nl1rr31g-source
         \\\n  -p 'callPackage /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' \\\n  -p util-linux \\\n  --run \"bash scripts/push-to-cache.sh $SOURCES\"\
         \n"
@@ -639,7 +639,7 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
       run: nix-shell -I 
-        nixpkgs=/nix/store/ds2x1l37fidk2b65c4cwg77vp976fbd4-source -p 
+        nixpkgs=/nix/store/dkxbk4sjs8p64vybnaby5mj3nl1rr31g-source -p 
         'callPackage 
         /nix/store/m9qfxk88xxcmqqzyr108v0mkhl277c4m-source/nix/packages/niks3.nix
         {}' -p util-linux --run 'bash scripts/push-to-cache.sh ./result-tower'

@@ -4,17 +4,23 @@ let
 in
 {
   services.kanidm = {
-    enableServer = true;
+    server.enable = true;
     package = pkgs.kanidmWithSecretProvisioning_1_9.overrideAttrs (old: {
       postPatch = (old.postPatch or "") + ''
         cp ${./kanidm-theme/override.css} server/core/static/override.css
       '';
     });
-    serverSettings = rec {
+    server.settings = rec {
       domain = "auth.luj.fr";
       origin = "https://${domain}";
       bindaddress = "127.0.0.1:8443";
-      trust_x_forward_for = true;
+      # kanidm 1.9 replaced the boolean `trust_x_forward_for` with a tagged
+      # enum naming *which* proxies may set the header. nginx runs on this
+      # host and proxies to 127.0.0.1:8443, so only loopback is trusted.
+      http_client_address_info.x-forward-for = [
+        "127.0.0.1"
+        "::1"
+      ];
       tls_chain = "${certificate.directory}/fullchain.pem";
       tls_key = "${certificate.directory}/key.pem";
     };
@@ -96,6 +102,14 @@ in
       persons.martin = {
         displayName = "Martin Monperrus";
         mailAddresses = [ "monperrus@kth.se" ];
+        groups = [
+          "inference_users"
+        ];
+      };
+
+      persons.gregor = {
+        displayName = "Grégor Quétel";
+        mailAddresses = [ "gregor.quetel@telecom-paris.fr" ];
         groups = [
           "inference_users"
         ];

@@ -11,6 +11,9 @@ in
 {
   services.stalwart = {
     enable = true;
+    # Enabled well before 26.05: keeps the dataDir at /var/lib/stalwart-mail
+    # and the non-legacy (blob-in-db) layout that is already on disk.
+    stateVersion = "24.11";
     package = pkgs.callPackage "${inputs.snowfield-private}/pkgs/stalwart" { };
     settings = {
       authentication.fallback-admin = {
