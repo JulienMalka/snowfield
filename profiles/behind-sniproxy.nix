@@ -1,12 +1,9 @@
 { config, lib, ... }:
 
 let
-  # Gateways allowed to speak the PROXY protocol to us: the Paris router and
-  # the Hetzner Proxmox host (LAN side), both kept during the migration.
-  allowedUpstreams = [
-    "2a01:e0a:de4:a0e1:4bb5:9275:6010:e9b5/128"
-    "2a01:4f9:3090:2b8c::1/128"
-  ];
+  # Gateway allowed to speak the PROXY protocol to us: the Hetzner Proxmox
+  # host, LAN side.
+  allowedUpstreams = [ "2a01:4f9:3090:2b8c::1/128" ];
 in
 {
   services.nginx = {
