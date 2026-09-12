@@ -4,12 +4,14 @@
 
   machines = {
 
-    router = {
+    # Hetzner Proxmox host: gateway of the infrastructure and secondary
+    # name server.
+    pve = {
       ips = {
         public.ipv4 = "77.42.114.11";
-        public.ipv6 = "2a01:e0a:de4:a0e0:2f0:cbff:feef:e12a";
-        vpn.ipv4 = "100.100.45.1";
-        vpn.ipv6 = "fd7a:115c:a1e0::1";
+        public.ipv6 = "2a01:4f9:3090:2b8c::2";
+        vpn.ipv4 = "100.100.45.2";
+        vpn.ipv6 = "fd7a:115c:a1e0::2";
       };
     };
 

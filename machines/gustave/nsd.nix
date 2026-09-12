@@ -76,11 +76,11 @@ lib.mkMerge [
         data = builtins.toString value;
         provideXFR = [
           "100.100.45.0/24 NOKEY"
-          "fd7a:115c:a1e0::1/128 NOKEY"
+          "${lib.snowfield.pve.ips.vpn.ipv6}/128 NOKEY"
         ];
         notify = [
           "${lib.snowfield.akhaten.ips.vpn.ipv4} NOKEY"
-          "fd7a:115c:a1e0::1 NOKEY"
+          "${lib.snowfield.pve.ips.vpn.ipv6} NOKEY"
         ];
       }) (evalZones zonesFromConfig);
     };

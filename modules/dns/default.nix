@@ -23,8 +23,8 @@ let
         NS = lib.mkDefault NS;
         subdomains = {
           ns1 = lib.mkDefault {
-            A = [ lib.snowfield.router.ips.public.ipv4 ];
-            AAAA = [ lib.snowfield.router.ips.public.ipv6 ];
+            A = [ lib.snowfield.pve.ips.public.ipv4 ];
+            AAAA = [ lib.snowfield.pve.ips.public.ipv6 ];
           };
           ns2 = lib.mkDefault {
             A = [ lib.snowfield.akhaten.ips.public.ipv4 ];
