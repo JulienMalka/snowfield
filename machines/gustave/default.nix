@@ -51,7 +51,7 @@
       monitoring
     ];
     ips = {
-      public.ipv4 = "82.67.34.230";
+      public.ipv4 = "77.42.114.11";
       local.ipv4 = "192.168.0.90";
       vpn.ipv4 = "100.100.45.24";
       public.ipv6 = "2a01:e0a:de4:a0e1:eb2:aaaa::45";

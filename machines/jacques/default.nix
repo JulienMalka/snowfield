@@ -25,7 +25,7 @@
       # Home NAT, like the other VMs on the cluster. The v6 continues the
       # hand-assigned eb2:aaaa:: series (gustave ::45, biblios ::46) and is
       # what vm-simple-network statically configures on ens18.
-      public.ipv4 = "82.67.34.230";
+      public.ipv4 = "77.42.114.11";
       public.ipv6 = "2a01:e0a:de4:a0e1:eb2:aaaa::47";
       # TODO(julien): confirm once the VM has joined the tailnet — this is the
       # address the dead GCP jacques held, which its node entry still reserves.

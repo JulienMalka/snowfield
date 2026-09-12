@@ -6,7 +6,7 @@
 
     router = {
       ips = {
-        public.ipv4 = "82.67.34.230";
+        public.ipv4 = "77.42.114.11";
         public.ipv6 = "2a01:e0a:de4:a0e0:2f0:cbff:feef:e12a";
         vpn.ipv4 = "100.100.45.1";
         vpn.ipv6 = "fd7a:115c:a1e0::1";
@@ -16,7 +16,7 @@
     doma-backups = {
       subdomains = [ "doma-backups.julienmalka.me" ];
       ips = {
-        public.ipv4 = "82.67.34.230";
+        public.ipv4 = "77.42.114.11";
         local.ipv4 = "192.168.0.250";
         public.ipv6 = "2a01:e0a:de4:a0e1:6b86:c2c:2141:6702";
       };
@@ -25,7 +25,7 @@
     proxmox-nixos-infra = {
       subdomains = [ "proxmox-nixos-update-logs.saumon.network" ];
       ips = {
-        public.ipv4 = "82.67.34.230";
+        public.ipv4 = "77.42.114.11";
         local.ipv4 = "192.168.0.177";
         public.ipv6 = "2a01:e0a:de4:a0e1:eb2:caa1::78";
       };
@@ -34,7 +34,7 @@
     doma-zulip = {
       subdomains = [ "zulip.julienmalka.me" ];
       ips = {
-        public.ipv4 = "82.67.34.230";
+        public.ipv4 = "77.42.114.11";
         local.ipv4 = "192.168.0.187";
         public.ipv6 = "2a01:e0a:de4:a0e1:6830:ddff:fe52:a444";
       };
@@ -43,7 +43,7 @@
     pve1 = {
       subdomains = [ "pve1.luj" ];
       ips = {
-        public.ipv4 = "82.67.34.230";
+        public.ipv4 = "77.42.114.11";
         local.ipv4 = "192.168.1.1";
         vpn.ipv4 = "100.100.45.3";
         public.ipv6 = "2a01:e0a:de4:a0e1:d250:99ff:fefa:b62";
@@ -54,7 +54,7 @@
     };
     pve2 = {
       ips = {
-        public.ipv4 = "82.67.34.230";
+        public.ipv4 = "77.42.114.11";
         local.ipv4 = "192.168.1.2";
         vpn.ipv4 = "100.100.45.15";
         public.ipv6 = "2a01:e0a:de4:a0e1:aaa1:59ff:fec7:1d6";
@@ -66,7 +66,7 @@
     pve3 = {
       subdomains = [ "pve3.luj" ];
       ips = {
-        public.ipv4 = "82.67.34.230";
+        public.ipv4 = "77.42.114.11";
         local.ipv4 = "192.168.1.3";
         vpn.ipv4 = "100.100.45.16";
         public.ipv6 = "2a01:e0a:de4:a0e1:aaa1:59ff:fec1:aa10";
@@ -78,7 +78,7 @@
     pve4 = {
       subdomains = [ "pve4.luj" ];
       ips = {
-        public.ipv4 = "82.67.34.230";
+        public.ipv4 = "77.42.114.11";
         local.ipv4 = "192.168.1.4";
         vpn.ipv4 = "100.100.45.17";
         public.ipv6 = "2a01:e0a:de4:a0e1:d250:99ff:fefa:b76";
@@ -90,7 +90,7 @@
     saves-paris = {
       subdomains = [ "saves-paris.luj" ];
       ips = {
-        public.ipv4 = "82.67.34.230";
+        public.ipv4 = "77.42.114.11";
         local.ipv4 = "192.168.4.5";
         vpn.ipv4 = "100.100.45.4";
         public.ipv6 = "2a01:e0a:de4:a0e1:3af3:abff:fe6a:1f54";
