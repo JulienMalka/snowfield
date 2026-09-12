@@ -1,12 +1,17 @@
-{ config, ... }:
+{ config, lib, ... }:
 
 let
-  allowedUpstream = "2a01:e0a:de4:a0e1:4bb5:9275:6010:e9b5/128";
+  # Gateways allowed to speak the PROXY protocol to us: the Paris router and
+  # the Hetzner Proxmox host (LAN side), both kept during the migration.
+  allowedUpstreams = [
+    "2a01:e0a:de4:a0e1:4bb5:9275:6010:e9b5/128"
+    "2a01:4f9:3090:2b8c::1/128"
+  ];
 in
 {
   services.nginx = {
     appendHttpConfig = ''
-      set_real_ip_from ${allowedUpstream};
+      ${lib.concatMapStrings (u: "set_real_ip_from ${u};\n") allowedUpstreams}
       real_ip_header proxy_protocol;
     '';
 
@@ -52,10 +57,10 @@ in
   };
 
   networking.nftables.enable = true;
-  # Only requests from the router must be accepted by proxy protocol listeners
-  # in order to prevent ip spoofing.
+  # Only requests from the gateways must be accepted by proxy protocol
+  # listeners in order to prevent ip spoofing.
   networking.firewall.extraInputRules = ''
-    ip6 saddr ${allowedUpstream} tcp dport 444 accept
+    ip6 saddr { ${lib.concatStringsSep ", " allowedUpstreams} } tcp dport 444 accept
   '';
 
 }
