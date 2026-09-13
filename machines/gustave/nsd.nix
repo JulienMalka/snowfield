@@ -77,10 +77,13 @@ lib.mkMerge [
         provideXFR = [
           "100.100.45.0/24 NOKEY"
           "${lib.snowfield.pve.ips.vpn.ipv6}/128 NOKEY"
+          # Paris router: still the delegated ns1 until the glue moves to pve
+          "fd7a:115c:a1e0::1/128 NOKEY"
         ];
         notify = [
           "${lib.snowfield.akhaten.ips.vpn.ipv4} NOKEY"
           "${lib.snowfield.pve.ips.vpn.ipv6} NOKEY"
+          "fd7a:115c:a1e0::1 NOKEY"
         ];
       }) (evalZones zonesFromConfig);
     };
