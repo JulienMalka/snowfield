@@ -25,7 +25,7 @@
       public.ipv4 = "77.42.114.11";
       local.ipv4 = "192.168.0.66";
       vpn.ipv4 = "100.100.45.26";
-      public.ipv6 = "2a01:e0a:de4:a0e1:be24:11ff:fe09:638d";
+      public.ipv6 = "2a01:4f9:3090:2b8c:be24:11ff:fe09:638d";
       vpn.ipv6 = "fd7a:115c:a1e0::1a";
     };
 
