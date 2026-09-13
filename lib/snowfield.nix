@@ -20,7 +20,7 @@
       ips = {
         public.ipv4 = "77.42.114.11";
         local.ipv4 = "192.168.0.250";
-        public.ipv6 = "2a01:e0a:de4:a0e1:6b86:c2c:2141:6702";
+        public.ipv6 = "2a01:4f9:3090:2b8c:be24:11ff:fed1:e997";
       };
     };
 
