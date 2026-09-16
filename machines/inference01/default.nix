@@ -36,25 +36,6 @@
 
   nixpkgs.overlays = [
     (import "${inputs.nixos-dgx-spark}/overlays/fixes.nix")
-    (_final: prev: {
-      pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
-        (python-final: python-prev: {
-          opentelemetry-exporter-otlp-proto-grpc =
-            python-prev.opentelemetry-exporter-otlp-proto-grpc.overridePythonAttrs
-              (old: {
-                doCheck = false;
-                propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
-                  python-final.opentelemetry-sdk
-                ];
-              });
-          jupyter-server = python-prev.jupyter-server.overridePythonAttrs { doCheck = false; };
-          # 2000+ tests take 40 min under qemu-user and three of them trip
-          # pytest-timeout's 20 s limit (run 157). Not worth it on this host.
-          fastapi = python-prev.fastapi.overridePythonAttrs { doCheck = false; };
-          inline-snapshot = python-prev.inline-snapshot.overridePythonAttrs { doCheck = false; };
-        })
-      ];
-    })
   ];
 
   disko = import ./disko.nix;
