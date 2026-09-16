@@ -16,13 +16,14 @@
   boot.loader.grub.enable = false;
   boot.isNspawnContainer = true;
   # aarch64 builds go to bld3 (native) instead of qemu-user emulation, which
-  # was 10-20x slower per core and OOM-killed the host (run 155).
+  # was 10-20x slower per core and OOM-killed the host (run 155). The runner
+  # logs in with /root/.ssh/id_ed25519 as luj, a trusted user there.
   nix.distributedBuilds = true;
   nix.settings.builders-use-substitutes = true;
   nix.buildMachines = [
     {
       hostName = "bld3.m.ntd.one";
-      sshUser = "nix-remote-builder";
+      sshUser = "luj";
       protocol = "ssh-ng";
       sshKey = "/root/.ssh/id_ed25519";
       publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU40MThKQ3lIamR6R0JGODRYK3Q3YW5rM09VdzRMWnRtZ3Z0L29wZ2ExdGU=";
