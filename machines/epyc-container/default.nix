@@ -32,8 +32,9 @@
         "big-parallel"
         "uid-range"
       ];
-      # 8 cores, 15 GB RAM: keep the box to a few jobs at a time.
-      maxJobs = 4;
+      # 8 cores, 15 GB RAM: one derivation at a time. Four concurrent CUDA
+      # builds (cupy, magma, triton-llvm) OOM-killed it in run 163.
+      maxJobs = 1;
       speedFactor = 2;
     }
   ];

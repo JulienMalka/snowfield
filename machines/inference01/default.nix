@@ -51,6 +51,14 @@
               export MAX_JOBS=4
             '';
           });
+          # nixpkgs sets both to NIX_BUILD_CORES; 8 nvcc frontends OOM'd bld3
+          # (run 163).
+          cupy = python-prev.cupy.overridePythonAttrs (old: {
+            preConfigure = (old.preConfigure or "") + ''
+              export CUPY_NUM_BUILD_JOBS=2
+              export CUPY_NUM_NVCC_THREADS=2
+            '';
+          });
         })
       ];
     })
