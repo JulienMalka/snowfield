@@ -32,6 +32,12 @@ let
     }
   ];
 
+  # Resolve nixpkgs and niks3 from lon.nix on the runner instead of baking
+  # store paths into the generated YAML, which go stale on every lock bump.
+  niks3Shell =
+    script:
+    "nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in p.mkShell { packages = [ (p.callPackage \"\${i.niks3}/nix/packages/niks3.nix\" { }) p.util-linux ]; }' --run ${lib.escapeShellArg script}";
+
   reportStatus = machine: {
     name = "Report status to GitHub";
     "if" = "always()";
@@ -81,10 +87,7 @@ in
             SOURCES=$(nix-instantiate --eval --strict -E 'builtins.concatStringsSep " " (map toString (builtins.attrValues (import ./lon.nix)))')
             SOURCES=''${SOURCES%\"}
             SOURCES=''${SOURCES#\"}
-            nix-shell -I nixpkgs=${inputs.nixpkgs} \
-              -p 'callPackage ${inputs.niks3}/nix/packages/niks3.nix {}' \
-              -p util-linux \
-              --run "bash scripts/push-to-cache.sh $SOURCES"
+            ${niks3Shell "bash scripts/push-to-cache.sh $SOURCES"}
           '';
         }
       ];
@@ -106,7 +109,7 @@ in
           NIKS3_SERVER_URL = "https://cache.luj.fr";
           NIKS3_AUTH_TOKEN = nix-actions.lib.secret "NIKS3_API_TOKEN";
         };
-        run = "nix-shell -I nixpkgs=${inputs.nixpkgs} -p 'callPackage ${inputs.niks3}/nix/packages/niks3.nix {}' -p util-linux --run 'bash scripts/push-to-cache.sh ./result-${machine}'";
+        run = niks3Shell "bash scripts/push-to-cache.sh ./result-${machine}";
       }
       (reportStatus machine)
     ];
