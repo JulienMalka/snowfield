@@ -38,6 +38,12 @@ let
     script:
     "nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in p.mkShell { packages = [ (p.callPackage \"\${i.niks3}/nix/packages/niks3.nix\" { }) p.util-linux ]; }' --run ${lib.escapeShellArg script}";
 
+  # Keep niks3 on HTTP/1.1: over HTTP/2 Go multiplexes all concurrent NAR
+  # uploads onto one TCP connection, which caps the push at the throughput of
+  # a single connection through the tunnel to biblios (~1-3 MB/s). biblios's
+  # nginx has h2 disabled for s3.luj.fr too; this guards against regressions.
+  noHttp2 = "http2client=0";
+
   reportStatus = machine: {
     name = "Report status to GitHub";
     "if" = "always()";
@@ -82,6 +88,7 @@ in
             GIT_SSH_COMMAND = "ssh -i ~/.ssh/deploy_key";
             NIKS3_SERVER_URL = "https://cache.luj.fr";
             NIKS3_AUTH_TOKEN = nix-actions.lib.secret "NIKS3_API_TOKEN";
+            GODEBUG = noHttp2;
           };
           run = ''
             SOURCES=$(nix-instantiate --eval --strict -E 'builtins.concatStringsSep " " (map toString (builtins.attrValues (import ./lon.nix)))')
@@ -111,6 +118,7 @@ in
         env = {
           NIKS3_SERVER_URL = "https://cache.luj.fr";
           NIKS3_AUTH_TOKEN = nix-actions.lib.secret "NIKS3_API_TOKEN";
+          GODEBUG = noHttp2;
         };
         run = niks3Shell "bash scripts/push-to-cache.sh ./result-${machine}";
       }

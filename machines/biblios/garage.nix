@@ -54,6 +54,12 @@ in
   services.nginx.virtualHosts."${api_domain}" = {
     enableACME = true;
     forceSSL = true;
+    # No HTTP/2 for the S3 API: Go clients (niks3, rclone) multiplex every
+    # concurrent upload onto a single TCP connection when h2 is offered, and
+    # one connection over the tunnel tops out around 1-3 MB/s. With HTTP/1.1
+    # each upload gets its own connection and the aggregate scales
+    # (measured 2026-09-16 from epyc-container: 1.6 MB/s -> 20 MB/s).
+    http2 = false;
     locations."/" = {
       proxyPass = "http://127.0.0.1:3900";
       extraConfig = ''

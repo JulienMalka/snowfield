@@ -21,6 +21,7 @@ jobs:
       name: Build akhaten
       run: nix-build -A checks.machines.akhaten --out-link result-akhaten
     - env:
+        GODEBUG: http2client=0
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
@@ -62,6 +63,7 @@ jobs:
       name: Build arcadia
       run: nix-build -A checks.machines.arcadia --out-link result-arcadia
     - env:
+        GODEBUG: http2client=0
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
@@ -103,6 +105,7 @@ jobs:
       name: Build biblios
       run: nix-build -A checks.machines.biblios --out-link result-biblios
     - env:
+        GODEBUG: http2client=0
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
@@ -144,6 +147,7 @@ jobs:
       name: Build core-data
       run: nix-build -A checks.machines.core-data --out-link result-core-data
     - env:
+        GODEBUG: http2client=0
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
@@ -186,6 +190,7 @@ jobs:
       run: nix-build -A checks.machines.core-security --out-link 
         result-core-security
     - env:
+        GODEBUG: http2client=0
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
@@ -227,6 +232,7 @@ jobs:
       name: Build darillium
       run: nix-build -A checks.machines.darillium --out-link result-darillium
     - env:
+        GODEBUG: http2client=0
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
@@ -269,6 +275,7 @@ jobs:
       run: nix-build -A checks.machines.epyc-container --out-link 
         result-epyc-container
     - env:
+        GODEBUG: http2client=0
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
@@ -310,6 +317,7 @@ jobs:
       name: Build fischer
       run: nix-build -A checks.machines.fischer --out-link result-fischer
     - env:
+        GODEBUG: http2client=0
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
@@ -351,6 +359,7 @@ jobs:
       name: Build gallifrey
       run: nix-build -A checks.machines.gallifrey --out-link result-gallifrey
     - env:
+        GODEBUG: http2client=0
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
@@ -392,6 +401,7 @@ jobs:
       name: Build gustave
       run: nix-build -A checks.machines.gustave --out-link result-gustave
     - env:
+        GODEBUG: http2client=0
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
@@ -434,6 +444,7 @@ jobs:
       run: nix-build -A checks.machines.inference01 --out-link 
         result-inference01
     - env:
+        GODEBUG: http2client=0
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
@@ -475,6 +486,7 @@ jobs:
       name: Build jacques
       run: nix-build -A checks.machines.jacques --out-link result-jacques
     - env:
+        GODEBUG: http2client=0
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
@@ -516,6 +528,7 @@ jobs:
       name: Build lambda
       run: nix-build -A checks.machines.lambda --out-link result-lambda
     - env:
+        GODEBUG: http2client=0
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
@@ -557,6 +570,7 @@ jobs:
         /dev/null
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
+        GODEBUG: http2client=0
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push sources to cache
@@ -617,6 +631,7 @@ jobs:
       name: Build tower
       run: nix-build -A checks.machines.tower --out-link result-tower
     - env:
+        GODEBUG: http2client=0
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
