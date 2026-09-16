@@ -84,7 +84,14 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           cal-diy = prev.pkgs.callPackage ../packages/cal-diy { };
           terminus = prev.pkgs.callPackage ../packages/terminus { };
           widget-server = prev.pkgs.callPackage ../packages/widget-server { };
-          whisperx-api-server = prev.pkgs.callPackage ../packages/whisperx-api-server { };
+          # Same Python as nixpkgs' vllm (python313Packages), so inference01
+          # carries one torch/triton stack instead of building the CUDA
+          # stack twice (3.13 for vllm, 3.14 for whisperx) - which OOM-killed
+          # the emulated aarch64 CI build on 2026-09-16.
+          whisperx-api-server = prev.pkgs.callPackage ../packages/whisperx-api-server {
+            python3 = prev.pkgs.python313;
+            python3Packages = prev.pkgs.python313Packages;
+          };
           reka = prev.pkgs.callPackage ../packages/reka { };
           mujmap-patched = prev.pkgs.callPackage ../packages/mujmap-patched { };
           tp7-sync = prev.pkgs.callPackage ../packages/tp7-sync { };
