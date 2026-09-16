@@ -177,30 +177,12 @@
         sshKey = "/home/julien/.ssh/id_ed25519";
         speedFactor = 2;
       }
-      {
-        hostName = "builder.luj.fr";
-        maxJobs = 5;
-        systems = [
-          "x86_64-linux"
-        ];
-        sshUser = "remote";
-        supportedFeatures = [
-          "kvm"
-          "nixos-test"
-          "big-parallel"
-        ];
-        sshKey = "/home/julien/.ssh/id_ed25519";
-        speedFactor = 2;
-      }
 
     ];
   };
 
   programs.ssh.knownHosts."epyc.infra.newtype.fr".publicKey =
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOXT9Init1MhKt4rjBANLq0t0bPww/WQZ96uB4AEDrml";
-
-  programs.ssh.knownHosts."builder.luj.fr".publicKey =
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHMepLlD+WZ620xPPjSm2EBBpWo31fIDbaoyVXDn2/0g";
 
   environment.systemPackages = with pkgs; [
     android-tools

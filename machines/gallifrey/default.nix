@@ -63,9 +63,6 @@
   programs.ssh.knownHosts."epyc.infra.newtype.fr".publicKey =
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOXT9Init1MhKt4rjBANLq0t0bPww/WQZ96uB4AEDrml";
 
-  programs.ssh.knownHosts."builder.luj.fr".publicKey =
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHMepLlD+WZ620xPPjSm2EBBpWo31fIDbaoyVXDn2/0g";
-
   networking.networkmanager.dns = "systemd-resolved";
   services.resolved.enable = true;
   #services.userborn.enable = true;
@@ -140,26 +137,8 @@
         sshKey = "/home/julien/.ssh/id_ed25519";
         speedFactor = 2;
       }
-      {
-        hostName = "builder.luj.fr";
-        maxJobs = 5;
-        systems = [
-          "x86_64-linux"
-        ];
-        sshUser = "remote";
-        supportedFeatures = [
-          "kvm"
-          "nixos-test"
-          "big-parallel"
-        ];
-        sshKey = "/home/julien/.ssh/id_ed25519";
-        speedFactor = 2;
-      }
-
     ];
   };
-
-  machine.meta.zones."luj.fr".subdomains.builder.A = [ "34.13.40.72" ];
 
   networking.networkmanager.plugins = [ pkgs.networkmanager-openvpn ];
 
