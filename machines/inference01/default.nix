@@ -35,6 +35,25 @@
 
   nixpkgs.overlays = [
     (import "${inputs.nixos-dgx-spark}/overlays/fixes.nix")
+    # The CUDA stack is built on bld3 (8 cores, 15 GB): nvcc jobs take ~6 GB
+    # for vllm and ~2 GB for torch, so cap their parallelism there. The
+    # dgx-spark overlay sets MAX_JOBS=8 for vllm assuming a 128 GB Spark.
+    (_final: prev: {
+      pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+        (_python-final: python-prev: {
+          vllm = python-prev.vllm.overrideAttrs (old: {
+            preConfigure = (old.preConfigure or "") + ''
+              export MAX_JOBS=2
+            '';
+          });
+          torch = python-prev.torch.overrideAttrs (old: {
+            preConfigure = (old.preConfigure or "") + ''
+              export MAX_JOBS=4
+            '';
+          });
+        })
+      ];
+    })
   ];
 
   disko = import ./disko.nix;

@@ -15,7 +15,27 @@
 
   boot.loader.grub.enable = false;
   boot.isNspawnContainer = true;
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  # aarch64 builds go to bld3 (native) instead of qemu-user emulation, which
+  # was 10-20x slower per core and OOM-killed the host (run 155).
+  nix.distributedBuilds = true;
+  nix.settings.builders-use-substitutes = true;
+  nix.buildMachines = [
+    {
+      hostName = "bld3.m.ntd.one";
+      sshUser = "nix-remote-builder";
+      protocol = "ssh-ng";
+      sshKey = "/root/.ssh/id_ed25519";
+      publicHostKey = "YmxkMy5tLm50ZC5vbmU6MjIgU1NILTIuMC1PcGVuU1NIXzEwLjUKc3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU40MThKQ3lIamR6R0JGODRYK3Q3YW5rM09VdzRMWnRtZ3Z0L29wZ2ExdGU=";
+      system = "aarch64-linux";
+      supportedFeatures = [
+        "big-parallel"
+        "uid-range"
+      ];
+      # 8 cores, 15 GB RAM: keep the box to a few jobs at a time.
+      maxJobs = 4;
+      speedFactor = 2;
+    }
+  ];
 
   networking.useNetworkd = true;
 
