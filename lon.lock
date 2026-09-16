@@ -75,10 +75,10 @@
       "type": "Git",
       "fetchType": "git",
       "branch": "main",
-      "revision": "b48c8a45628485bbe678927f84981479bf5371f4",
+      "revision": "f91f0d27b538e1966d4bde25f448b64e5a67e5be",
       "url": "ssh://forgejo@git.luj.fr/luj/emacs-config.git",
-      "hash": "sha256-QQ7C/dV4roL+LgAVTh/9yvxmOdFErNYzMjVW9rjJn0Y=",
-      "lastModified": 1785749447,
+      "hash": "sha256-tpiF4Wp3mNzDrHgEkNHlbyPt9TX7CyXp25eTsyBocgg=",
+      "lastModified": 1787569288,
       "submodules": false
     },
     "git-hooks": {
