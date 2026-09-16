@@ -65,8 +65,15 @@
       StaleRetentionSec = "1h";
     };
   };
+  # The first comment line matters: tailscaled attributes resolv.conf to
+  # systemd-resolved by grepping the header for that word (net/dns/direct.go,
+  # resolvOwner). Without it, tailscale switches to "direct" mode and
+  # overwrites this file with its own resolvers, which is what happened on
+  # the first deployment of this change.
   environment.etc."resolv.conf".source = lib.mkForce (
     pkgs.writeText "resolv.conf" ''
+      # Static stand-in for the systemd-resolved stub file: pasta needs an
+      # IPv6 nameserver here (see services.resolved above).
       nameserver ::1
       nameserver 127.0.0.53
       options edns0 trust-ad
