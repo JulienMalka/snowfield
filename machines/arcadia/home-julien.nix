@@ -66,7 +66,7 @@
         gh
         signal-desktop
         scli
-        texlive.combined.scheme-full
+        texliveFull
         unstable.nixd
         emacs-lsp-booster
         hunspellDicts.en_US

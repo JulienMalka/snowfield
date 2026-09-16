@@ -72,7 +72,7 @@
       step-cli
       scli
       jftui
-      texlive.combined.scheme-full
+      texliveFull
       gh
       ouch
       spotify
