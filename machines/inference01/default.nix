@@ -9,7 +9,6 @@
     ./hardware.nix
     ./home-julien.nix
     ./vllm.nix
-    ./whisperx.nix
     ./hotspot.nix
     "${inputs.nixos-dgx-spark}/modules/dgx-spark.nix"
   ];
