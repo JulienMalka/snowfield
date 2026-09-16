@@ -48,6 +48,9 @@
                 ];
               });
           jupyter-server = python-prev.jupyter-server.overridePythonAttrs { doCheck = false; };
+          # 2000+ tests take 40 min under qemu-user and three of them trip
+          # pytest-timeout's 20 s limit (run 157). Not worth it on this host.
+          fastapi = python-prev.fastapi.overridePythonAttrs { doCheck = false; };
           inline-snapshot = python-prev.inline-snapshot.overridePythonAttrs { doCheck = false; };
         })
       ];
