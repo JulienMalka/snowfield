@@ -177,9 +177,9 @@
       "owner": "Mic92",
       "repo": "niks3",
       "branch": "main",
-      "revision": "b3c2cf68e0f8cdb40730bdfc5ae33ef87820e408",
-      "url": "https://github.com/Mic92/niks3/archive/b3c2cf68e0f8cdb40730bdfc5ae33ef87820e408.tar.gz",
-      "hash": "sha256-JGpsEb8llkTTFUGoH1Jy0ggMk92SzDCdTzHLGmPLW1E="
+      "revision": "f8e74b691e7a1a631a2d954d29c5f726f4cf5def",
+      "url": "https://github.com/Mic92/niks3/archive/f8e74b691e7a1a631a2d954d29c5f726f4cf5def.tar.gz",
+      "hash": "sha256-zFyxM4YA/TF0CN4cAi33BbpApWjm4J96vC+VkSY0tKM="
     },
     "nix-actions": {
       "type": "Git",
