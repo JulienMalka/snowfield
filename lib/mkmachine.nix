@@ -66,9 +66,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
         (overlay-unstable system)
 
         (_final: prev: {
-          waybar = prev.waybar.overrideAttrs (oldAttrs: {
-            mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-          });
           # Packages comming from other repositories
           lila-build-hook = (import inputs.lila).packages.${system}.utils;
           artiflakery = (import inputs.artiflakery).defaultPackage.${system};
