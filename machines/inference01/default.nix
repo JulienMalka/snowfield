@@ -34,8 +34,6 @@
 
   nixpkgs.config.allowUnsupportedSystem = true;
 
-  nixpkgs.config.cudaCapabilities = lib.mkForce [ "12.0" ];
-
   nixpkgs.overlays = [
     (import "${inputs.nixos-dgx-spark}/overlays/fixes.nix")
     (_final: prev: {
