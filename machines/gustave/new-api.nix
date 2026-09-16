@@ -48,6 +48,7 @@
       # Behind nginx on the same host.
       TRUSTED_PROXIES = "127.0.0.1";
       SESSION_COOKIE_SECURE = "true";
+      SESSION_COOKIE_TRUSTED_URL = "https://inference.luj.fr";
       FRONTEND_BASE_URL = "https://inference.luj.fr";
       # inference01 runs one vLLM instance at a time: test every channel
       # regularly so unavailable models drop out of /v1/models and come
