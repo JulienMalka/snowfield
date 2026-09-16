@@ -87,6 +87,9 @@ in
             SOURCES=$(nix-instantiate --eval --strict -E 'builtins.concatStringsSep " " (map toString (builtins.attrValues (import ./lon.nix)))')
             SOURCES=''${SOURCES%\"}
             SOURCES=''${SOURCES#\"}
+            # niks3Shell single-quotes the command, so $SOURCES is expanded by
+            # nix-shell's child bash and must be exported to reach it.
+            export SOURCES
             ${niks3Shell "bash scripts/push-to-cache.sh $SOURCES"}
           '';
         }

@@ -562,8 +562,10 @@ jobs:
       name: Push sources to cache
       run: "SOURCES=$(nix-instantiate --eval --strict -E 'builtins.concatStringsSep
         \" \" (map toString (builtins.attrValues (import ./lon.nix)))')\nSOURCES=${SOURCES%\\\
-        \"}\nSOURCES=${SOURCES#\\\"}\nnix-shell -E 'let i = import ./lon.nix; p =
-        import i.nixpkgs { }; in p.mkShell { packages = [ (p.callPackage \"${i.niks3}/nix/packages/niks3.nix\"\
+        \"}\nSOURCES=${SOURCES#\\\"}\n# niks3Shell single-quotes the command, so $SOURCES
+        is expanded by\n# nix-shell's child bash and must be exported to reach it.\n\
+        export SOURCES\nnix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs
+        { }; in p.mkShell { packages = [ (p.callPackage \"${i.niks3}/nix/packages/niks3.nix\"\
         \ { }) p.util-linux ]; }' --run 'bash scripts/push-to-cache.sh $SOURCES'\n"
   promote:
     if: ${{ github.event_name == 'push' }}
