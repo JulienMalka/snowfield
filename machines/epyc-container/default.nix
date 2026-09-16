@@ -47,6 +47,14 @@
 
   networking.useHostResolvConf = false;
 
+  # BBR for uploads to the cache. The Scaleway -> Hetzner path reorders
+  # packets and drops ~0.1%, which pins cubic's window near 50 segments:
+  # one stream to s3.luj.fr did 2 MB/s, with BBR 23 MB/s (16 streams: 84
+  # MB/s), measured 2026-09-16. The sysctl is per network namespace, but the
+  # module has to be loaded by the host kernel: epyc needs tcp_bbr in
+  # boot.kernelModules (it was only modprobed by hand so far).
+  boot.kernel.sysctl."net.ipv4.tcp_congestion_control" = "bbr";
+
   systemd.network.enable = true;
 
   # DNS for fixed-output builds. Lix runs FODs in a pasta network namespace
