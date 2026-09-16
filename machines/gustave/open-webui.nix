@@ -31,21 +31,7 @@
 
   services.open-webui = {
     enable = true;
-    package = pkgs.unstable.open-webui.overrideAttrs (old: {
-      postPatch = (old.postPatch or "") + ''
-        f=backend/open_webui/utils/oauth.py
-        if [ -f "$f" ]; then
-          sed -i "s/, 'expires': cookie_expires//" "$f"
-          echo "[open-webui-patched] dropped undefined cookie_expires reference in $f"
-        fi
-
-        g=backend/open_webui/config.py
-        if [ -f "$g" ]; then
-          ${pkgs.perl}/bin/perl -i -0777 -pe "s/('OPENAI_API_CONFIGS',\n    'openai.api_configs',\n    )\{\},/\$1json.loads(os.environ.get('OPENAI_API_CONFIGS', '{}')),/" "$g"
-          echo "[open-webui-patched] OPENAI_API_CONFIGS now reads env on init in $g"
-        fi
-      '';
-    });
+    package = pkgs.unstable.open-webui;
     port = 8080;
     host = "127.0.0.1";
     openFirewall = false;
