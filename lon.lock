@@ -136,10 +136,10 @@
       "fetchType": "tarball",
       "owner": "nix-community",
       "repo": "lila",
-      "branch": "fix-nix-import",
-      "revision": "10e1cb2daa9f371b3b9c50eca7fad423e1c00fec",
-      "url": "https://github.com/nix-community/lila/archive/10e1cb2daa9f371b3b9c50eca7fad423e1c00fec.tar.gz",
-      "hash": "sha256-JHqttf+Vv+DvFXvr1HP/7YImB07Npz9fjVvnXy0AcTo="
+      "branch": "main",
+      "revision": "001435864c50756bb20d5ef3cee6351f9246560a",
+      "url": "https://github.com/nix-community/lila/archive/001435864c50756bb20d5ef3cee6351f9246560a.tar.gz",
+      "hash": "sha256-EtnNIUTIL717VhsU7o0TFscZKLxZnja4LqUb8X0dHzk="
     },
     "llm-agents": {
       "type": "GitHub",
