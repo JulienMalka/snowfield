@@ -25,7 +25,7 @@
       sshUser = "nix-remote-builder";
       protocol = "ssh-ng";
       sshKey = "/root/.ssh/id_ed25519";
-      publicHostKey = "YmxkMy5tLm50ZC5vbmU6MjIgU1NILTIuMC1PcGVuU1NIXzEwLjUKc3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU40MThKQ3lIamR6R0JGODRYK3Q3YW5rM09VdzRMWnRtZ3Z0L29wZ2ExdGU=";
+      publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU40MThKQ3lIamR6R0JGODRYK3Q3YW5rM09VdzRMWnRtZ3Z0L29wZ2ExdGU=";
       system = "aarch64-linux";
       supportedFeatures = [
         "big-parallel"
