@@ -20,20 +20,12 @@
         ];
       };
 
-      "fischer" = {
-        id = "PLIMD3Z-L4DYKDB-MY4PFTS-3RMQUNF-GFWFOBB-SELW6MB-WIQJ2LM-QAC45QQ";
-        addresses = [
-          "tcp://fischer.luj:22000"
-        ];
-      };
-
     };
     settings.folders = {
       "dev" = {
         path = "/home/julien/dev";
         settings.devices = [
           "gustave"
-          "fischer"
         ];
       };
     };
