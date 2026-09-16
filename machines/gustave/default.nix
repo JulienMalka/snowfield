@@ -23,7 +23,7 @@
     ./luj-website.nix
     ./windmill.nix
     ./lasuite-meet.nix
-    ./litellm.nix
+    ./new-api.nix
     ./open-webui.nix
     ./terminus.nix
   ];

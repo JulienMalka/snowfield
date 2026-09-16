@@ -55,11 +55,10 @@
       OAUTH_SCOPES = "openid email profile groups offline_access";
       OAUTH_USERNAME_CLAIM = "preferred_username";
       OAUTH_EMAIL_CLAIM = "email";
-      OPENAI_API_CONFIGS = builtins.toJSON {
-        "0" = {
-          auth_type = "system_oauth";
-        };
-      };
+      # OPENAI_API_KEY (a new-api token) comes from open-webui-env.
+      # Users can also plug their own new-api token in (Settings ->
+      # Connections) so their usage is accounted on their own account.
+      ENABLE_DIRECT_CONNECTIONS = "true";
       ENABLE_RAG_WEB_SEARCH = "false";
       ENABLE_EVALUATION_ARENA_MODELS = "false";
       ENABLE_VERSION_UPDATE_CHECK = "false";

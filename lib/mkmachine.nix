@@ -92,7 +92,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           reka = prev.pkgs.callPackage ../packages/reka { };
           mujmap-patched = prev.pkgs.callPackage ../packages/mujmap-patched { };
           tp7-sync = prev.pkgs.callPackage ../packages/tp7-sync { };
-          litellm-patched = prev.pkgs.unstable.callPackage ../packages/litellm-patched { };
+          new-api = prev.pkgs.unstable.callPackage ../packages/new-api { };
           inherit (prev.pkgs.unstable) river;
           eca = prev.pkgs.callPackage "${inputs.llm-agents}/packages/eca/package.nix" {
             wrapBuddy = prev.pkgs.callPackage "${inputs.llm-agents}/packages/wrapBuddy/package.nix" { };
