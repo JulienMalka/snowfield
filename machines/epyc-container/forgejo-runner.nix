@@ -3,6 +3,13 @@
   nix.settings.allowed-users = [ "gitea-runner" ];
   nix.settings.trusted-users = [ "gitea-runner" ];
 
+  # 128 cores and 377 GB are not enough for "all cores for every job":
+  # aarch64 builds run under qemu-user, where each emulated compiler takes
+  # ~2 GB, and two triton builds at -j128 OOM-killed the whole host on
+  # 2026-09-16 (run 155). Cap threads per build and concurrent builds.
+  nix.settings.cores = 32;
+  nix.settings.max-jobs = 8;
+
   services.gitea-actions-runner = {
     package = pkgs.forgejo-runner;
     instances.native = {
