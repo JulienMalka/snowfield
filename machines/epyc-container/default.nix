@@ -48,23 +48,41 @@
   networking.useHostResolvConf = false;
 
   systemd.network.enable = true;
-  services.resolved.enable = true;
 
-  # Bind-mount a resolv.conf into the Nix build sandbox
-  # (the sandbox has no /etc/resolv.conf by default)
-  nix.settings.extra-sandbox-paths = [
-    "/etc/resolv.conf=${pkgs.writeText "sandbox-resolv.conf" ''
-      nameserver 2001:4860:4860::6464
-      nameserver 2001:4860:4860::64
-    ''}"
-  ];
+  # DNS for fixed-output builds. Lix runs FODs in a pasta network namespace
+  # and rewrites the sandbox resolv.conf to pasta's gateway addresses; pasta
+  # forwards those queries to the first nameserver *of the same IP family*
+  # in this file. The container is IPv6-only, so only the IPv6 gateway is
+  # reachable from a sandbox, and the stock stub file (127.0.0.53 only)
+  # leaves pasta with nothing to forward to. Give resolved an IPv6 loopback
+  # listener and list it here, so builds get resolved's cache, failover and
+  # stale answers instead of one uncached UDP query per fetch to a public
+  # DNS64 server (which is what broke CI on 2026-09-16, run 145).
+  services.resolved = {
+    enable = true;
+    settings.Resolve = {
+      DNSStubListenerExtra = "::1";
+      StaleRetentionSec = "1h";
+    };
+  };
+  environment.etc."resolv.conf".source = lib.mkForce (
+    pkgs.writeText "resolv.conf" ''
+      nameserver ::1
+      nameserver 127.0.0.53
+      options edns0 trust-ad
+    ''
+  );
+
   systemd.network.networks."10-host01" = {
     matchConfig.Name = "host0";
 
     dns = [
-      # DNS64 servers
+      # DNS64 servers, two providers so one upstream blip does not take
+      # resolution down.
       "2001:4860:4860::6464"
+      "2606:4700:4700::64"
       "2001:4860:4860::64"
+      "2606:4700:4700::6400"
     ];
 
     networkConfig.Address = "2001:bc8:38ee:100:f837:7fff:fe77:7154/56";
