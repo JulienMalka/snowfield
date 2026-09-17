@@ -51,6 +51,12 @@
               export MAX_JOBS=4
             '';
           });
+          # triton's C++ build at -j8 OOM'd bld3 too (run 165, attempt 2).
+          triton = python-prev.triton.overrideAttrs (old: {
+            preConfigure = (old.preConfigure or "") + ''
+              export MAX_JOBS=3
+            '';
+          });
           # nixpkgs sets both to NIX_BUILD_CORES; 8 nvcc frontends OOM'd bld3
           # (run 163).
           cupy = python-prev.cupy.overridePythonAttrs (old: {
