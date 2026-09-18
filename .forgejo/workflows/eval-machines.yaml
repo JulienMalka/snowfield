@@ -508,6 +508,54 @@ jobs:
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
         \",\\\"context\\\":\\\"forgejo/lambda\\\",\\\"description\\\":\\\"lambda\\\
         \"}\"\n"
+  lint:
+    name: Lint
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      name: Configure SSH for private inputs
+      run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
+        echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
+        \ >> ~/.ssh/known_hosts\n"
+    - name: Check formatting, lints and dead code
+      run: "nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in p.mkShell
+        { packages = [ p.nixfmt p.statix p.deadnix ]; }' --run 'set -euo pipefail\n\
+        files=$(git ls-files '\\''*.nix'\\'' | grep -v '\\''^lon.nix$'\\'')\n# lon.nix
+        is generated, and is excluded from all three checks.\n# shellcheck disable=SC2086\n\
+        nixfmt --check $files\nstatix check --ignore lon.nix\n# shellcheck disable=SC2086\n\
+        deadnix --fail $files\n'"
+  packages:
+    name: Build packages
+    needs:
+    - prefetch-sources
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      name: Configure SSH for private inputs
+      run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
+        echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
+        \ >> ~/.ssh/known_hosts\n"
+    - env:
+        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
+      name: Build packages
+      run: nix-build -A packages.x86_64-linux --out-link result-packages
+    - env:
+        GODEBUG: http2client=0
+        NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
+        NIKS3_SERVER_URL: https://cache.luj.fr
+      name: Push to cache
+      run: nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in 
+        p.mkShell { packages = [ (p.callPackage 
+        "${i.niks3}/nix/packages/niks3.nix" { }) p.util-linux ]; }' --run 'bash 
+        scripts/push-to-cache.sh ./result-packages*'
   prefetch-sources:
     name: Prefetch sources
     runs-on: epyc
@@ -556,6 +604,8 @@ jobs:
     - jacques
     - lambda
     - tower
+    - packages
+    - tests
     runs-on: epyc
     steps:
     - uses: actions/checkout@v6
@@ -568,6 +618,25 @@ jobs:
         echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
         \ >> ~/.ssh/known_hosts\nGIT_SSH_COMMAND=\"ssh -i ~/.ssh/deploy_key\" git
         push ssh://forgejo@git.luj.fr/luj/snowfield.git HEAD:deploy\n"
+  tests:
+    name: Unit tests
+    needs:
+    - prefetch-sources
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      name: Configure SSH for private inputs
+      run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
+        echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
+        \ >> ~/.ssh/known_hosts\n"
+    - env:
+        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
+      name: Run unit tests
+      run: nix-build -A checks.tests --no-out-link
   tower:
     name: Build tower
     needs:
@@ -604,7 +673,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/13\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/18\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\

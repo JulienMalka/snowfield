@@ -1,19 +1,31 @@
 { lib, nix-actions }:
 
 let
-  inputs = import ../lon.nix;
-  dnsLib = (import inputs.dns).lib;
-  sfLib = (import "${inputs.nixpkgs}/lib").extend (
-    import ../lib inputs (import ../.).profiles dnsLib
-  );
+  sfLib = (import ../.).lib;
 
   githubRepo = "julienmalka/snowfield";
 
   managedMachines = lib.filterAttrs (_: v: v ? arch) sfLib.snowfield;
   allMachines = lib.sort lib.lessThan (lib.attrNames managedMachines);
+
+  # Forgejo numbers a run's jobs by their position in the generated YAML, and
+  # nix-actions emits the jobs attribute set in attribute order, which is
+  # alphabetical. Index against every job name rather than just the machines:
+  # indexing against the machines alone silently mislinks every job that sorts
+  # after "prefetch-sources".
+  allJobNames = lib.sort lib.lessThan (
+    allMachines
+    ++ [
+      "lint"
+      "packages"
+      "prefetch-sources"
+      "promote"
+      "tests"
+    ]
+  );
   jobIndex =
-    machine:
-    toString (1 + lib.lists.findFirstIndex (m: m == machine) (throw "unreachable") allMachines);
+    name:
+    toString (1 + lib.lists.findFirstIndex (m: m == name) (throw "unknown job ${name}") allJobNames);
 
   checkout = [
     (nix-actions.lib.steps.checkout {
@@ -43,6 +55,11 @@ let
   # a single connection through the tunnel to biblios (~1-3 MB/s). biblios's
   # nginx has h2 disabled for s3.luj.fr too; this guards against regressions.
   noHttp2 = "http2client=0";
+
+  # Same resolve-on-the-runner trick as niks3Shell, for the lint tools.
+  lintShell =
+    script:
+    "nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in p.mkShell { packages = [ p.nixfmt p.statix p.deadnix ]; }' --run ${lib.escapeShellArg script}";
 
   reportStatus = machine: {
     name = "Report status to GitHub";
@@ -102,6 +119,65 @@ in
         }
       ];
     };
+
+    # Needs no inputs beyond nixpkgs, so it does not wait on prefetch-sources
+    # and gives the fastest feedback on a push.
+    lint = {
+      name = "Lint";
+      runs-on = "epyc";
+      steps = checkout ++ [
+        {
+          name = "Check formatting, lints and dead code";
+          run = lintShell ''
+            set -euo pipefail
+            files=$(git ls-files '*.nix' | grep -v '^lon.nix$')
+            # lon.nix is generated, and is excluded from all three checks.
+            # shellcheck disable=SC2086
+            nixfmt --check $files
+            statix check --ignore lon.nix
+            # shellcheck disable=SC2086
+            deadnix --fail $files
+          '';
+        }
+      ];
+    };
+
+    tests = {
+      name = "Unit tests";
+      needs = [ "prefetch-sources" ];
+      runs-on = "epyc";
+      steps = checkout ++ [
+        {
+          name = "Run unit tests";
+          env.GIT_SSH_COMMAND = "ssh -i ~/.ssh/deploy_key";
+          run = "nix-build -A checks.tests --no-out-link";
+        }
+      ];
+    };
+
+    packages = {
+      name = "Build packages";
+      needs = [ "prefetch-sources" ];
+      runs-on = "epyc";
+      steps = checkout ++ [
+        {
+          # x86_64-linux only: no local package is architecture-specific, and
+          # the aarch64 machine builds already cover that cross-section.
+          name = "Build packages";
+          env.GIT_SSH_COMMAND = "ssh -i ~/.ssh/deploy_key";
+          run = "nix-build -A packages.x86_64-linux --out-link result-packages";
+        }
+        {
+          name = "Push to cache";
+          env = {
+            NIKS3_SERVER_URL = "https://cache.luj.fr";
+            NIKS3_AUTH_TOKEN = nix-actions.lib.secret "NIKS3_API_TOKEN";
+            GODEBUG = noHttp2;
+          };
+          run = niks3Shell "bash scripts/push-to-cache.sh ./result-packages*";
+        }
+      ];
+    };
   }
   // lib.genAttrs allMachines (machine: {
     name = "Build ${machine}";
@@ -129,7 +205,12 @@ in
     promote = {
       name = "Promote to deploy";
       runs-on = "epyc";
-      needs = allMachines;
+      # Correctness gates the deploy branch; lint deliberately does not, so a
+      # formatting slip cannot block an urgent fix from reaching comin.
+      needs = allMachines ++ [
+        "packages"
+        "tests"
+      ];
       "if" = nix-actions.lib.expr "github.event_name == 'push'";
       steps = [
         (nix-actions.lib.steps.checkout {
