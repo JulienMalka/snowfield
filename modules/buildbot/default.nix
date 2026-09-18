@@ -73,10 +73,7 @@ in
       pkgs.coreutils
     ];
 
-    services.nginx.virtualHosts."ci.julienmalka.me" = {
-      forceSSL = true;
-      enableACME = true;
-    };
+    services.nginx.virtualHosts."ci.julienmalka.me" = { };
 
     age.secrets = {
       github-token.file = ./github-token-secret.age;

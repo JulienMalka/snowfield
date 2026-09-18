@@ -65,16 +65,12 @@
   };
 
   services.nginx.virtualHosts."staging-lila.luj.fr" = {
-    enableACME = true;
-    forceSSL = true;
     locations."/" = {
       proxyPass = "http://localhost:8004";
     };
   };
 
   services.nginx.virtualHosts."slack-bot.luj.fr" = {
-    enableACME = true;
-    forceSSL = true;
     locations."/" = {
       proxyPass = "http://localhost:8005";
     };
@@ -152,8 +148,6 @@
   services.openssh.settings.PerSourcePenaltyExemptList = "2001:bc8:38ee:100:f837:7fff:fe77:7154";
 
   services.nginx.virtualHosts."git.luj.fr" = {
-    forceSSL = true;
-    enableACME = true;
     locations."/" = {
       proxyPass = "http://localhost:3000";
       proxyWebsockets = true;

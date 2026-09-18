@@ -26,8 +26,6 @@ rec {
   mkSubdomain = name: port: {
     luj.nginx.enable = true;
     services.nginx.virtualHosts."${name}.julienmalka.me" = {
-      enableACME = true;
-      forceSSL = true;
       locations."/" = {
         proxyPass = "http://localhost:${toString port}";
       };
@@ -37,8 +35,6 @@ rec {
   mkVPNSubdomain = name: port: {
     luj.nginx.enable = true;
     services.nginx.virtualHosts."${name}.luj" = {
-      forceSSL = true;
-      enableACME = true;
       locations."/" = {
         proxyPass = "http://localhost:${toString port}";
       };

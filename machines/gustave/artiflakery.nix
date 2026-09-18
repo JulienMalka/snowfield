@@ -7,8 +7,6 @@
   };
 
   services.nginx.virtualHosts."static.luj.fr" = {
-    forceSSL = true;
-    enableACME = true;
     locations."/" = {
       proxyWebsockets = true;
       proxyPass = "http://localhost:8090";

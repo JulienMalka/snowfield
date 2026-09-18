@@ -17,8 +17,6 @@
 
   services.nginx.virtualHosts = {
     "code.luj.fr" = {
-      forceSSL = true;
-      enableACME = true;
       locations."~ ^/luj/notes\.git:workspace=phd\.git" = {
         basicAuthFile = config.age.secrets.notes-phd-auth.path;
         # Included file contains the token to connect to upstream forge

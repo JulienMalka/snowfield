@@ -78,8 +78,6 @@
     clientMaxBodySize = "500m";
     virtualHosts = {
       "photos.malka.family" = {
-        forceSSL = true;
-        enableACME = true;
         http2 = true;
         locations."/" = {
           proxyPass = "http://0.0.0.0:2342";

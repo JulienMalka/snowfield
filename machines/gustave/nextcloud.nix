@@ -81,8 +81,6 @@
   };
 
   services.nginx.virtualHosts."nuage.luj.fr" = {
-    enableACME = true;
-    forceSSL = true;
     extraConfig = ''
       proxy_max_temp_file_size 4096m;
     '';

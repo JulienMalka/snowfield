@@ -36,7 +36,7 @@ in
     services.nginx.virtualHosts = lib.mkOption {
       type = lib.types.attrsOf (
         lib.types.submodule (
-          {
+          vhost@{
             name,
             ...
           }:
@@ -48,6 +48,14 @@ in
               };
             };
             config = {
+              # Every virtual host here is HTTPS with a certificate we request,
+              # so make that the default and let the odd one out say otherwise.
+              enableACME = lib.mkDefault true;
+
+              # nginx asserts that at most one of these four is set, so only
+              # default forceSSL on when the host has not chosen another.
+              forceSSL = lib.mkDefault (!(vhost.config.addSSL || vhost.config.onlySSL || vhost.config.rejectSSL));
+
               locations."/".extraConfig = lib.mkIf (dns.isVPNDomain name) ''
                 allow 100.100.45.0/24;
                 allow fd7a:115c:a1e0::/48;

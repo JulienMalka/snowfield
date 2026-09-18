@@ -78,8 +78,6 @@ in
   networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 5432 ];
 
   services.nginx.virtualHosts."workflows.luj.fr" = {
-    forceSSL = true;
-    enableACME = true;
     locations."/" = {
       proxyPass = "http://localhost:${toString port}";
       proxyWebsockets = true;

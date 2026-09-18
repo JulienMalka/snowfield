@@ -28,8 +28,6 @@ in
   };
 
   services.nginx.virtualHosts."status.julienmalka.me" = {
-    forceSSL = true;
-    enableACME = true;
     locations."/" = {
       proxyPass = "http://localhost:3001";
       proxyWebsockets = true;

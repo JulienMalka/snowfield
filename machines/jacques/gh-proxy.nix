@@ -19,8 +19,6 @@
   };
 
   services.nginx.virtualHosts."gh.luj.fr" = {
-    enableACME = true;
-    forceSSL = true;
     locations."/" = {
       proxyPass = "http://127.0.0.1:8090";
     };

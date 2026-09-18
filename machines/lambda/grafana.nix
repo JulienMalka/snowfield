@@ -90,8 +90,6 @@ in
   luj.nginx.enable = true;
 
   services.nginx.virtualHosts."${domain}" = {
-    forceSSL = true;
-    enableACME = true;
     locations."/" = {
       proxyPass = "http://127.0.0.1:${toString config.services.grafana.settings.server.http_port}";
       proxyWebsockets = true;

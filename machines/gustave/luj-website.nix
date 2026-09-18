@@ -55,8 +55,6 @@
   services.nginx.recommendedBrotliSettings = true;
 
   services.nginx.virtualHosts."luj.fr" = {
-    enableACME = true;
-    forceSSL = true;
     # HSTS: everything under luj.fr is already HTTPS-only (forceSSL on
     # every vhost), so committing browsers to HTTPS is safe. No `preload`
     # — that is an irreversible submission to the browser preload list.
@@ -74,8 +72,6 @@
   # automatically from the vhost declaration (same as the other
   # *.luj.fr vhosts on this machine).
   services.nginx.virtualHosts."www.luj.fr" = {
-    enableACME = true;
-    forceSSL = true;
     # NB: not `globalRedirect` — the luj.nginx module (modules/nginx)
     # unconditionally materialises an (empty) `locations."/"` on every
     # vhost, and `globalRedirect` renders its own separate `location /`,
@@ -85,8 +81,6 @@
   };
 
   services.nginx.virtualHosts."iljuj.fr" = {
-    enableACME = true;
-    forceSSL = true;
     locations."/" = {
       proxyPass = "http://127.0.0.1:3001";
       proxyWebsockets = true;

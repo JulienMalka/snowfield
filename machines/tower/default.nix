@@ -58,8 +58,6 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0io9E0eXiDIEHvsibXOxOPveSjUPIr1RnNKbUkw3fD";
 
   services.nginx.virtualHosts."photos.julienmalka.me" = {
-    enableACME = true;
-    forceSSL = true;
     root = "/srv/photos";
   };
 
@@ -117,8 +115,6 @@
 
   services.nginx.virtualHosts."phd.julienmalka.me" = {
     basicAuthFile = "/home/gitlab-runner/nginx_auth";
-    enableACME = true;
-    forceSSL = true;
     extraConfig = ''
       autoindex on;
       autoindex_localtime on;

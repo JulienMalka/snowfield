@@ -52,8 +52,6 @@ in
   };
 
   services.nginx.virtualHosts."${api_domain}" = {
-    enableACME = true;
-    forceSSL = true;
     # No HTTP/2 for the S3 API: Go clients (niks3, rclone) multiplex every
     # concurrent upload onto a single TCP connection when h2 is offered, and
     # one connection over the tunnel tops out around 1-3 MB/s. With HTTP/1.1
@@ -73,8 +71,6 @@ in
   };
 
   services.nginx.virtualHosts."cdn.luj.fr" = {
-    enableACME = true;
-    forceSSL = true;
     locations."/".extraConfig = ''
       proxy_pass http://127.0.0.1:3902;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -83,8 +79,6 @@ in
   };
 
   services.nginx.virtualHosts."hownix.works" = {
-    enableACME = true;
-    forceSSL = true;
     locations."/".extraConfig = ''
       proxy_pass http://127.0.0.1:3902;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -102,8 +96,6 @@ in
   };
 
   services.nginx.virtualHosts."notes.luj.fr" = {
-    enableACME = true;
-    forceSSL = true;
     locations."/" = {
       basicAuthFile = config.age.secrets.notes-perso-auth.path;
       proxyPass = "http://127.0.0.1:3902";
@@ -116,8 +108,6 @@ in
   };
 
   services.nginx.virtualHosts."phd.luj.fr" = {
-    enableACME = true;
-    forceSSL = true;
     locations."/" = {
       basicAuthFile = config.age.secrets.notes-phd-auth.path;
       proxyPass = "http://127.0.0.1:3902";

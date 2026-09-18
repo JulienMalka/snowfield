@@ -4,8 +4,6 @@
   age.secrets."readeck-config".file = ./readeck-config.age;
 
   services.nginx.virtualHosts."read.luj" = {
-    forceSSL = true;
-    enableACME = true;
     locations."/" = {
       proxyPass = "http://localhost:8000";
     };

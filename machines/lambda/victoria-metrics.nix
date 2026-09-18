@@ -43,8 +43,6 @@ in
   luj.nginx.enable = true;
 
   services.nginx.virtualHosts."vm.luj" = {
-    forceSSL = true;
-    enableACME = true;
     locations."/" = {
       proxyPass = "http://127.0.0.1:${builtins.toString port}";
     };

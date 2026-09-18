@@ -62,8 +62,6 @@
   };
 
   services.nginx.virtualHosts."notifications.julienmalka.me" = {
-    forceSSL = true;
-    enableACME = true;
     locations."/" = {
       proxyPass = "http://localhost:8081";
       proxyWebsockets = true;

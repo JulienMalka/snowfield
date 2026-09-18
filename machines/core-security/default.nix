@@ -45,8 +45,6 @@
 
   luj.nginx.enable = true;
   services.nginx.virtualHosts."vaults.malka.family" = {
-    forceSSL = true;
-    enableACME = true;
     locations."/" = {
       proxyPass = "http://127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT}";
     };
@@ -156,8 +154,6 @@
   };
 
   services.nginx.virtualHosts."ca.luj" = {
-    enableACME = true;
-    forceSSL = true;
     locations."/" = {
       proxyPass = "https://100.100.45.14:8444";
     };

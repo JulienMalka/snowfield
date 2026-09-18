@@ -80,8 +80,5 @@ in
     );
   };
 
-  services.nginx.virtualHosts."visio.luj.fr" = {
-    forceSSL = true;
-    enableACME = true;
-  };
+  services.nginx.virtualHosts."visio.luj.fr" = { };
 }

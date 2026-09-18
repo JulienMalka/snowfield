@@ -174,8 +174,6 @@ in
   };
 
   services.nginx.virtualHosts.${domain} = {
-    forceSSL = true;
-    enableACME = true;
     locations."/assets/" = {
       alias = "${terminus}/share/terminus/public/assets/";
       extraConfig = ''
