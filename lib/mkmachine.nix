@@ -65,49 +65,35 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
       nixpkgs.overlays = lib.mkAfter [
         (overlay-unstable system)
 
-        (_final: prev: {
-          # Packages comming from other repositories
-          lila-build-hook = (import inputs.lila).packages.${system}.utils;
-          artiflakery = (import inputs.artiflakery).defaultPackage.${system};
-          # My own packages
-          keycloak-keywind = prev.pkgs.callPackage ../packages/keycloak-keywind { };
-          hydrasect = prev.pkgs.callPackage ../packages/hydrasect { };
-          codeberg-pages-custom = prev.pkgs.callPackage ../packages/codeberg-pages-custom { };
-          lcli = prev.pkgs.callPackage ../packages/lcli { };
-          uptime-kuma-beta = prev.pkgs.callPackage ../packages/uptime-kuma-beta { };
-          openclaw = prev.pkgs.unstable.callPackage ../packages/openclaw { };
-          gh-proxy = prev.pkgs.callPackage ../packages/gh-proxy { };
-          cal-proxy = prev.pkgs.callPackage ../packages/cal-proxy { };
-          cal-diy = prev.pkgs.callPackage ../packages/cal-diy { };
-          terminus = prev.pkgs.callPackage ../packages/terminus { };
-          widget-server = prev.pkgs.callPackage ../packages/widget-server { };
-          # Same Python as nixpkgs' vllm (python313Packages), so inference01
-          # carries one torch/triton stack instead of building the CUDA
-          # stack twice (3.13 for vllm, 3.14 for whisperx) - which OOM-killed
-          # the emulated aarch64 CI build on 2026-09-16.
-          whisperx-api-server = prev.pkgs.callPackage ../packages/whisperx-api-server {
-            python3 = prev.pkgs.python313;
-            python3Packages = prev.pkgs.python313Packages;
-          };
-          reka = prev.pkgs.callPackage ../packages/reka { };
-          mujmap-patched = prev.pkgs.callPackage ../packages/mujmap-patched { };
-          tp7-sync = prev.pkgs.callPackage ../packages/tp7-sync { };
-          new-api = prev.pkgs.unstable.callPackage ../packages/new-api { };
-          inherit (prev.pkgs.unstable) river;
-          eca = prev.pkgs.callPackage "${inputs.llm-agents}/packages/eca/package.nix" {
-            wrapBuddy = prev.pkgs.callPackage "${inputs.llm-agents}/packages/wrapBuddy/package.nix" { };
-            versionCheckHomeHook =
-              prev.pkgs.callPackage "${inputs.llm-agents}/packages/versionCheckHomeHook/package.nix"
-                { };
-            flake.lib = import "${inputs.llm-agents}/lib/default.nix" {
-              inputs.nixpkgs.lib = prev.lib;
+        (
+          _final: prev:
+          (import ./local-packages.nix {
+            pkgs = prev;
+            inherit (prev) unstable;
+          })
+          // {
+            codeberg-pages-custom = prev.pkgs.callPackage ../packages/codeberg-pages-custom { };
+            widget-server = prev.pkgs.callPackage ../packages/widget-server { };
+
+            # Packages from other repositories
+            lila-build-hook = (import inputs.lila).packages.${system}.utils;
+            artiflakery = (import inputs.artiflakery).defaultPackage.${system};
+            inherit (prev.pkgs.unstable) river;
+            eca = prev.pkgs.callPackage "${inputs.llm-agents}/packages/eca/package.nix" {
+              wrapBuddy = prev.pkgs.callPackage "${inputs.llm-agents}/packages/wrapBuddy/package.nix" { };
+              versionCheckHomeHook =
+                prev.pkgs.callPackage "${inputs.llm-agents}/packages/versionCheckHomeHook/package.nix"
+                  { };
+              flake.lib = import "${inputs.llm-agents}/lib/default.nix" {
+                inputs.nixpkgs.lib = prev.lib;
+              };
             };
-          };
-          claude-code = prev.pkgs.callPackage "${inputs.llm-agents}/packages/claude-code/package.nix" {
-            wrapBuddy = prev.pkgs.callPackage "${inputs.llm-agents}/packages/wrapBuddy/package.nix" { };
-          };
-          luj-website = (import "${inputs.luj-website}").packages.${system}.default;
-        })
+            claude-code = prev.pkgs.callPackage "${inputs.llm-agents}/packages/claude-code/package.nix" {
+              wrapBuddy = prev.pkgs.callPackage "${inputs.llm-agents}/packages/wrapBuddy/package.nix" { };
+            };
+            luj-website = (import "${inputs.luj-website}").packages.${system}.default;
+          }
+        )
 
         (
           _final: prev:

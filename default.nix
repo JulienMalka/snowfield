@@ -81,30 +81,17 @@ let
 
     all_secrets = lib.deepMerge all_secrets_nixos all_secrets_hm;
 
-    packages = builtins.listToAttrs (
-      builtins.map (plat: {
-        name = plat;
-        value =
-          lib.filterAttrs
-            (
-              _name: value:
-              (
-                !lib.hasAttrByPath [
-                  "meta"
-                  "platforms"
-                ] value
-              )
-              || builtins.elem plat value.meta.platforms
-            )
-            (
-              builtins.listToAttrs (
-                builtins.map (e: {
-                  name = e;
-                  value = nixpkgs_plats.${plat}.callPackage (./packages + "/${e}") { };
-                }) (builtins.attrNames (lib.discovery.directories ./packages))
-              )
-            );
-      }) machines_plats
+    packages = lib.genAttrs machines_plats (
+      system:
+      let
+        pkgs = nixpkgs_plats.${system};
+        unstable = import inputs.unstable { inherit system; };
+        localPackages = import ./lib/local-packages.nix { inherit pkgs unstable; };
+      in
+      lib.filterAttrs (
+        _: package:
+        !(lib.hasAttrByPath [ "meta" "platforms" ] package) || builtins.elem system package.meta.platforms
+      ) localPackages
     );
 
     # comin's nix executor appends both .toplevel and .config.services.comin.machineId
