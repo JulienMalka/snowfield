@@ -17,11 +17,11 @@ let
   non_local_machines = (import ./snowfield.nix).machines;
 in
 rec {
+  discovery = import ./discovery.nix { lib = final; };
+
   importConfig =
     path:
-    (mapAttrs (name: _value: import (path + "/${name}/default.nix")) (
-      final.filterAttrs (_: v: v == "directory") (readDir path)
-    ));
+    (mapAttrs (name: _value: import (path + "/${name}/default.nix")) (discovery.directories path));
 
   mkSubdomain = name: port: {
     luj.nginx.enable = true;
@@ -78,7 +78,7 @@ rec {
         (machineF (
           (mapAttrs (_: _: null) (builtins.functionArgs machineF)) // { inherit inputs profiles; }
         )).machine.meta
-    ) (final.filterAttrs (_: v: v == "directory") (readDir ../machines)))
+    ) (discovery.directories ../machines))
     // mapAttrs (_: evalMeta) non_local_machines;
 
   dns = import ./dns.nix {

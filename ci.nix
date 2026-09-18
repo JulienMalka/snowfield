@@ -3,7 +3,8 @@ let
   pkgs = import inputs.unstable { };
   nix-actions = import inputs.nix-actions { inherit pkgs; };
 
-  workflowFiles = builtins.readDir ./workflows;
+  discovery = import ./lib/discovery.nix { inherit (pkgs) lib; };
+  workflowFiles = discovery.nixFiles ./workflows;
   workflows = builtins.listToAttrs (
     map (name: {
       name = pkgs.lib.strings.removeSuffix ".nix" name;
@@ -18,7 +19,7 @@ let
           }
         else
           raw;
-    }) (builtins.filter (n: pkgs.lib.hasSuffix ".nix" n) (builtins.attrNames workflowFiles))
+    }) (builtins.attrNames workflowFiles)
   );
 
   workflowInstall = nix-actions.install {

@@ -24,18 +24,13 @@ let
 
     inherit lib;
 
-    nixosModules = builtins.listToAttrs (
-      map (x: {
-        name = x;
-        value = import (./modules + "/${x}");
-      }) (builtins.attrNames (builtins.readDir ./modules))
-    );
+    nixosModules = lib.importConfig ./modules;
 
     profiles = builtins.listToAttrs (
       map (x: {
         name = lib.strings.removeSuffix ".nix" x;
         value = import (./profiles + "/${x}");
-      }) (builtins.attrNames (builtins.readDir ./profiles))
+      }) (builtins.attrNames (lib.discovery.nixFiles ./profiles))
     );
 
     nixosConfigurations = builtins.mapAttrs (
@@ -106,7 +101,7 @@ let
                 builtins.map (e: {
                   name = e;
                   value = nixpkgs_plats.${plat}.callPackage (./packages + "/${e}") { };
-                }) (builtins.attrNames (builtins.readDir ./packages))
+                }) (builtins.attrNames (lib.discovery.directories ./packages))
               )
             );
       }) machines_plats

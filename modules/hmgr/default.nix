@@ -17,10 +17,9 @@ with lib;
     home-manager.useGlobalPkgs = true;
     home-manager.users = lib.mapAttrs (name: value: {
       imports =
-        with builtins;
-        (map (x: ../../home-manager-modules + "/${x}/default.nix") (
-          attrNames (readDir ../../home-manager-modules)
-        ))
+        lib.mapAttrsToList (name: _: ../../home-manager-modules + "/${name}/default.nix") (
+          lib.discovery.directories ../../home-manager-modules
+        )
         ++ [
           "${inputs.agenix}/modules/age-home.nix"
           value
