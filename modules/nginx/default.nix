@@ -48,13 +48,13 @@ in
               };
             };
             config = {
-              locations."/".extraConfig = lib.mkIf (lib.hasSuffix "luj" name) ''
+              locations."/".extraConfig = lib.mkIf (dns.isVPNDomain name) ''
                 allow 100.100.45.0/24;
                 allow fd7a:115c:a1e0::/48;
                 deny all;
               '';
 
-              extraConfig = lib.mkIf (lib.hasSuffix "luj" name) ''
+              extraConfig = lib.mkIf (dns.isVPNDomain name) ''
                 ssl_stapling off;
               '';
 
@@ -62,7 +62,7 @@ in
                 machine.meta.probes.monitors = lib.mkIf (name != "default") {
                   "${name} - IPv4" = {
                     url = "https://${
-                      if (hasSuffix "luj" name) then
+                      if (dns.isVPNDomain name) then
                         config.machine.meta.ips.vpn.ipv4
                       else
                         config.machine.meta.ips.public.ipv4
@@ -79,14 +79,14 @@ in
                   "${name} - IPv6" =
                     lib.mkIf
                       (
-                        if (hasSuffix "luj" name) then
+                        if (dns.isVPNDomain name) then
                           (config.machine.meta.ips.vpn ? ipv6)
                         else
                           (config.machine.meta.ips.public ? ipv6)
                       )
                       {
                         url = "https://[${
-                          if (hasSuffix "luj" name) then
+                          if (dns.isVPNDomain name) then
                             config.machine.meta.ips.vpn.ipv6
                           else
                             config.machine.meta.ips.public.ipv6
@@ -101,8 +101,8 @@ in
                         '';
                       };
                 };
-                security.acme.certs = lib.optionalAttrs (hasSuffix "luj" name) {
-                  "${name}".server = lib.mkIf (hasSuffix "luj" name) "https://ca.luj/acme/acme/directory";
+                security.acme.certs = lib.optionalAttrs (dns.isVPNDomain name) {
+                  "${name}".server = lib.mkIf (dns.isVPNDomain name) "https://ca.luj/acme/acme/directory";
                 };
 
                 machine.meta.zones = lib.optionalAttrs (name != "default") (recordsFromDomain name);

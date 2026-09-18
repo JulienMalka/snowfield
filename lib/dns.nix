@@ -14,11 +14,12 @@ rec {
     "iljuj.fr"
   ];
 
-  isVPNDomain = hasSuffix "luj";
+  isSubdomainOf = zone: domain: domain == zone || lib.hasSuffix ".${zone}" domain;
 
-  hasSuffix' = flip strings.hasSuffix;
+  isVPNDomain = isSubdomainOf "luj";
 
-  domainToZone = allowedDomains: domain: (findFirst (hasSuffix' domain) null allowedDomains);
+  domainToZone =
+    allowedDomains: domain: (findFirst (zone: isSubdomainOf zone domain) null allowedDomains);
 
   filterElligibleDomains = allowedDomains: domain: domainToZone allowedDomains domain != null;
 
