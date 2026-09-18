@@ -72,9 +72,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
             inherit (prev) unstable;
           })
           // {
-            codeberg-pages-custom = prev.pkgs.callPackage ../packages/codeberg-pages-custom { };
-            widget-server = prev.pkgs.callPackage ../packages/widget-server { };
-
             # Packages from other repositories
             lila-build-hook = (import inputs.lila).packages.${system}.utils;
             artiflakery = (import inputs.artiflakery).defaultPackage.${system};
