@@ -1,4 +1,3 @@
-_:
-{
+_: {
   luj.hmgr.julien = { };
 }

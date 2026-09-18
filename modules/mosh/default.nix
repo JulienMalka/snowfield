@@ -8,9 +8,13 @@ with lib;
     enable = mkEnableOption "Enable mosh program";
   };
 
-  config = mkIf cfg.enable
-    {
-      programs.mosh.enable = true;
-      networking.firewall.allowedUDPPortRanges = [{ from = 60000; to = 61000; }];
-    };
+  config = mkIf cfg.enable {
+    programs.mosh.enable = true;
+    networking.firewall.allowedUDPPortRanges = [
+      {
+        from = 60000;
+        to = 61000;
+      }
+    ];
+  };
 }

@@ -29,18 +29,15 @@ in
 
   };
 
-  config = mkIf cfg.enable (
-    mkMerge [{
+  config = mkIf cfg.enable (mkMerge [
+    {
       services.lidarr = {
         enable = true;
         inherit (cfg) user group;
       };
     }
 
-
-      (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))]);
-
-
-
+    (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))
+  ]);
 
 }

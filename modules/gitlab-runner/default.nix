@@ -1,8 +1,13 @@
 /*
- * An opinonated Gitlab-runner, that allows for nix builds (with caching)
- * on NixOS build machines
- */
-{ config, pkgs, lib, ... }:
+  An opinonated Gitlab-runner, that allows for nix builds (with caching)
+  on NixOS build machines
+*/
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 with lib;
 let
   cfg = config.services.nix-gitlab-runner;
@@ -25,7 +30,7 @@ in
       default = "infinity";
       type = types.str;
       example = "5min 20s";
-      description = ''Time to wait until a graceful shutdown is turned into a forceful one.'';
+      description = "Time to wait until a graceful shutdown is turned into a forceful one.";
     };
 
     workDir = mkOption {
@@ -37,13 +42,13 @@ in
     concurrent = mkOption {
       default = 1;
       type = types.int;
-      description = ''Jobs to run concurrently'';
+      description = "Jobs to run concurrently";
     };
 
     check-interval = mkOption {
       default = 0;
       type = types.int;
-      description = ''Interval to check for jobs'';
+      description = "Interval to check for jobs";
     };
 
     package = mkOption {
@@ -55,7 +60,11 @@ in
     };
 
     packages = mkOption {
-      default = with pkgs; [ coreutils su bash ];
+      default = with pkgs; [
+        coreutils
+        su
+        bash
+      ];
       type = types.listOf types.package;
       description = ''
         Packages to add to PATH for the gitlab-runner process.
@@ -70,49 +79,48 @@ in
       '';
     };
 
-    registrationConfigFile = mkOption
-      {
-        type = types.path;
-      };
-  };
-  config =
-    mkIf cfg.enable {
-      systemd.services.nix-gitlab-runner = {
-        path = cfg.packages;
-        environment = config.networking.proxy.envVars;
-        description = "Gitlab Runner";
-        after = [ "network.target" ];
-        wantedBy = [ "multi-user.target" ];
-        serviceConfig = {
-          StateDirectory = "gitlab-runner";
-          ExecStart = ''
-            ${cfg.package}/bin/gitlab-runner run \
-            --working-directory ${cfg.workDir} \
-            --user gitlab-runner \
-            --service gitlab-runner \
-            --config ${cfg.registrationConfigFile}
-          '';
-        } // optionalAttrs cfg.gracefulTermination {
-          TimeoutStopSec = "${cfg.gracefulTimeout}";
-          KillSignal = "SIGQUIT";
-          KillMode = "process";
-        };
-      };
-
-      # Make the gitlab-runner command availabe so users can query the runner
-      environment.systemPackages = [ cfg.package pkgs.git ];
-
-      users.users.gitlab-runner = {
-        home = "/home/gitlab-runner";
-        isNormalUser = true;
-        createHome = true;
-        homeMode = "705";
-      };
-      nix.settings.allowed-users = [ "gitlab-runner" ];
-      nix.settings.trusted-users = [ "gitlab-runner" ];
-
-
-
+    registrationConfigFile = mkOption {
+      type = types.path;
     };
-}
+  };
+  config = mkIf cfg.enable {
+    systemd.services.nix-gitlab-runner = {
+      path = cfg.packages;
+      environment = config.networking.proxy.envVars;
+      description = "Gitlab Runner";
+      after = [ "network.target" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        StateDirectory = "gitlab-runner";
+        ExecStart = ''
+          ${cfg.package}/bin/gitlab-runner run \
+          --working-directory ${cfg.workDir} \
+          --user gitlab-runner \
+          --service gitlab-runner \
+          --config ${cfg.registrationConfigFile}
+        '';
+      }
+      // optionalAttrs cfg.gracefulTermination {
+        TimeoutStopSec = "${cfg.gracefulTimeout}";
+        KillSignal = "SIGQUIT";
+        KillMode = "process";
+      };
+    };
 
+    # Make the gitlab-runner command availabe so users can query the runner
+    environment.systemPackages = [
+      cfg.package
+      pkgs.git
+    ];
+
+    users.users.gitlab-runner = {
+      home = "/home/gitlab-runner";
+      isNormalUser = true;
+      createHome = true;
+      homeMode = "705";
+    };
+    nix.settings.allowed-users = [ "gitlab-runner" ];
+    nix.settings.trusted-users = [ "gitlab-runner" ];
+
+  };
+}

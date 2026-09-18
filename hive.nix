@@ -1,1 +1,4 @@
-let outputs = import ./.; in outputs.colmena
+let
+  outputs = import ./.;
+in
+outputs.colmena

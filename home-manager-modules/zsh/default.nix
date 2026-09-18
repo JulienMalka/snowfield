@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.luj.programs.zsh;
   inherit (pkgs) fetchFromGitHub;
@@ -15,7 +20,11 @@ with lib;
       enable = true;
       enableCompletion = true;
       enableAutosuggestions = true;
-      history = { save = 1000000; extended = true; ignoreDups = true; };
+      history = {
+        save = 1000000;
+        extended = true;
+        ignoreDups = true;
+      };
       initExtra = ''
         setopt notify autopushd
         unsetopt autocd beep
@@ -42,7 +51,6 @@ with lib;
 
         SU = "systemctl --user";
         SS = "sudo systemctl";
-
 
         weather = "curl wttr.in";
         v6 = "curl api6.ipify.org";
@@ -178,6 +186,10 @@ with lib;
     # Misc
     programs.lesspipe.enable = true;
 
-    home.packages = with pkgs; [ unstable.eza python3 libnotify ];
+    home.packages = with pkgs; [
+      unstable.eza
+      python3
+      libnotify
+    ];
   };
 }

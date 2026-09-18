@@ -28,8 +28,8 @@ in
     };
   };
 
-  config = mkIf cfg.enable (
-    mkMerge [{
+  config = mkIf cfg.enable (mkMerge [
+    {
       services.jellyfin = {
         enable = true;
         inherit (cfg) user group;
@@ -37,12 +37,8 @@ in
 
     }
 
-      (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port))
-      (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))]);
-
-
-
-
-
+    (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port))
+    (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))
+  ]);
 
 }
