@@ -101,8 +101,16 @@ let
     ) nixosConfigurations;
 
     checks = {
-      inherit packages;
+      inherit packages tests;
       machines = lib.mapAttrs (_: v: v.config.system.build.toplevel) nixosConfigurations;
+    };
+
+    # The unit tests only exercise pure library functions, so one platform is
+    # enough. Reuse an already-instantiated nixpkgs when the machines provide
+    # one, rather than evaluating a second copy.
+    tests = import ./tests {
+      inherit lib;
+      pkgs = nixpkgs_plats.x86_64-linux or (import inputs.nixpkgs { system = "x86_64-linux"; });
     };
   };
 in
