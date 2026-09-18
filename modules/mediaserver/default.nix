@@ -45,18 +45,12 @@ in
 
       luj.jackett = {
         enable = true;
-        user = "mediaserver";
-        group = "mediaserver";
-        nginx.enable = true;
-        nginx.subdomain = "jackett";
+        subdomain = "jackett";
       };
 
       luj.deluge = {
         enable = true;
-        user = "mediaserver";
-        group = "mediaserver";
-        nginx.enable = true;
-        nginx.subdomain = "downloads";
+        subdomain = "downloads";
       };
     }
 
@@ -64,35 +58,23 @@ in
 
       luj.sonarr = {
         enable = true;
-        user = "mediaserver";
-        group = "mediaserver";
-        nginx.enable = true;
-        nginx.subdomain = "series";
+        subdomain = "series";
       };
 
       luj.radarr = {
         enable = true;
-        user = "mediaserver";
-        group = "mediaserver";
-        nginx.enable = true;
-        nginx.subdomain = "films";
+        subdomain = "films";
       };
       luj.jellyfin = {
         enable = true;
-        user = "mediaserver";
-        group = "mediaserver";
-        nginx.enable = true;
-        nginx.subdomain = "tv";
+        subdomain = "tv";
       };
     })
 
     (mkIf cfg.music.enable {
       luj.lidarr = {
         enable = true;
-        user = "mediaserver";
-        group = "mediaserver";
-        nginx.enable = true;
-        nginx.subdomain = "songs";
+        subdomain = "songs";
       };
     })
   ]);

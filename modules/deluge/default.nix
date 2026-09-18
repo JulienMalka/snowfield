@@ -1,59 +1,52 @@
-{ lib, config, ... }:
-with lib;
+{
+  lib,
+  config,
+  ...
+}:
 let
   cfg = config.luj.deluge;
   port = 8112;
+  user = "mediaserver";
 in
 {
-
   options.luj.deluge = {
-    enable = mkEnableOption "activate deluge service";
+    enable = lib.mkEnableOption "the deluge torrent client";
 
-    user = mkOption {
-      type = types.str;
-      default = "deluge";
-      description = "User account under which deluge runs.";
-    };
-
-    group = mkOption {
-      type = types.str;
-      default = "deluge";
-      description = "Group under which deluge runs.";
-    };
-
-    interface = mkOption {
-      type = types.str;
+    interface = lib.mkOption {
+      type = lib.types.str;
       description = "Interface deluge will use.";
     };
 
-    nginx.enable = mkEnableOption "activate nginx";
-    nginx.subdomain = mkOption { type = types.str; };
+    subdomain = lib.mkOption {
+      type = lib.types.str;
+      description = "Name to serve the deluge web UI under, without the .luj suffix.";
+    };
   };
 
-  config = mkIf cfg.enable (mkMerge [
-    {
+  config = lib.mkIf cfg.enable {
+    age.secrets.deluge-webui-password = {
+      owner = user;
+      file = ./deluge-webui-password.age;
+    };
 
-      age.secrets.deluge-webui-password = {
-        owner = cfg.user;
-        file = ./deluge-webui-password.age;
+    services.deluge = {
+      enable = true;
+      inherit user;
+      group = user;
+      openFirewall = true;
+      declarative = true;
+      authFile = "/run/agenix/deluge-webui-password";
+      web.enable = true;
+      config = {
+        download_location = "${config.users.users.${user}.home}/downloads/";
+        allow_remote = true;
+        outgoing_interface = cfg.interface;
+        listen_interface = cfg.interface;
       };
+    };
 
-      services.deluge = {
-        enable = true;
-        inherit (cfg) user group;
-        openFirewall = true;
-        declarative = true;
-        authFile = "/run/agenix/deluge-webui-password";
-        web.enable = true;
-        config = {
-          download_location = "${config.users.users.${cfg.user}.home}/downloads/";
-          allow_remote = true;
-          outgoing_interface = cfg.interface;
-          listen_interface = cfg.interface;
-        };
-      };
-    }
-
-    (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))
-  ]);
+    luj.nginx.enable = true;
+    services.nginx.virtualHosts."${cfg.subdomain}.luj".locations."/".proxyPass =
+      "http://localhost:${toString port}";
+  };
 }

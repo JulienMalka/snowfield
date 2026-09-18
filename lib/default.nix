@@ -23,24 +23,6 @@ rec {
     path:
     (mapAttrs (name: _value: import (path + "/${name}/default.nix")) (discovery.directories path));
 
-  mkSubdomain = name: port: {
-    luj.nginx.enable = true;
-    services.nginx.virtualHosts."${name}.julienmalka.me" = {
-      locations."/" = {
-        proxyPass = "http://localhost:${toString port}";
-      };
-    };
-  };
-
-  mkVPNSubdomain = name: port: {
-    luj.nginx.enable = true;
-    services.nginx.virtualHosts."${name}.luj" = {
-      locations."/" = {
-        proxyPass = "http://localhost:${toString port}";
-      };
-    };
-  };
-
   listToAttrsWithMerge =
     l:
     mapAttrs (_: v: _prev.foldr (elem: acc: elem.value // acc) { } v) (builtins.groupBy (e: e.name) l);

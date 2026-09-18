@@ -4,42 +4,31 @@
   pkgs,
   ...
 }:
-with lib;
 let
   cfg = config.luj.radarr;
   port = 7878;
 in
 {
-
   options.luj.radarr = {
-
-    enable = mkEnableOption "activate radarr service";
-
-    user = mkOption {
-      type = types.str;
-      default = "radarr";
-      description = "User account under which Radarr runs.";
+    enable = lib.mkEnableOption "the radarr movie manager";
+    subdomain = lib.mkOption {
+      type = lib.types.str;
+      description = "Name to serve radarr under on the VPN, without the .luj suffix.";
     };
-
-    group = mkOption {
-      type = types.str;
-      default = "radarr";
-      description = "Group under which Radarr runs.";
-    };
-
-    nginx.enable = mkEnableOption "activate nginx";
-    nginx.subdomain = mkOption { type = types.str; };
   };
 
-  config = mkIf cfg.enable (mkMerge [
-    {
-      services.radarr = {
-        enable = true;
-        package = pkgs.unstable.radarr;
-        inherit (cfg) user group;
-      };
-    }
+  config = lib.mkIf cfg.enable {
+    services.radarr = {
+      enable = true;
+      package = pkgs.unstable.radarr;
+      # The whole stack runs as the user luj.mediaserver creates, so every
+      # service reaches the same library on disk.
+      user = "mediaserver";
+      group = "mediaserver";
+    };
 
-    (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))
-  ]);
+    luj.nginx.enable = true;
+    services.nginx.virtualHosts."${cfg.subdomain}.luj".locations."/".proxyPass =
+      "http://localhost:${toString port}";
+  };
 }

@@ -1,34 +1,37 @@
-{ lib, config, ... }:
-with lib;
+{
+  lib,
+  config,
+  ...
+}:
 let
   cfg = config.luj.irc;
   port = 8349;
+  upstream = "http://localhost:${toString port}";
 in
 {
-
   options.luj.irc = {
-    enable = mkEnableOption "activate irc service";
-
-    nginx.enable = mkEnableOption "activate nginx";
-    nginx.subdomain = mkOption {
-      type = types.str;
+    enable = lib.mkEnableOption "the thelounge IRC client";
+    subdomain = lib.mkOption {
+      type = lib.types.str;
+      description = ''
+        Name to serve thelounge under. It is published both publicly and on the
+        VPN, so this is the prefix of two host names.
+      '';
     };
-
   };
 
-  config = mkIf cfg.enable (mkMerge [
-    {
-      services.thelounge = {
-        inherit port;
-        enable = true;
-        public = false;
-        extraConfig.fileUpload.enable = true;
-      };
+  config = lib.mkIf cfg.enable {
+    services.thelounge = {
+      inherit port;
+      enable = true;
+      public = false;
+      extraConfig.fileUpload.enable = true;
+    };
 
-    }
-
-    (mkIf cfg.nginx.enable (mkSubdomain cfg.nginx.subdomain port))
-    (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))
-  ]);
-
+    luj.nginx.enable = true;
+    services.nginx.virtualHosts = {
+      "${cfg.subdomain}.julienmalka.me".locations."/".proxyPass = upstream;
+      "${cfg.subdomain}.luj".locations."/".proxyPass = upstream;
+    };
+  };
 }

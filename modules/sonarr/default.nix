@@ -1,45 +1,32 @@
 {
   lib,
-  pkgs,
   config,
+  pkgs,
   ...
 }:
-with lib;
 let
   cfg = config.luj.sonarr;
   port = 8989;
 in
 {
-
   options.luj.sonarr = {
-
-    enable = mkEnableOption "activate sonarr service";
-
-    user = mkOption {
-      type = types.str;
-      default = "sonarr";
-      description = "User account under which Sonarr runs.";
+    enable = lib.mkEnableOption "the sonarr series manager";
+    subdomain = lib.mkOption {
+      type = lib.types.str;
+      description = "Name to serve sonarr under on the VPN, without the .luj suffix.";
     };
-
-    group = mkOption {
-      type = types.str;
-      default = "sonarr";
-      description = "Group under which Sonarr runs.";
-    };
-
-    nginx.enable = mkEnableOption "activate nginx";
-    nginx.subdomain = mkOption { type = types.str; };
   };
 
-  config = mkIf cfg.enable (mkMerge [
-    {
-      services.sonarr = {
-        enable = true;
-        package = pkgs.sonarr;
-        inherit (cfg) user group;
-      };
-    }
+  config = lib.mkIf cfg.enable {
+    services.sonarr = {
+      enable = true;
+      package = pkgs.sonarr;
+      user = "mediaserver";
+      group = "mediaserver";
+    };
 
-    (mkIf cfg.nginx.enable (mkVPNSubdomain cfg.nginx.subdomain port))
-  ]);
+    luj.nginx.enable = true;
+    services.nginx.virtualHosts."${cfg.subdomain}.luj".locations."/".proxyPass =
+      "http://localhost:${toString port}";
+  };
 }

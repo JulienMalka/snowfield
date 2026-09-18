@@ -60,8 +60,7 @@
   # Docs and odd proxies
   luj.docs = {
     enable = true;
-    nginx.enable = true;
-    nginx.subdomain = "docs";
+    subdomain = "docs";
   };
 
   services.nginx.virtualHosts."staging-lila.luj.fr" = {
@@ -195,10 +194,7 @@
 
   luj.irc = {
     enable = true;
-    nginx = {
-      enable = true;
-      subdomain = "irc";
-    };
+    subdomain = "irc";
   };
 
   luj.homepage.enable = true;
