@@ -1,4 +1,3 @@
-# [[file:../../org/20260720T150500==public--how-my-backups-work__infra_backups.org::*The vault][The vault:1]]
 {
   lib,
   config,
@@ -15,9 +14,8 @@ let
   secretPath = config.age.secrets."borg-encryption-secret".path;
 
 in
-# The vault:1 ends here
 
-# [[file:../../org/20260720T150500==public--how-my-backups-work__infra_backups.org::*The vocabulary][The vocabulary:1]]
+# The vocabulary
 {
   options.services.backup =
     with lib;
@@ -72,9 +70,8 @@ in
         '';
       };
     };
-  # The vocabulary:1 ends here
 
-  # [[file:../../org/20260720T150500==public--how-my-backups-work__infra_backups.org::*Activation, or the absence of an enable flag][Activation, or the absence of an enable flag:1]]
+  # Activation, or the absence of an enable flag
   config = lib.mkIf (cfg.includes != [ ]) {
 
     age.secrets."borg-ssh-key" = {
@@ -88,9 +85,8 @@ in
     programs.ssh.knownHosts."${if port != 22 then "[${host}]:${port}" else host}" = {
       publicKey = "${hostPublicKey}";
     };
-    # Activation, or the absence of an enable flag:1 ends here
 
-    # [[file:../../org/20260720T150500==public--how-my-backups-work__infra_backups.org::*Ordering and the stampede][Ordering and the stampede:1]]
+    # Ordering and the stampede
     systemd.services.borgbackup-job-state = {
       wants = cfg.wantedUnits;
       after = cfg.wantedUnits;
@@ -101,9 +97,8 @@ in
       RandomizedDelaySec = "30m";
       FixedRandomDelay = true;
     };
-    # Ordering and the stampede:1 ends here
 
-    # [[file:../../org/20260720T150500==public--how-my-backups-work__infra_backups.org::*The job itself][The job itself:1]]
+    # The job itself
     services.borgbackup.jobs.state = {
       inherit (cfg) preHook postHook;
 
@@ -143,4 +138,3 @@ in
     };
   };
 }
-# The job itself:1 ends here

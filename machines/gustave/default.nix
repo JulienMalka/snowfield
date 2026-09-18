@@ -1,4 +1,3 @@
-# [[file:../../org/20260720T151000==public--gustave__infra_machine.org::*The cast][The cast:1]]
 {
   pkgs,
   inputs,
@@ -23,7 +22,7 @@
     ./luj-website.nix
     ./windmill.nix
     ./lasuite-meet.nix
-    ./new-api.nix
+    ./litellm.nix
     ./open-webui.nix
     ./terminus.nix
   ];
@@ -31,13 +30,11 @@
   users.users.julien.linger = true;
 
   boot.initrd.systemd.enable = true;
-  # The cast:1 ends here
 
-  # [[file:../../org/20260720T151000==public--gustave__infra_machine.org::#backup][What gustave itself backs up:1]]
+  # What gustave itself backs up
   services.backup.includes = [ "/home/julien/Maildir" ];
-  # What gustave itself backs up:1 ends here
 
-  # [[file:../../org/20260720T151000==public--gustave__infra_machine.org::*Identity][Identity:1]]
+  # Identity
   machine.meta = {
     arch = "x86_64-linux";
     nixpkgs_version = inputs.nixpkgs;
@@ -59,9 +56,8 @@
     };
 
   };
-  # Identity:1 ends here
 
-  # [[file:../../org/20260720T151000==public--gustave__infra_machine.org::*Docs and odd proxies][Docs and odd proxies:1]]
+  # Docs and odd proxies
   luj.docs = {
     enable = true;
     nginx.enable = true;
@@ -83,9 +79,8 @@
       proxyPass = "http://localhost:8005";
     };
   };
-  # Docs and odd proxies:1 ends here
 
-  # [[file:../../org/20260720T151000==public--gustave__infra_machine.org::*Boot and plumbing][Boot and plumbing:1]]
+  # Boot and plumbing
   security.polkit.enable = true;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -99,9 +94,8 @@
     "dotnet-sdk-6.0.428"
     "aspnetcore-runtime-6.0.36"
   ];
-  # Boot and plumbing:1 ends here
 
-  # [[file:../../org/20260720T151000==public--gustave__infra_machine.org::*The tunnel to akhaten][The tunnel to akhaten:1]]
+  # The tunnel to akhaten
   systemd.network.netdevs = {
     "20-wg0" = {
       netdevConfig = {
@@ -133,9 +127,8 @@
       IPv6AcceptRA = false;
     };
   };
-  # The tunnel to akhaten:1 ends here
 
-  # [[file:../../org/20260720T151000==public--gustave__infra_machine.org::*The forge][The forge:1]]
+  # The forge
   services.forgejo = {
     enable = true;
     package = pkgs.unstable.forgejo;
@@ -166,9 +159,8 @@
       proxyWebsockets = true;
     };
   };
-  # The forge:1 ends here
 
-  # [[file:../../org/20260720T151000==public--gustave__infra_machine.org::*Surviving reboots][Surviving reboots:1]]
+  # Surviving reboots
   preservation.enable = true;
   preservation.preserveAt."/persistent" = {
     directories = [
@@ -201,9 +193,8 @@
       ];
     };
   };
-  # Surviving reboots:1 ends here
 
-  # [[file:../../org/20260720T151000==public--gustave__infra_machine.org::*Odds and ends][Odds and ends:1]]
+  # Odds and ends
   environment.systemPackages = [ pkgs.tailscale ];
 
   services.tailscale.enable = true;
@@ -226,9 +217,8 @@
 
   networking.firewall.allowedTCPPorts = [ 51820 ];
   networking.firewall.allowedUDPPorts = [ 51820 ];
-  # Odds and ends:1 ends here
 
-  # [[file:../../org/20260720T151000==public--gustave__infra_machine.org::*Webmail][Webmail:1]]
+  # Webmail
   services.roundcube = {
     enable = true;
     plugins = [
@@ -247,4 +237,3 @@
 
   system.stateVersion = "23.11";
 }
-# Webmail:1 ends here
