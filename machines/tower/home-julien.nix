@@ -10,7 +10,6 @@
       unstable.nix-eval-jobs
       nix-bisect
       htop
-      hydrasect
       tmux
       lazygit
       jq
