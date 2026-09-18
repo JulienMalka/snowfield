@@ -8,6 +8,7 @@
   coreutils,
   gnugrep,
   gnused,
+  curl,
 }:
 
 writeShellApplication {
@@ -22,6 +23,7 @@ writeShellApplication {
     coreutils
     gnugrep
     gnused
+    curl
   ];
 
   excludeShellChecks = [
