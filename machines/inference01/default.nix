@@ -75,6 +75,15 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Native builds of the CUDA stack (torch, vllm, magma, llvm/clang) are
+  # memory-heavy; nix's default concurrency ran several at once and, alongside
+  # the resident vLLM, OOM'd the 121 GB Spark. Cap how many derivations build
+  # in parallel and how many threads each gets.
+  nix.settings = {
+    max-jobs = 2;
+    cores = 12;
+  };
+
   networking.networkmanager.enable = true;
   networking.useDHCP = lib.mkForce false;
   systemd.network.enable = lib.mkForce false;
