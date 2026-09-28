@@ -95,7 +95,18 @@
     };
   };
 
+  # Persist the tailscale-CGNAT workaround. inference01's LAN address collides
+  # with tailscale's 100.64/10 CGNAT range, so ts-input drops the loopback
+  # rendezvous packets vLLM's torch.distributed init sends to its own IP and
+  # every instance hangs at startup. Pinning the rendezvous to loopback avoids
+  # the collision (single-node Spark, so 127.0.0.1 is the correct bind anyway).
+  # This used to live only as a transient /run drop-in and was lost on reboot.
+  systemd.services.vllm-gpt-oss.environment.VLLM_HOST_IP = "127.0.0.1";
+  systemd.services.vllm-qwen3-coder.environment.VLLM_HOST_IP = "127.0.0.1";
+  systemd.services.vllm-qwen3-235b.environment.VLLM_HOST_IP = "127.0.0.1";
+
   systemd.services.vllm-qwen36-27b.environment = {
+    VLLM_HOST_IP = "127.0.0.1";
     VLLM_MARLIN_USE_ATOMIC_ADD = "1";
     VLLM_USE_DEEP_GEMM = "0";
     CUDA_MANAGED_FORCE_DEVICE_ALLOC = "1";
@@ -103,6 +114,7 @@
     OMP_NUM_THREADS = "4";
   };
   systemd.services.vllm-gemma4-31b.environment = {
+    VLLM_HOST_IP = "127.0.0.1";
     VLLM_MARLIN_USE_ATOMIC_ADD = "1";
     VLLM_USE_DEEP_GEMM = "0";
     CUDA_MANAGED_FORCE_DEVICE_ALLOC = "1";
