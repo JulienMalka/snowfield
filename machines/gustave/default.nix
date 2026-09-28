@@ -2,7 +2,6 @@
   pkgs,
   inputs,
   profiles,
-  lib,
   ...
 }:
 {
@@ -10,6 +9,7 @@
     ./hardware.nix
     ./home-julien.nix
     ./nsd.nix
+    ./mullvad.nix
     ./borg.nix
     ./readeck.nix
     ./plausible.nix
@@ -89,39 +89,6 @@
     "dotnet-sdk-6.0.428"
     "aspnetcore-runtime-6.0.36"
   ];
-
-  # The tunnel to akhaten
-  systemd.network.netdevs = {
-    "20-wg0" = {
-      netdevConfig = {
-        Kind = "wireguard";
-        Name = "wg0";
-        MTUBytes = "1300";
-      };
-      wireguardConfig = {
-        PrivateKeyFile = "/persistent/srv/wg-private";
-        ListenPort = 51820;
-      };
-      wireguardPeers = [
-        {
-          PublicKey = "oYsN1Qy+a7dwVOKapN5s5KJOmhSflLHZqh+GLMeNpHw=";
-          AllowedIPs = [ "0.0.0.0/0" ];
-          Endpoint = "[${lib.snowfield.akhaten.ips.public.ipv6}]:51821";
-          PersistentKeepalive = 25;
-        }
-      ];
-    };
-  };
-  systemd.network.networks."30-wg0" = {
-    matchConfig.Name = "wg0";
-    address = [
-      "10.100.45.2/24"
-    ];
-    DHCP = "no";
-    networkConfig = {
-      IPv6AcceptRA = false;
-    };
-  };
 
   # The forge
   services.forgejo = {
@@ -204,9 +171,6 @@
     music.enable = false;
   };
   luj.deluge.interface = "wg0";
-
-  networking.firewall.allowedTCPPorts = [ 51820 ];
-  networking.firewall.allowedUDPPorts = [ 51820 ];
 
   # Webmail
   services.roundcube = {
