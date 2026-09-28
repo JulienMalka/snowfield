@@ -15,7 +15,6 @@
     arch = "x86_64-linux";
     nixpkgs_version = inputs.unstable;
     hm_version = inputs.home-manager-unstable;
-    # TODO: Fix colmena deployment
     ips.public.ipv4 = "127.0.0.1";
     ips.vpn.ipv4 = "100.100.45.10";
     profiles = with profiles; [ syncthing ];
