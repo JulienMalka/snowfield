@@ -2,6 +2,12 @@
 with lib;
 let
   cfg = config.luj.mediaserver;
+  # The library on disk, shared by every service of the stack.
+  mediaDirs = [
+    "/home/mediaserver/downloads"
+    "/home/mediaserver/series"
+    "/home/mediaserver/films"
+  ];
 in
 {
   options.luj.mediaserver = {
@@ -13,23 +19,11 @@ in
   config = mkIf cfg.enable (mkMerge [
     {
 
-      preservation.preserveAt."/persistent".directories = [
-        {
-          directory = "/home/mediaserver/downloads";
-          user = "mediaserver";
-          group = "mediaserver";
-        }
-        {
-          directory = "/home/mediaserver/series";
-          user = "mediaserver";
-          group = "mediaserver";
-        }
-        {
-          directory = "/home/mediaserver/films";
-          user = "mediaserver";
-          group = "mediaserver";
-        }
-      ];
+      preservation.preserveAt."/persistent".directories = map (directory: {
+        inherit directory;
+        user = "mediaserver";
+        group = "mediaserver";
+      }) mediaDirs;
 
       users.users.mediaserver = {
         name = "mediaserver";
@@ -55,6 +49,14 @@ in
     }
 
     (mkIf cfg.tv.enable {
+      # Upstream hardens sonarr and radarr with ProtectHome=true, which hides
+      # the library from them. Keep the sandbox but bind the library into it.
+      systemd.services = genAttrs [ "sonarr" "radarr" ] (_: {
+        serviceConfig = {
+          ProtectHome = mkForce "tmpfs";
+          BindPaths = mediaDirs;
+        };
+      });
 
       luj.sonarr = {
         enable = true;
