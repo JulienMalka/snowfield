@@ -7,5 +7,6 @@ let
 in
 packages
 // {
-  new-api = unstable.callPackage ../packages/new-api { };
+  # Prisma's generated types hang during import on Python 3.14.
+  litellm-patched = unstable.python313Packages.callPackage ../packages/litellm-patched { };
 }

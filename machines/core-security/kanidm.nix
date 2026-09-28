@@ -51,6 +51,7 @@ in
           "camille"
           "sofia"
         ];
+        "litellm_admins".members = [ "luj" ];
       };
 
       persons.luj = {
@@ -69,6 +70,7 @@ in
           "headscale_users"
           "lasuite-meet_users"
           "inference_users"
+          "litellm_admins"
         ];
       };
 
@@ -201,18 +203,23 @@ in
           ];
         };
 
-        new-api = {
-          displayName = "Inference gateway";
-          originUrl = "https://inference.luj.fr/oauth/oidc";
+        litellm = {
+          displayName = "LiteLLM";
+          originUrl = "https://inference.luj.fr/sso/callback";
           originLanding = "https://inference.luj.fr/";
-          basicSecretFile = config.age.secrets.kanidm-oauth2-new-api.path;
+          basicSecretFile = config.age.secrets.kanidm-oauth2-litellm.path;
           allowInsecureClientDisablePkce = true;
           preferShortUsername = true;
           scopeMaps.inference_users = [
             "openid"
             "email"
             "profile"
+            "groups"
           ];
+          claimMaps.litellm_role = {
+            joinType = "ssv";
+            valuesByGroup.litellm_admins = [ "proxy_admin" ];
+          };
         };
 
         open-webui = {
@@ -229,6 +236,10 @@ in
             "groups"
             "offline_access"
           ];
+          claimMaps.litellm_role = {
+            joinType = "ssv";
+            valuesByGroup.litellm_admins = [ "proxy_admin" ];
+          };
         };
 
         step = {
@@ -281,8 +292,8 @@ in
     file = ./kanidm-oauth2-lasuite-meet.age;
     owner = "kanidm";
   };
-  age.secrets.kanidm-oauth2-new-api = {
-    file = ./kanidm-oauth2-new-api.age;
+  age.secrets.kanidm-oauth2-litellm = {
+    file = ./kanidm-oauth2-litellm.age;
     owner = "kanidm";
   };
   age.secrets.kanidm-oauth2-open-webui = {
