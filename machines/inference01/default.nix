@@ -85,6 +85,11 @@
   };
 
   networking.networkmanager.enable = true;
+  # The wifi link (used while the wired port is down) power-saves on idle:
+  # the NIC sleeps, takes ~3.5s to wake, and drops packets in between, so
+  # tailscale (DERP-relayed, no direct path) flaps and idle peers time out.
+  # Keep the radio awake so the link stays reachable.
+  networking.networkmanager.wifi.powersave = false;
   networking.useDHCP = lib.mkForce false;
   systemd.network.enable = lib.mkForce false;
 
