@@ -50,6 +50,20 @@ in
           "polyseed/seed-builder-llvm/output"
           "polyseed/seed-builder-llvm/stage"
           "polyseed/analysis/repos"
+          # LaTeX build outputs: each machine builds its own
+          "(?d)*.aux"
+          "(?d)*.bbl"
+          "(?d)*.blg"
+          "(?d)*.fdb_latexmk"
+          "(?d)*.fls"
+          "(?d)*.log"
+          "(?d)*.out"
+          "(?d)*.synctex.gz"
+          "(?d)*.upa"
+          "(?d)*.upb"
+          "(?d)*.toc"
+          "(?d)auto"
+          "(?d)**/reports/**/*.pdf"
         ];
         devices = lib.attrNames syncthing_configured;
       };
