@@ -41,6 +41,10 @@ with lib;
       file = ./ens-mail-pw.age;
     };
 
+    age.secrets.kth-mail-pw = {
+      file = ./kth-mail-pw.age;
+    };
+
     programs.msmtp.enable = true;
 
     programs.notmuch = {
@@ -92,6 +96,23 @@ with lib;
           host = "kurisu.lahfa.xyz";
         };
         userName = "luj@dgnum.eu";
+      };
+
+      accounts.kth = {
+        notmuch.enable = true;
+        folders.inbox = "INBOX";
+        address = "jmalka@kth.se";
+        imap.host = "webmail.kth.se";
+        msmtp.enable = true;
+        primary = false;
+        realName = "Julien Malka";
+        passwordCommand = "${pkgs.coreutils}/bin/cat ${config.age.secrets.kth-mail-pw.path}";
+        smtp = {
+          host = "smtp.kth.se";
+          port = 587;
+          tls.useStartTls = true;
+        };
+        userName = "jmalka";
       };
 
     };
