@@ -10,6 +10,7 @@
     ./home-julien.nix
     ./home-windmill.nix
     ./forgejo-runner.nix
+    ./nixbot.nix
     ./windmill-worker.nix
   ];
 
@@ -46,12 +47,16 @@
     hm_version = inputs.home-manager;
     ips = {
       public.ipv6 = "2001:bc8:38ee:100:f837:7fff:fe77:7154";
-      public.ipv4 = "192.168.0.1";
+      # The container itself is IPv6-only; IPv4 clients come through the
+      # Hetzner sniproxy (see behind-sniproxy), which forwards to us over IPv6.
+      public.ipv4 = "77.42.114.11";
       vpn.ipv4 = "100.100.45.8";
+      vpn.ipv6 = "fd7a:115c:a1e0::8";
     };
     profiles = with profiles; [
       server
       monitoring
+      behind-sniproxy
     ];
   };
 
