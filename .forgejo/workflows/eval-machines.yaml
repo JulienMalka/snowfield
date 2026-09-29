@@ -25,8 +25,8 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in 
-        p.mkShell { packages = [ (p.callPackage 
+      run: nix-shell -E 'let i = (import ./.).inputs; p = import i.nixpkgs { }; 
+        in p.mkShell { packages = [ (p.callPackage 
         "${i.niks3}/nix/packages/niks3.nix" { }) p.util-linux ]; }' --run 'bash 
         scripts/push-to-cache.sh ./result-akhaten'
     - env:
@@ -67,8 +67,8 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in 
-        p.mkShell { packages = [ (p.callPackage 
+      run: nix-shell -E 'let i = (import ./.).inputs; p = import i.nixpkgs { }; 
+        in p.mkShell { packages = [ (p.callPackage 
         "${i.niks3}/nix/packages/niks3.nix" { }) p.util-linux ]; }' --run 'bash 
         scripts/push-to-cache.sh ./result-arcadia'
     - env:
@@ -109,8 +109,8 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in 
-        p.mkShell { packages = [ (p.callPackage 
+      run: nix-shell -E 'let i = (import ./.).inputs; p = import i.nixpkgs { }; 
+        in p.mkShell { packages = [ (p.callPackage 
         "${i.niks3}/nix/packages/niks3.nix" { }) p.util-linux ]; }' --run 'bash 
         scripts/push-to-cache.sh ./result-biblios'
     - env:
@@ -151,8 +151,8 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in 
-        p.mkShell { packages = [ (p.callPackage 
+      run: nix-shell -E 'let i = (import ./.).inputs; p = import i.nixpkgs { }; 
+        in p.mkShell { packages = [ (p.callPackage 
         "${i.niks3}/nix/packages/niks3.nix" { }) p.util-linux ]; }' --run 'bash 
         scripts/push-to-cache.sh ./result-core-data'
     - env:
@@ -194,8 +194,8 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in 
-        p.mkShell { packages = [ (p.callPackage 
+      run: nix-shell -E 'let i = (import ./.).inputs; p = import i.nixpkgs { }; 
+        in p.mkShell { packages = [ (p.callPackage 
         "${i.niks3}/nix/packages/niks3.nix" { }) p.util-linux ]; }' --run 'bash 
         scripts/push-to-cache.sh ./result-core-security'
     - env:
@@ -236,8 +236,8 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in 
-        p.mkShell { packages = [ (p.callPackage 
+      run: nix-shell -E 'let i = (import ./.).inputs; p = import i.nixpkgs { }; 
+        in p.mkShell { packages = [ (p.callPackage 
         "${i.niks3}/nix/packages/niks3.nix" { }) p.util-linux ]; }' --run 'bash 
         scripts/push-to-cache.sh ./result-darillium'
     - env:
@@ -279,8 +279,8 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in 
-        p.mkShell { packages = [ (p.callPackage 
+      run: nix-shell -E 'let i = (import ./.).inputs; p = import i.nixpkgs { }; 
+        in p.mkShell { packages = [ (p.callPackage 
         "${i.niks3}/nix/packages/niks3.nix" { }) p.util-linux ]; }' --run 'bash 
         scripts/push-to-cache.sh ./result-epyc-container'
     - env:
@@ -321,8 +321,8 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in 
-        p.mkShell { packages = [ (p.callPackage 
+      run: nix-shell -E 'let i = (import ./.).inputs; p = import i.nixpkgs { }; 
+        in p.mkShell { packages = [ (p.callPackage 
         "${i.niks3}/nix/packages/niks3.nix" { }) p.util-linux ]; }' --run 'bash 
         scripts/push-to-cache.sh ./result-gallifrey'
     - env:
@@ -363,8 +363,8 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in 
-        p.mkShell { packages = [ (p.callPackage 
+      run: nix-shell -E 'let i = (import ./.).inputs; p = import i.nixpkgs { }; 
+        in p.mkShell { packages = [ (p.callPackage 
         "${i.niks3}/nix/packages/niks3.nix" { }) p.util-linux ]; }' --run 'bash 
         scripts/push-to-cache.sh ./result-gustave'
     - env:
@@ -406,8 +406,8 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in 
-        p.mkShell { packages = [ (p.callPackage 
+      run: nix-shell -E 'let i = (import ./.).inputs; p = import i.nixpkgs { }; 
+        in p.mkShell { packages = [ (p.callPackage 
         "${i.niks3}/nix/packages/niks3.nix" { }) p.util-linux ]; }' --run 'bash 
         scripts/push-to-cache.sh ./result-inference01'
     - env:
@@ -423,6 +423,49 @@ jobs:
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
         \",\\\"context\\\":\\\"forgejo/inference01\\\",\\\"description\\\":\\\"inference01\\\
+        \"}\"\n"
+  inference02:
+    name: Build inference02
+    needs:
+    - prefetch-sources
+    runs-on: epyc
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      name: Configure SSH for private inputs
+      run: "mkdir -p ~/.ssh\necho \"$DEPLOY_KEY\" > ~/.ssh/deploy_key\nchmod 600 ~/.ssh/deploy_key\n\
+        echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
+        \ >> ~/.ssh/known_hosts\n"
+    - env:
+        GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
+      name: Build inference02
+      run: nix-build -A checks.machines.inference02 --out-link 
+        result-inference02
+    - env:
+        GODEBUG: http2client=0
+        NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
+        NIKS3_SERVER_URL: https://cache.luj.fr
+      name: Push to cache
+      run: nix-shell -E 'let i = (import ./.).inputs; p = import i.nixpkgs { }; 
+        in p.mkShell { packages = [ (p.callPackage 
+        "${i.niks3}/nix/packages/niks3.nix" { }) p.util-linux ]; }' --run 'bash 
+        scripts/push-to-cache.sh ./result-inference02'
+    - env:
+        COMMIT_SHA: ${{ github.sha }}
+        GH_TOKEN: ${{ secrets.GH_STATUS_TOKEN }}
+        JOB_STATUS: ${{ job.status }}
+        RUN_NUMBER: ${{ github.run_number }}
+      if: always()
+      name: Report status to GitHub
+      run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/11\"\
+        \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
+        Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
+        \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
+        \",\\\"context\\\":\\\"forgejo/inference02\\\",\\\"description\\\":\\\"inference02\\\
         \"}\"\n"
   jacques:
     name: Build jacques
@@ -448,8 +491,8 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in 
-        p.mkShell { packages = [ (p.callPackage 
+      run: nix-shell -E 'let i = (import ./.).inputs; p = import i.nixpkgs { }; 
+        in p.mkShell { packages = [ (p.callPackage 
         "${i.niks3}/nix/packages/niks3.nix" { }) p.util-linux ]; }' --run 'bash 
         scripts/push-to-cache.sh ./result-jacques'
     - env:
@@ -460,7 +503,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/11\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/12\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -490,8 +533,8 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in 
-        p.mkShell { packages = [ (p.callPackage 
+      run: nix-shell -E 'let i = (import ./.).inputs; p = import i.nixpkgs { }; 
+        in p.mkShell { packages = [ (p.callPackage 
         "${i.niks3}/nix/packages/niks3.nix" { }) p.util-linux ]; }' --run 'bash 
         scripts/push-to-cache.sh ./result-lambda'
     - env:
@@ -502,7 +545,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/12\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/13\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\
@@ -522,12 +565,11 @@ jobs:
         echo \"git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe\"\
         \ >> ~/.ssh/known_hosts\n"
     - name: Check formatting, lints and dead code
-      run: "nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in p.mkShell
-        { packages = [ p.nixfmt p.statix p.deadnix ]; }' --run 'set -euo pipefail\n\
-        files=$(git ls-files '\\''*.nix'\\'' | grep -v '\\''^lon.nix$'\\'')\n# lon.nix
-        is generated, and is excluded from all three checks.\n# shellcheck disable=SC2086\n\
-        nixfmt --check $files\nstatix check --ignore lon.nix\n# shellcheck disable=SC2086\n\
-        deadnix --fail $files\n'"
+      run: "nix-shell -E 'let i = (import ./.).inputs; p = import i.nixpkgs { }; in
+        p.mkShell { packages = [ p.nixfmt p.statix p.deadnix ]; }' --run 'set -euo
+        pipefail\nfiles=$(git ls-files '\\''*.nix'\\'')\n# shellcheck disable=SC2086\n\
+        nixfmt --check $files\nstatix check\n# shellcheck disable=SC2086\ndeadnix
+        --fail $files\n'"
   packages:
     name: Build packages
     needs:
@@ -552,8 +594,8 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in 
-        p.mkShell { packages = [ (p.callPackage 
+      run: nix-shell -E 'let i = (import ./.).inputs; p = import i.nixpkgs { }; 
+        in p.mkShell { packages = [ (p.callPackage 
         "${i.niks3}/nix/packages/niks3.nix" { }) p.util-linux ]; }' --run 'bash 
         scripts/push-to-cache.sh ./result-packages*'
   prefetch-sources:
@@ -571,9 +613,9 @@ jobs:
         \ >> ~/.ssh/known_hosts\n"
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
-      name: Fetch all lon inputs
-      run: nix-instantiate --eval -E 'builtins.attrValues (import ./lon.nix)' > 
-        /dev/null
+      name: Fetch all flake inputs
+      run: nix-instantiate --eval --strict -E 'map toString (builtins.attrValues
+        (removeAttrs (import ./.).inputs [ "self" ]))' > /dev/null
     - env:
         GIT_SSH_COMMAND: ssh -i ~/.ssh/deploy_key
         GODEBUG: http2client=0
@@ -581,12 +623,13 @@ jobs:
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push sources to cache
       run: "SOURCES=$(nix-instantiate --eval --strict -E 'builtins.concatStringsSep
-        \" \" (map toString (builtins.attrValues (import ./lon.nix)))')\nSOURCES=${SOURCES%\\\
-        \"}\nSOURCES=${SOURCES#\\\"}\n# niks3Shell single-quotes the command, so $SOURCES
-        is expanded by\n# nix-shell's child bash and must be exported to reach it.\n\
-        export SOURCES\nnix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs
-        { }; in p.mkShell { packages = [ (p.callPackage \"${i.niks3}/nix/packages/niks3.nix\"\
-        \ { }) p.util-linux ]; }' --run 'bash scripts/push-to-cache.sh $SOURCES'\n"
+        \" \" (map toString (builtins.attrValues (removeAttrs (import ./.).inputs
+        [ \"self\" ])))')\nSOURCES=${SOURCES%\\\"}\nSOURCES=${SOURCES#\\\"}\n# niks3Shell
+        single-quotes the command, so $SOURCES is expanded by\n# nix-shell's child
+        bash and must be exported to reach it.\nexport SOURCES\nnix-shell -E 'let
+        i = (import ./.).inputs; p = import i.nixpkgs { }; in p.mkShell { packages
+        = [ (p.callPackage \"${i.niks3}/nix/packages/niks3.nix\" { }) p.util-linux
+        ]; }' --run 'bash scripts/push-to-cache.sh $SOURCES'\n"
   promote:
     if: ${{ github.event_name == 'push' }}
     name: Promote to deploy
@@ -601,6 +644,7 @@ jobs:
     - gallifrey
     - gustave
     - inference01
+    - inference02
     - jacques
     - lambda
     - tower
@@ -661,8 +705,8 @@ jobs:
         NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_API_TOKEN }}
         NIKS3_SERVER_URL: https://cache.luj.fr
       name: Push to cache
-      run: nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in 
-        p.mkShell { packages = [ (p.callPackage 
+      run: nix-shell -E 'let i = (import ./.).inputs; p = import i.nixpkgs { }; 
+        in p.mkShell { packages = [ (p.callPackage 
         "${i.niks3}/nix/packages/niks3.nix" { }) p.util-linux ]; }' --run 'bash 
         scripts/push-to-cache.sh ./result-tower'
     - env:
@@ -673,7 +717,7 @@ jobs:
       if: always()
       name: Report status to GitHub
       run: "STATE=\"$JOB_STATUS\"\nif [ \"$STATE\" = \"cancelled\" ]; then STATE=error;
-        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/18\"\
+        fi\nTARGET_URL=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_NUMBER/jobs/19\"\
         \ncurl -sS -X POST \\\n  -H \"Authorization: token $GH_TOKEN\" \\\n  -H \"\
         Accept: application/vnd.github+json\" \\\n  \"https://api.github.com/repos/julienmalka/snowfield/statuses/$COMMIT_SHA\"\
         \ \\\n  -d \"{\\\"state\\\":\\\"$STATE\\\",\\\"target_url\\\":\\\"$TARGET_URL\\\

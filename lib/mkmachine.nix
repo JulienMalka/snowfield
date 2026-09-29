@@ -46,7 +46,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.artiflakery}/module.nix")
 
     (import inputs.lanzaboote { }).nixosModules.lanzaboote
-    (import inputs.lila).nixosModules.hash-collection
+    inputs.lila.nixosModules.hash-collection
     (import "${inputs.stateless-uptime-kuma}/nixos/module.nix")
     (import "${inputs.proxmox}/modules/declarative-vms")
     (import "${inputs.preservation}/module.nix")
@@ -73,8 +73,8 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           })
           // {
             # Packages from other repositories
-            lila-build-hook = (import inputs.lila).packages.${system}.utils;
-            artiflakery = (import inputs.artiflakery).defaultPackage.${system};
+            lila-build-hook = inputs.lila.packages.${system}.utils;
+            artiflakery = inputs.artiflakery.defaultPackage.${system};
             inherit (prev.pkgs.unstable) river;
             eca = prev.pkgs.callPackage "${inputs.llm-agents}/packages/eca/package.nix" {
               wrapBuddy = prev.pkgs.callPackage "${inputs.llm-agents}/packages/wrapBuddy/package.nix" { };
@@ -88,7 +88,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
             claude-code = prev.pkgs.callPackage "${inputs.llm-agents}/packages/claude-code/package.nix" {
               wrapBuddy = prev.pkgs.callPackage "${inputs.llm-agents}/packages/wrapBuddy/package.nix" { };
             };
-            luj-website = (import "${inputs.luj-website}").packages.${system}.default;
+            luj-website = inputs.luj-website.packages.${system}.default;
           }
         )
 

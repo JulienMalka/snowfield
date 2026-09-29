@@ -1,5 +1,5 @@
 let
-  inputs = import ./lon.nix;
+  inherit (import ./.) inputs;
   pkgs = import inputs.unstable { };
   nixos-anywhere = pkgs.callPackage "${inputs.nixos-anywhere}/src/default.nix" { };
   ragenixSrc = builtins.fetchGit {
@@ -16,7 +16,6 @@ let
   });
   bootstrap = pkgs.callPackage scripts/bootstrap-machine.nix { inherit nixos-anywhere; };
   snowfield = pkgs.callPackage scripts/snowfield.nix { };
-  lon = pkgs.callPackage "${inputs.lon}/nix/packages/lon.nix" { };
   niks3 = pkgs.callPackage "${inputs.niks3}/nix/packages/niks3.nix" { };
   ci = import ./ci.nix;
   pre-commit-hook =
@@ -30,12 +29,7 @@ let
         src = ./.;
 
         hooks = {
-          statix = {
-            enable = true;
-            settings.ignore = [
-              "**/lon.nix"
-            ];
-          };
+          statix.enable = true;
           deadnix.enable = true;
           rfc101 = {
             enable = true;
@@ -55,7 +49,6 @@ pkgs.mkShell {
     bootstrap
     snowfield
     pkgs.statix
-    lon
     niks3
   ];
   shellHook = ''

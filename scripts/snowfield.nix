@@ -134,7 +134,8 @@ writeShellApplication {
       echo "$clean"
     }
 
-    # Get the nixpkgs revision from lon.lock at a given snowfield commit
+    # Get the nixpkgs revision locked at a given snowfield commit: flake.lock,
+    # or lon.lock for commits from before the move to flakes.
     # $1 = snowfield short rev, $2 = channel ("stable" or "unstable")
     get_deployed_nixpkgs_rev() {
       local sf_rev="$1" channel="$2"
@@ -144,9 +145,15 @@ writeShellApplication {
       else
         input_name="unstable"
       fi
-      git -C "$repo_root" show "''${sf_rev}:lon.lock" 2>/dev/null \
-        | jq -r --arg name "$input_name" '.sources[$name].revision // empty' 2>/dev/null \
-        || true
+      if git -C "$repo_root" cat-file -e "''${sf_rev}:flake.lock" 2>/dev/null; then
+        git -C "$repo_root" show "''${sf_rev}:flake.lock" \
+          | jq -r --arg name "$input_name" '.nodes[.nodes[.root].inputs[$name]].locked.rev // empty' 2>/dev/null \
+          || true
+      else
+        git -C "$repo_root" show "''${sf_rev}:lon.lock" 2>/dev/null \
+          | jq -r --arg name "$input_name" '.sources[$name].revision // empty' 2>/dev/null \
+          || true
+      fi
     }
 
     cmd_status() {
