@@ -1,4 +1,9 @@
-{ config, inputs, ... }:
+{
+  config,
+  inputs,
+  pkgs,
+  ...
+}:
 {
   imports = [ "${inputs.nixbot}/nixosModules/nixbot.nix" ];
 
@@ -16,6 +21,7 @@
   age.secrets = {
     nixbot-gitea-token.file = ./nixbot-gitea-token.age;
     nixbot-gitea-oauth-secret.file = ./nixbot-gitea-oauth-secret.age;
+    nixbot-ssh-key.file = ./nixbot-ssh-key.age;
   };
 
   services.nixbot = {
@@ -41,6 +47,15 @@
       tokenFile = config.age.secrets.nixbot-gitea-token.path;
       oauthId = "a8ea834a-965b-4c17-b5ec-2d7ba72a8e6c";
       oauthSecretFile = config.age.secrets.nixbot-gitea-oauth-secret.path;
+
+      # Fetches the private git+ssh flake inputs (snowfield's live on
+      # git.luj.fr) before the sandboxed evaluation, which has no keys. It is
+      # a read-only deploy key on exactly those repositories: a PR can add
+      # any repo this key reads as an input, so it must not reach further.
+      sshPrivateKeyFile = config.age.secrets.nixbot-ssh-key.path;
+      sshKnownHostsFile = pkgs.writeText "nixbot-known-hosts" ''
+        git.luj.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJrHUzjPX0v2FX5gJALCjEJaUJ4sbfkv8CBWc6zm0Oe
+      '';
     };
   };
 }
