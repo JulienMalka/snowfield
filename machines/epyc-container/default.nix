@@ -15,27 +15,31 @@
 
   boot.loader.grub.enable = false;
   boot.isNspawnContainer = true;
-  # aarch64 builds go to bld3 (native) instead of qemu-user emulation, which
-  # was 10-20x slower per core and OOM-killed the host (run 155). The runner
-  # logs in with /root/.ssh/id_ed25519 as luj, a trusted user there.
+  # aarch64 builds go to nix-community's builder (80-core Ampere Altra,
+  # 128 GB) instead of qemu-user emulation, which was 10-20x slower per core
+  # and OOM-killed the host (run 155). It is a shared machine with 20 build
+  # slots: take a few, and let the daemon substitute there rather than
+  # upload. The runner logs in with /root/.ssh/id_ed25519 as julienmalka, a
+  # trusted user there (nix-community/infra, community-builder/users.nix).
   nix.distributedBuilds = true;
   nix.settings.builders-use-substitutes = true;
   nix.buildMachines = [
     {
-      hostName = "bld3.m.ntd.one";
-      sshUser = "luj";
+      hostName = "aarch64-build-box.nix-community.org";
+      sshUser = "julienmalka";
       protocol = "ssh-ng";
       sshKey = "/root/.ssh/id_ed25519";
-      publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU40MThKQ3lIamR6R0JGODRYK3Q3YW5rM09VdzRMWnRtZ3Z0L29wZ2ExdGU=";
+      publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUc5dXlmaHlsaStCUnRrNjR5K25pcXRiK3NLcXVSR0daODdmNFlSYzhFRTE=";
       system = "aarch64-linux";
       supportedFeatures = [
+        "benchmark"
         "big-parallel"
+        "kvm"
+        "nixos-test"
         "uid-range"
       ];
-      # 8 cores, 15 GB RAM: one derivation at a time. Four concurrent CUDA
-      # builds (cupy, magma, triton-llvm) OOM-killed it in run 163.
-      maxJobs = 1;
-      speedFactor = 2;
+      maxJobs = 4;
+      speedFactor = 4;
     }
   ];
 
