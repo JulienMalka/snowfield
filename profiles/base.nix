@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  inputs,
   ...
 }:
 
@@ -88,11 +89,7 @@
         };
       };
 
-  system.configurationRevision =
-    let
-      repo = builtins.fetchGit ../.;
-    in
-    repo.dirtyShortRev or repo.shortRev;
+  system.configurationRevision = inputs.self.dirtyShortRev or inputs.self.shortRev or null;
 
   security.pki.certificates = [
     ''

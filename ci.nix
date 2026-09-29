@@ -1,5 +1,5 @@
 let
-  inputs = import ./lon.nix;
+  inherit (import ./.) inputs;
   pkgs = import inputs.unstable { };
   nix-actions = import inputs.nix-actions { inherit pkgs; };
 

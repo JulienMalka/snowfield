@@ -5,8 +5,9 @@
 let
   top = import ../.;
   inherit (top) lib;
-  inputs = import ../lon.nix;
-  lock = builtins.fromJSON (builtins.readFile ../lon.lock);
+  inherit (top) inputs;
+  lock = builtins.fromJSON (builtins.readFile ../flake.lock);
+  branchOf = name: lock.nodes.${lock.nodes.${lock.root}.inputs.${name}}.original.ref;
 
   managedMachines = lib.filterAttrs (_: v: v ? nixpkgs_version) lib.snowfield;
 
@@ -27,9 +28,9 @@ let
   branchForChannel =
     ch:
     if ch == "stable" then
-      lock.sources.nixpkgs.branch
+      branchOf "nixpkgs"
     else if ch == "unstable" then
-      lock.sources.unstable.branch
+      branchOf "unstable"
     else
       "unknown";
 

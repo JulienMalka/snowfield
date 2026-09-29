@@ -12,7 +12,7 @@ let
       lib.attrValues nixosConfigurations
     )
   );
-  dnsLib = (import inputs.dns).lib;
+  dnsLib = inputs.dns.lib;
   evalZones =
     zones:
     (lib.evalModules {

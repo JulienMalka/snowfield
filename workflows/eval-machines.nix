@@ -44,11 +44,11 @@ let
     }
   ];
 
-  # Resolve nixpkgs and niks3 from lon.nix on the runner instead of baking
+  # Resolve nixpkgs and niks3 from the flake inputs on the runner instead of baking
   # store paths into the generated YAML, which go stale on every lock bump.
   niks3Shell =
     script:
-    "nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in p.mkShell { packages = [ (p.callPackage \"\${i.niks3}/nix/packages/niks3.nix\" { }) p.util-linux ]; }' --run ${lib.escapeShellArg script}";
+    "nix-shell -E 'let i = (import ./.).inputs; p = import i.nixpkgs { }; in p.mkShell { packages = [ (p.callPackage \"\${i.niks3}/nix/packages/niks3.nix\" { }) p.util-linux ]; }' --run ${lib.escapeShellArg script}";
 
   # Keep niks3 on HTTP/1.1: over HTTP/2 Go multiplexes all concurrent NAR
   # uploads onto one TCP connection, which caps the push at the throughput of
@@ -59,7 +59,7 @@ let
   # Same resolve-on-the-runner trick as niks3Shell, for the lint tools.
   lintShell =
     script:
-    "nix-shell -E 'let i = import ./lon.nix; p = import i.nixpkgs { }; in p.mkShell { packages = [ p.nixfmt p.statix p.deadnix ]; }' --run ${lib.escapeShellArg script}";
+    "nix-shell -E 'let i = (import ./.).inputs; p = import i.nixpkgs { }; in p.mkShell { packages = [ p.nixfmt p.statix p.deadnix ]; }' --run ${lib.escapeShellArg script}";
 
   reportStatus = machine: {
     name = "Report status to GitHub";
@@ -95,9 +95,9 @@ in
       runs-on = "epyc";
       steps = checkout ++ [
         {
-          name = "Fetch all lon inputs";
+          name = "Fetch all flake inputs";
           env.GIT_SSH_COMMAND = "ssh -i ~/.ssh/deploy_key";
-          run = "nix-instantiate --eval -E 'builtins.attrValues (import ./lon.nix)' > /dev/null";
+          run = "nix-instantiate --eval --strict -E 'map toString (builtins.attrValues (removeAttrs (import ./.).inputs [ \"self\" ]))' > /dev/null";
         }
         {
           name = "Push sources to cache";
@@ -108,7 +108,7 @@ in
             GODEBUG = noHttp2;
           };
           run = ''
-            SOURCES=$(nix-instantiate --eval --strict -E 'builtins.concatStringsSep " " (map toString (builtins.attrValues (import ./lon.nix)))')
+            SOURCES=$(nix-instantiate --eval --strict -E 'builtins.concatStringsSep " " (map toString (builtins.attrValues (removeAttrs (import ./.).inputs [ "self" ])))')
             SOURCES=''${SOURCES%\"}
             SOURCES=''${SOURCES#\"}
             # niks3Shell single-quotes the command, so $SOURCES is expanded by
@@ -130,11 +130,10 @@ in
           name = "Check formatting, lints and dead code";
           run = lintShell ''
             set -euo pipefail
-            files=$(git ls-files '*.nix' | grep -v '^lon.nix$')
-            # lon.nix is generated, and is excluded from all three checks.
+            files=$(git ls-files '*.nix')
             # shellcheck disable=SC2086
             nixfmt --check $files
-            statix check --ignore lon.nix
+            statix check
             # shellcheck disable=SC2086
             deadnix --fail $files
           '';
