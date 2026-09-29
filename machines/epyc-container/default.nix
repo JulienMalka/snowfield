@@ -15,12 +15,7 @@
 
   boot.loader.grub.enable = false;
   boot.isNspawnContainer = true;
-  # aarch64 builds go to nix-community's builder (80-core Ampere Altra,
-  # 128 GB) instead of qemu-user emulation, which was 10-20x slower per core
-  # and OOM-killed the host (run 155). It is a shared machine with 20 build
-  # slots: take a few, and let the daemon substitute there rather than
-  # upload. The runner logs in with /root/.ssh/id_ed25519 as julienmalka, a
-  # trusted user there (nix-community/infra, community-builder/users.nix).
+
   nix.distributedBuilds = true;
   nix.settings.builders-use-substitutes = true;
   nix.buildMachines = [

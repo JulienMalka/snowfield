@@ -1,5 +1,23 @@
 {
 
+  imports = [
+    # vLLM 0.24 turned the FlashInfer top-k/top-p sampler on by default (0.19
+    # was opt-in). nixpkgs' flashinfer-python ships no precompiled kernels
+    # (they live in flashinfer-jit-cache/flashinfer-cubin, which nixpkgs
+    # doesn't package), so the sampler is JIT-compiled at engine init. That
+    # needs nvcc, which the units don't have: every start died with "No such
+    # file or directory: 'which'" after loading the weights. Use vLLM's
+    # PyTorch sampler on every instance.
+    (
+      { config, lib, ... }:
+      {
+        systemd.services = lib.mapAttrs' (
+          name: _: lib.nameValuePair "vllm-${name}" { environment.VLLM_USE_FLASHINFER_SAMPLER = "0"; }
+        ) config.services.vllm.instances;
+      }
+    )
+  ];
+
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
 
   services.vllm.instances = {

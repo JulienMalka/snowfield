@@ -21,6 +21,7 @@ let
     darillium_home = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID/FdA1KyU7U6K4YicQLLHeBf/1LRlMk7vPa1h1IGsfM";
     jacques = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBBgWu3hLZ5Rfp3lH6I03ZabztLo5E8GQhZCWVePNEHe";
     inference01 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC8nwtUciJIcqv4RDYkIh/tFkbBwgQUT35skDoljWQ8H";
+    inference02 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJifbUFEcvVGaF8mDI5TZneqYHFT8nfTl78WGqaV7vs2";
   };
   secrets_owners = [
     keys.arcadia
