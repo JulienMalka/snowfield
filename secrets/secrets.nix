@@ -28,7 +28,14 @@ let
     keys.gallifrey
     keys.darillium
   ];
+  # Under the flake, secret files resolve inside its store copy of the repo;
+  # ragenix matches rules against the paths in this checkout.
+  storeRoot = toString self.flakeSource;
+  repoRoot = toString ../.;
 in
-lib.mapAttrs (_: v: {
-  publicKeys = lib.lists.unique ((map (x: keys."${x}") v.targets) ++ secrets_owners);
-}) all_secrets
+lib.mapAttrs' (
+  n: v:
+  lib.nameValuePair (repoRoot + lib.removePrefix storeRoot n) {
+    publicKeys = lib.lists.unique ((map (x: keys."${x}") v.targets) ++ secrets_owners);
+  }
+) all_secrets
