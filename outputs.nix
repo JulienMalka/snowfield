@@ -49,8 +49,12 @@ let
 
     colmena = {
       meta = {
+        # colmena evaluates flakes hermetically: it needs a default nixpkgs
+        # even though every node is pinned, and all of them instantiated,
+        # since there is no currentSystem to guess from.
+        nixpkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
         nodeNixpkgs = builtins.mapAttrs (
-          n: _: import lib.snowfield.${n}.nixpkgs_version
+          n: _: import lib.snowfield.${n}.nixpkgs_version { system = lib.snowfield.${n}.arch; }
         ) nixosConfigurations;
         nodeSpecialArgs = builtins.mapAttrs (
           n: v: v._module.specialArgs // { lib = mkLibForMachine n; }
