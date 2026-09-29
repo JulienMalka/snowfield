@@ -1,17 +1,15 @@
 {
   lib,
   python3Packages,
+  # The flake input of the same name.
+  src,
 }:
 
 python3Packages.buildPythonApplication {
   pname = "gh-proxy";
   version = "0.1.0";
 
-  src = builtins.fetchGit {
-    url = "ssh://forgejo@git.luj.fr/luj/gh-proxy.git";
-    ref = "main";
-    rev = "b3b24db9e09c146cc1909a73abbc9dcb9d00692d";
-  };
+  inherit src;
 
   pyproject = true;
 

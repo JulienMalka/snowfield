@@ -55,6 +55,23 @@
         "type": "github"
       }
     },
+    "cal-proxy": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771358020,
+        "narHash": "sha256-pb+2eGwg+eqXYrGIiyC500zJnZvGy0xpRQE81y8SKck=",
+        "ref": "main",
+        "rev": "93ec9a0b8661f53d1b5358ef3fd2be3b17e2894a",
+        "revCount": 10,
+        "type": "git",
+        "url": "ssh://forgejo@git.luj.fr/luj/cal-proxy.git"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "ssh://forgejo@git.luj.fr/luj/cal-proxy.git"
+      }
+    },
     "colmena": {
       "flake": false,
       "locked": {
@@ -462,6 +479,23 @@
         "owner": "talyz",
         "repo": "fromElisp",
         "type": "github"
+      }
+    },
+    "gh-proxy": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771094434,
+        "narHash": "sha256-0v90wvONX3ytjNfc9DSqyyCWej8oGJpITa1kWx0A6ss=",
+        "ref": "main",
+        "rev": "b3b24db9e09c146cc1909a73abbc9dcb9d00692d",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://forgejo@git.luj.fr/luj/gh-proxy.git"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "ssh://forgejo@git.luj.fr/luj/gh-proxy.git"
       }
     },
     "git-hooks": {
@@ -1091,11 +1125,13 @@
         "agenix": "agenix",
         "artiflakery": "artiflakery",
         "buildbot-nix": "buildbot-nix",
+        "cal-proxy": "cal-proxy",
         "colmena": "colmena",
         "comin": "comin",
         "disko": "disko",
         "dns": "dns",
         "emacs-config": "emacs-config",
+        "gh-proxy": "gh-proxy",
         "git-hooks": "git-hooks",
         "home-manager": "home-manager",
         "home-manager-unstable": "home-manager-unstable",
@@ -1117,6 +1153,7 @@
         "proxmox": "proxmox",
         "snowfield-private": "snowfield-private",
         "stateless-uptime-kuma": "stateless-uptime-kuma",
+        "tp7-sync": "tp7-sync",
         "unstable": "unstable"
       }
     },
@@ -1278,6 +1315,23 @@
         "owner": "nix-systems",
         "repo": "default",
         "type": "github"
+      }
+    },
+    "tp7-sync": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786119985,
+        "narHash": "sha256-Ttp+BsQzfRHw1WnUthp7Pyq1vUIZaK/p6/VVBuFuLhE=",
+        "ref": "main",
+        "rev": "78bca544de04dfabb6d0871193328961fc62f77f",
+        "revCount": 9,
+        "type": "git",
+        "url": "ssh://forgejo@git.luj.fr/luj/tp7-sync.git"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "ssh://forgejo@git.luj.fr/luj/tp7-sync.git"
       }
     },
     "treefmt-nix": {

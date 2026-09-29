@@ -5,15 +5,9 @@
   alsa-lib,
   libusb1,
   udev,
+  # The flake input of the same name.
+  src,
 }:
-
-let
-  src = builtins.fetchGit {
-    url = "ssh://forgejo@git.luj.fr/luj/tp7-sync.git";
-    ref = "main";
-    rev = "78bca544de04dfabb6d0871193328961fc62f77f";
-  };
-in
 
 rustPlatform.buildRustPackage {
   pname = "tp7-sync";

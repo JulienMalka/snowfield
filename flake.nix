@@ -2,6 +2,20 @@
   description = "Julien's NixOS machines";
 
   inputs = {
+    # Private sources of packages/, as inputs so flake-only CI prefetches
+    # them with credentials instead of fetching over SSH during evaluation.
+    cal-proxy = {
+      url = "git+ssh://forgejo@git.luj.fr/luj/cal-proxy.git?ref=main";
+      flake = false;
+    };
+    gh-proxy = {
+      url = "git+ssh://forgejo@git.luj.fr/luj/gh-proxy.git?ref=main";
+      flake = false;
+    };
+    tp7-sync = {
+      url = "git+ssh://forgejo@git.luj.fr/luj/tp7-sync.git?ref=main";
+      flake = false;
+    };
     agenix = {
       url = "github:ryantm/agenix/main";
       flake = false;

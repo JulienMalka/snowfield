@@ -88,7 +88,7 @@ let
       let
         pkgs = nixpkgs_plats.${system};
         unstable = import inputs.unstable { inherit system; };
-        localPackages = import ./lib/local-packages.nix { inherit pkgs unstable; };
+        localPackages = import ./lib/local-packages.nix { inherit pkgs unstable inputs; };
       in
       lib.filterAttrs (
         _: package:
