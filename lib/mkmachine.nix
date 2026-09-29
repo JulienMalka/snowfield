@@ -70,6 +70,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           (import ./local-packages.nix {
             pkgs = prev;
             inherit (prev) unstable;
+            inherit inputs;
           })
           // {
             # Packages from other repositories

@@ -1,9 +1,22 @@
-{ pkgs, unstable }:
+{
+  pkgs,
+  unstable,
+  inputs,
+}:
 let
   discovery = import ./discovery.nix { inherit (pkgs) lib; };
-  packages = builtins.mapAttrs (name: _: pkgs.callPackage (../packages + "/${name}") { }) (
-    discovery.directories ../packages
-  );
+  # Packages whose source is the flake input of the same name.
+  fromInput = [
+    "cal-proxy"
+    "gh-proxy"
+    "tp7-sync"
+  ];
+  packages = builtins.mapAttrs (
+    name: _:
+    pkgs.callPackage (../packages + "/${name}") (
+      pkgs.lib.optionalAttrs (builtins.elem name fromInput) { src = inputs.${name}; }
+    )
+  ) (discovery.directories ../packages);
 in
 packages
 // {
