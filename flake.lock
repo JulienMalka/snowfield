@@ -717,23 +717,6 @@
         "type": "github"
       }
     },
-    "nix-actions": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1746294989,
-        "narHash": "sha256-2xOZdKiUfcriQFKG37vY96dgCJLndhLa7cGacq8+SA8=",
-        "ref": "main",
-        "rev": "06847b3256df402da0475dccb290832ec92a9f8c",
-        "revCount": 20,
-        "type": "git",
-        "url": "https://git.dgnum.eu/DGNum/nix-actions.git"
-      },
-      "original": {
-        "ref": "main",
-        "type": "git",
-        "url": "https://git.dgnum.eu/DGNum/nix-actions.git"
-      }
-    },
     "nix-index-database": {
       "flake": false,
       "locked": {
@@ -1141,7 +1124,6 @@
         "llm-agents": "llm-agents",
         "luj-website": "luj-website",
         "niks3": "niks3",
-        "nix-actions": "nix-actions",
         "nix-index-database": "nix-index-database",
         "nixbot": "nixbot",
         "nixos-anywhere": "nixos-anywhere",

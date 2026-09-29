@@ -69,10 +69,6 @@
       url = "github:Mic92/niks3/main";
       flake = false;
     };
-    nix-actions = {
-      url = "git+https://git.dgnum.eu/DGNum/nix-actions.git?ref=main";
-      flake = false;
-    };
     nix-index-database = {
       url = "github:mic92/nix-index-database/main";
       flake = false;
@@ -144,9 +140,29 @@
         // lib.optionalAttrs (system == "x86_64-linux") (
           lib.mapAttrs' (name: lib.nameValuePair "test-${name}") snowfield.checks.tests
         );
+
+      # Effects run on the nixbot host.
+      effectsPkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
+      inherit (import "${inputs.nixbot}/herculesCI/effects-lib.nix" { pkgs = effectsPkgs; }) mkEffect;
     in
     snowfield
     // {
+      # nixbot runs onPush effects on the default branch only, and only once
+      # every check has built, so a commit reaches comin's deploy branch only
+      # when all machines, packages and tests build. The plain push only
+      # fast-forwards; the lock keeps two builds from pushing at once.
+      herculesCI = _: {
+        onPush.default.outputs.effects.deploy = mkEffect {
+          name = "deploy";
+          checkout = true;
+          lock = "deploy";
+          inputs = [ effectsPkgs.git ];
+          effectScript = ''
+            git push origin HEAD:deploy
+          '';
+        };
+      };
+
       # The nested machines/packages/tests layout `nix-build -A` users expect.
       ciChecks = snowfield.checks;
       checks = lib.genAttrs [
