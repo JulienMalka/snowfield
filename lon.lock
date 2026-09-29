@@ -201,6 +201,16 @@
       "url": "https://github.com/mic92/nix-index-database/archive/1c1d8ea87b047788fd7567adf531418c5da321ec.tar.gz",
       "hash": "sha256-PMt48sEQ8cgCeljQ9I/32uoBq/8t8y+7W/nAZhf72TQ="
     },
+    "nixbot": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "Mic92",
+      "repo": "nixbot",
+      "branch": "main",
+      "revision": "2626aa2ca80b76ef894f4558635a3fdda1edd8b4",
+      "url": "https://github.com/Mic92/nixbot/archive/2626aa2ca80b76ef894f4558635a3fdda1edd8b4.tar.gz",
+      "hash": "sha256-zv74q37ytXYgZY+HPXVAIEPMmy2WxJUck8MT2u9jSFA="
+    },
     "nixos-anywhere": {
       "type": "GitHub",
       "fetchType": "tarball",
