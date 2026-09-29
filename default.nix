@@ -12,7 +12,7 @@ in
 outputs
 // {
   checks = outputs.ciChecks;
-  # For shell.nix, ci.nix and the scripts, which used to import lon.nix.
+  # For shell.nix and the scripts, which used to import lon.nix.
   inherit (flake) inputs;
   # The flake's store copy of this checkout, where module paths resolve.
   flakeSource = flake.outPath;

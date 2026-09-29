@@ -17,7 +17,6 @@ let
   bootstrap = pkgs.callPackage scripts/bootstrap-machine.nix { inherit nixos-anywhere; };
   snowfield = pkgs.callPackage scripts/snowfield.nix { };
   niks3 = pkgs.callPackage "${inputs.niks3}/nix/packages/niks3.nix" { };
-  ci = import ./ci.nix;
   pre-commit-hook =
     (import (
       pkgs.applyPatches {
@@ -53,7 +52,6 @@ pkgs.mkShell {
   ];
   shellHook = ''
     ${pre-commit-hook.shellHook}
-    ${ci.workflowInstall.shellHook}
     repo_root="$(git rev-parse --show-toplevel 2>/dev/null || printf '%s' "$PWD")"
     export RULES="$repo_root/secrets/secrets.nix"
   '';
