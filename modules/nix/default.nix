@@ -27,10 +27,10 @@ with lib;
       settings = {
         builders-use-substitutes = true;
         auto-optimise-store = true;
-        substituters = [
-          "https://cache.nixos.org"
-          "https://cache.luj.fr"
-        ];
+        # NixOS already adds https://cache.nixos.org/; listing it again
+        # without the trailing slash made Nix treat it as a second cache and
+        # repeat every lookup that misses there.
+        substituters = [ "https://cache.luj.fr" ];
         trusted-public-keys = [
           "cache.luj.fr-1:C4ZpEGda4niPPcPtSMTzfiz1OLl8a+HzSdq1hUhAh6w="
         ];
