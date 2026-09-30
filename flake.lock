@@ -771,11 +771,11 @@
     "nixos-dgx-spark": {
       "flake": false,
       "locked": {
-        "lastModified": 1787677070,
-        "narHash": "sha256-BB0udJ4K27OQ/bnu47ze6PFrYV4nXqNVrA3UQBLeQOI=",
+        "lastModified": 1790610870,
+        "narHash": "sha256-/YvT+7YizaI0aNePPpRDPsow2OxEK8b2Xg/8c7n08pQ=",
         "owner": "graham33",
         "repo": "nixos-dgx-spark",
-        "rev": "43fff730b076c9ea490f8a26ee55f7ca0de3239e",
+        "rev": "7c45621cc980e21a7a42bf5110d0da9cbdf168f8",
         "type": "github"
       },
       "original": {
@@ -1180,11 +1180,11 @@
     "stateless-uptime-kuma": {
       "flake": false,
       "locked": {
-        "lastModified": 1773157855,
-        "narHash": "sha256-rDJ2qhVet8WfdlWvrkmypsr17ac85lnoKRiL5JJRZ2U=",
+        "lastModified": 1790762806,
+        "narHash": "sha256-KYjL0qjfsPk5x6MWWME5MO6hBtOkJWzLM6tuRVGuC0Y=",
         "ref": "truly-deterministic",
-        "rev": "c2560f2876c113c07d9524826bfad54780f78e32",
-        "revCount": 30,
+        "rev": "c736e12cd50203648a7951f382a7d79f6cc7c83f",
+        "revCount": 33,
         "type": "git",
         "url": "https://git.dgnum.eu/Luj/stateless-uptime-kuma.git"
       },
