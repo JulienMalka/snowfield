@@ -22,12 +22,10 @@
       monitoring
     ];
     ips = {
-      # TODO: fill in real addresses once inference01 is on the network.
-      public.ipv4 = "127.0.0.1";
+      vpn.ipv4 = "100.100.45.44";
+      vpn.ipv6 = "fd7a:115c:a1e0::2c";
     };
   };
-
-  deployment.targetHost = lib.mkForce "100.100.45.44";
 
   hardware.dgx-spark.enable = true;
 
