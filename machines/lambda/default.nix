@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   inputs,
   profiles,
@@ -26,8 +27,8 @@
       # GCP NATs 34.88.121.72 to the VM's 10.166.0.2; the IPv6 is on the VM.
       public.ipv4 = "34.88.121.72";
       public.ipv6 = "2600:1900:4150:551::";
-      vpn.ipv4 = "100.100.45.13";
-      vpn.ipv6 = "fd7a:115c:a1e0::d";
+      vpn.ipv4 = "100.100.45.20";
+      vpn.ipv6 = "fd7a:115c:a1e0::14";
     };
   };
 
@@ -63,8 +64,19 @@
       base-url = "https://notifications.julienmalka.me";
       auth-file = "/var/lib/ntfy-sh/user.db";
       auth-default-access = "deny-all";
+      # Users and tokens are provisioned from ntfy-auth-env: julien (admin,
+      # subscribes to everything), and one publisher per service.
+      auth-access = [
+        "comin:deployments:wo"
+        "uptime-kuma:monitoring:wo"
+      ];
     };
+    # NTFY_AUTH_USERS (bcrypt hashes) and NTFY_AUTH_TOKENS. comin's token is
+    # the one in profiles/ntfy-token.age; keep the two in sync.
+    environmentFile = config.age.secrets.ntfy-auth-env.path;
   };
+
+  age.secrets.ntfy-auth-env.file = ./ntfy-auth-env.age;
 
   services.nginx.virtualHosts."notifications.julienmalka.me" = {
     locations."/" = {
