@@ -27,8 +27,17 @@ in
       "-httpAuth.password=file:///run/credentials/victoriametrics.service/BASICAUTH"
       "-selfScrapeInterval=5s"
       "-metrics.exposeMetadata=true"
+      # Keep one sample per series per scrape interval (vmagents scrape every
+      # 10s): blocks vmagent resends after a timeout are otherwise stored
+      # twice.
+      "-dedup.minScrapeInterval=10s"
     ];
   };
+
+  # Every machine's vmagent pushes here over many parallel connections, each
+  # held twice (client and upstream). nginx's default of 512 per worker, on
+  # this 2-vCPU VM, refused connections and set off a vmagent retry storm.
+  services.nginx.eventsConfig = "worker_connections 4096;";
 
   systemd.services.victoriametrics.serviceConfig.LoadCredential = [
     "BASICAUTH:${config.age.secrets.vm-basicauth-service.path}"

@@ -53,4 +53,13 @@ in
     passwordFile = config.age.secrets."stateless-uptime-kuma-password".path;
   };
 
+  # At boot the deployer starts right after uptime-kuma, before it listens,
+  # and fails with "unable to connect". Retry until it is up.
+  systemd.services.stateless-uptime-kuma.serviceConfig = {
+    Restart = "on-failure";
+    RestartSec = "15s";
+  };
+  systemd.services.stateless-uptime-kuma.startLimitIntervalSec = 600;
+  systemd.services.stateless-uptime-kuma.startLimitBurst = 10;
+
 }
