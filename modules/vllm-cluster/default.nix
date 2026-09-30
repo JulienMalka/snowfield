@@ -1,5 +1,6 @@
 {
   config,
+  options,
   lib,
   pkgs,
   ...
@@ -161,106 +162,113 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
-    assertions = [
+  config = lib.mkIf cfg.enable (
+    lib.mkMerge [
+      # The option only exists on machines importing the dgx-spark module.
+      (lib.optionalAttrs (options.hardware ? dgx-spark) {
+        # The ConnectX-7 hot-plug power saving gates the NIC at boot: with the
+        # cable already seated, both ends come up with "no partner detected"
+        # and the link only appears after a (real or emulated) re-plug. The
+        # cable is permanent on a cluster node, so keep the NIC powered from
+        # enumeration on. Hot-plug detection goes with it: the cable must be
+        # in at boot.
+        hardware.dgx-spark.connectx7Hotplug = lib.mkDefault false;
+      })
       {
-        assertion = lib.hasAttr ic.primaryInterface ic.addresses;
-        message = "luj.vllm-cluster.interconnect.primaryInterface must be one of interconnect.addresses.";
-      }
-      {
-        assertion = cfg.nodeRank < cfg.nodes;
-        message = "luj.vllm-cluster.nodeRank must be below nodes.";
-      }
-    ];
-
-    # Static addressing of the QSFP link. NetworkManager would otherwise
-    # sit in "connecting" trying DHCP on it forever.
-    networking.networkmanager.unmanaged = map (i: "interface-name:${i}") ifaces;
-    networking.interfaces = lib.mapAttrs (_: address: {
-      useDHCP = false;
-      inherit (ic) mtu;
-      ipv4.addresses = [
-        {
-          inherit address;
-          prefixLength = 24;
-        }
-      ];
-    }) ic.addresses;
-
-    # Both MACs share one L2 segment, so by default the kernel answers ARP for
-    # either address from whichever interface it likes and the peer ends up
-    # with the wrong path in its neighbour table. Answer only for the address
-    # on the receiving interface, and source announcements from it.
-    boot.kernel.sysctl = lib.listToAttrs (
-      lib.concatMap (i: [
-        (lib.nameValuePair "net.ipv4.conf.${i}.arp_ignore" 1)
-        (lib.nameValuePair "net.ipv4.conf.${i}.arp_announce" 2)
-      ]) ifaces
-    );
-
-    # The only peer on the cable is the other node; torch, gloo and NCCL all
-    # use ephemeral ports on it.
-    networking.firewall.trustedInterfaces = ifaces;
-
-    # The ConnectX-7 hot-plug power saving gates the NIC at boot: with the
-    # cable already seated, both ends come up with "no partner detected" and
-    # the link only appears after a (real or emulated) re-plug. The cable is
-    # permanent on a cluster node, so keep the NIC powered from enumeration
-    # on. Hot-plug detection goes with it: the cable must be in at boot.
-    hardware.dgx-spark.connectx7Hotplug = lib.mkDefault false;
-
-    systemd.tmpfiles.rules = map (d: "d ${d} 0755 root root -") cacheDirs;
-
-    virtualisation.oci-containers.containers.${containerName} = {
-      inherit (cfg) image;
-      autoStart = true;
-      pull = "missing";
-      # RDMA needs pinned memory and the verbs devices; the GPU comes in
-      # through CDI, generated on boot by nvidia-container-toolkit.
-      privileged = true;
-      networks = [ "host" ];
-      devices = [
-        "nvidia.com/gpu=all"
-        "/dev/infiniband"
-      ];
-      extraOptions = [
-        "--ipc=host"
-        "--ulimit=memlock=-1:-1"
-        "--ulimit=nofile=1048576:1048576"
-      ];
-      volumes = map (d: "${d}:${d}") cacheDirs;
-      environment = {
-        VLLM_HOST_IP = hostIp;
-        NCCL_SOCKET_IFNAME = ic.primaryInterface;
-        GLOO_SOCKET_IFNAME = ic.primaryInterface;
-        TP_SOCKET_IFNAME = ic.primaryInterface;
-        UCX_NET_DEVICES = ic.primaryInterface;
-        NCCL_IB_HCA = lib.concatStringsSep "," ic.rdmaDevices;
-        NCCL_IB_DISABLE = "0";
-        NCCL_IGNORE_CPU_AFFINITY = "1";
-        NCCL_DEBUG = "WARN";
-        PYTORCH_CUDA_ALLOC_CONF = "expandable_segments:True";
-      }
-      // cfg.environment;
-      cmd = [ "vllm" ] ++ serveArgs;
-    };
-
-    systemd.services.${serviceName} = {
-      after = [
-        "nvidia-container-toolkit-cdi-generator.service"
-        "network-addresses-${ic.primaryInterface}.service"
-      ];
-      wants = [ "nvidia-container-toolkit-cdi-generator.service" ];
-      serviceConfig = {
-        # Drop page caches so vLLM sees the whole unified memory pool.
-        ExecStartPre = lib.mkBefore [
-          "${pkgs.bash}/bin/bash -c 'sync; echo 3 > /proc/sys/vm/drop_caches'"
+        assertions = [
+          {
+            assertion = lib.hasAttr ic.primaryInterface ic.addresses;
+            message = "luj.vllm-cluster.interconnect.primaryInterface must be one of interconnect.addresses.";
+          }
+          {
+            assertion = cfg.nodeRank < cfg.nodes;
+            message = "luj.vllm-cluster.nodeRank must be below nodes.";
+          }
         ];
-        # A rank that loses its peer dies; keep both sides retrying until
-        # they meet again at the rendezvous.
-        Restart = lib.mkForce "always";
-        RestartSec = 10;
-      };
-    };
-  };
+
+        # Static addressing of the QSFP link. NetworkManager would otherwise
+        # sit in "connecting" trying DHCP on it forever.
+        networking.networkmanager.unmanaged = map (i: "interface-name:${i}") ifaces;
+        networking.interfaces = lib.mapAttrs (_: address: {
+          useDHCP = false;
+          inherit (ic) mtu;
+          ipv4.addresses = [
+            {
+              inherit address;
+              prefixLength = 24;
+            }
+          ];
+        }) ic.addresses;
+
+        # Both MACs share one L2 segment, so by default the kernel answers ARP for
+        # either address from whichever interface it likes and the peer ends up
+        # with the wrong path in its neighbour table. Answer only for the address
+        # on the receiving interface, and source announcements from it.
+        boot.kernel.sysctl = lib.listToAttrs (
+          lib.concatMap (i: [
+            (lib.nameValuePair "net.ipv4.conf.${i}.arp_ignore" 1)
+            (lib.nameValuePair "net.ipv4.conf.${i}.arp_announce" 2)
+          ]) ifaces
+        );
+
+        # The only peer on the cable is the other node; torch, gloo and NCCL all
+        # use ephemeral ports on it.
+        networking.firewall.trustedInterfaces = ifaces;
+
+        systemd.tmpfiles.rules = map (d: "d ${d} 0755 root root -") cacheDirs;
+
+        virtualisation.oci-containers.containers.${containerName} = {
+          inherit (cfg) image;
+          autoStart = true;
+          pull = "missing";
+          # RDMA needs pinned memory and the verbs devices; the GPU comes in
+          # through CDI, generated on boot by nvidia-container-toolkit.
+          privileged = true;
+          networks = [ "host" ];
+          devices = [
+            "nvidia.com/gpu=all"
+            "/dev/infiniband"
+          ];
+          extraOptions = [
+            "--ipc=host"
+            "--ulimit=memlock=-1:-1"
+            "--ulimit=nofile=1048576:1048576"
+          ];
+          volumes = map (d: "${d}:${d}") cacheDirs;
+          environment = {
+            VLLM_HOST_IP = hostIp;
+            NCCL_SOCKET_IFNAME = ic.primaryInterface;
+            GLOO_SOCKET_IFNAME = ic.primaryInterface;
+            TP_SOCKET_IFNAME = ic.primaryInterface;
+            UCX_NET_DEVICES = ic.primaryInterface;
+            NCCL_IB_HCA = lib.concatStringsSep "," ic.rdmaDevices;
+            NCCL_IB_DISABLE = "0";
+            NCCL_IGNORE_CPU_AFFINITY = "1";
+            NCCL_DEBUG = "WARN";
+            PYTORCH_CUDA_ALLOC_CONF = "expandable_segments:True";
+          }
+          // cfg.environment;
+          cmd = [ "vllm" ] ++ serveArgs;
+        };
+
+        systemd.services.${serviceName} = {
+          after = [
+            "nvidia-container-toolkit-cdi-generator.service"
+            "network-addresses-${ic.primaryInterface}.service"
+          ];
+          wants = [ "nvidia-container-toolkit-cdi-generator.service" ];
+          serviceConfig = {
+            # Drop page caches so vLLM sees the whole unified memory pool.
+            ExecStartPre = lib.mkBefore [
+              "${pkgs.bash}/bin/bash -c 'sync; echo 3 > /proc/sys/vm/drop_caches'"
+            ];
+            # A rank that loses its peer dies; keep both sides retrying until
+            # they meet again at the rendezvous.
+            Restart = lib.mkForce "always";
+            RestartSec = 10;
+          };
+        };
+      }
+    ]
+  );
 }
