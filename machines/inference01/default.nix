@@ -39,6 +39,16 @@
       pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
         (_: python-prev: {
           torchaudio = python-prev.torchaudio.overridePythonAttrs { doCheck = false; };
+          # fixes.nix writes ''\n followed by spaces in cupy's postPatch, which
+          # Lix and CppNix strip differently: the fleet (Lix) and nixbot
+          # (CppNix) then evaluate different cupy derivations, and every
+          # machine misses the cache. Pin the CppNix form, which is the one
+          # nixbot builds. Drop once nixos-dgx-spark avoids the construct.
+          cupy = python-prev.cupy.overridePythonAttrs (old: {
+            postPatch =
+              builtins.replaceStrings [ "<cusparse.h>\n    #if" ] [ "<cusparse.h>\n#if" ]
+                old.postPatch;
+          });
         })
       ];
     })
