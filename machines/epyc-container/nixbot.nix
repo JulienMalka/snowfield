@@ -22,16 +22,34 @@
     nixbot-gitea-token.file = ./nixbot-gitea-token.age;
     nixbot-gitea-oauth-secret.file = ./nixbot-gitea-oauth-secret.age;
     nixbot-ssh-key.file = ./nixbot-ssh-key.age;
+    # The niks3 server's own API token (gustave), which pushes authenticate with.
+    nixbot-niks3-token.file = ../gustave/niks3-api-token.age;
   };
+
+  # Keep niks3 on HTTP/1.1: over HTTP/2 Go multiplexes every concurrent NAR
+  # upload onto one TCP connection, which caps pushes at the throughput of a
+  # single connection through the tunnel to biblios (~1-3 MB/s).
+  systemd.services.nixbot.environment.GODEBUG = "http2client=0";
 
   services.nixbot = {
     enable = true;
+
+    # Push everything nixbot builds to cache.luj.fr, as the Forgejo
+    # workflow's "Push to cache" step did.
+    niks3 = {
+      enable = true;
+      serverUrl = "https://cache.luj.fr";
+      authTokenFile = config.age.secrets.nixbot-niks3-token.path;
+      package = pkgs.callPackage "${inputs.niks3}/nix/packages/niks3.nix" { };
+    };
     domain = "ci.luj.fr";
     admins = [
       "github:JulienMalka"
       "github:camillemndn"
       "gitea:luj"
     ];
+    # triton's C++ compile goes silent for longer than the default 20 min.
+    buildMaxSilentTime = 60 * 60;
     # aarch64 goes to the remote builder in default.nix.
     buildSystems = [
       "x86_64-linux"

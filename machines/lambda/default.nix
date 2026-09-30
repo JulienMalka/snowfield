@@ -15,7 +15,7 @@
   ];
 
   machine.meta = {
-    arch = "aarch64-linux";
+    arch = "x86_64-linux";
     nixpkgs_version = inputs.nixpkgs;
     hm_version = inputs.home-manager;
     profiles = with profiles; [
@@ -23,9 +23,10 @@
       monitoring
     ];
     ips = {
-      public.ipv4 = "141.145.197.219";
+      # GCP NATs 34.88.121.72 to the VM's 10.166.0.2; the IPv6 is on the VM.
+      public.ipv4 = "34.88.121.72";
+      public.ipv6 = "2600:1900:4150:551::";
       vpn.ipv4 = "100.100.45.13";
-      public.ipv6 = "2603:c027:c001:89aa:aad9:34b3:f3c9:924f";
       vpn.ipv6 = "fd7a:115c:a1e0::d";
     };
   };
@@ -36,11 +37,15 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.useNetworkd = true;
+  # GCP hands out both the IPv4 and the IPv6 over DHCP. This file shadows
+  # the one google-compute-config generates for eth0, so it carries the MTU.
   systemd.network.networks."10-wan" = {
-    matchConfig.Name = "enp0s3";
-    DHCP = "ipv4";
-    addresses = [ { Address = "2603:c027:c001:89aa:aad9:34b3:f3c9:924f"; } ];
-    linkConfig.RequiredForOnline = "routable";
+    matchConfig.Name = "eth0";
+    DHCP = "yes";
+    linkConfig = {
+      MTUBytes = "1460";
+      RequiredForOnline = "routable";
+    };
   };
 
   deployment.buildOnTarget = true;
