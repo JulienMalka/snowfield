@@ -7,64 +7,19 @@
 let
   configFile = (pkgs.formats.yaml { }).generate "litellm-config.yaml" {
     model_list = [
+      # DeepSeek-V4-Flash-0731, tensor-parallel over inference01 + inference02
+      # (luj.vllm-cluster); the head serves the API. Costs are DeepSeek's
+      # off-peak list price, for accounting only.
       {
-        model_name = "gpt-oss";
+        model_name = "deepseek-v4-flash";
         litellm_params = {
-          model = "openrouter/gpt-oss";
+          model = "openrouter/deepseek-v4-flash";
           api_base = "http://100.100.45.44:8000/v1";
           api_key = "dummy";
         };
         model_info = {
-          input_cost_per_token = 1.0e-7;
-          output_cost_per_token = 5.0e-7;
-        };
-      }
-      {
-        model_name = "qwen3-coder";
-        litellm_params = {
-          model = "openrouter/qwen3-coder";
-          api_base = "http://100.100.45.44:8000/v1";
-          api_key = "dummy";
-        };
-        model_info = {
-          input_cost_per_token = 6.0e-8;
-          output_cost_per_token = 2.5e-7;
-        };
-      }
-      {
-        model_name = "qwen3-235b";
-        litellm_params = {
-          model = "openrouter/qwen3-235b";
-          api_base = "http://100.100.45.44:8000/v1";
-          api_key = "dummy";
-        };
-        model_info = {
-          input_cost_per_token = 2.0e-7;
-          output_cost_per_token = 6.0e-7;
-        };
-      }
-      {
-        model_name = "qwen36-27b";
-        litellm_params = {
-          model = "openrouter/qwen36-27b";
-          api_base = "http://100.100.45.44:8000/v1";
-          api_key = "dummy";
-        };
-        model_info = {
-          input_cost_per_token = 3.2e-7;
-          output_cost_per_token = 3.2e-6;
-        };
-      }
-      {
-        model_name = "gemma4-31b";
-        litellm_params = {
-          model = "openrouter/gemma4-31b";
-          api_base = "http://100.100.45.44:8001/v1";
-          api_key = "dummy";
-        };
-        model_info = {
-          input_cost_per_token = 1.2e-7;
-          output_cost_per_token = 3.7e-7;
+          input_cost_per_token = 2.2e-7;
+          output_cost_per_token = 6.6e-7;
         };
       }
       {
