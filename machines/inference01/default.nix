@@ -8,7 +8,6 @@
   imports = [
     ./hardware.nix
     ./home-julien.nix
-    ./vllm.nix
     ./hotspot.nix
     "${inputs.nixos-dgx-spark}/modules/dgx-spark.nix"
   ];
@@ -20,6 +19,7 @@
     profiles = with profiles; [
       server
       monitoring
+      deepseek-v4-flash
     ];
     ips = {
       vpn.ipv4 = "100.100.45.44";
@@ -29,29 +29,18 @@
 
   hardware.dgx-spark.enable = true;
 
+  # Head of the two-Spark vLLM cluster: serves the API, on the VPN.
+  luj.vllm-cluster = {
+    nodeRank = 0;
+    interconnect.addresses = {
+      enp1s0f0np0 = "192.168.100.11";
+      enP2p1s0f0np0 = "192.168.101.11";
+    };
+  };
+  networking.firewall.trustedInterfaces = [ "tailscale0" ];
+
   nixpkgs.overlays = [
     (import "${inputs.nixos-dgx-spark}/overlays/fixes.nix")
-    # torchaudio's test suite segfaults on the aarch64 build box: in its
-    # sandbox PyTorch cannot read the CPU identity (MIDR_EL1, cpu/possible),
-    # and oneDNN's CPU kernels crash in the conformer tests. The package
-    # itself builds and imports fine.
-    (_final: prev: {
-      pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
-        (_: python-prev: {
-          torchaudio = python-prev.torchaudio.overridePythonAttrs { doCheck = false; };
-          # fixes.nix writes ''\n followed by spaces in cupy's postPatch, which
-          # Lix and CppNix strip differently: the fleet (Lix) and nixbot
-          # (CppNix) then evaluate different cupy derivations, and every
-          # machine misses the cache. Pin the CppNix form, which is the one
-          # nixbot builds. Drop once nixos-dgx-spark avoids the construct.
-          cupy = python-prev.cupy.overridePythonAttrs (old: {
-            postPatch =
-              builtins.replaceStrings [ "<cusparse.h>\n    #if" ] [ "<cusparse.h>\n#if" ]
-                old.postPatch;
-          });
-        })
-      ];
-    })
   ];
 
   disko = import ./disko.nix;
