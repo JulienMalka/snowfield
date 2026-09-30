@@ -18,6 +18,7 @@
     profiles = with profiles; [
       server
       monitoring
+      deepseek-v4-flash
     ];
     ips = {
       # Wired LAN (DHCP on enP7s7) sits inside tailscale's 100.64/10 CGNAT
@@ -28,6 +29,15 @@
   };
 
   hardware.dgx-spark.enable = true;
+
+  # Worker of the two-Spark vLLM cluster, headless behind inference01.
+  luj.vllm-cluster = {
+    nodeRank = 1;
+    interconnect.addresses = {
+      enp1s0f0np0 = "192.168.100.12";
+      enP2p1s0f0np0 = "192.168.101.12";
+    };
+  };
 
   nixpkgs.overlays = [
     (import "${inputs.nixos-dgx-spark}/overlays/fixes.nix")
