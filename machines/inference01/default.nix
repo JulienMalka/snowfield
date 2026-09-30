@@ -33,6 +33,17 @@
 
   nixpkgs.overlays = [
     (import "${inputs.nixos-dgx-spark}/overlays/fixes.nix")
+    # torchaudio's test suite segfaults on the aarch64 build box: in its
+    # sandbox PyTorch cannot read the CPU identity (MIDR_EL1, cpu/possible),
+    # and oneDNN's CPU kernels crash in the conformer tests. The package
+    # itself builds and imports fine.
+    (_final: prev: {
+      pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+        (_: python-prev: {
+          torchaudio = python-prev.torchaudio.overridePythonAttrs { doCheck = false; };
+        })
+      ];
+    })
   ];
 
   disko = import ./disko.nix;
