@@ -202,6 +202,13 @@ in
     # use ephemeral ports on it.
     networking.firewall.trustedInterfaces = ifaces;
 
+    # The ConnectX-7 hot-plug power saving gates the NIC at boot: with the
+    # cable already seated, both ends come up with "no partner detected" and
+    # the link only appears after a (real or emulated) re-plug. The cable is
+    # permanent on a cluster node, so keep the NIC powered from enumeration
+    # on. Hot-plug detection goes with it: the cable must be in at boot.
+    hardware.dgx-spark.connectx7Hotplug = lib.mkDefault false;
+
     systemd.tmpfiles.rules = map (d: "d ${d} 0755 root root -") cacheDirs;
 
     virtualisation.oci-containers.containers.${containerName} = {
