@@ -31,8 +31,6 @@
 
   hardware.dgx-spark.enable = true;
 
-  nixpkgs.config.allowUnsupportedSystem = true;
-
   nixpkgs.overlays = [
     (import "${inputs.nixos-dgx-spark}/overlays/fixes.nix")
   ];
