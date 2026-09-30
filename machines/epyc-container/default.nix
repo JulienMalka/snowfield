@@ -34,7 +34,10 @@
         "nixos-test"
         "uid-range"
       ];
-      maxJobs = 4;
+      # Few builds at a time, so each gets a big share of the box (20 cores
+      # each, 125 GB shared with other nix-community users). The CUDA stack
+      # builds with its packages' own parallelism, uncapped.
+      maxJobs = 2;
       speedFactor = 4;
     }
   ];
