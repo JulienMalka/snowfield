@@ -43,6 +43,16 @@ let
         ${prisma_6}/bin/prisma generate --schema=schema.prisma
       )
       echo "[prisma-with-litellm-client] generated client for litellm schema (schema at $prisma_pkg/schema.prisma)"
+
+      # prisma-client-py ships its own `prisma` executable, a shim that
+      # bootstraps Node through nodeenv and then npm-installs the CLI. Neither
+      # works here, and because Python wrappers prepend their dependencies'
+      # bin directories to PATH, the shim shadows the real CLI that the
+      # litellm wrapper adds below. litellm's startup `prisma db push` then
+      # fails on every start, the schema never follows an upgrade, and spend
+      # rows are dropped for missing columns. Remove the shim so the only
+      # `prisma` on PATH is the nixpkgs CLI.
+      rm -f "$out/bin/prisma"
     '';
   });
 in
