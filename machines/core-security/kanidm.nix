@@ -115,6 +115,14 @@ in
         ];
       };
 
+      persons.theo = {
+        displayName = "Théo Zimmermann";
+        mailAddresses = [ "theo.zimmermann@telecom-paris.fr" ];
+        groups = [
+          "inference_users"
+        ];
+      };
+
       systems.oauth2 = {
         nextcloud = {
           displayName = "NextCloud";
