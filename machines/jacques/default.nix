@@ -38,11 +38,17 @@
   # and installs the configuration from a generated ISO. Changing these values
   # afterwards has no effect on the running VM.
   virtualisation.proxmox = {
-    # TODO(julien): pick the node and a free vmid (`qm list` on the cluster).
-    node = "pve1";
-    vmid = 121;
+    node = "pve";
+    vmid = 122;
     cores = 4;
     memory = 8192;
+    # systemd-boot needs UEFI; same shape as gustave (vmid 119).
+    bios = "ovmf";
+    efidisk0.file = "local-zfs:1";
+    # The CPU type is flipped to x86-64-v3 over the API after creation
+    # (qemu64 SIGILLs modern SIMD binaries): the locked proxmox-nixos
+    # can't express `cpu.cputype` without tripping on defaultless
+    # submodule options that its nixmoxer JSON dump then evaluates.
     autoInstall = true;
     net = [
       {
@@ -50,7 +56,8 @@
         bridge = "vmbr0";
       }
     ];
-    scsi = [ { file = "local:40"; } ];
+    # The dir storage ("local") only holds ISOs; VM disks live on the pool.
+    scsi = [ { file = "local-zfs:60"; } ];
   };
 
   disko = import ./disko.nix;
