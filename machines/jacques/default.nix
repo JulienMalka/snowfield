@@ -29,9 +29,7 @@
       # on ens18.
       public.ipv4 = "77.42.114.11";
       public.ipv6 = "2a01:4f9:3090:2b8c:eb2:aaaa::47";
-      # TODO(julien): confirm once the VM has joined the tailnet — this is the
-      # address the dead GCP jacques held, which its node entry still reserves.
-      vpn.ipv4 = "100.100.45.21";
+      vpn.ipv4 = "100.100.45.28";
     };
   };
 
@@ -63,7 +61,7 @@
 
   disko = import ./disko.nix;
 
-  deployment.targetHost = lib.mkForce "100.100.45.21";
+  deployment.targetHost = lib.mkForce "100.100.45.28";
 
   environment.systemPackages = with pkgs; [
     gh
