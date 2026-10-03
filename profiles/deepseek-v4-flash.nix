@@ -9,8 +9,11 @@
 {
   luj.vllm-cluster = {
     enable = true;
-    # nightly-20260930; both nodes must run the same digest.
-    image = "docker.io/eugr/spark-vllm-b12x@sha256:e241b798741e5a13cea5827d88e2861e08e3033fa75b927553a69aa770e17306";
+    # nightly-20261002; both nodes must run the same digest. Moved off
+    # nightly-20260930 after a GPU Xid 31 (illegal memory access) took both
+    # ranks down under load: that build carried b12x 1.3.0, which has known
+    # out-of-bounds bugs on SM121 fixed in 1.5.0 (vllm-project/vllm#59606).
+    image = "docker.io/eugr/spark-vllm-b12x@sha256:d7213eea8cf9e5918e26ec75f46a505a9dc66a05fbae9c20ba508d3322c28d07";
     model = "deepseek-ai/DeepSeek-V4-Flash-0731";
     servedModelNames = [
       "deepseek-v4-flash"
