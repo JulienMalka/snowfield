@@ -15,6 +15,41 @@ let
   containerName = "vllm-cluster";
   serviceName = "podman-${containerName}";
 
+  peerAddresses = lib.filter (a: a != hostIp) cfg.nodeAddresses;
+
+  # A rank that just started ignores resync requests for this long. It is
+  # what stops two nodes from restarting each other forever: A starts and
+  # pokes B, B restarts and pokes A back, and A, being fresh, stays up.
+  resyncGraceSeconds = 90;
+
+  # Run on every start of this node's rank: ask each peer to restart its own.
+  pokePeers = pkgs.writeShellScript "vllm-cluster-poke-peers" ''
+    for peer in ${lib.escapeShellArgs peerAddresses}; do
+      ${pkgs.coreutils}/bin/timeout 3 ${pkgs.bash}/bin/bash -c \
+        "exec 3<>/dev/tcp/$peer/${toString cfg.resyncPort}" 2>/dev/null \
+        || echo "vllm-cluster: peer $peer did not take the resync request" >&2
+    done
+    exit 0
+  '';
+
+  # Run on a peer's request: restart our rank unless it only just started.
+  resync = pkgs.writeShellScript "vllm-cluster-resync" ''
+    systemctl=${config.systemd.package}/bin/systemctl
+    unit=${serviceName}.service
+    if [ "$($systemctl is-active "$unit")" != active ]; then
+      echo "$unit is not active (already restarting); ignoring resync request"
+      exit 0
+    fi
+    since=$($systemctl show "$unit" -p ActiveEnterTimestampMonotonic --value)
+    now=$(${pkgs.gawk}/bin/awk '{ printf "%d", $1 * 1000000 }' /proc/uptime)
+    if [ $(( (now - since) / 1000000 )) -lt ${toString resyncGraceSeconds} ]; then
+      echo "$unit started less than ${toString resyncGraceSeconds}s ago; ignoring resync request"
+      exit 0
+    fi
+    echo "peer restarted its rank; restarting $unit to rendezvous with it"
+    exec $systemctl restart --no-block "$unit"
+  '';
+
   # Compile/JIT artefacts the Spark vLLM image writes under /root: keep them
   # on the host so a container restart does not recompile every kernel.
   cacheDirs = [
@@ -102,9 +137,32 @@ in
       description = "This node's rank. Rank 0 is the head and serves the API.";
     };
 
+    nodeAddresses = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      description = ''
+        Address of every node on the primary interconnect interface, in rank
+        order. The first one is the head.
+      '';
+      example = [
+        "192.168.100.11"
+        "192.168.100.12"
+      ];
+    };
+
     masterAddr = lib.mkOption {
       type = lib.types.str;
+      default = builtins.head cfg.nodeAddresses;
+      defaultText = lib.literalExpression "builtins.head config.luj.vllm-cluster.nodeAddresses";
       description = "Head node address on the interconnect, used for torch rendezvous.";
+    };
+
+    resyncPort = lib.mkOption {
+      type = lib.types.port;
+      default = 29599;
+      description = ''
+        Port, on the interconnect only, on which a node accepts "restart your
+        rank" requests from its peers. See the resync units below.
+      '';
     };
 
     masterPort = lib.mkOption {
@@ -184,6 +242,15 @@ in
             assertion = cfg.nodeRank < cfg.nodes;
             message = "luj.vllm-cluster.nodeRank must be below nodes.";
           }
+          {
+            assertion =
+              lib.length cfg.nodeAddresses == cfg.nodes && lib.elemAt cfg.nodeAddresses cfg.nodeRank == hostIp;
+            message = ''
+              luj.vllm-cluster.nodeAddresses must list one address per node in
+              rank order, and this node's entry must be its own address on the
+              primary interconnect interface (${hostIp}).
+            '';
+          }
         ];
 
         # Static addressing of the QSFP link. NetworkManager would otherwise
@@ -258,14 +325,42 @@ in
           ];
           wants = [ "nvidia-container-toolkit-cdi-generator.service" ];
           serviceConfig = {
-            # Drop page caches so vLLM sees the whole unified memory pool.
             ExecStartPre = lib.mkBefore [
+              # See the resync units below.
+              "${pokePeers}"
+              # Drop page caches so vLLM sees the whole unified memory pool.
               "${pkgs.bash}/bin/bash -c 'sync; echo 3 > /proc/sys/vm/drop_caches'"
             ];
-            # A rank that loses its peer dies; keep both sides retrying until
-            # they meet again at the rendezvous.
             Restart = lib.mkForce "always";
             RestartSec = 10;
+          };
+        };
+
+        # Restart=always is not enough to keep the ranks paired. When one rank
+        # dies (a GPU Xid took the head down on 2026-10-02), the survivor does
+        # not exit: it keeps its half of the model and loops on NCCL heartbeat
+        # errors, and the restarted rank times out at the rendezvous waiting
+        # for a partner that is still attached to the dead group. The cluster
+        # then stays down until someone restarts the survivor by hand.
+        #
+        # So every rank, each time it starts, asks its peers over the cable
+        # to restart theirs, and a rank that only just started declines. One
+        # crash anywhere becomes one coordinated restart everywhere.
+        systemd.sockets.vllm-cluster-resync = {
+          description = "Resync requests from vLLM cluster peers";
+          wantedBy = [ "sockets.target" ];
+          listenStreams = [ "${hostIp}:${toString cfg.resyncPort}" ];
+          socketConfig = {
+            Accept = true;
+            # The interconnect address may not be configured yet at boot.
+            FreeBind = true;
+          };
+        };
+        systemd.services."vllm-cluster-resync@" = {
+          description = "Restart the local vLLM rank on a peer's request";
+          serviceConfig = {
+            Type = "oneshot";
+            ExecStart = "${resync}";
           };
         };
       }

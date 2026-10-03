@@ -17,7 +17,10 @@
       "deepseek-ai/DeepSeek-V4-Flash-0731"
     ];
     nodes = 2;
-    masterAddr = "192.168.100.11";
+    nodeAddresses = [
+      "192.168.100.11"
+      "192.168.100.12"
+    ];
 
     interconnect = {
       primaryInterface = "enp1s0f0np0";
