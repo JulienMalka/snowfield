@@ -23,11 +23,12 @@
       monitoring
     ];
     ips = {
-      # Home NAT, like the other VMs on the cluster. The v6 continues the
-      # hand-assigned eb2:aaaa:: series (gustave ::45, biblios ::46) and is
-      # what vm-simple-network statically configures on ens18.
+      # Behind the Hetzner host's NAT like the other VMs on the cluster. The
+      # v6 continues the hand-assigned eb2:aaaa:: series (gustave ::45,
+      # biblios ::46) and is what vm-simple-network statically configures
+      # on ens18.
       public.ipv4 = "77.42.114.11";
-      public.ipv6 = "2a01:e0a:de4:a0e1:eb2:aaaa::47";
+      public.ipv6 = "2a01:4f9:3090:2b8c:eb2:aaaa::47";
       # TODO(julien): confirm once the VM has joined the tailnet — this is the
       # address the dead GCP jacques held, which its node entry still reserves.
       vpn.ipv4 = "100.100.45.21";
