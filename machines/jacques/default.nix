@@ -7,6 +7,7 @@
 }:
 {
   imports = [
+    ./hermes.nix
     ./hardware.nix
     ./home-julien.nix
     ./gh-proxy.nix
@@ -60,6 +61,7 @@
     gh
     gh-proxy
     git
+    hermes-agent
     signal-cli
   ];
 
