@@ -89,7 +89,16 @@ in
       gnused
       jq
       openssh
+      pandoc
+      poppler-utils
+      (python3.withPackages (
+        ps: with ps; [
+          beautifulsoup4
+          requests
+        ]
+      ))
       ripgrep
+      sqlite
     ];
 
     environment = {
