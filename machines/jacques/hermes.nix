@@ -19,6 +19,31 @@ let
 
   settingsFormat = pkgs.formats.yaml { };
 
+  # The agent's working toolkit. It reaches these two ways: the gateway
+  # unit's PATH (subprocesses) and login shells spawned by its terminal
+  # tool, which re-source the system profile — so the list has to be in
+  # both the unit path and systemPackages.
+  toolbox = with pkgs; [
+    bash
+    coreutils
+    curl
+    git
+    gnugrep
+    gnused
+    jq
+    openssh
+    pandoc
+    poppler-utils
+    (python3.withPackages (
+      ps: with ps; [
+        beautifulsoup4
+        requests
+      ]
+    ))
+    ripgrep
+    sqlite
+  ];
+
   # hermes reads $HERMES_HOME/config.yaml and expands ''${VAR} references from
   # the environment, so the API key stays out of the store and arrives via
   # credentials. "custom" is hermes' OpenAI-compatible provider; it points at
@@ -47,6 +72,8 @@ in
 
   nix.settings.allowed-users = [ "hermes" ];
   nix.settings.trusted-users = [ "hermes" ];
+
+  environment.systemPackages = toolbox;
 
   systemd.services.signal-cli = {
     description = "signal-cli daemon backing the hermes Signal adapter";
@@ -78,28 +105,7 @@ in
     wants = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
 
-    # The agent shells out constantly — give it the tools it expects to find
-    # rather than whatever happens to be in the unit's default PATH.
-    path = with pkgs; [
-      bash
-      coreutils
-      curl
-      git
-      gnugrep
-      gnused
-      jq
-      openssh
-      pandoc
-      poppler-utils
-      (python3.withPackages (
-        ps: with ps; [
-          beautifulsoup4
-          requests
-        ]
-      ))
-      ripgrep
-      sqlite
-    ];
+    path = toolbox;
 
     environment = {
       HERMES_HOME = hermesHome;
