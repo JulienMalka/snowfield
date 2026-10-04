@@ -45,6 +45,9 @@ in
   };
   users.groups.hermes = { };
 
+  nix.settings.allowed-users = [ "hermes" ];
+  nix.settings.trusted-users = [ "hermes" ];
+
   systemd.services.signal-cli = {
     description = "signal-cli daemon backing the hermes Signal adapter";
     after = [ "network-online.target" ];
