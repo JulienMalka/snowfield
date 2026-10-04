@@ -17,6 +17,13 @@ let
   # Nothing else in the repo knows it, so it has to be set here.
   signalAccount = "+46702145550";
 
+  # hermes has its own account on our vaultwarden and sees whatever is shared
+  # with it there. The gateway unlocks that vault once at start and keeps the
+  # session key in its environment, so `bw` just works from the agent's
+  # terminal. How to use it is a skill hermes keeps in its own state.
+  vaultUrl = "https://vaults.malka.family";
+  vaultHome = "${hermesHome}/bitwarden-cli";
+
   settingsFormat = pkgs.formats.yaml { };
 
   # The agent's working toolkit. It reaches these two ways: the gateway
@@ -42,6 +49,7 @@ let
     ))
     ripgrep
     sqlite
+    bitwarden-cli
   ];
 
   # hermes reads $HERMES_HOME/config.yaml and expands ''${VAR} references from
@@ -112,6 +120,8 @@ in
       HOME = hermesHome;
       SIGNAL_HTTP_URL = "http://${signalHttp}";
       SIGNAL_ACCOUNT = signalAccount;
+      # Pinned because hermes may hand its subprocesses a different HOME.
+      BITWARDENCLI_APPDATA_DIR = vaultHome;
     };
 
     # The generated config is authoritative: it is rewritten on every start, so
@@ -124,6 +134,26 @@ in
 
     script = ''
       export LITELLM_API_KEY="$(< "$CREDENTIALS_DIRECTORY/litellm-key")"
+
+      # The API key and master password never leave this subshell; only the
+      # session key they yield is exported. A vault that can't be reached
+      # costs hermes its secrets, not its start.
+      if BW_SESSION="$(
+        set -a
+        . "$CREDENTIALS_DIRECTORY/vaultwarden"
+        set +a
+        if ! bw login --check > /dev/null 2>&1; then
+          bw config server ${vaultUrl} >&2
+          bw login --apikey >&2
+        fi
+        bw unlock --raw --passwordenv BW_PASSWORD
+      )"; then
+        export BW_SESSION
+      else
+        unset BW_SESSION
+        echo "vaultwarden: could not unlock the vault, starting without it" >&2
+      fi
+
       exec ${lib.getExe pkgs.hermes-agent} gateway run
     '';
 
@@ -134,7 +164,10 @@ in
       StateDirectory = "hermes";
       StateDirectoryMode = "0700";
       WorkingDirectory = hermesHome;
-      LoadCredential = "litellm-key:${config.age.secrets.hermes-litellm-key.path}";
+      LoadCredential = [
+        "litellm-key:${config.age.secrets.hermes-litellm-key.path}"
+        "vaultwarden:${config.age.secrets.hermes-vaultwarden.path}"
+      ];
       Restart = "always";
       RestartSec = 5;
       # hermes exits 75 when it wants the supervisor to bring it back
@@ -147,4 +180,7 @@ in
   };
 
   age.secrets.hermes-litellm-key.file = ./hermes-litellm-key.age;
+  # BW_CLIENTID, BW_CLIENTSECRET and BW_PASSWORD of hermes' vaultwarden
+  # account, as shell assignments.
+  age.secrets.hermes-vaultwarden.file = ./hermes-vaultwarden.age;
 }
