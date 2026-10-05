@@ -44,7 +44,7 @@ in
       keyFile = config.age.secrets."lasuite-meet-livekit-keys".path;
       settings.rtc = {
         use_external_ip = false;
-        node_ip = "82.67.34.230";
+        node_ip = config.machine.meta.ips.local.ipv4;
         turn_servers = [
           (mkTurn 3478 "udp")
           (mkTurn 5349 "tls")
