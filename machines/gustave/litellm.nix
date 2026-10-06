@@ -18,8 +18,8 @@ let
           api_key = "dummy";
         };
         model_info = {
-          input_cost_per_token = 2.2e-7;
-          output_cost_per_token = 6.6e-7;
+          input_cost_per_token = 1.23e-8;
+          output_cost_per_token = 1.28e-6;
         };
       }
       {
