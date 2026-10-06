@@ -17,6 +17,10 @@
     arch = "x86_64-linux";
     nixpkgs_version = inputs.nixpkgs;
     hm_version = inputs.home-manager;
+    syncthing = {
+      id = "OENSRAR-757U7ZP-U3YBWWP-QYSW2D5-TSRROBK-LDZZOOL-RHN7JWI-VU24IQH";
+      folders = [ "notes" ];
+    };
     profiles = with profiles; [
       vm-simple-network
       server

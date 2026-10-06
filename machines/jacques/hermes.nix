@@ -24,6 +24,13 @@ let
   vaultUrl = "https://vaults.malka.family";
   vaultHome = "${hermesHome}/bitwarden-cli";
 
+  # Julien's notes, git history included, synced with every machine that
+  # carries his dev tree.
+  notesDir = "${hermesHome}/notes";
+  notesPeers = lib.filterAttrs (
+    _: v: lib.hasAttr "syncthing" v && lib.elem "dev" (v.syncthing.folders or [ "dev" ])
+  ) lib.snowfield;
+
   settingsFormat = pkgs.formats.yaml { };
 
   # The agent's working toolkit. It reaches these two ways: the gateway
@@ -179,6 +186,43 @@ in
     };
   };
 
+  # Runs as hermes so the notes land writable in its home. The other side of
+  # this share is the "notes" folder of profiles/syncthing.nix.
+  services.syncthing = {
+    enable = true;
+    key = config.age.secrets.syncthing-key.path;
+    cert = config.age.secrets.syncthing-cert.path;
+    user = "hermes";
+    group = "hermes";
+    overrideDevices = true;
+    overrideFolders = true;
+
+    settings.options = {
+      urAccepted = -1;
+      listenAddresses = [ "tcp://${config.machine.meta.ips.vpn.ipv4}" ];
+    };
+
+    settings.devices = lib.mapAttrs (_: v: {
+      inherit (v.syncthing) id;
+      addresses = [ "tcp://${v.ips.vpn.ipv4}:22000" ];
+    }) notesPeers;
+
+    settings.folders.notes = {
+      path = notesDir;
+      devices = lib.attrNames notesPeers;
+    };
+  };
+
+  systemd.services.syncthing.serviceConfig.StateDirectory = "syncthing";
+  systemd.services.syncthing.environment.STNODEFAULTFOLDER = "true";
+  # syncthing may come up before the gateway has ever created its home.
+  systemd.tmpfiles.rules = [
+    "d ${hermesHome} 0700 hermes hermes -"
+    "d ${notesDir} 0700 hermes hermes -"
+  ];
+
+  age.secrets.syncthing-key.file = ./syncthing-key.age;
+  age.secrets.syncthing-cert.file = ./syncthing-cert.age;
   age.secrets.hermes-litellm-key.file = ./hermes-litellm-key.age;
   # BW_CLIENTID, BW_CLIENTSECRET and BW_PASSWORD of hermes' vaultwarden
   # account, as shell assignments.

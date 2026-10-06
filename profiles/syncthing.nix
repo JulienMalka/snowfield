@@ -9,6 +9,14 @@ let
     n: v: n != config.networking.hostName && lib.hasAttr "syncthing" v
   ) lib.snowfield;
 
+  # A peer carries the whole dev tree unless its metadata narrows that down:
+  # jacques only takes the notes, for hermes to work in.
+  peersOf =
+    folder:
+    lib.attrNames (
+      lib.filterAttrs (_: v: lib.elem folder (v.syncthing.folders or [ "dev" ])) syncthing_configured
+    );
+
 in
 {
 
@@ -64,8 +72,22 @@ in
           "(?d)*.toc"
           "(?d)auto"
           "(?d)**/reports/**/*.pdf"
+          # The notes are a folder of their own below; its syncthing
+          # bookkeeping is not content of this one.
+          "/notes/.stfolder"
+          "/notes/.stignore"
         ];
-        devices = lib.attrNames syncthing_configured;
+        devices = peersOf "dev";
+      };
+
+      # Nested in dev on purpose: the dev peers keep exchanging the notes
+      # through the folder above, and this one only reaches the machines that
+      # get the notes without the rest. Same content as dev carries, git
+      # history included.
+      "notes" = {
+        path = "/home/julien/dev/notes";
+        ignorePatterns = [ ".direnv" ];
+        devices = peersOf "notes";
       };
     };
   };
