@@ -77,36 +77,10 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
             lila-build-hook = inputs.lila.packages.${system}.utils;
             artiflakery = inputs.artiflakery.defaultPackage.${system};
             inherit (prev.pkgs.unstable) river;
-            eca = prev.pkgs.callPackage "${inputs.llm-agents}/packages/eca/package.nix" {
-              wrapBuddy = prev.pkgs.callPackage "${inputs.llm-agents}/packages/wrapBuddy/package.nix" { };
-              versionCheckHomeHook =
-                prev.pkgs.callPackage "${inputs.llm-agents}/packages/versionCheckHomeHook/package.nix"
-                  { };
-              flake.lib = import "${inputs.llm-agents}/lib/default.nix" {
-                inputs.nixpkgs.lib = prev.lib;
-              };
-            };
-            claude-code = prev.pkgs.callPackage "${inputs.llm-agents}/packages/claude-code/package.nix" {
-              wrapBuddy = prev.pkgs.callPackage "${inputs.llm-agents}/packages/wrapBuddy/package.nix" { };
-            };
-            # Deliberately stable, unlike the other llm-agents packages: the
-            # unstable python 3.14 set currently fails to build two of hermes'
-            # dependencies (slack-bolt's pyramid tests import the removed
-            # pkg_resources, and firecrawl-py's derivation version disagrees
-            # with its own metadata).
-            hermes-agent =
-              (prev.pkgs.callPackage "${inputs.llm-agents}/packages/hermes-agent/package.nix" {
-                versionCheckHomeHook =
-                  prev.pkgs.callPackage "${inputs.llm-agents}/packages/versionCheckHomeHook/package.nix"
-                    { };
-                flake.lib = import "${inputs.llm-agents}/lib/default.nix" {
-                  inputs.nixpkgs.lib = prev.lib;
-                };
-              }).overridePythonAttrs
-                (old: {
-                  # Upstream pins pillow==12.2.0; stable carries 12.3.0.
-                  pythonRelaxDeps = (old.pythonRelaxDeps or [ ]) ++ [ "pillow" ];
-                });
+            # Upstream's own builds, against the nixpkgs llm-agents pins: that
+            # is what its fixes target (hermes' python set in particular) and
+            # what cache.numtide.com carries.
+            inherit (inputs.llm-agents.packages.${system}) eca claude-code hermes-agent;
             luj-website = inputs.luj-website.packages.${system}.default;
           }
         )

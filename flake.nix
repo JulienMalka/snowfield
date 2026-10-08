@@ -60,10 +60,10 @@
       flake = false;
     };
     lila.url = "github:nix-community/lila/main";
-    llm-agents = {
-      url = "github:numtide/llm-agents.nix/main";
-      flake = false;
-    };
+    # A real flake, unlike the nixpkgs inputs, so we consume its packages as
+    # upstream builds and caches them. Its nixpkgs cannot follow ours, which
+    # is not a flake; it is only used for these packages anyway.
+    llm-agents.url = "github:numtide/llm-agents.nix/main";
     luj-website.url = "git+ssh://forgejo@git.luj.fr/luj/luj-website.git?ref=main";
     niks3 = {
       url = "github:Mic92/niks3/main";
