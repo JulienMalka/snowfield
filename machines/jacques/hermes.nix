@@ -75,6 +75,14 @@ let
       enabled = true;
       extra.http_url = "http://${signalHttp}";
     };
+
+    cron.wrap_response = false;
+
+    display = {
+      background_process_notifications = "off";
+      memory_notifications = "off";
+    };
+    agent.surface_child_process_notifications = false;
   };
 in
 {
