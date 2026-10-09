@@ -24,12 +24,18 @@ let
   vaultUrl = "https://vaults.malka.family";
   vaultHome = "${hermesHome}/bitwarden-cli";
 
-  # Julien's notes, git history included, synced with every machine that
-  # carries his dev tree.
+  # Julien's notes and the Windmill workspace checkout, git history
+  # included, synced with every machine that carries his dev tree. Both are
+  # nested folders of that tree on the peers (profiles/syncthing.nix).
   notesDir = "${hermesHome}/notes";
-  notesPeers = lib.filterAttrs (
+  workflowsDir = "${hermesHome}/agentic-workflows";
+  devPeers = lib.filterAttrs (
     _: v: lib.hasAttr "syncthing" v && lib.elem "dev" (v.syncthing.folders or [ "dev" ])
   ) lib.snowfield;
+  sharedFolder = path: {
+    inherit path;
+    devices = lib.attrNames devPeers;
+  };
 
   settingsFormat = pkgs.formats.yaml { };
 
@@ -194,8 +200,8 @@ in
     };
   };
 
-  # Runs as hermes so the notes land writable in its home. The other side of
-  # this share is the "notes" folder of profiles/syncthing.nix.
+  # Runs as hermes so the shares land writable in its home. The other side
+  # is profiles/syncthing.nix.
   services.syncthing = {
     enable = true;
     key = config.age.secrets.syncthing-key.path;
@@ -213,11 +219,18 @@ in
     settings.devices = lib.mapAttrs (_: v: {
       inherit (v.syncthing) id;
       addresses = [ "tcp://${v.ips.vpn.ipv4}:22000" ];
-    }) notesPeers;
+    }) devPeers;
 
-    settings.folders.notes = {
-      path = notesDir;
-      devices = lib.attrNames notesPeers;
+    settings.folders = {
+      notes = sharedFolder notesDir;
+      # Jacques only edits here for now: no git, no wmill push. The ignore
+      # list mirrors the peers' so bytecode it produces stays local.
+      agentic-workflows = sharedFolder workflowsDir // {
+        ignorePatterns = [
+          "__pycache__"
+          ".direnv"
+        ];
+      };
     };
   };
 
@@ -227,6 +240,7 @@ in
   systemd.tmpfiles.rules = [
     "d ${hermesHome} 0700 hermes hermes -"
     "d ${notesDir} 0700 hermes hermes -"
+    "d ${workflowsDir} 0700 hermes hermes -"
   ];
 
   age.secrets.syncthing-key.file = ./syncthing-key.age;

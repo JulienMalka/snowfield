@@ -76,6 +76,8 @@ in
           # bookkeeping is not content of this one.
           "/notes/.stfolder"
           "/notes/.stignore"
+          "/agentic-workflows/.stfolder"
+          "/agentic-workflows/.stignore"
         ];
         devices = peersOf "dev";
       };
@@ -88,6 +90,20 @@ in
         path = "/home/julien/dev/notes";
         ignorePatterns = [ ".direnv" ];
         devices = peersOf "notes";
+      };
+
+      # Same arrangement for the Windmill workspace checkout: jacques edits it
+      # in place and the deploy to Windmill happens from whichever side runs
+      # the wmill CLI. Git stays with the dev peers.
+      "agentic-workflows" = {
+        path = "/home/julien/dev/agentic-workflows";
+        ignorePatterns = [
+          ".direnv"
+          "__pycache__"
+          ".claude/settings.local.json"
+          ".claude/scheduled_tasks.lock"
+        ];
+        devices = peersOf "agentic-workflows";
       };
     };
   };
