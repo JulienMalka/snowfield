@@ -24,6 +24,19 @@ let
   vaultUrl = "https://vaults.malka.family";
   vaultHome = "${hermesHome}/bitwarden-cli";
 
+  # hermes is the "jacques" user of our Windmill, member of the workspace
+  # that holds Julien's workflows. It gets there two ways: the MCP server,
+  # for running and inspecting, and the CLI, for previews against the synced
+  # checkout. Both tokens come from the credential below.
+  windmillUrl = "https://workflows.luj.fr";
+  windmillWorkspace = "ai-workflows";
+  wmill = pkgs.writeShellApplication {
+    name = "wmill";
+    runtimeInputs = [ pkgs.deno ];
+    # An npm package; deno fetches it on first use and caches it in $HOME.
+    text = ''exec deno run -A -q npm:windmill-cli "$@"'';
+  };
+
   # Julien's notes and the Windmill workspace checkout, git history
   # included, synced with every machine that carries his dev tree. Both are
   # nested folders of that tree on the peers (profiles/syncthing.nix).
@@ -63,6 +76,7 @@ let
     ripgrep
     sqlite
     bitwarden-cli
+    wmill
   ];
 
   # hermes reads $HERMES_HOME/config.yaml and expands ''${VAR} references from
@@ -80,6 +94,15 @@ let
     platforms.signal = {
       enabled = true;
       extra.http_url = "http://${signalHttp}";
+    };
+
+    # The MCP token is scoped to running and inspecting: scripts and flows
+    # are tools, jobs and schedules are readable and manageable, but the
+    # script/flow write tools are left out. Authoring goes through the
+    # synced checkout instead.
+    mcp_servers.windmill = {
+      url = "${windmillUrl}/api/mcp/w/${windmillWorkspace}/sse";
+      headers.Authorization = "Bearer \${WINDMILL_MCP_TOKEN}";
     };
 
     cron.wrap_response = false;
@@ -156,6 +179,17 @@ in
     script = ''
       export LITELLM_API_KEY="$(< "$CREDENTIALS_DIRECTORY/litellm-key")"
 
+      # Both Windmill tokens: the MCP one is read by the config, the plain one
+      # by the CLI. The CLI keeps its remote list under $HOME/.config/windmill
+      # and re-registering is an update, so this keeps it in step with the
+      # credential. Windmill being down costs a warning, not the start.
+      set -a
+      . "$CREDENTIALS_DIRECTORY/windmill"
+      set +a
+      if ! wmill workspace add ${windmillWorkspace} ${windmillWorkspace} ${windmillUrl}/ --token "$WINDMILL_TOKEN" > /dev/null 2>&1; then
+        echo "wmill: could not register the workspace, the CLI will need it by hand" >&2
+      fi
+
       # The API key and master password never leave this subshell; only the
       # session key they yield is exported. A vault that can't be reached
       # costs hermes its secrets, not its start.
@@ -188,6 +222,7 @@ in
       LoadCredential = [
         "litellm-key:${config.age.secrets.hermes-litellm-key.path}"
         "vaultwarden:${config.age.secrets.hermes-vaultwarden.path}"
+        "windmill:${config.age.secrets.hermes-windmill.path}"
       ];
       Restart = "always";
       RestartSec = 5;
@@ -249,4 +284,7 @@ in
   # BW_CLIENTID, BW_CLIENTSECRET and BW_PASSWORD of hermes' vaultwarden
   # account, as shell assignments.
   age.secrets.hermes-vaultwarden.file = ./hermes-vaultwarden.age;
+  # WINDMILL_TOKEN (plain, for the CLI) and WINDMILL_MCP_TOKEN (scoped) of
+  # the jacques Windmill user, as shell assignments.
+  age.secrets.hermes-windmill.file = ./hermes-windmill.age;
 }
