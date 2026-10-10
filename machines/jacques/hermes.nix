@@ -159,6 +159,14 @@ in
 
     path = toolbox;
 
+    # The unit only changes when its own definition does; a rotated secret
+    # must restart it too, or it keeps the old token in its environment.
+    restartTriggers = [
+      config.age.secrets.hermes-litellm-key.file
+      config.age.secrets.hermes-vaultwarden.file
+      config.age.secrets.hermes-windmill.file
+    ];
+
     environment = {
       HERMES_HOME = hermesHome;
       HOME = hermesHome;
