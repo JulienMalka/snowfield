@@ -107,6 +107,15 @@ let
 
     cron.wrap_response = false;
 
+    # Compaction fires at min(threshold ratio × window, threshold_tokens); the
+    # stock 256k cap fired every couple of hours of agent work. The summary is
+    # written with thinking on and takes ~8 min on a quiet cluster, more when
+    # a workflow shares it, so the ceiling leaves room for that.
+    compression = {
+      threshold_tokens = 500000;
+      context_total_ceiling_seconds = 2700;
+    };
+
     display = {
       background_process_notifications = "off";
       memory_notifications = "off";
