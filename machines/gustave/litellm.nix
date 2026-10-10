@@ -51,6 +51,11 @@ let
     };
 
     general_settings = {
+      # Opt-in since 1.99: a non-streaming request whose client has gone is
+      # cancelled upstream, so vLLM stops generating for it. Without this a
+      # client that times out leaves the engine working until request_timeout
+      # (100 min), and a retrying client doubles its own load.
+      cancel_on_disconnect = true;
       database_url = "os.environ/DATABASE_URL";
       master_key = "os.environ/LITELLM_MASTER_KEY";
       background_health_checks = true;
