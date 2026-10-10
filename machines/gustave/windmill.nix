@@ -52,7 +52,13 @@ in
 
   systemd.services = {
     windmill-server = {
-      environment.ZOMBIE_JOB_TIMEOUT = "3600";
+      environment = {
+        ZOMBIE_JOB_TIMEOUT = "3600";
+        # The MCP endpoint tools (and anything else the server proxies to
+        # itself) call this URL; the default is localhost:8000, which is
+        # readeck here, so every MCP tool call came back 401.
+        BASE_INTERNAL_URL = "http://localhost:${toString port}";
+      };
       serviceConfig = staticUserOverrides;
     };
     windmill-worker.enable = false;
