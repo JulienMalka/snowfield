@@ -124,10 +124,11 @@ let
     display = {
       background_process_notifications = "off";
       memory_notifications = "off";
-      # A message that arrives mid-turn waits for its own turn rather than
-      # being read as a correction to the running one. SOUL.md tells hermes
-      # to keep long work in background children, so turns stay short.
-      busy_input_mode = "queue";
+      # A message that arrives mid-turn is handed to the running turn at its
+      # next tool boundary ("queue" would hold it until the turn ends, which
+      # for an autonomous task is hours). HERMES.md tells hermes to treat it
+      # as a new request, not a correction.
+      busy_input_mode = "steer";
     };
     agent.surface_child_process_notifications = false;
     # Each background child reports as it finishes, not when the batch does.
