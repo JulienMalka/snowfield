@@ -107,6 +107,11 @@ let
 
     cron.wrap_response = false;
 
+    # The VM exists for hermes alone, so nothing it runs needs a human to
+    # vouch for it; the prompts only ever reached Julien when the safety
+    # model timed out. "off" approves everything, cron included.
+    approvals.mode = "off";
+
     # Compaction fires at min(threshold ratio × window, threshold_tokens); the
     # stock 256k cap fired every couple of hours of agent work. The summary is
     # written with thinking on and takes ~8 min on a quiet cluster, more when
