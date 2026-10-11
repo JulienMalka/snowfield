@@ -35,12 +35,11 @@
 
     extraArgs = [
       "--trust-remote-code"
-      # NVFP4 halves the KV footprint against fp8 for the same token count;
-      # with it the pool fits at 0.78 utilisation, which leaves ~9 GB more of
-      # the unified memory to the host. Headroom ran out on 2026-10-11 and
-      # froze the head mid-prefill (no clean OOM on this SoC, just a hang).
+      # fp8 is the only KV format the B12X DeepSeek-V4 attention accepts
+      # (nvfp4_ds_mla is refused at startup: "fp8_ds_mla layout only supports
+      # fp8 kv-cache"), so headroom has to come from utilisation instead.
       "--kv-cache-dtype"
-      "nvfp4_ds_mla"
+      "fp8"
       "--block-size"
       "256"
       "--max-model-len"
@@ -49,8 +48,11 @@
       "8"
       "--max-num-batched-tokens"
       "8192"
+      # 0.85 left ~10 GB of the unified memory to the host and the head froze
+      # mid-prefill on 2026-10-11 (no clean OOM on this SoC, just a silent
+      # hang). 0.80 gives back ~6 GB; the KV pool still holds ~760k tokens.
       "--gpu-memory-utilization"
-      "0.78"
+      "0.80"
       "--enable-prefix-caching"
       "--tokenizer-mode"
       "deepseek_v4"
