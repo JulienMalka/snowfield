@@ -107,6 +107,14 @@ let
 
     cron.wrap_response = false;
 
+    # Temporary (2026-10-11): text hermes writes alongside a tool call never
+    # reaches Signal and the delivery path logs nothing at INFO. Debug until
+    # one such turn has been traced, then drop this block.
+    logging = {
+      level = "DEBUG";
+      max_size_mb = 50;
+    };
+
     # The VM exists for hermes alone, so nothing it runs needs a human to
     # vouch for it; the prompts only ever reached Julien when the safety
     # model timed out. "off" approves everything, cron included.
