@@ -107,15 +107,7 @@ let
 
     cron.wrap_response = false;
 
-    # Temporary (2026-10-11): text hermes writes alongside a tool call never
-    # reaches Signal and the delivery path logs nothing at INFO. Debug until
-    # one such turn has been traced, then drop this block.
-    logging = {
-      level = "DEBUG";
-      max_size_mb = 50;
-    };
-
-    # The VM exists for hermes alone, so nothing it runs needs a human to
+    # The VM exists for hermes alone    # The VM exists for hermes alone, so nothing it runs needs a human to
     # vouch for it; the prompts only ever reached Julien when the safety
     # model timed out. "off" approves everything, cron included.
     approvals.mode = "off";
@@ -137,6 +129,12 @@ let
       # for an autonomous task is hours). HERMES.md tells hermes to treat it
       # as a new request, not a correction.
       busy_input_mode = "steer";
+      # Text the model writes alongside a tool call ("on it, launching...") is
+      # delivered as its own message only when this is on. The gateway reads
+      # config.yaml without hermes' built-in defaults, and Signal's platform
+      # tier then defaults it to off, so until 2026-10-11 every such message
+      # was silently dropped. Explicit per-platform so no loader can lose it.
+      platforms.signal.interim_assistant_messages = true;
     };
     agent.surface_child_process_notifications = false;
     # Each background child reports as it finishes, not when the batch does.
