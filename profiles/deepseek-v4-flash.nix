@@ -35,8 +35,12 @@
 
     extraArgs = [
       "--trust-remote-code"
+      # NVFP4 halves the KV footprint against fp8 for the same token count;
+      # with it the pool fits at 0.78 utilisation, which leaves ~9 GB more of
+      # the unified memory to the host. Headroom ran out on 2026-10-11 and
+      # froze the head mid-prefill (no clean OOM on this SoC, just a hang).
       "--kv-cache-dtype"
-      "fp8"
+      "nvfp4_ds_mla"
       "--block-size"
       "256"
       "--max-model-len"
@@ -46,7 +50,7 @@
       "--max-num-batched-tokens"
       "8192"
       "--gpu-memory-utilization"
-      "0.85"
+      "0.78"
       "--enable-prefix-caching"
       "--tokenizer-mode"
       "deepseek_v4"
