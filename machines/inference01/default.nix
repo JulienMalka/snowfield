@@ -29,6 +29,12 @@
 
   hardware.dgx-spark.enable = true;
 
+  # Reading cpuinfo_avg_freq hangs forever on a few cores of the GB10 (the
+  # cppc driver under the nvidia 7.0 kernel), so every scrape of the cpufreq
+  # collector stuck until node_exporter hit its 40-request limit and the
+  # node went dark in the metrics. Nothing else reads that file.
+  services.prometheus.exporters.node.disabledCollectors = [ "cpufreq" ];
+
   # Head of the two-Spark vLLM cluster: serves the API, on the VPN.
   luj.vllm-cluster = {
     nodeRank = 0;
