@@ -271,12 +271,29 @@ in
         # either address from whichever interface it likes and the peer ends up
         # with the wrong path in its neighbour table. Answer only for the address
         # on the receiving interface, and source announcements from it.
-        boot.kernel.sysctl = lib.listToAttrs (
-          lib.concatMap (i: [
-            (lib.nameValuePair "net.ipv4.conf.${i}.arp_ignore" 1)
-            (lib.nameValuePair "net.ipv4.conf.${i}.arp_announce" 2)
-          ]) ifaces
-        );
+        boot.kernel.sysctl =
+          lib.listToAttrs (
+            lib.concatMap (i: [
+              (lib.nameValuePair "net.ipv4.conf.${i}.arp_ignore" 1)
+              (lib.nameValuePair "net.ipv4.conf.${i}.arp_announce" 2)
+            ]) ifaces
+          )
+          # The model pins most of the unified memory, so the host runs on what
+          # is left. When that runs short the GB10 does not OOM cleanly: the
+          # head froze without a log line on 2026-10-11, and other two-Spark
+          # operators traced the same freeze to kcompactd soft-locking under
+          # pressure. No background compaction, and a 2 GB reserve so the
+          # kernel acts before the pool is dry.
+          // {
+            "vm.compaction_proactiveness" = 0;
+            "vm.min_free_kbytes" = 2097152;
+          };
+
+        # The disk layout carries a swap partition, but swapping a GPU-pinned
+        # workload only turns a memory squeeze into minutes of thrashing before
+        # anything is killed. Better that the OOM killer takes vLLM and the
+        # unit restarts.
+        swapDevices = lib.mkForce [ ];
 
         # The only peer on the cable is the other node; torch, gloo and NCCL all
         # use ephemeral ports on it.

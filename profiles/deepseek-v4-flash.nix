@@ -50,9 +50,11 @@
       "8192"
       # 0.85 left ~10 GB of the unified memory to the host and the head froze
       # mid-prefill on 2026-10-11 (no clean OOM on this SoC, just a silent
-      # hang). 0.80 gives back ~6 GB; the KV pool still holds ~760k tokens.
+      # hang). The pool does not shrink linearly: 0.80 auto-fit the context
+      # to 474k tokens, under hermes' 500k compaction point; 0.83 is the
+      # compromise, checked against the "GPU KV cache size" line at startup.
       "--gpu-memory-utilization"
-      "0.80"
+      "0.83"
       "--enable-prefix-caching"
       "--tokenizer-mode"
       "deepseek_v4"
