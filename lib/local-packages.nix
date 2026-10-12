@@ -22,4 +22,7 @@ packages
 // {
   # Prisma's generated types hang during import on Python 3.14.
   litellm-patched = unstable.python313Packages.callPackage ../packages/litellm-patched { };
+  # The proxy speaks the Jellyfin 12 API to clients, so it embeds the 12.x web
+  # client, which only unstable carries.
+  jellyswarrm = pkgs.callPackage ../packages/jellyswarrm { inherit (unstable) jellyfin-web; };
 }
