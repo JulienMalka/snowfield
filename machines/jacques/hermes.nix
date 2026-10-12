@@ -83,7 +83,8 @@ let
     # disables its own downloads, so both come from nixpkgs. The CLI is pure
     # Rust talking CDP, no Node daemon, and runs headless without a display or
     # a user runtime dir. Pages that bot-wall plain fetches (LinkedIn, grep.app)
-    # render fine this way (checked 2026-10-12).
+    # render fine this way (checked 2026-10-12). The CLI itself is told where
+    # Chromium is through the unit environment, see below.
     agent-browser
     chromium
   ];
@@ -220,6 +221,11 @@ in
       SIGNAL_ACCOUNT = signalAccount;
       # Pinned because hermes may hand its subprocesses a different HOME.
       BITWARDENCLI_APPDATA_DIR = vaultHome;
+      # agent-browser's own search for a system Chromium shells out to
+      # `which`, which the unit's PATH does not carry, so it reported "No
+      # Chrome binary found" with chromium right there on PATH. hermes passes
+      # this through to the CLI, which then launches that binary directly.
+      AGENT_BROWSER_EXECUTABLE_PATH = lib.getExe pkgs.chromium;
     };
 
     # The generated config is authoritative: it is rewritten on every start, so
