@@ -226,6 +226,13 @@ in
       # Chrome binary found" with chromium right there on PATH. hermes passes
       # this through to the CLI, which then launches that binary directly.
       AGENT_BROWSER_EXECUTABLE_PATH = lib.getExe pkgs.chromium;
+      # The VM leaves through a Hetzner address and gets bot-walled (LinkedIn
+      # authwall, Vercel checkpoint) headed or headless, while the same
+      # browser from the home IP passes. So the browser alone goes out through
+      # the SOCKS proxy on inference01 (machines/inference01/default.nix),
+      # which sits on the home connection. Browser traffic only; hermes'
+      # own API calls and fetches keep the direct route.
+      AGENT_BROWSER_PROXY = "socks5://${lib.snowfield.inference01.ips.vpn.ipv4}:1080";
     };
 
     # The generated config is authoritative: it is rewritten on every start, so

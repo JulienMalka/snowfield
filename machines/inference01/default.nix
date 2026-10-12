@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   profiles,
   lib,
@@ -44,6 +45,18 @@
     };
   };
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
+
+  # SOCKS5 egress for Jacques' browser (machines/jacques/hermes.nix). The
+  # Sparks are the only hosts on the home connection; everything else leaves
+  # through Hetzner or Scaleway addresses that LinkedIn, Vercel and friends
+  # bot-wall on sight, headed or not, while the same browser from this IP
+  # passes (checked 2026-10-12). VPN-only thanks to the bind address and the
+  # trusted interface above; nothing on the tailnet needs auth to use it.
+  services.microsocks = {
+    enable = true;
+    ip = config.machine.meta.ips.vpn.ipv4;
+    port = 1080;
+  };
 
   nixpkgs.overlays = [
     (import "${inputs.nixos-dgx-spark}/overlays/fixes.nix")
