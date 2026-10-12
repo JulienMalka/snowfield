@@ -117,6 +117,19 @@ let
 
     cron.wrap_response = false;
 
+    # Files the model emits as MEDIA: are only sent when they sit under one
+    # of hermes' media cache dirs or outside its system denylist, and that
+    # denylist carries /var/lib with an exemption for $HOME only when the
+    # two are equal. Home is one level below, so everything Jacques writes
+    # elsewhere under it (its scratch dir, the browser_exec workspace where
+    # screenshots land) was dropped as "denied by the delivery policy"
+    # (2026-10-12). Allowed roots beat the denylist, so keep this to dirs
+    # the model fills itself: config.yaml, .env and state.db stay out.
+    gateway.media_delivery_allow_dirs = [
+      "${hermesHome}/cache/scratch"
+      "${hermesHome}/cache/browser-use/workspace"
+    ];
+
     # Left unset, search and extract pick the bundled DuckDuckGo plugin, whose
     # worker runs under the bare interpreter and dies on a missing httpx
     # under Nix; every call then failed once before the keyless rescue kicked
