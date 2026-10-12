@@ -57,6 +57,10 @@
       "--gpu-memory-utilization"
       "0.85"
       "--enable-prefix-caching"
+      # Prefix caching alone never reports hits: vLLM leaves
+      # usage.prompt_tokens_details null unless this flag is set, so litellm
+      # saw zero cached tokens on every DeepSeek request (2026-10-12).
+      "--enable-prompt-tokens-details"
       "--tokenizer-mode"
       "deepseek_v4"
       "--tool-call-parser"
