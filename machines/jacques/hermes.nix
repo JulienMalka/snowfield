@@ -77,6 +77,15 @@ let
     sqlite
     bitwarden-cli
     wmill
+    # hermes' browser tools (browser_navigate, browser_snapshot, ...) only
+    # appear once the agent-browser CLI is found and a Chromium is on PATH
+    # (tools/browser_tool_install.py:check_browser_requirements); the package
+    # disables its own downloads, so both come from nixpkgs. The CLI is pure
+    # Rust talking CDP, no Node daemon, and runs headless without a display or
+    # a user runtime dir. Pages that bot-wall plain fetches (LinkedIn, grep.app)
+    # render fine this way (checked 2026-10-12).
+    agent-browser
+    chromium
   ];
 
   # hermes reads $HERMES_HOME/config.yaml and expands ''${VAR} references from
@@ -107,7 +116,17 @@ let
 
     cron.wrap_response = false;
 
-    # The VM exists for hermes alone    # The VM exists for hermes alone, so nothing it runs needs a human to
+    # Left unset, search and extract pick the bundled DuckDuckGo plugin, whose
+    # worker runs under the bare interpreter and dies on a missing httpx
+    # under Nix; every call then failed once before the keyless rescue kicked
+    # in, and page extraction never worked. Jacques set these in config.yaml
+    # on 2026-10-12; pinned here since that file is regenerated at every start.
+    web = {
+      search_backend = "exa";
+      extract_backend = "firecrawl";
+    };
+
+    # The VM exists for hermes alone, so nothing it runs needs a human to
     # vouch for it; the prompts only ever reached Julien when the safety
     # model timed out. "off" approves everything, cron included.
     approvals.mode = "off";
