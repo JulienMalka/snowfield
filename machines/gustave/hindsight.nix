@@ -48,11 +48,12 @@ in
   # The migrations check for pgvector and stop with "CREATE EXTENSION vector"
   # rather than create it, and creating an extension takes the superuser.
   # pg_trgm is optional (entity lookup degrades to exact matching without
-  # it) but cheap, so it goes in too.
+  # it) but cheap, so it goes in too. The database itself comes from
+  # ensureDatabases, which runs in postgresql-setup, not in the server unit.
   systemd.services.hindsight-db-init = {
     description = "Hindsight database extensions";
-    after = [ "postgresql.service" ];
-    requires = [ "postgresql.service" ];
+    after = [ "postgresql-setup.service" ];
+    requires = [ "postgresql-setup.service" ];
     serviceConfig = {
       Type = "oneshot";
       User = "postgres";
