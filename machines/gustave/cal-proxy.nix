@@ -12,6 +12,9 @@
   };
 
   systemd.services.cal-proxy = {
+    # The config (ports, accounts) is read once at start; without this a
+    # changed secret deploys without taking effect (2026-10-14).
+    restartTriggers = [ config.age.secrets."cal-proxy-config".file ];
     description = "Calendar invitation proxy for Stalwart";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
