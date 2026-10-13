@@ -25,4 +25,7 @@ packages
   # The proxy speaks the Jellyfin 12 API to clients, so it embeds the 12.x web
   # client, which only unstable carries.
   jellyswarrm = pkgs.callPackage ../packages/jellyswarrm { inherit (unstable) jellyfin-web; };
+  # Its dependency floors (fastmcp 3.2, litellm 1.95, transformers 5.5) only
+  # unstable meets.
+  hindsight = unstable.callPackage ../packages/hindsight { };
 }

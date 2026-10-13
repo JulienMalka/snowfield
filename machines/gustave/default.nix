@@ -27,6 +27,7 @@
     ./terminus.nix
     ./wm-detector.nix
     ./jellyswarrm.nix
+    ./hindsight.nix
   ];
 
   users.users.julien.linger = true;

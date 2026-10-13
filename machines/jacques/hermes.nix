@@ -52,6 +52,74 @@ let
 
   settingsFormat = pkgs.formats.yaml { };
 
+  # Long-term memory: the Hindsight server on gustave (machines/gustave/
+  # hindsight.nix), reached through hermes' catalog plugin, which Jacques
+  # installs itself (`hermes plugins install hindsight --no-deps`) like its
+  # skills. The plugin is a thin client over the `hindsight-client` package,
+  # which `plugins install` would pip into a venv hermes does not have here;
+  # it is built against hermes' own interpreter instead (its dependencies are
+  # the only handle on that python) and handed over through PYTHONPATH, which
+  # hermes' wrapper leaves alone. hindsight-client is pure python, aiohttp-retry
+  # is the one dependency hermes does not already carry.
+  hermesPython = (lib.head pkgs.hermes-agent.dependencies).pythonModule;
+  hindsightClient = hermesPython.pkgs.callPackage ../../packages/hindsight/client.nix { };
+  hindsightPath = lib.makeSearchPath hermesPython.sitePackages [
+    hindsightClient
+    hermesPython.pkgs.aiohttp-retry
+  ];
+  hindsightUrl = "http://${lib.snowfield.gustave.ips.vpn.ipv4}:8888";
+
+  # The plugin reads $HERMES_HOME/hindsight/config.json, not config.yaml.
+  # Written on every start like the config, so the setup wizard cannot drift it.
+  hindsightConfig = (pkgs.formats.json { }).generate "hindsight-config.json" {
+    mode = "local_external";
+    api_url = hindsightUrl;
+    bank_id = "jacques";
+    # Recall before answering, against the current message. The default runs
+    # it in the background keyed on the previous one and injects a turn late,
+    # which on Signal means answering about the last topic. ~2 s per turn.
+    recall_sync = true;
+    recall_budget = "mid";
+    # The plugin's default surfaces only consolidated observations; the dated
+    # raw facts are what answer "what did we do on the 12th".
+    recall_types = "observation,world,experience";
+    # The server extracts in the background and answers at once; hermes'
+    # write queue is serial, so a slow extraction would otherwise hold the
+    # next turn's write and get dropped at shutdown.
+    retain_async = true;
+    retain_context = "Signal conversation between Julien and Jacques, his hermes agent";
+    # Speaker labels in the retained transcript. Named, so the extractor
+    # attributes "I did X" to Jacques and "I want Y" to Julien without a
+    # narrator setting (the plugin sends none).
+    retain_user_prefix = "Julien";
+    retain_assistant_prefix = "Jacques";
+    # Both are applied to the bank through the server's config API. The
+    # extractor sees one turn at a time, so "the workspace" or "admin" in a
+    # turn that never names Windmill gets resolved against this text rather
+    # than guessed from the context label (which is how "admin on the
+    # jacques VM" got stored in the 2026-10-13 test).
+    bank_retain_mission = ''
+      Memory of Jacques, the hermes agent Julien runs on the jacques VM. Julien's
+      machines: gustave (main server: Windmill at workflows.luj.fr, litellm at
+      inference.luj.fr, Postgres, nginx), the DGX Sparks inference01 and
+      inference02 (vLLM serving DeepSeek V4 Flash), lambda (monitoring), pve
+      (the Proxmox host). "Workspace", "admin" or "folder" in a Windmill
+      context mean the ai-workflows Windmill workspace, not a machine. Keep:
+      decisions, Julien's rules and corrections, what was done on which
+      machine and how it ended, open tasks, where credentials live (never
+      their values), facts about people and projects Julien names. Skip tool
+      output, progress narration and pleasantries.
+    '';
+    bank_mission = ''
+      You are the long-term memory of Jacques, Julien's hermes agent. Answer
+      from the retained conversations, date events when you can, and say
+      plainly when something was retracted or never established.
+    '';
+    # Status lines ("recalled N memories") would land on Signal as messages.
+    recall_indicator = false;
+    retain_indicator = false;
+  };
+
   # The agent's working toolkit. It reaches these two ways: the gateway
   # unit's PATH (subprocesses) and login shells spawned by its terminal
   # tool, which re-source the system profile — so the list has to be in
@@ -116,6 +184,20 @@ let
     };
 
     cron.wrap_response = false;
+
+    # The built-in files are injected into every system prompt, so their
+    # size is a token cost, cached as prefix; it is also what makes Jacques
+    # prune. Stock 2200/1375 was full by 2026-10-12 (2069 and 1342 chars) and
+    # Jacques had stopped writing durable facts. Three times that keeps them
+    # a list of standing rules while the episodic record moves to Hindsight.
+    memory = {
+      memory_char_limit = 6600;
+      user_char_limit = 4125;
+      # The periodic review nudge is for the built-in store alone; off once an
+      # external provider captures every turn (config_defaults.py).
+      nudge_interval = 0;
+      provider = "hindsight";
+    };
 
     # Files the model emits as MEDIA: are only sent when they sit under one
     # of hermes' media cache dirs or outside its system denylist, and that
@@ -246,6 +328,9 @@ in
       # which sits on the home connection. Browser traffic only; hermes'
       # own API calls and fetches keep the direct route.
       AGENT_BROWSER_PROXY = "socks5://${lib.snowfield.inference01.ips.vpn.ipv4}:1080";
+      # See hindsightClient above. Subprocesses inherit it; the toolbox
+      # python is a different interpreter and ignores these two packages.
+      PYTHONPATH = hindsightPath;
     };
 
     # The generated config is authoritative: it is rewritten on every start, so
@@ -254,6 +339,8 @@ in
     # sibling paths under HERMES_HOME and survives.
     preStart = ''
       install -m 0600 ${configFile} ${hermesHome}/config.yaml
+      install -d -m 0700 ${hermesHome}/hindsight
+      install -m 0600 ${hindsightConfig} ${hermesHome}/hindsight/config.json
     '';
 
     script = ''
