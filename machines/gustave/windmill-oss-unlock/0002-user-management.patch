@@ -1,0 +1,382 @@
+diff --git a/windmill-api/src/users_impl.rs b/windmill-api/src/users_impl.rs
+new file mode 100644
+index 000000000..707718673
+--- /dev/null
++++ b/windmill-api/src/users_impl.rs
+@@ -0,0 +1,285 @@
++/*
++ * Open implementation of instance user management for the open-source build of
++ * Windmill (windmill-oss-unlock): user creation, password changes and the
++ * workspace auto-invite setting.
++ *
++ * Ported from the last fully open upstream implementation, windmill v1.250.0
++ * (backend/windmill-api/src/users.rs and workspaces.rs), licensed under the
++ * AGPLv3 (Copyright: Windmill Labs, Inc 2022).
++ *
++ * Every SQL statement here uses the runtime query builders on purpose: the nixpkgs
++ * build runs with SQLX_OFFLINE=true and the `sqlx::query!` macros would need
++ * entries in backend/.sqlx that upstream does not ship for this code.
++ */
++
++use std::sync::Arc;
++
++use argon2::{
++    password_hash::{rand_core::OsRng, SaltString},
++    Argon2, PasswordHasher,
++};
++use http::StatusCode;
++use windmill_audit::audit_oss::audit_log;
++use windmill_audit::ActionKind;
++use windmill_common::error::{Error, Result};
++use windmill_common::oauth2::InstanceEvent;
++use windmill_common::users::SUPERADMIN_SECRET_EMAIL;
++use windmill_common::utils::require_admin;
++use windmill_common::worker::CLOUD_HOSTED;
++
++use crate::db::{ApiAuthed, DB};
++use crate::oauth2_oss::oauth2_impl::invite_user_to_all_auto_invite_workspaces;
++use crate::users::{EditPassword, NewUser};
++use crate::utils::{generate_instance_wide_unique_username, require_super_admin};
++use crate::webhook_util::WebhookShared;
++use crate::workspaces::{EditAutoInvite, BANNED_DOMAINS};
++
++pub fn hash_password(argon2: Arc<Argon2<'_>>, password: String) -> Result<String> {
++    let salt = SaltString::generate(&mut OsRng);
++    let password_hash = argon2
++        .hash_password(password.as_bytes(), &salt)
++        .map_err(|e| Error::InternalErr(format!("Failed to hash password: {e}")))?
++        .to_string();
++    Ok(password_hash)
++}
++
++/// POST /api/users/create (superadmin only)
++pub async fn create_user(
++    authed: ApiAuthed,
++    db: DB,
++    webhook: WebhookShared,
++    argon2: Arc<Argon2<'_>>,
++    mut nu: NewUser,
++) -> Result<(StatusCode, String)> {
++    require_super_admin(&db, &authed.email).await?;
++
++    nu.email = nu.email.to_lowercase();
++    if nu.email == SUPERADMIN_SECRET_EMAIL {
++        return Err(Error::BadRequest(
++            "The superadmin email is a reserved email".into(),
++        ));
++    }
++    if nu.password.is_empty() {
++        return Err(Error::BadRequest("password cannot be empty".into()));
++    }
++
++    let password_hash = hash_password(argon2, nu.password.clone())?;
++
++    let mut tx = db.begin().await?;
++
++    let exists = sqlx::query_scalar::<_, bool>("SELECT EXISTS(SELECT 1 FROM password WHERE email = $1)")
++        .bind(&nu.email)
++        .fetch_one(&mut *tx)
++        .await?;
++    if exists {
++        return Err(Error::BadRequest(format!(
++            "a user with email {} already exists",
++            nu.email
++        )));
++    }
++
++    let username = generate_instance_wide_unique_username(&mut tx, &nu.email).await?;
++
++    sqlx::query(
++        "INSERT INTO password (email, verified, password_hash, login_type, super_admin, name, \
++         company, username) VALUES ($1, true, $2, 'password', $3, $4, $5, $6)",
++    )
++    .bind(&nu.email)
++    .bind(&password_hash)
++    .bind(nu.super_admin)
++    .bind(&nu.name)
++    .bind(&nu.company)
++    .bind(&username)
++    .execute(&mut *tx)
++    .await?;
++
++    audit_log(
++        &mut *tx,
++        &authed,
++        "users.add_global",
++        ActionKind::Create,
++        "global",
++        Some(&nu.email),
++        None,
++    )
++    .await?;
++
++    invite_user_to_all_auto_invite_workspaces(&mut tx, &nu.email, &username).await?;
++
++    tx.commit().await?;
++
++    webhook.send_instance_event(InstanceEvent::UserAdded { email: nu.email.clone() });
++    tracing::info!(email = %nu.email, by = %authed.email, "user created");
++
++    Ok((StatusCode::CREATED, format!("email {} created", nu.email)))
++}
++
++/// POST /api/users/setpassword (self) and /api/users/set_password_of/:user
++/// (superadmin; the caller enforces that).
++pub async fn set_password(
++    db: DB,
++    argon2: Arc<Argon2<'_>>,
++    authed: ApiAuthed,
++    user_email: &str,
++    ep: EditPassword,
++) -> Result<String> {
++    if ep.password.is_empty() {
++        return Err(Error::BadRequest("password cannot be empty".into()));
++    }
++
++    let mut tx = db.begin().await?;
++
++    let login_type = sqlx::query_scalar::<_, Option<String>>(
++        "SELECT login_type::TEXT FROM password WHERE email = $1",
++    )
++    .bind(user_email)
++    .fetch_optional(&mut *tx)
++    .await?
++    .flatten()
++    .ok_or_else(|| Error::NotFound(format!("user {user_email} not found")))?;
++
++    if login_type != "password" {
++        return Err(Error::BadRequest(format!(
++            "login type for {user_email} is '{login_type}'. Cannot set a password; switch the \
++             login type to 'password' first"
++        )));
++    }
++
++    sqlx::query("UPDATE password SET password_hash = $1 WHERE email = $2")
++        .bind(hash_password(argon2, ep.password)?)
++        .bind(user_email)
++        .execute(&mut *tx)
++        .await?;
++
++    audit_log(
++        &mut *tx,
++        &authed,
++        "users.setpassword",
++        ActionKind::Update,
++        "global",
++        Some(user_email),
++        None,
++    )
++    .await?;
++    tx.commit().await?;
++
++    Ok(format!("password of {} updated", user_email))
++}
++
++/// POST /api/w/:workspace/workspaces/edit_auto_invite (workspace admin)
++///
++/// `operator: None` disables auto-invite. Otherwise the domain is `*` (everyone,
++/// self-hosted only) when `invite_all` is set, else the caller's email domain;
++/// existing accounts of that domain are invited right away.
++pub async fn edit_auto_invite(
++    authed: ApiAuthed,
++    db: DB,
++    w_id: String,
++    ea: EditAutoInvite,
++) -> Result<String> {
++    require_admin(authed.is_admin, &authed.username)?;
++
++    let domain: String = if ea.invite_all.unwrap_or(false) {
++        if *CLOUD_HOSTED {
++            return Err(Error::BadRequest(
++                "invite_all is only available on self-hosted instances".to_string(),
++            ));
++        }
++        "*".to_string()
++    } else {
++        authed
++            .email
++            .split('@')
++            .last()
++            .unwrap_or("")
++            .to_string()
++    };
++
++    let mut tx = db.begin().await?;
++
++    if let Some(operator) = ea.operator {
++        if domain != "*" && BANNED_DOMAINS.contains(domain.as_str()) {
++            return Err(Error::BadRequest(format!(
++                "Domain {} is not allowed",
++                domain
++            )));
++        }
++        let auto_add = ea.auto_add.unwrap_or(false);
++
++        sqlx::query(
++            "UPDATE workspace_settings SET auto_invite_domain = $1, auto_invite_operator = $2, \
++             auto_add = $3 WHERE workspace_id = $4",
++        )
++        .bind(&domain)
++        .bind(operator)
++        .bind(auto_add)
++        .bind(&w_id)
++        .execute(&mut *tx)
++        .await?;
++
++        if auto_add {
++            // Existing accounts of the domain join the workspace right away,
++            // using their instance-wide username when they have one.
++            sqlx::query(
++                "INSERT INTO usr (workspace_id, email, username, is_admin, operator) \
++                 SELECT $1::text, email, username, false, $3 FROM password \
++                 WHERE username IS NOT NULL \
++                 AND ($2::text = '*' OR email LIKE CONCAT('%@', $2::text)) \
++                 AND NOT EXISTS (SELECT 1 FROM usr WHERE workspace_id = $1::text AND email = password.email) \
++                 ON CONFLICT DO NOTHING",
++            )
++            .bind(&w_id)
++            .bind(&domain)
++            .bind(operator)
++            .execute(&mut *tx)
++            .await?;
++            sqlx::query(
++                "INSERT INTO usr_to_group (workspace_id, usr, group_) \
++                 SELECT $1::text, username, 'all' FROM usr WHERE workspace_id = $1::text \
++                 ON CONFLICT DO NOTHING",
++            )
++            .bind(&w_id)
++            .execute(&mut *tx)
++            .await?;
++        } else {
++            sqlx::query(
++                "INSERT INTO workspace_invite (workspace_id, email, is_admin, operator) \
++                 SELECT $1::text, email, false, $3 FROM password \
++                 WHERE ($2::text = '*' OR email LIKE CONCAT('%@', $2::text)) \
++                 AND NOT EXISTS (SELECT 1 FROM usr WHERE workspace_id = $1::text AND email = password.email) \
++                 ON CONFLICT DO NOTHING",
++            )
++            .bind(&w_id)
++            .bind(&domain)
++            .bind(operator)
++            .execute(&mut *tx)
++            .await?;
++        }
++    } else {
++        sqlx::query(
++            "UPDATE workspace_settings SET auto_invite_domain = NULL, auto_invite_operator = \
++             NULL, auto_add = false WHERE workspace_id = $1",
++        )
++        .bind(&w_id)
++        .execute(&mut *tx)
++        .await?;
++    }
++
++    audit_log(
++        &mut *tx,
++        &authed,
++        "workspaces.edit_auto_invite_domain",
++        ActionKind::Update,
++        &w_id,
++        Some(&authed.email),
++        Some([("operator", &format!("{:?}", ea.operator)[..])].into()),
++    )
++    .await?;
++    tx.commit().await?;
++
++    Ok(format!(
++        "Edit auto-invite for workspace {} to {}",
++        &w_id,
++        if ea.operator.is_some() { domain } else { "disabled".to_string() }
++    ))
++}
+diff --git a/windmill-api/src/users_oss.rs b/windmill-api/src/users_oss.rs
+index 4d1b3976d..c56b1053c 100644
+--- a/windmill-api/src/users_oss.rs
++++ b/windmill-api/src/users_oss.rs
+@@ -27,32 +27,35 @@ use http::StatusCode;
+ use serde::Deserialize;
+ 
+ #[cfg(not(feature = "private"))]
+-use windmill_common::error::{Error, Result};
++use windmill_common::error::Result;
++
++// Open implementation of user management (windmill-oss-unlock). Kept in its own
++// file so that upstream changes to this stub only ever conflict on the few
++// lines below that call into it.
++#[cfg(not(feature = "private"))]
++#[path = "users_impl.rs"]
++pub(crate) mod users_impl;
+ 
+ #[cfg(not(feature = "private"))]
+ pub async fn create_user(
+-    _authed: ApiAuthed,
+-    _db: DB,
+-    _webhook: WebhookShared,
+-    _argon2: Arc<Argon2<'_>>,
+-    mut _nu: NewUser,
++    authed: ApiAuthed,
++    db: DB,
++    webhook: WebhookShared,
++    argon2: Arc<Argon2<'_>>,
++    nu: NewUser,
+ ) -> Result<(StatusCode, String)> {
+-    Err(Error::internal_err(
+-        "Not implemented in Windmill's Open Source repository".to_string(),
+-    ))
++    users_impl::create_user(authed, db, webhook, argon2, nu).await
+ }
+ 
+ #[cfg(not(feature = "private"))]
+ pub async fn set_password(
+-    _db: DB,
+-    _argon2: Arc<Argon2<'_>>,
+-    _authed: ApiAuthed,
+-    _user_email: &str,
+-    _ep: EditPassword,
++    db: DB,
++    argon2: Arc<Argon2<'_>>,
++    authed: ApiAuthed,
++    user_email: &str,
++    ep: EditPassword,
+ ) -> Result<String> {
+-    Err(Error::internal_err(
+-        "Not implemented in Windmill's Open Source repository".to_string(),
+-    ))
++    users_impl::set_password(db, argon2, authed, user_email, ep).await
+ }
+ 
+ #[cfg(not(feature = "private"))]
+@@ -77,7 +80,7 @@ pub async fn submit_onboarding_data(
+     Extension(_db): Extension<DB>,
+     Json(_data): Json<OnboardingData>,
+ ) -> Result<String> {
+-    Err(Error::internal_err(
+-        "Not implemented in Windmill's Open Source repository".to_string(),
+-    ))
++    // Telemetry endpoint of the hosted offering; accept and drop so the
++    // onboarding wizard does not surface an error.
++    Ok("ok".to_string())
+ }
+\ No newline at end of file
+diff --git a/windmill-api/src/workspaces_oss.rs b/windmill-api/src/workspaces_oss.rs
+index 4f55539da..003ac2681 100644
+--- a/windmill-api/src/workspaces_oss.rs
++++ b/windmill-api/src/workspaces_oss.rs
+@@ -10,12 +10,10 @@ use crate::{
+ 
+ #[cfg(not(feature = "private"))]
+ pub async fn edit_auto_invite(
+-    _authed: ApiAuthed,
+-    _db: DB,
+-    _w_id: String,
+-    _ea: EditAutoInvite,
++    authed: ApiAuthed,
++    db: DB,
++    w_id: String,
++    ea: EditAutoInvite,
+ ) -> windmill_common::error::Result<String> {
+-    Err(windmill_common::error::Error::internal_err(
+-        "Not implemented on OSS".to_string(),
+-    ))
++    crate::users_oss::users_impl::edit_auto_invite(authed, db, w_id, ea).await
+ }

@@ -1,0 +1,732 @@
+diff --git a/windmill-api/src/oauth2_impl.rs b/windmill-api/src/oauth2_impl.rs
+new file mode 100644
+index 000000000..9bf8099fd
+--- /dev/null
++++ b/windmill-api/src/oauth2_impl.rs
+@@ -0,0 +1,568 @@
++/*
++ * Open implementation of the OAuth2 / OIDC login flow for the open-source build
++ * of Windmill (windmill-oss-unlock).
++ *
++ * Ported from the last fully open upstream implementation, windmill v1.250.0
++ * (backend/windmill-api/src/oauth2.rs and users.rs::login_externally), which is
++ * licensed under the AGPLv3 (Copyright: Windmill Labs, Inc 2022). Trimmed to the
++ * login flow: resource "connect" flows and token refresh stay unimplemented, so
++ * only the `logins` map of `AllClients` is populated.
++ *
++ * Every SQL statement here uses the runtime query builders on purpose: the nixpkgs
++ * build runs with SQLX_OFFLINE=true and the `sqlx::query!` macros would need
++ * entries in backend/.sqlx that upstream does not ship for this code.
++ */
++
++#[cfg(feature = "oauth2")]
++use std::collections::HashMap;
++
++#[cfg(feature = "oauth2")]
++use axum::{
++    extract::{Extension, Path, Query},
++    response::Redirect,
++    Json,
++};
++#[cfg(feature = "oauth2")]
++use itertools::Itertools;
++#[cfg(feature = "oauth2")]
++use oauth2::{AuthType, Client as OClient, State, Url};
++#[cfg(feature = "oauth2")]
++use serde::{de::DeserializeOwned, Deserialize};
++#[cfg(feature = "oauth2")]
++use tower_cookies::{Cookie, Cookies};
++#[cfg(feature = "oauth2")]
++use windmill_audit::audit_oss::audit_log;
++#[cfg(feature = "oauth2")]
++use windmill_audit::ActionKind;
++#[cfg(feature = "oauth2")]
++use windmill_common::audit::AuditAuthor;
++#[cfg(feature = "oauth2")]
++use windmill_common::auth::TOKEN_PREFIX_LEN;
++#[cfg(feature = "oauth2")]
++use windmill_common::error::{self, Error};
++#[cfg(feature = "oauth2")]
++use windmill_common::oauth2::{InstanceEvent, REQUIRE_PREEXISTING_USER_FOR_OAUTH};
++#[cfg(feature = "oauth2")]
++use windmill_common::users::truncate_token;
++
++#[cfg(feature = "oauth2")]
++use super::{AllClients, ClientWithScopes, OAuthClient, OAuthConfig, TokenResponse};
++#[cfg(feature = "oauth2")]
++use crate::db::DB;
++#[cfg(feature = "oauth2")]
++use crate::users::{create_session_token, LoginUserInfo};
++#[cfg(feature = "oauth2")]
++use crate::utils::generate_instance_wide_unique_username;
++#[cfg(feature = "oauth2")]
++use crate::webhook_util::WebhookShared;
++#[cfg(feature = "oauth2")]
++use crate::{COOKIE_DOMAIN, HTTP_CLIENT, IS_SECURE, OAUTH_CLIENTS};
++
++// ---------------------------------------------------------------------------
++// Client construction (called by the settings monitor on every settings reload)
++// ---------------------------------------------------------------------------
++
++/// Build the login clients from the `oauths` instance setting. Presets from
++/// `oauth_login.json` are used for providers configured with only `id`/`secret`;
++/// an explicit `login_config` on the client overrides the preset (custom OIDC).
++#[cfg(feature = "oauth2")]
++pub fn build_oauth_clients(
++    base_url: &str,
++    oauths_from_config: Option<HashMap<String, OAuthClient>>,
++) -> anyhow::Result<AllClients> {
++    let empty = || AllClients { logins: HashMap::new(), connects: HashMap::new(), slack: None };
++
++    let login_presets = serde_json::from_str::<HashMap<String, OAuthConfig>>(include_str!(
++        "../../oauth_login.json"
++    ))?;
++
++    let oauths = match oauths_from_config {
++        Some(o) if !o.is_empty() => o,
++        _ => {
++            tracing::info!("No OAuth clients configured (instance setting 'oauths' is empty)");
++            return Ok(empty());
++        }
++    };
++
++    tracing::info!("OAuth loaded clients: {}", oauths.keys().sorted().join(", "));
++
++    let logins: HashMap<String, ClientWithScopes> = login_presets
++        .into_iter()
++        .filter_map(|(name, preset)| oauths.get(&name).map(|c| (name, c.clone(), preset)))
++        .chain(oauths.iter().filter_map(|(name, c)| {
++            c.login_config
++                .as_ref()
++                .map(|cfg| (name.clone(), c.clone(), cfg.clone()))
++        }))
++        .filter_map(|(name, client_params, config)| {
++            if client_params.id.is_empty() {
++                tracing::warn!("OAuth login client '{name}' has no client id, skipping");
++                return None;
++            }
++            if config.auth_url.is_empty() || config.token_url.is_empty() {
++                tracing::warn!(
++                    "OAuth login client '{name}' has no auth_url/token_url in its login_config, skipping"
++                );
++                return None;
++            }
++            match build_basic_client(&name, &config, &client_params, true, base_url, None) {
++                Ok(client) => Some((
++                    name,
++                    ClientWithScopes {
++                        client,
++                        scopes: config.scopes.unwrap_or_default(),
++                        extra_params: config.extra_params,
++                        extra_params_callback: config.extra_params_callback,
++                        allowed_domains: client_params.allowed_domains.clone(),
++                        userinfo_url: config.userinfo_url,
++                        display_name: client_params.display_name.clone(),
++                    },
++                )),
++                Err(e) => {
++                    tracing::error!("Error building oauth client {name}: {e}");
++                    None
++                }
++            }
++        })
++        .collect();
++
++    tracing::info!("OAuth login providers: {}", logins.keys().sorted().join(", "));
++
++    Ok(AllClients { logins, connects: HashMap::new(), slack: None })
++}
++
++#[cfg(feature = "oauth2")]
++pub fn build_basic_client(
++    name: &str,
++    config: &OAuthConfig,
++    client_params: &OAuthClient,
++    login: bool,
++    base_url: &str,
++    override_callback: Option<String>,
++) -> error::Result<OClient> {
++    let auth_url = Url::parse(&config.auth_url)
++        .map_err(|e| Error::BadConfig(format!("Invalid authorization endpoint URL: {e}")))?;
++    let token_url = Url::parse(&config.token_url)
++        .map_err(|e| Error::BadConfig(format!("Invalid token endpoint URL: {e}")))?;
++
++    let redirect_url = if login {
++        format!("{base_url}/user/login_callback/{name}")
++    } else if let Some(callback) = override_callback {
++        callback
++    } else {
++        format!("{base_url}/oauth/callback/{name}")
++    };
++
++    let mut client = OClient::new(client_params.id.clone(), auth_url, token_url);
++    if config.req_body_auth.unwrap_or(false) {
++        client.set_auth_type(AuthType::RequestBody);
++    }
++    client.set_client_secret(client_params.secret.clone());
++    client.set_redirect_url(
++        Url::parse(&redirect_url)
++            .map_err(|e| Error::BadConfig(format!("Invalid redirect URL: {e}")))?,
++    );
++    Ok(client)
++}
++
++// ---------------------------------------------------------------------------
++// Routes
++// ---------------------------------------------------------------------------
++
++#[cfg(feature = "oauth2")]
++#[derive(Deserialize)]
++pub struct LoginQuery {
++    /// Set by the frontend when the login runs in a popup; the callback page
++    /// reads a `close` cookie to know it should close itself.
++    pub close: Option<bool>,
++}
++
++/// GET /api/oauth/login/:client_name
++#[cfg(feature = "oauth2")]
++pub async fn login(
++    Path(client_name): Path<String>,
++    Query(query): Query<LoginQuery>,
++    cookies: Cookies,
++) -> error::Result<Redirect> {
++    let clients = OAUTH_CLIENTS.read().await;
++    let client_w_scopes = clients
++        .logins
++        .get(&client_name)
++        .ok_or_else(|| Error::BadRequest(format!("unknown login client: {client_name}")))?;
++    let is_secure = *IS_SECURE.read().await;
++
++    if query.close.unwrap_or(false) {
++        let mut cookie = Cookie::new("close", "true");
++        cookie.set_secure(is_secure);
++        cookie.set_same_site(Some(tower_cookies::cookie::SameSite::Lax));
++        cookie.set_path("/");
++        cookies.add(cookie);
++    }
++
++    oauth_redirect(
++        client_w_scopes,
++        &cookies,
++        client_w_scopes.extra_params.clone(),
++        is_secure,
++    )
++}
++
++#[cfg(feature = "oauth2")]
++#[derive(Deserialize)]
++pub struct OAuthCallback {
++    pub code: String,
++    pub state: String,
++}
++
++/// POST /api/oauth/login_callback/:client_name
++///
++/// Exchanges the authorization code, fetches the user's email from the provider,
++/// finds or creates the account and opens a session. Returns the session token
++/// (also set as the `token` cookie), like `POST /api/auth/login`.
++#[cfg(feature = "oauth2")]
++pub async fn login_callback(
++    Path(client_name): Path<String>,
++    cookies: Cookies,
++    Extension(db): Extension<DB>,
++    Extension(webhook): Extension<WebhookShared>,
++    Json(callback): Json<OAuthCallback>,
++) -> error::Result<String> {
++    let client_w_config = OAUTH_CLIENTS
++        .read()
++        .await
++        .logins
++        .get(&client_name)
++        .cloned()
++        .ok_or_else(|| Error::BadRequest(format!("unknown login client: {client_name}")))?;
++
++    let token = exchange_code::<TokenResponse>(
++        callback,
++        &cookies,
++        client_w_config.client.clone(),
++        client_w_config.extra_params_callback.clone(),
++    )
++    .await
++    .map_err(|e| Error::BadRequest(format!("failed to exchange code: {e}")))?;
++    let access_token = token.access_token.to_string();
++
++    let userinfo_url = client_w_config.userinfo_url.as_ref().ok_or_else(|| {
++        Error::BadConfig(format!("Missing userinfo_url in login client {client_name}"))
++    })?;
++    let user = http_get_user_info::<LoginUserInfo>(userinfo_url, &access_token).await?;
++
++    let email = match client_name.as_str() {
++        "github" => {
++            http_get_user_info::<Vec<GHEmailInfo>>("https://api.github.com/user/emails", &access_token)
++                .await?
++                .into_iter()
++                .find(|x| x.primary && x.verified)
++                .ok_or_else(|| {
++                    Error::BadRequest(
++                        "GitHub account has no primary and verified email address".to_string(),
++                    )
++                })?
++                .email
++        }
++        _ => user
++            .email
++            .clone()
++            .filter(|e| !e.is_empty())
++            .or_else(|| user.preferred_username.clone().filter(|u| u.contains('@')))
++            .ok_or_else(|| {
++                Error::BadRequest(format!(
++                    "email address not found in the userinfo response of {client_name}; make \
++                     sure the 'email' scope is requested and the provider returns an 'email' claim"
++                ))
++            })?,
++    }
++    .to_lowercase();
++
++    if let Some(domains) = &client_w_config.allowed_domains {
++        if !domains.iter().any(|d| email.ends_with(d)) {
++            return Err(Error::BadRequest(format!(
++                "domain is not in the list of allowed domains: {email}, allowed: {domains:?}",
++            )));
++        }
++    }
++
++    let (session_token, created) =
++        login_externally(&db, &email, &client_name, cookies, &user).await?;
++
++    if created {
++        webhook.send_instance_event(InstanceEvent::UserSignupOAuth { email: email.clone() });
++    }
++    tracing::info!(%email, provider = %client_name, created, "oauth login");
++
++    Ok(session_token)
++}
++
++/// Open a session for `email`, creating the account on first login unless the
++/// instance setting "require preexisting user for oauth" is enabled. Returns the
++/// session token and whether the account was created.
++#[cfg(feature = "oauth2")]
++async fn login_externally(
++    db: &DB,
++    email: &str,
++    client_name: &str,
++    cookies: Cookies,
++    user: &LoginUserInfo,
++) -> error::Result<(String, bool)> {
++    let require_existing_user =
++        REQUIRE_PREEXISTING_USER_FOR_OAUTH.load(std::sync::atomic::Ordering::Relaxed);
++
++    let mut tx = db.begin().await?;
++
++    let existing = sqlx::query_as::<_, (String, bool)>(
++        "SELECT login_type::text, super_admin FROM password WHERE email = $1",
++    )
++    .bind(email)
++    .fetch_optional(&mut *tx)
++    .await?;
++
++    if let Some((login_type, super_admin)) = existing {
++        if !(require_existing_user || login_type == client_name) {
++            return Err(Error::BadRequest(format!(
++                "a user with the email {email} exists but with login type '{login_type}', not \
++                 '{client_name}'. A superadmin can switch it with POST \
++                 /api/users/set_login_type/{email}, or enable the instance setting 'require \
++                 preexisting user for oauth' to let existing accounts log in with any provider"
++            )));
++        }
++
++        let token = create_session_token(email, super_admin, &mut tx, cookies).await?;
++        audit_log(
++            &mut *tx,
++            &AuditAuthor {
++                email: email.to_string(),
++                username: email.to_string(),
++                username_override: None,
++                token_prefix: Some(token[0..TOKEN_PREFIX_LEN].to_string()),
++            },
++            "oauth.login",
++            ActionKind::Create,
++            "global",
++            Some(&truncate_token(&token)),
++            Some([("method", client_name)].into()),
++        )
++        .await?;
++        tx.commit().await?;
++        return Ok((token, false));
++    }
++
++    if require_existing_user {
++        return Err(Error::BadRequest(format!(
++            "no user with the email {email} exists and this instance only allows oauth logins \
++             for existing users"
++        )));
++    }
++
++    let name = user
++        .name
++        .clone()
++        .filter(|n| !n.is_empty())
++        .or_else(|| user.displayName.clone().filter(|n| !n.is_empty()));
++    let username = generate_instance_wide_unique_username(&mut tx, email).await?;
++
++    sqlx::query(
++        "INSERT INTO password (email, name, company, login_type, verified, super_admin, username) \
++         VALUES ($1, $2, $3, $4, true, false, $5)",
++    )
++    .bind(email)
++    .bind(&name)
++    .bind(&user.company)
++    .bind(client_name)
++    .bind(&username)
++    .execute(&mut *tx)
++    .await?;
++
++    invite_user_to_all_auto_invite_workspaces(&mut tx, email, &username).await?;
++
++    let token = create_session_token(email, false, &mut tx, cookies).await?;
++    audit_log(
++        &mut *tx,
++        &AuditAuthor {
++            email: email.to_string(),
++            username: email.to_string(),
++            username_override: None,
++            token_prefix: Some(token[0..TOKEN_PREFIX_LEN].to_string()),
++        },
++        "oauth.signup",
++        ActionKind::Create,
++        "global",
++        Some(email),
++        Some([("method", client_name)].into()),
++    )
++    .await?;
++    tx.commit().await?;
++    Ok((token, true))
++}
++
++// ---------------------------------------------------------------------------
++// Workspace auto-invite / auto-add for new accounts (shared with users_impl)
++// ---------------------------------------------------------------------------
++
++/// For every workspace whose `auto_invite_domain` is `*` or matches the email's
++/// domain: add the user directly when the workspace is in auto-add mode,
++/// otherwise create a workspace invite. `username` is the instance-wide
++/// username of the account, used when adding directly.
++pub(crate) async fn invite_user_to_all_auto_invite_workspaces(
++    tx: &mut sqlx::Transaction<'_, sqlx::Postgres>,
++    email: &str,
++    username: &str,
++) -> windmill_common::error::Result<()> {
++    let domain = email.split('@').last().unwrap_or("");
++    let workspaces = sqlx::query_as::<_, (String, Option<bool>, Option<bool>)>(
++        "SELECT workspace_id, auto_invite_operator, auto_add FROM workspace_settings WHERE \
++         auto_invite_domain = $1 OR auto_invite_domain = '*'",
++    )
++    .bind(domain)
++    .fetch_all(&mut **tx)
++    .await?;
++
++    for (workspace_id, operator, auto_add) in workspaces {
++        let operator = operator.unwrap_or(false);
++        if auto_add.unwrap_or(false) {
++            sqlx::query(
++                "INSERT INTO usr (workspace_id, email, username, is_admin, operator) VALUES ($1, \
++                 $2, $3, false, $4) ON CONFLICT DO NOTHING",
++            )
++            .bind(&workspace_id)
++            .bind(email)
++            .bind(username)
++            .bind(operator)
++            .execute(&mut **tx)
++            .await?;
++            sqlx::query(
++                "INSERT INTO usr_to_group (workspace_id, usr, group_) VALUES ($1, $2, 'all') ON \
++                 CONFLICT DO NOTHING",
++            )
++            .bind(&workspace_id)
++            .bind(username)
++            .execute(&mut **tx)
++            .await?;
++            tracing::info!(%email, workspace = %workspace_id, "auto-added user to workspace");
++        } else {
++            sqlx::query(
++                "INSERT INTO workspace_invite (workspace_id, email, is_admin, operator) VALUES \
++                 ($1, $2, false, $3) ON CONFLICT DO NOTHING",
++            )
++            .bind(&workspace_id)
++            .bind(email)
++            .bind(operator)
++            .execute(&mut **tx)
++            .await?;
++            tracing::info!(%email, workspace = %workspace_id, "auto-invited user to workspace");
++        }
++    }
++    Ok(())
++}
++
++// ---------------------------------------------------------------------------
++// OAuth2 plumbing (verbatim from v1.250.0 apart from the COOKIE_DOMAIN handling,
++// which follows what upstream does today)
++// ---------------------------------------------------------------------------
++
++#[cfg(feature = "oauth2")]
++fn csrf_cookie_name() -> &'static str {
++    if COOKIE_DOMAIN.is_some() {
++        "csrf_domain"
++    } else {
++        "csrf"
++    }
++}
++
++#[cfg(feature = "oauth2")]
++fn oauth_redirect(
++    client_w_scopes: &ClientWithScopes,
++    cookies: &Cookies,
++    extra_params: Option<HashMap<String, String>>,
++    is_secure: bool,
++) -> error::Result<Redirect> {
++    let state = State::new_random();
++    let mut client = client_w_scopes.client.clone();
++    for scope in client_w_scopes.scopes.iter() {
++        client.add_scope(scope);
++    }
++
++    let mut auth_url = client.authorize_url(&state);
++    if let Some(extra_params) = extra_params {
++        let mut query_string = auth_url.query_pairs_mut();
++        for (key, value) in extra_params {
++            query_string.append_pair(&key, &value);
++        }
++    }
++
++    let mut cookie = Cookie::new(csrf_cookie_name(), state.to_base64());
++    cookie.set_secure(is_secure);
++    cookie.set_same_site(Some(tower_cookies::cookie::SameSite::Lax));
++    cookie.set_http_only(true);
++    cookie.set_path("/");
++    if let Some(domain) = COOKIE_DOMAIN.clone() {
++        cookie.set_domain(domain);
++    }
++    cookies.add(cookie);
++
++    Ok(Redirect::to(auth_url.as_str()))
++}
++
++#[cfg(feature = "oauth2")]
++async fn exchange_code<T: DeserializeOwned>(
++    callback: OAuthCallback,
++    cookies: &Cookies,
++    client: OClient,
++    extra_params: Option<HashMap<String, String>>,
++) -> error::Result<T> {
++    let csrf_state = cookies
++        .get(csrf_cookie_name())
++        .map(|x| x.value().trim().to_string())
++        .unwrap_or_default();
++    if callback.state != csrf_state {
++        return Err(Error::BadRequest("csrf did not match".to_string()));
++    }
++
++    let mut token_request = client.exchange_code(callback.code);
++    if let Some(extra_params) = extra_params {
++        for (key, value) in extra_params {
++            token_request = token_request.param(key, value)
++        }
++    }
++
++    token_request
++        .with_client(&HTTP_CLIENT)
++        .execute::<T>()
++        .await
++        .map_err(|e| Error::InternalErr(format!("{:?}", e)))
++}
++
++#[cfg(feature = "oauth2")]
++#[derive(Deserialize)]
++pub struct GHEmailInfo {
++    pub email: String,
++    pub verified: bool,
++    pub primary: bool,
++}
++
++#[cfg(feature = "oauth2")]
++async fn http_get_user_info<T: DeserializeOwned>(url: &str, token: &str) -> error::Result<T> {
++    let res = HTTP_CLIENT
++        .get(url)
++        .bearer_auth(token)
++        .send()
++        .await
++        .map_err(|e| Error::InternalErr(format!("failed to fetch user info: {e}")))?;
++    if !res.status().is_success() {
++        return Err(Error::BadConfig(format!(
++            "The user info endpoint responded with non 200: {}\n{}\n{}",
++            res.status(),
++            res.headers()
++                .iter()
++                .map(|x| format!("{}: {}", x.0.as_str(), x.1.to_str().unwrap_or_default()))
++                .collect::<Vec<_>>()
++                .join("\n"),
++            res.text().await.unwrap_or_default(),
++        )));
++    }
++    res.json::<T>()
++        .await
++        .map_err(|e| Error::InternalErr(format!("failed to decode json from user info: {e}")))
++}
+diff --git a/windmill-api/src/oauth2_oss.rs b/windmill-api/src/oauth2_oss.rs
+index 04e0e1b20..d501c7205 100644
+--- a/windmill-api/src/oauth2_oss.rs
++++ b/windmill-api/src/oauth2_oss.rs
+@@ -41,11 +41,28 @@ use crate::db::DB;
+ #[cfg(not(feature = "private"))]
+ use std::str;
+ 
++// Open implementation of the login flow (windmill-oss-unlock). Kept in its own
++// file so that upstream changes to this stub only ever conflict on the few
++// lines below that call into it.
++#[cfg(not(feature = "private"))]
++#[path = "oauth2_impl.rs"]
++pub(crate) mod oauth2_impl;
++
+ #[cfg(not(feature = "private"))]
+ pub fn global_service() -> Router {
+-    Router::new()
++    let router = Router::new()
+         .route("/list_logins", get(list_logins))
+-        .route("/list_connects", get(list_connects))
++        .route("/list_connects", get(list_connects));
++
++    #[cfg(feature = "oauth2")]
++    let router = router
++        .route("/login/:client_name", get(oauth2_impl::login))
++        .route(
++            "/login_callback/:client_name",
++            axum::routing::post(oauth2_impl::login_callback),
++        );
++
++    router
+ }
+ 
+ #[cfg(not(feature = "private"))]
+@@ -56,12 +73,13 @@ pub fn workspaced_service() -> Router {
+ #[cfg(all(feature = "oauth2", not(feature = "private")))]
+ #[derive(Debug, Clone)]
+ pub struct ClientWithScopes {
+-    _client: OClient,
+-    _scopes: Vec<String>,
+-    _extra_params: Option<HashMap<String, String>>,
+-    _extra_params_callback: Option<HashMap<String, String>>,
+-    _allowed_domains: Option<Vec<String>>,
+-    _userinfo_url: Option<String>,
++    pub client: OClient,
++    pub scopes: Vec<String>,
++    pub extra_params: Option<HashMap<String, String>>,
++    pub extra_params_callback: Option<HashMap<String, String>>,
++    pub allowed_domains: Option<Vec<String>>,
++    pub userinfo_url: Option<String>,
++    pub display_name: Option<String>,
+ }
+ #[cfg(all(feature = "oauth2", not(feature = "private")))]
+ pub type BasicClientsMap = HashMap<String, ClientWithScopes>;
+@@ -69,23 +87,27 @@ pub type BasicClientsMap = HashMap<String, ClientWithScopes>;
+ #[cfg(not(feature = "private"))]
+ #[derive(Clone, Debug, Serialize, Deserialize)]
+ pub struct OAuthConfig {
+-    auth_url: String,
+-    token_url: String,
+-    userinfo_url: Option<String>,
+-    scopes: Option<Vec<String>>,
+-    extra_params: Option<HashMap<String, String>>,
+-    extra_params_callback: Option<HashMap<String, String>>,
+-    req_body_auth: Option<bool>,
++    #[serde(default)]
++    pub auth_url: String,
++    #[serde(default)]
++    pub token_url: String,
++    pub userinfo_url: Option<String>,
++    pub scopes: Option<Vec<String>>,
++    pub extra_params: Option<HashMap<String, String>>,
++    pub extra_params_callback: Option<HashMap<String, String>>,
++    pub req_body_auth: Option<bool>,
+ }
+ 
+ #[cfg(not(feature = "private"))]
+ #[derive(Clone, Debug, Serialize, Deserialize)]
+ pub struct OAuthClient {
+-    id: String,
+-    secret: String,
+-    allowed_domains: Option<Vec<String>>,
+-    connect_config: Option<OAuthConfig>,
+-    login_config: Option<OAuthConfig>,
++    pub id: String,
++    pub secret: String,
++    #[serde(default)]
++    pub display_name: Option<String>,
++    pub allowed_domains: Option<Vec<String>>,
++    pub connect_config: Option<OAuthConfig>,
++    pub login_config: Option<OAuthConfig>,
+ }
+ 
+ #[cfg(all(feature = "oauth2", not(feature = "private")))]
+@@ -98,16 +120,11 @@ pub struct AllClients {
+ 
+ #[cfg(all(feature = "oauth2", not(feature = "private")))]
+ pub async fn build_oauth_clients(
+-    _base_url: &str,
+-    _oauths_from_config: Option<HashMap<String, OAuthClient>>,
++    base_url: &str,
++    oauths_from_config: Option<HashMap<String, OAuthClient>>,
+     _db: &DB,
+ ) -> anyhow::Result<AllClients> {
+-    // Implementation is not open source
+-    return Ok(AllClients {
+-        logins: HashMap::default(),
+-        connects: HashMap::default(),
+-        slack: None,
+-    });
++    oauth2_impl::build_oauth_clients(base_url, oauths_from_config)
+ }
+ 
+ #[cfg(all(feature = "oauth2", not(feature = "private")))]
+@@ -124,15 +141,39 @@ pub struct TokenResponse {
+     scope: Option<Vec<Scope>>,
+ }
+ 
++#[cfg(not(feature = "private"))]
++#[derive(Serialize)]
++pub struct LoginProvider {
++    #[serde(rename = "type")]
++    pub typ: String,
++    pub display_name: Option<String>,
++}
++
+ #[cfg(not(feature = "private"))]
+ #[derive(Serialize)]
+ struct Logins {
+-    oauth: Vec<String>,
++    oauth: Vec<LoginProvider>,
+     saml: Option<String>,
+ }
+-#[cfg(not(feature = "private"))]
++
++#[cfg(all(feature = "oauth2", not(feature = "private")))]
++async fn list_logins() -> error::JsonResult<Logins> {
++    let clients = OAUTH_CLIENTS.read().await;
++    let mut oauth = clients
++        .logins
++        .iter()
++        .map(|(name, client)| LoginProvider {
++            typ: name.clone(),
++            display_name: client.display_name.clone(),
++        })
++        .collect_vec();
++    oauth.sort_by(|a, b| a.typ.cmp(&b.typ));
++    Ok(Json(Logins { oauth, saml: None }))
++}
++
++#[allow(unused)]
++#[cfg(all(not(feature = "oauth2"), not(feature = "private")))]
+ async fn list_logins() -> error::JsonResult<Logins> {
+-    // Implementation is not open source
+     return Ok(Json(Logins { oauth: vec![], saml: None }));
+ }
+ 

@@ -44,7 +44,11 @@ in
 
   services.windmill = {
     enable = true;
-    package = pkgs.unstable.windmill;
+    # Open-source build with the OSS-unlock patches: SSO login, user
+    # management and workspace S3 storage without an EE licence.
+    package = pkgs.unstable.windmill.overrideAttrs (old: {
+      patches = (old.patches or [ ]) ++ import ./windmill-oss-unlock;
+    });
     baseUrl = "https://workflows.luj.fr";
     serverPort = port;
     database.createLocally = true;

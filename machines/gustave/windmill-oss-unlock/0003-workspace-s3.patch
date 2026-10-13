@@ -1,0 +1,1686 @@
+diff --git a/windmill-api/src/job_helpers_impl.rs b/windmill-api/src/job_helpers_impl.rs
+new file mode 100644
+index 000000000..92536034e
+--- /dev/null
++++ b/windmill-api/src/job_helpers_impl.rs
+@@ -0,0 +1,1214 @@
++//! Open implementation of the workspace object storage API (`/w/:id/job_helpers`)
++//! and of the helpers that `apps.rs`, `args.rs` and the HTTP trigger handler
++//! call. Written against the 1.601.1 open types in `windmill_common::s3_helpers`
++//! (object_store 0.12, datafusion 47); the last open upstream version of this
++//! file (Feb 2024, polars based) served as the design reference.
++//!
++//! Permission model: the workspace storage setting carries an optional ordered
++//! list of glob rules (`advanced_permissions`). When present they are applied to
++//! every path a non-admin user touches; workspace admins bypass them. A `public`
++//! storage resource is read with instance rights so users without access to the
++//! underlying resource can still use the storage.
++
++use std::io;
++use std::sync::Arc;
++use std::time::{SystemTime, UNIX_EPOCH};
++
++use axum::body::Body;
++use axum::extract::{Extension, Path, Query, Request};
++use axum::http::{header, HeaderMap, HeaderValue, StatusCode};
++use axum::response::{IntoResponse, Response};
++use axum::routing::{delete, get, post};
++use axum::{Json, Router};
++use bytes::Bytes;
++use futures::{Stream, StreamExt, TryStreamExt};
++use object_store::{ObjectStore, PutMultipartOpts, WriteMultipart};
++use serde::{Deserialize, Serialize};
++use uuid::Uuid;
++use windmill_common::db::{DbWithOptAuthed, UserDB};
++use windmill_common::error::{self, Error, JsonResult};
++use windmill_common::job_s3_helpers_oss::job_s3_helpers_impl::{
++    check_s3_paths, parse_object_store_resource, s3_path_allowed,
++};
++use windmill_common::s3_helpers::{
++    build_object_store_client, format_duckdb_connection_settings, render_endpoint,
++    DuckdbConnectionSettingsQueryV2, DuckdbConnectionSettingsResponse, LargeFileStorage,
++    ObjectStoreResource, S3Permission, S3Resource, StorageResourceType,
++};
++
++use crate::db::{ApiAuthed, DB};
++use crate::resources::get_resource_value_interpolated_internal;
++
++use super::{DeleteS3FileQuery, DownloadFileQuery};
++
++const NO_STORAGE: &str = "No files storage resource defined at the workspace level";
++const MAX_PREVIEW_BYTES: u64 = 8 * 1024 * 1024;
++const DEFAULT_PREVIEW_BYTES: u64 = 128 * 1024;
++const TABLE_PREVIEW_MAX_ROWS: usize = 1000;
++
++pub fn workspaced_service() -> Router {
++    Router::new()
++        .route("/duckdb_connection_settings", post(duckdb_connection_settings))
++        .route("/v2/duckdb_connection_settings", post(duckdb_connection_settings_v2))
++        .route("/polars_connection_settings", post(polars_connection_settings))
++        .route("/v2/polars_connection_settings", post(polars_connection_settings_v2))
++        .route("/v2/s3_resource_info", post(s3_resource_info))
++        .route("/test_connection", get(test_connection))
++        .route("/list_stored_files", get(list_stored_files))
++        .route("/load_file_metadata", get(load_file_metadata))
++        .route("/load_file_preview", get(load_file_preview))
++        .route("/load_parquet_preview/*path", get(load_parquet_preview))
++        .route("/load_csv_preview/*path", get(load_csv_preview))
++        .route("/load_table_count/*path", get(load_table_count))
++        .route("/delete_s3_file", delete(delete_s3_file))
++        .route("/move_s3_file", get(move_s3_file))
++        .route("/upload_s3_file", post(upload_s3_file))
++        .route("/download_s3_file", get(download_s3_file))
++}
++
++// ---------------------------------------------------------------------------
++// Resource resolution
++// ---------------------------------------------------------------------------
++
++pub fn get_random_file_name(file_extension: Option<String>) -> String {
++    format!(
++        "windmill_uploads/upload_{}_{}.{}",
++        SystemTime::now()
++            .duration_since(UNIX_EPOCH)
++            .unwrap_or_default()
++            .as_millis(),
++        rand::random::<u16>(),
++        file_extension.unwrap_or_else(|| "file".to_string())
++    )
++}
++
++/// The storage setting of a workspace: the primary one, or the named secondary.
++async fn load_lfs(
++    db: &DB,
++    w_id: &str,
++    storage: Option<&str>,
++) -> error::Result<Option<LargeFileStorage>> {
++    let raw: Option<serde_json::Value> = match storage {
++        Some(storage) => sqlx::query_scalar::<_, Option<serde_json::Value>>(
++            "SELECT large_file_storage->'secondary_storage'->$2 FROM workspace_settings WHERE workspace_id = $1",
++        )
++        .bind(w_id)
++        .bind(storage)
++        .fetch_optional(db)
++        .await?
++        .flatten(),
++        None => sqlx::query_scalar::<_, Option<serde_json::Value>>(
++            "SELECT large_file_storage FROM workspace_settings WHERE workspace_id = $1",
++        )
++        .bind(w_id)
++        .fetch_optional(db)
++        .await?
++        .flatten(),
++    };
++    match raw {
++        None | Some(serde_json::Value::Null) => Ok(None),
++        Some(v) => serde_json::from_value::<LargeFileStorage>(v)
++            .map(Some)
++            .map_err(|e| {
++                tracing::error!("invalid large_file_storage value for workspace {w_id}: {e}");
++                Error::internal_err(
++                    "Could not deserialize the workspace storage setting".to_string(),
++                )
++            }),
++    }
++}
++
++fn lfs_resource_type(lfs: &LargeFileStorage) -> StorageResourceType {
++    match lfs {
++        LargeFileStorage::S3Storage(_) => StorageResourceType::S3,
++        LargeFileStorage::AzureBlobStorage(_) => StorageResourceType::AzureBlob,
++        LargeFileStorage::S3AwsOidc(_) => StorageResourceType::S3AwsOidc,
++        LargeFileStorage::AzureWorkloadIdentity(_) => StorageResourceType::AzureWorkloadIdentity,
++        LargeFileStorage::GoogleCloudStorage(_) => StorageResourceType::GoogleCloudStorage,
++    }
++}
++
++/// Resolve the object store resource behind a storage setting. A public
++/// resource is read with instance rights; otherwise with the caller's rights,
++/// and a caller who cannot read it gets `Ok(None)` (the UI then shows the
++/// storage as restricted) rather than an error.
++async fn resolve_lfs<'c>(
++    db_with_opt_authed: &DbWithOptAuthed<'c, ApiAuthed>,
++    w_id: &str,
++    lfs: &LargeFileStorage,
++) -> error::Result<(Option<bool>, Option<ObjectStoreResource>)> {
++    let public = lfs.is_public_resource();
++    let path = lfs.get_s3_resource_path().trim_start_matches("$res:");
++    let resource_type = lfs_resource_type(lfs);
++    let res = if public {
++        let as_instance = match db_with_opt_authed {
++            DbWithOptAuthed::UserDB { authed, db, .. } => {
++                DbWithOptAuthed::from_authed(*authed, db.clone(), None)
++            }
++            DbWithOptAuthed::DB { db, audit_author } => DbWithOptAuthed::DB {
++                db: db.clone(),
++                audit_author: audit_author.clone(),
++            },
++        };
++        get_s3_resource(&as_instance, w_id, path, Some(resource_type), None).await
++    } else {
++        get_s3_resource(db_with_opt_authed, w_id, path, Some(resource_type), None).await
++    };
++    match res {
++        Ok(r) => Ok((Some(public), Some(r))),
++        Err(Error::NotAuthorized(_)) | Err(Error::PermissionDenied(_)) if !public => {
++            Ok((Some(false), None))
++        }
++        Err(Error::NotFound(_)) if !public => Ok((Some(false), None)),
++        Err(e) => Err(e),
++    }
++}
++
++fn check_lfs_paths(
++    authed: Option<&ApiAuthed>,
++    lfs: &LargeFileStorage,
++    paths: &[(&str, S3Permission)],
++) -> error::Result<()> {
++    let Some(rules) = lfs.get_advanced_permissions() else {
++        return Ok(());
++    };
++    // No authed means the server acts on its own behalf (app on-behalf-of
++    // already resolved to a user, triggers, ...): rules apply to users only.
++    // Handlers must therefore build their DbWithOptAuthed with a UserDB so the
++    // caller is kept.
++    let Some(authed) = authed else {
++        return Ok(());
++    };
++    if authed.is_admin {
++        return Ok(());
++    }
++    check_s3_paths(rules, &authed.username, &authed.groups, &authed.folders, paths)
++}
++
++pub async fn get_workspace_s3_resource_and_check_paths<'c>(
++    db_with_opt_authed: &DbWithOptAuthed<'c, ApiAuthed>,
++    w_id: &str,
++    storage: Option<String>,
++    paths: &[(&str, S3Permission)],
++) -> error::Result<(Option<bool>, Option<ObjectStoreResource>)> {
++    let Some(lfs) = load_lfs(db_with_opt_authed.db(), w_id, storage.as_deref()).await? else {
++        return Ok((None, None));
++    };
++    check_lfs_paths(db_with_opt_authed.authed(), &lfs, paths)?;
++    resolve_lfs(db_with_opt_authed, w_id, &lfs).await
++}
++
++pub async fn get_workspace_s3_resource<'c>(
++    authed: &ApiAuthed,
++    db: &DB,
++    user_db: Option<UserDB>,
++    w_id: &str,
++    storage: Option<String>,
++) -> error::Result<(Option<bool>, Option<ObjectStoreResource>)> {
++    let db_with_opt_authed = DbWithOptAuthed::from_authed(authed, db.clone(), user_db);
++    get_workspace_s3_resource_and_check_paths(&db_with_opt_authed, w_id, storage, &[]).await
++}
++
++/// Read a resource (with `$res:` prefix tolerated) and parse it as an object
++/// store resource of the given type (S3 by default).
++pub async fn get_s3_resource<'c>(
++    db_with_opt_authed: &DbWithOptAuthed<'c, ApiAuthed>,
++    w_id: &str,
++    resource_path: &str,
++    resource_type: Option<StorageResourceType>,
++    job_id: Option<Uuid>,
++) -> error::Result<ObjectStoreResource> {
++    let resource_path = resource_path.trim_start_matches("$res:");
++    let raw = get_resource_value_interpolated_internal(
++        db_with_opt_authed,
++        w_id,
++        resource_path,
++        job_id,
++        None,
++        false,
++    )
++    .await?
++    .ok_or_else(|| Error::NotFound(format!("Resource {resource_path} not found")))?;
++    parse_object_store_resource(&resource_type.unwrap_or(StorageResourceType::S3), raw)
++}
++
++/// Resource for a request: an explicit resource path wins, otherwise the
++/// workspace storage (primary or named secondary) with the permission check.
++async fn resource_for_request<'c>(
++    db_with_opt_authed: &DbWithOptAuthed<'c, ApiAuthed>,
++    w_id: &str,
++    s3_resource_path: Option<&str>,
++    resource_type: Option<StorageResourceType>,
++    storage: Option<String>,
++    paths: &[(&str, S3Permission)],
++) -> error::Result<ObjectStoreResource> {
++    match s3_resource_path {
++        Some(p) if !p.is_empty() => {
++            get_s3_resource(db_with_opt_authed, w_id, p, resource_type, None).await
++        }
++        _ => {
++            let (_, res) =
++                get_workspace_s3_resource_and_check_paths(db_with_opt_authed, w_id, storage, paths)
++                    .await?;
++            res.ok_or_else(|| Error::NotFound(NO_STORAGE.to_string()))
++        }
++    }
++}
++
++fn os_err(ctx: &str) -> impl Fn(object_store::Error) -> Error + '_ {
++    move |e| {
++        tracing::warn!("{ctx}: {e:?}");
++        match e {
++            object_store::Error::NotFound { path, .. } => {
++                Error::NotFound(format!("{ctx}: {path} not found"))
++            }
++            e => Error::internal_err(format!("{ctx}: {e}")),
++        }
++    }
++}
++
++fn obj_path(key: &str) -> object_store::path::Path {
++    object_store::path::Path::from(key)
++}
++
++// ---------------------------------------------------------------------------
++// Streaming helpers shared with apps.rs / args.rs
++// ---------------------------------------------------------------------------
++
++pub async fn upload_file_internal(
++    s3_client: Arc<dyn ObjectStore>,
++    file_key: &str,
++    mut stream: impl Stream<Item = Result<Bytes, io::Error>> + Unpin,
++    options: PutMultipartOpts,
++) -> error::Result<()> {
++    let path = obj_path(file_key);
++    let upload = s3_client
++        .put_multipart_opts(&path, options)
++        .await
++        .map_err(os_err("Error initializing upload"))?;
++    let mut writer = WriteMultipart::new(upload);
++    loop {
++        match stream.try_next().await {
++            Ok(Some(chunk)) => {
++                writer.put(chunk);
++                if let Err(e) = writer.wait_for_capacity(8).await {
++                    let _ = writer.abort().await;
++                    return Err(os_err("Error uploading part")(e));
++                }
++            }
++            Ok(None) => break,
++            Err(e) => {
++                let _ = writer.abort().await;
++                return Err(Error::internal_err(format!("Error reading upload body: {e}")));
++            }
++        }
++    }
++    writer
++        .finish()
++        .await
++        .map_err(os_err("Error finishing upload"))?;
++    Ok(())
++}
++
++pub async fn upload_file_from_req(
++    s3_client: Arc<dyn ObjectStore>,
++    file_key: &str,
++    req: Request,
++    options: PutMultipartOpts,
++) -> error::Result<()> {
++    let stream = req
++        .into_body()
++        .into_data_stream()
++        .map_err(|e| io::Error::new(io::ErrorKind::Other, e));
++    upload_file_internal(s3_client, file_key, stream, options).await
++}
++
++pub async fn read_object_streamable(
++    s3_client: Arc<dyn ObjectStore>,
++    file_key: &str,
++) -> error::Result<Response> {
++    let result = s3_client
++        .get(&obj_path(file_key))
++        .await
++        .map_err(os_err("Error retrieving file"))?;
++    let size = result.meta.size;
++    let attributes = result.attributes.clone();
++    let mut headers = HeaderMap::new();
++    let content_type = attributes
++        .get(&object_store::Attribute::ContentType)
++        .map(|v| v.as_ref().to_string())
++        .unwrap_or_else(|| {
++            mime_guess::from_path(file_key)
++                .first_or_octet_stream()
++                .to_string()
++        });
++    if let Ok(v) = HeaderValue::from_str(&content_type) {
++        headers.insert(header::CONTENT_TYPE, v);
++    }
++    if let Some(cd) = attributes.get(&object_store::Attribute::ContentDisposition) {
++        if let Ok(v) = HeaderValue::from_str(cd.as_ref()) {
++            headers.insert(header::CONTENT_DISPOSITION, v);
++        }
++    }
++    headers.insert(header::CONTENT_LENGTH, HeaderValue::from(size));
++    let body = Body::from_stream(result.into_stream());
++    Ok((StatusCode::OK, headers, body).into_response())
++}
++
++pub async fn download_s3_file_internal(
++    authed: ApiAuthed,
++    db: &DB,
++    user_db: Option<UserDB>,
++    w_id: &str,
++    query: DownloadFileQuery,
++) -> error::Result<Response> {
++    let db_with_opt_authed = DbWithOptAuthed::from_authed(&authed, db.clone(), user_db);
++    let resource = resource_for_request(
++        &db_with_opt_authed,
++        w_id,
++        query.s3_resource_path.as_deref(),
++        None,
++        query.storage,
++        &[(&query.file_key, S3Permission::READ)],
++    )
++    .await?;
++    let client = build_object_store_client(&resource).await?;
++    read_object_streamable(client, &query.file_key).await
++}
++
++pub async fn delete_s3_file_internal(
++    authed: &ApiAuthed,
++    db: &DB,
++    _token: &str,
++    w_id: &str,
++    query: DeleteS3FileQuery,
++) -> error::Result<()> {
++    // A UserDB keeps the caller in the context so the permission rules apply.
++    let db_with_opt_authed =
++        DbWithOptAuthed::from_authed(authed, db.clone(), Some(UserDB::new(db.clone())));
++    let resource = resource_for_request(
++        &db_with_opt_authed,
++        w_id,
++        None,
++        None,
++        query.storage,
++        &[(&query.file_key, S3Permission::DELETE)],
++    )
++    .await?;
++    let client = build_object_store_client(&resource).await?;
++    client
++        .delete(&obj_path(&query.file_key))
++        .await
++        .map_err(os_err("Error deleting file"))
++}
++
++// ---------------------------------------------------------------------------
++// Connection settings (SDK helpers)
++// ---------------------------------------------------------------------------
++
++#[derive(Deserialize)]
++struct S3ResourceBody {
++    s3_resource: S3Resource,
++}
++
++async fn duckdb_connection_settings(
++    Path(_w_id): Path<String>,
++    Json(body): Json<S3ResourceBody>,
++) -> JsonResult<DuckdbConnectionSettingsResponse> {
++    format_duckdb_connection_settings(ObjectStoreResource::S3(body.s3_resource)).map(Json)
++}
++
++async fn duckdb_connection_settings_v2(
++    authed: ApiAuthed,
++    Extension(db): Extension<DB>,
++    Extension(user_db): Extension<UserDB>,
++    Path(w_id): Path<String>,
++    Json(query): Json<DuckdbConnectionSettingsQueryV2>,
++) -> JsonResult<DuckdbConnectionSettingsResponse> {
++    let db_with_opt_authed = DbWithOptAuthed::from_authed(&authed, db.clone(), Some(user_db));
++    let resource = resource_for_request(
++        &db_with_opt_authed,
++        &w_id,
++        query.s3_resource_path.as_deref(),
++        None,
++        query.storage,
++        &[],
++    )
++    .await?;
++    format_duckdb_connection_settings(resource).map(Json)
++}
++
++#[derive(Serialize)]
++struct PolarsClientKwargs {
++    region_name: String,
++}
++
++#[derive(Serialize)]
++struct S3fsArgs {
++    endpoint_url: String,
++    #[serde(skip_serializing_if = "Option::is_none")]
++    key: Option<String>,
++    #[serde(skip_serializing_if = "Option::is_none")]
++    secret: Option<String>,
++    use_ssl: bool,
++    cache_regions: bool,
++    client_kwargs: PolarsClientKwargs,
++}
++
++#[derive(Serialize)]
++struct PolarsStorageOptions {
++    aws_endpoint_url: String,
++    #[serde(skip_serializing_if = "Option::is_none")]
++    aws_access_key_id: Option<String>,
++    #[serde(skip_serializing_if = "Option::is_none")]
++    aws_secret_access_key: Option<String>,
++    aws_region: String,
++    aws_allow_http: String,
++}
++
++#[derive(Serialize)]
++struct PolarsConnectionSettingsResponse {
++    s3fs_args: S3fsArgs,
++    storage_options: PolarsStorageOptions,
++}
++
++fn s3fs_args(r: &S3Resource) -> S3fsArgs {
++    S3fsArgs {
++        endpoint_url: render_endpoint(
++            r.endpoint_with_region_fallback(None),
++            r.use_ssl,
++            r.port,
++            r.path_style,
++            r.bucket.clone(),
++        ),
++        key: r.access_key.clone(),
++        secret: r.secret_key.clone(),
++        use_ssl: r.use_ssl,
++        cache_regions: false,
++        client_kwargs: PolarsClientKwargs { region_name: r.region.clone() },
++    }
++}
++
++fn polars_response(r: S3Resource) -> PolarsConnectionSettingsResponse {
++    let s3fs = s3fs_args(&r);
++    PolarsConnectionSettingsResponse {
++        storage_options: PolarsStorageOptions {
++            aws_endpoint_url: s3fs.endpoint_url.clone(),
++            aws_access_key_id: r.access_key,
++            aws_secret_access_key: r.secret_key,
++            aws_region: r.region,
++            aws_allow_http: (!r.use_ssl).to_string(),
++        },
++        s3fs_args: s3fs,
++    }
++}
++
++async fn polars_connection_settings(
++    Path(_w_id): Path<String>,
++    Json(body): Json<S3ResourceBody>,
++) -> JsonResult<S3fsArgs> {
++    Ok(Json(s3fs_args(&body.s3_resource)))
++}
++
++#[derive(Deserialize)]
++struct ResourcePathQuery {
++    s3_resource_path: Option<String>,
++    storage: Option<String>,
++}
++
++fn expect_s3(resource: ObjectStoreResource, what: &str) -> error::Result<S3Resource> {
++    match resource {
++        ObjectStoreResource::S3(r) => Ok(r),
++        _ => Err(Error::BadConfig(format!(
++            "{what} only works with an S3 storage, this resource is not an S3 resource"
++        ))),
++    }
++}
++
++async fn polars_connection_settings_v2(
++    authed: ApiAuthed,
++    Extension(db): Extension<DB>,
++    Extension(user_db): Extension<UserDB>,
++    Path(w_id): Path<String>,
++    Json(query): Json<ResourcePathQuery>,
++) -> JsonResult<PolarsConnectionSettingsResponse> {
++    let db_with_opt_authed = DbWithOptAuthed::from_authed(&authed, db.clone(), Some(user_db));
++    let resource = resource_for_request(
++        &db_with_opt_authed,
++        &w_id,
++        query.s3_resource_path.as_deref(),
++        None,
++        query.storage,
++        &[],
++    )
++    .await?;
++    Ok(Json(polars_response(expect_s3(resource, "Polars")?)))
++}
++
++async fn s3_resource_info(
++    authed: ApiAuthed,
++    Extension(db): Extension<DB>,
++    Extension(user_db): Extension<UserDB>,
++    Path(w_id): Path<String>,
++    Json(query): Json<ResourcePathQuery>,
++) -> JsonResult<S3Resource> {
++    let db_with_opt_authed = DbWithOptAuthed::from_authed(&authed, db.clone(), Some(user_db));
++    let resource = resource_for_request(
++        &db_with_opt_authed,
++        &w_id,
++        query.s3_resource_path.as_deref(),
++        None,
++        query.storage,
++        &[],
++    )
++    .await?;
++    Ok(Json(expect_s3(resource, "s3_resource_info")?))
++}
++
++// ---------------------------------------------------------------------------
++// File browser
++// ---------------------------------------------------------------------------
++
++#[derive(Deserialize)]
++struct StorageQuery {
++    storage: Option<String>,
++}
++
++async fn test_connection(
++    authed: ApiAuthed,
++    Extension(db): Extension<DB>,
++    Extension(user_db): Extension<UserDB>,
++    Path(w_id): Path<String>,
++    Query(query): Query<StorageQuery>,
++) -> JsonResult<()> {
++    let db_with_opt_authed = DbWithOptAuthed::from_authed(&authed, db.clone(), Some(user_db));
++    let resource =
++        resource_for_request(&db_with_opt_authed, &w_id, None, None, query.storage, &[]).await?;
++    let client = build_object_store_client(&resource).await?;
++    client
++        .list(None)
++        .next()
++        .await
++        .transpose()
++        .map_err(os_err("Error testing connection"))?;
++    Ok(Json(()))
++}
++
++#[derive(Deserialize)]
++struct ListStoredFilesQuery {
++    max_keys: usize,
++    marker: Option<String>,
++    prefix: Option<String>,
++    storage: Option<String>,
++}
++
++#[derive(Serialize)]
++struct WindmillLargeFile {
++    s3: String,
++}
++
++#[derive(Serialize)]
++struct ListStoredFilesResponse {
++    restricted_access: Option<bool>,
++    windmill_large_files: Vec<WindmillLargeFile>,
++    next_marker: Option<String>,
++}
++
++async fn list_stored_files(
++    authed: ApiAuthed,
++    Extension(db): Extension<DB>,
++    Extension(user_db): Extension<UserDB>,
++    Path(w_id): Path<String>,
++    Query(query): Query<ListStoredFilesQuery>,
++) -> JsonResult<ListStoredFilesResponse> {
++    let db_with_opt_authed = DbWithOptAuthed::from_authed(&authed, db.clone(), Some(user_db));
++    let Some(lfs) = load_lfs(&db, &w_id, query.storage.as_deref()).await? else {
++        return Err(Error::NotFound(NO_STORAGE.to_string()));
++    };
++    let (public, resource) = resolve_lfs(&db_with_opt_authed, &w_id, &lfs).await?;
++    let Some(resource) = resource else {
++        if !public.unwrap_or(false) {
++            return Ok(Json(ListStoredFilesResponse {
++                restricted_access: Some(true),
++                windmill_large_files: vec![],
++                next_marker: None,
++            }));
++        }
++        return Err(Error::internal_err(NO_STORAGE.to_string()));
++    };
++    let client = build_object_store_client(&resource).await?;
++
++    let prefix = query
++        .prefix
++        .as_deref()
++        .filter(|p| !p.is_empty())
++        .map(obj_path);
++    let stream = match query.marker.as_deref().filter(|m| !m.is_empty()) {
++        Some(marker) => client.list_with_offset(prefix.as_ref(), &obj_path(marker)),
++        None => client.list(prefix.as_ref()),
++    };
++    let rules = if authed.is_admin {
++        None
++    } else {
++        lfs.get_advanced_permissions()
++    };
++    let max_keys = query.max_keys.max(1);
++    let mut files = vec![];
++    let mut stream = stream.take(max_keys);
++    while let Some(meta) = stream
++        .try_next()
++        .await
++        .map_err(os_err("Error listing files"))?
++    {
++        let key = meta.location.to_string();
++        if let Some(rules) = rules {
++            if !s3_path_allowed(
++                rules,
++                &authed.username,
++                &authed.groups,
++                &authed.folders,
++                &key,
++                S3Permission::LIST,
++            ) {
++                continue;
++            }
++        }
++        files.push(WindmillLargeFile { s3: key });
++    }
++    let next_marker = if files.len() >= max_keys {
++        files.last().map(|f| f.s3.clone())
++    } else {
++        None
++    };
++    Ok(Json(ListStoredFilesResponse {
++        restricted_access: Some(false),
++        windmill_large_files: files,
++        next_marker,
++    }))
++}
++
++#[derive(Deserialize)]
++struct FileKeyQuery {
++    file_key: String,
++    storage: Option<String>,
++}
++
++#[derive(Serialize)]
++struct LoadFileMetadataResponse {
++    mime_type: Option<String>,
++    size_in_bytes: Option<i64>,
++    last_modified: Option<chrono::DateTime<chrono::Utc>>,
++    expires: Option<chrono::DateTime<chrono::Utc>>,
++    version_id: Option<String>,
++}
++
++async fn load_file_metadata(
++    authed: ApiAuthed,
++    Extension(db): Extension<DB>,
++    Extension(user_db): Extension<UserDB>,
++    Path(w_id): Path<String>,
++    Query(query): Query<FileKeyQuery>,
++) -> JsonResult<LoadFileMetadataResponse> {
++    let db_with_opt_authed = DbWithOptAuthed::from_authed(&authed, db.clone(), Some(user_db));
++    let resource = resource_for_request(
++        &db_with_opt_authed,
++        &w_id,
++        None,
++        None,
++        query.storage,
++        &[(&query.file_key, S3Permission::READ)],
++    )
++    .await?;
++    let client = build_object_store_client(&resource).await?;
++    let meta = client
++        .head(&obj_path(&query.file_key))
++        .await
++        .map_err(os_err("Error loading file metadata"))?;
++    Ok(Json(LoadFileMetadataResponse {
++        mime_type: mime_guess::from_path(&query.file_key)
++            .first()
++            .map(|m| m.to_string()),
++        size_in_bytes: Some(meta.size as i64),
++        last_modified: Some(meta.last_modified),
++        expires: None,
++        version_id: meta.version,
++    }))
++}
++
++#[derive(Deserialize)]
++struct LoadFilePreviewQuery {
++    file_key: String,
++    file_size_in_bytes: Option<u64>,
++    #[allow(dead_code)]
++    file_mime_type: Option<String>,
++    #[allow(dead_code)]
++    csv_separator: Option<String>,
++    #[allow(dead_code)]
++    csv_has_header: Option<bool>,
++    read_bytes_from: Option<u64>,
++    read_bytes_length: Option<u64>,
++    storage: Option<String>,
++}
++
++#[derive(Serialize)]
++enum WindmillContentType {
++    RawText,
++    Csv,
++    Parquet,
++    Unknown,
++}
++
++#[derive(Serialize)]
++struct LoadFilePreviewResponse {
++    content: Option<String>,
++    content_type: WindmillContentType,
++    msg: Option<String>,
++}
++
++const TEXT_EXTENSIONS: &[&str] = &[
++    ".json", ".yaml", ".yml", ".xml", ".txt", ".log", ".md", ".html", ".htm", ".js", ".ts",
++    ".py", ".sql", ".sh", ".toml", ".ini", ".env", ".jsonl", ".ndjson", ".svg", ".rs", ".go",
++];
++
++async fn load_file_preview(
++    authed: ApiAuthed,
++    Extension(db): Extension<DB>,
++    Extension(user_db): Extension<UserDB>,
++    Path(w_id): Path<String>,
++    Query(query): Query<LoadFilePreviewQuery>,
++) -> JsonResult<LoadFilePreviewResponse> {
++    let length = query.read_bytes_length.unwrap_or(DEFAULT_PREVIEW_BYTES);
++    if length > MAX_PREVIEW_BYTES {
++        return Err(Error::BadRequest(
++            "Cannot load a preview bigger than 8MB".to_string(),
++        ));
++    }
++    let db_with_opt_authed = DbWithOptAuthed::from_authed(&authed, db.clone(), Some(user_db));
++    let resource = resource_for_request(
++        &db_with_opt_authed,
++        &w_id,
++        None,
++        None,
++        query.storage,
++        &[(&query.file_key, S3Permission::READ)],
++    )
++    .await?;
++    let client = build_object_store_client(&resource).await?;
++
++    let lower = query.file_key.to_lowercase();
++    let content_type = if lower.ends_with(".csv") || lower.ends_with(".tsv") {
++        WindmillContentType::Csv
++    } else if lower.ends_with(".parquet") {
++        WindmillContentType::Parquet
++    } else if TEXT_EXTENSIONS.iter().any(|e| lower.ends_with(e)) {
++        WindmillContentType::RawText
++    } else {
++        WindmillContentType::Unknown
++    };
++
++    let preview: error::Result<String> = match content_type {
++        WindmillContentType::Csv | WindmillContentType::RawText => {
++            let from = query.read_bytes_from.unwrap_or(0);
++            let size = match query.file_size_in_bytes {
++                Some(s) => s,
++                None => {
++                    client
++                        .head(&obj_path(&query.file_key))
++                        .await
++                        .map_err(os_err("Error loading file preview"))?
++                        .size
++                }
++            };
++            read_text_head(client, &query.file_key, from, length, size).await
++        }
++        WindmillContentType::Parquet => Err(Error::ExecutionErr(
++            "Parquet files are previewed as a table.".to_string(),
++        )),
++        WindmillContentType::Unknown => Err(Error::ExecutionErr(
++            "Preview is not available. Content type is unknown or not supported".to_string(),
++        )),
++    };
++    Ok(Json(match preview {
++        Ok(content) => LoadFilePreviewResponse { content: Some(content), content_type, msg: None },
++        Err(e) => LoadFilePreviewResponse { content: None, content_type, msg: Some(e.to_string()) },
++    }))
++}
++
++async fn read_text_head(
++    client: Arc<dyn ObjectStore>,
++    file_key: &str,
++    from: u64,
++    length: u64,
++    size: u64,
++) -> error::Result<String> {
++    if from >= size || size == 0 {
++        return Ok(String::new());
++    }
++    let end = (from + length).min(size);
++    let bytes = client
++        .get_range(&obj_path(file_key), from..end)
++        .await
++        .map_err(os_err("Error fetching file"))?;
++    Ok(String::from_utf8_lossy(&bytes).into_owned())
++}
++
++async fn delete_s3_file(
++    authed: ApiAuthed,
++    Extension(db): Extension<DB>,
++    Path(w_id): Path<String>,
++    Query(query): Query<FileKeyQuery>,
++) -> JsonResult<()> {
++    delete_s3_file_internal(
++        &authed,
++        &db,
++        "",
++        &w_id,
++        DeleteS3FileQuery { file_key: query.file_key, storage: query.storage },
++    )
++    .await?;
++    Ok(Json(()))
++}
++
++#[derive(Deserialize)]
++struct MoveS3FileQuery {
++    src_file_key: String,
++    dest_file_key: String,
++    storage: Option<String>,
++}
++
++async fn move_s3_file(
++    authed: ApiAuthed,
++    Extension(db): Extension<DB>,
++    Extension(user_db): Extension<UserDB>,
++    Path(w_id): Path<String>,
++    Query(query): Query<MoveS3FileQuery>,
++) -> JsonResult<()> {
++    let db_with_opt_authed = DbWithOptAuthed::from_authed(&authed, db.clone(), Some(user_db));
++    let resource = resource_for_request(
++        &db_with_opt_authed,
++        &w_id,
++        None,
++        None,
++        query.storage,
++        &[
++            (&query.src_file_key, S3Permission::READ),
++            (&query.src_file_key, S3Permission::DELETE),
++            (&query.dest_file_key, S3Permission::WRITE),
++        ],
++    )
++    .await?;
++    let client = build_object_store_client(&resource).await?;
++    let src = obj_path(&query.src_file_key);
++    let dest = obj_path(&query.dest_file_key);
++    client
++        .copy(&src, &dest)
++        .await
++        .map_err(os_err("Error copying object"))?;
++    client
++        .delete(&src)
++        .await
++        .map_err(os_err("Error removing object post copy"))?;
++    Ok(Json(()))
++}
++
++#[derive(Deserialize)]
++struct UploadFileQuery {
++    file_key: Option<String>,
++    file_extension: Option<String>,
++    s3_resource_path: Option<String>,
++    resource_type: Option<StorageResourceType>,
++    storage: Option<String>,
++    content_type: Option<String>,
++    content_disposition: Option<String>,
++}
++
++#[derive(Serialize)]
++struct UploadFileResponse {
++    file_key: String,
++}
++
++async fn upload_s3_file(
++    authed: ApiAuthed,
++    Extension(db): Extension<DB>,
++    Extension(user_db): Extension<UserDB>,
++    Path(w_id): Path<String>,
++    Query(query): Query<UploadFileQuery>,
++    request: Request,
++) -> JsonResult<UploadFileResponse> {
++    let file_key = query
++        .file_key
++        .filter(|k| !k.is_empty())
++        .unwrap_or_else(|| get_random_file_name(query.file_extension));
++    let db_with_opt_authed = DbWithOptAuthed::from_authed(&authed, db.clone(), Some(user_db));
++    let resource = resource_for_request(
++        &db_with_opt_authed,
++        &w_id,
++        query.s3_resource_path.as_deref(),
++        query.resource_type,
++        query.storage,
++        &[(&file_key, S3Permission::WRITE)],
++    )
++    .await?;
++    let client = build_object_store_client(&resource).await?;
++    let options: PutMultipartOpts = object_store::Attributes::from_iter(vec![
++        (
++            object_store::Attribute::ContentType,
++            query.content_type.unwrap_or_else(|| {
++                mime_guess::from_path(&file_key)
++                    .first_or_octet_stream()
++                    .to_string()
++            }),
++        ),
++        (
++            object_store::Attribute::ContentDisposition,
++            query.content_disposition.unwrap_or_else(|| "inline".to_string()),
++        ),
++    ])
++    .into();
++    upload_file_from_req(client, &file_key, request, options).await?;
++    Ok(Json(UploadFileResponse { file_key }))
++}
++
++#[derive(Deserialize)]
++struct DownloadQuery {
++    file_key: String,
++    s3_resource_path: Option<String>,
++    resource_type: Option<StorageResourceType>,
++    storage: Option<String>,
++}
++
++async fn download_s3_file(
++    authed: ApiAuthed,
++    Extension(db): Extension<DB>,
++    Extension(user_db): Extension<UserDB>,
++    Path(w_id): Path<String>,
++    Query(query): Query<DownloadQuery>,
++) -> error::Result<Response> {
++    let db_with_opt_authed = DbWithOptAuthed::from_authed(&authed, db.clone(), Some(user_db));
++    let resource = resource_for_request(
++        &db_with_opt_authed,
++        &w_id,
++        query.s3_resource_path.as_deref(),
++        query.resource_type,
++        query.storage,
++        &[(&query.file_key, S3Permission::READ)],
++    )
++    .await?;
++    let client = build_object_store_client(&resource).await?;
++    read_object_streamable(client, &query.file_key).await
++}
++
++// ---------------------------------------------------------------------------
++// Table previews (parquet / csv) through datafusion
++// ---------------------------------------------------------------------------
++
++#[derive(Deserialize)]
++struct TablePreviewQuery {
++    offset: Option<usize>,
++    limit: Option<usize>,
++    sort_col: Option<String>,
++    sort_desc: Option<bool>,
++    search_col: Option<String>,
++    search_term: Option<String>,
++    storage: Option<String>,
++    csv_separator: Option<String>,
++}
++
++#[derive(Serialize)]
++struct TablePreviewResponse {
++    columns: Vec<String>,
++    rows: serde_json::Value,
++}
++
++#[derive(Serialize)]
++struct TableCountResponse {
++    count: usize,
++}
++
++fn df_err(ctx: &str) -> impl Fn(datafusion::error::DataFusionError) -> Error + '_ {
++    move |e| {
++        tracing::warn!("{ctx}: {e}");
++        Error::ExecutionErr(format!("{ctx}: {e}"))
++    }
++}
++
++fn csv_separator(sep: Option<&str>) -> error::Result<u8> {
++    match sep {
++        None | Some("") => Ok(b','),
++        Some("\\t") => Ok(b'\t'),
++        Some(s) if s.len() == 1 => Ok(s.as_bytes()[0]),
++        Some(_) => Err(Error::BadRequest(
++            "Separator must be a single character".to_string(),
++        )),
++    }
++}
++
++/// Open the object as a datafusion dataframe. The store is registered under a
++/// private URL scheme so any object store client can be used as is.
++async fn open_table(
++    client: Arc<dyn ObjectStore>,
++    file_key: &str,
++    csv_sep: Option<u8>,
++) -> error::Result<datafusion::dataframe::DataFrame> {
++    use datafusion::prelude::{CsvReadOptions, ParquetReadOptions, SessionContext};
++    let ctx = SessionContext::new();
++    let base = url::Url::parse("wmill://store/")
++        .map_err(|e| Error::internal_err(format!("bad object store url: {e}")))?;
++    ctx.register_object_store(&base, client);
++    let location = format!("wmill://store/{}", obj_path(file_key));
++    let df = match csv_sep {
++        Some(sep) => {
++            let opts = CsvReadOptions::new()
++                .delimiter(sep)
++                .has_header(true)
++                .file_extension("");
++            ctx.read_csv(location.as_str(), opts)
++                .await
++                .map_err(df_err("Error reading CSV file"))?
++        }
++        None => {
++            let opts = ParquetReadOptions::default().file_extension("");
++            ctx.read_parquet(location.as_str(), opts)
++                .await
++                .map_err(df_err("Error reading parquet file"))?
++        }
++    };
++    Ok(df)
++}
++
++fn apply_search(
++    df: datafusion::dataframe::DataFrame,
++    search_col: Option<&str>,
++    search_term: Option<&str>,
++) -> error::Result<datafusion::dataframe::DataFrame> {
++    use datafusion::arrow::datatypes::DataType;
++    use datafusion::prelude::{cast, ident, lit};
++    match (search_col, search_term) {
++        (Some(c), Some(t)) if !c.is_empty() && !t.is_empty() => {
++            let escaped = t.replace('\\', "\\\\").replace('%', "\\%").replace('_', "\\_");
++            df.filter(cast(ident(c), DataType::Utf8).ilike(lit(format!("%{escaped}%"))))
++                .map_err(df_err("Error filtering table"))
++        }
++        _ => Ok(df),
++    }
++}
++
++async fn batches_to_json(
++    batches: Vec<datafusion::arrow::array::RecordBatch>,
++) -> error::Result<serde_json::Value> {
++    use datafusion::arrow::json::ArrayWriter;
++    let mut writer = ArrayWriter::new(Vec::new());
++    for batch in &batches {
++        writer
++            .write(batch)
++            .map_err(|e| Error::ExecutionErr(format!("Error encoding rows: {e}")))?;
++    }
++    writer
++        .finish()
++        .map_err(|e| Error::ExecutionErr(format!("Error encoding rows: {e}")))?;
++    let buf = writer.into_inner();
++    if buf.is_empty() {
++        return Ok(serde_json::Value::Array(vec![]));
++    }
++    serde_json::from_slice(&buf)
++        .map_err(|e| Error::ExecutionErr(format!("Error decoding rows: {e}")))
++}
++
++async fn table_preview(
++    authed: ApiAuthed,
++    db: DB,
++    user_db: UserDB,
++    w_id: &str,
++    file_key: &str,
++    query: TablePreviewQuery,
++    csv: bool,
++) -> JsonResult<TablePreviewResponse> {
++    use datafusion::prelude::ident;
++    let db_with_opt_authed = DbWithOptAuthed::from_authed(&authed, db.clone(), Some(user_db));
++    let resource = resource_for_request(
++        &db_with_opt_authed,
++        w_id,
++        None,
++        None,
++        query.storage,
++        &[(file_key, S3Permission::READ)],
++    )
++    .await?;
++    let client = build_object_store_client(&resource).await?;
++    let sep = if csv {
++        Some(csv_separator(query.csv_separator.as_deref())?)
++    } else {
++        None
++    };
++    let df = open_table(client, file_key, sep).await?;
++    let columns: Vec<String> = df
++        .schema()
++        .fields()
++        .iter()
++        .map(|f| f.name().clone())
++        .collect();
++    let mut df = apply_search(df, query.search_col.as_deref(), query.search_term.as_deref())?;
++    if let Some(sort_col) = query.sort_col.as_deref().filter(|c| !c.is_empty()) {
++        df = df
++            .sort(vec![ident(sort_col).sort(!query.sort_desc.unwrap_or(false), true)])
++            .map_err(df_err("Error sorting table"))?;
++    }
++    let limit = query.limit.unwrap_or(100).min(TABLE_PREVIEW_MAX_ROWS);
++    df = df
++        .limit(query.offset.unwrap_or(0), Some(limit))
++        .map_err(df_err("Error paginating table"))?;
++    let batches = df.collect().await.map_err(df_err("Error reading table"))?;
++    let rows = batches_to_json(batches).await?;
++    Ok(Json(TablePreviewResponse { columns, rows }))
++}
++
++async fn load_parquet_preview(
++    authed: ApiAuthed,
++    Extension(db): Extension<DB>,
++    Extension(user_db): Extension<UserDB>,
++    Path((w_id, path)): Path<(String, String)>,
++    Query(query): Query<TablePreviewQuery>,
++) -> JsonResult<TablePreviewResponse> {
++    table_preview(authed, db, user_db, &w_id, path.trim_start_matches('/'), query, false).await
++}
++
++async fn load_csv_preview(
++    authed: ApiAuthed,
++    Extension(db): Extension<DB>,
++    Extension(user_db): Extension<UserDB>,
++    Path((w_id, path)): Path<(String, String)>,
++    Query(query): Query<TablePreviewQuery>,
++) -> JsonResult<TablePreviewResponse> {
++    table_preview(authed, db, user_db, &w_id, path.trim_start_matches('/'), query, true).await
++}
++
++async fn load_table_count(
++    authed: ApiAuthed,
++    Extension(db): Extension<DB>,
++    Extension(user_db): Extension<UserDB>,
++    Path((w_id, path)): Path<(String, String)>,
++    Query(query): Query<TablePreviewQuery>,
++) -> JsonResult<TableCountResponse> {
++    let file_key = path.trim_start_matches('/');
++    let csv = file_key.to_lowercase().ends_with(".csv") || file_key.to_lowercase().ends_with(".tsv");
++    let db_with_opt_authed = DbWithOptAuthed::from_authed(&authed, db.clone(), Some(user_db));
++    let resource = resource_for_request(
++        &db_with_opt_authed,
++        &w_id,
++        None,
++        None,
++        query.storage,
++        &[(file_key, S3Permission::READ)],
++    )
++    .await?;
++    let client = build_object_store_client(&resource).await?;
++    let sep = if csv {
++        Some(csv_separator(query.csv_separator.as_deref())?)
++    } else {
++        None
++    };
++    let df = open_table(client, file_key, sep).await?;
++    let df = apply_search(df, query.search_col.as_deref(), query.search_term.as_deref())?;
++    let count = df.count().await.map_err(df_err("Error counting rows"))?;
++    Ok(Json(TableCountResponse { count }))
++}
+diff --git a/windmill-api/src/job_helpers_oss.rs b/windmill-api/src/job_helpers_oss.rs
+index 8a67ada9a..80e11183d 100644
+--- a/windmill-api/src/job_helpers_oss.rs
++++ b/windmill-api/src/job_helpers_oss.rs
+@@ -2,6 +2,10 @@
+ #[allow(unused)]
+ pub use crate::job_helpers_ee::*;
+ 
++#[cfg(not(feature = "private"))]
++#[path = "job_helpers_impl.rs"]
++pub(crate) mod job_helpers_impl;
++
+ #[cfg(not(feature = "private"))]
+ use axum::Router;
+ #[cfg(not(feature = "private"))]
+@@ -33,34 +37,30 @@ use serde::Deserialize;
+ #[derive(Deserialize)]
+ #[cfg(not(feature = "private"))]
+ pub struct DownloadFileQuery {
+-    #[allow(dead_code)]
+     pub file_key: String,
+-    #[allow(dead_code)]
+     pub storage: Option<String>,
+-    #[allow(dead_code)]
+     pub s3_resource_path: Option<String>,
+ }
+ 
+ #[cfg(not(feature = "private"))]
+ pub fn workspaced_service() -> Router {
+-    Router::new()
++    job_helpers_impl::workspaced_service()
+ }
+ 
+ #[cfg(all(feature = "parquet", not(feature = "private")))]
+ pub async fn get_workspace_s3_resource<'c>(
+-    _authed: &ApiAuthed,
+-    _db: &DB,
+-    _user_db: Option<UserDB>,
+-    _w_id: &str,
+-    _storage: Option<String>,
++    authed: &ApiAuthed,
++    db: &DB,
++    user_db: Option<UserDB>,
++    w_id: &str,
++    storage: Option<String>,
+ ) -> windmill_common::error::Result<(Option<bool>, Option<ObjectStoreResource>)> {
+-    // implementation is not open source
+-    Ok((None, None))
++    job_helpers_impl::get_workspace_s3_resource(authed, db, user_db, w_id, storage).await
+ }
+ 
+ #[cfg(not(feature = "private"))]
+-pub fn get_random_file_name(_file_extension: Option<String>) -> String {
+-    unimplemented!("Not implemented in Windmill's Open Source repository")
++pub fn get_random_file_name(file_extension: Option<String>) -> String {
++    job_helpers_impl::get_random_file_name(file_extension)
+ }
+ 
+ #[cfg(not(feature = "private"))]
+@@ -68,77 +68,66 @@ use windmill_common::db::DbWithOptAuthed;
+ 
+ #[cfg(not(feature = "private"))]
+ pub async fn get_s3_resource<'c>(
+-    _db_with_opt_authed: &DbWithOptAuthed<'c, ApiAuthed>,
+-    _w_id: &str,
+-    _resource_path: &str,
+-    _resource_type: Option<StorageResourceType>,
+-    _job_id: Option<Uuid>,
++    db_with_opt_authed: &DbWithOptAuthed<'c, ApiAuthed>,
++    w_id: &str,
++    resource_path: &str,
++    resource_type: Option<StorageResourceType>,
++    job_id: Option<Uuid>,
+ ) -> error::Result<ObjectStoreResource> {
+-    Err(error::Error::internal_err(
+-        "Not implemented in Windmill's Open Source repository".to_string(),
+-    ))
++    job_helpers_impl::get_s3_resource(db_with_opt_authed, w_id, resource_path, resource_type, job_id)
++        .await
+ }
+ 
+ #[cfg(all(feature = "parquet", not(feature = "private")))]
+ pub async fn upload_file_from_req(
+-    _s3_client: Arc<dyn ObjectStore>,
+-    _file_key: &str,
+-    _req: axum::extract::Request,
+-    _options: PutMultipartOpts,
++    s3_client: Arc<dyn ObjectStore>,
++    file_key: &str,
++    req: axum::extract::Request,
++    options: PutMultipartOpts,
+ ) -> error::Result<()> {
+-    Err(error::Error::internal_err(
+-        "Not implemented in Windmill's Open Source repository".to_string(),
+-    ))
++    job_helpers_impl::upload_file_from_req(s3_client, file_key, req, options).await
+ }
+ 
+ #[cfg(all(feature = "parquet", not(feature = "private")))]
+ pub async fn upload_file_internal(
+-    _s3_client: Arc<dyn ObjectStore>,
+-    _file_key: &str,
+-    _stream: impl Stream<Item = Result<Bytes, std::io::Error>> + Unpin,
+-    _options: PutMultipartOpts,
++    s3_client: Arc<dyn ObjectStore>,
++    file_key: &str,
++    stream: impl Stream<Item = Result<Bytes, std::io::Error>> + Unpin,
++    options: PutMultipartOpts,
+ ) -> error::Result<()> {
+-    Err(error::Error::internal_err(
+-        "Not implemented in Windmill's Open Source repository".to_string(),
+-    ))
++    job_helpers_impl::upload_file_internal(s3_client, file_key, stream, options).await
+ }
+ 
+ #[cfg(all(feature = "parquet", not(feature = "private")))]
+ pub async fn download_s3_file_internal(
+-    _authed: ApiAuthed,
+-    _db: &DB,
+-    _user_db: Option<UserDB>,
+-    _w_id: &str,
+-    _query: DownloadFileQuery,
++    authed: ApiAuthed,
++    db: &DB,
++    user_db: Option<UserDB>,
++    w_id: &str,
++    query: DownloadFileQuery,
+ ) -> error::Result<Response> {
+-    Err(error::Error::internal_err(
+-        "Not implemented in Windmill's Open Source repository".to_string(),
+-    ))
++    job_helpers_impl::download_s3_file_internal(authed, db, user_db, w_id, query).await
+ }
+ 
+ #[allow(dead_code)]
+ #[cfg(not(feature = "private"))]
+ pub async fn read_object_streamable(
+-    _s3_client: Arc<dyn ObjectStore>,
+-    _file_key: &str,
++    s3_client: Arc<dyn ObjectStore>,
++    file_key: &str,
+ ) -> error::Result<Response> {
+-    Err(error::Error::internal_err(
+-        "Not implemented in Windmill's Open Source repository".to_string(),
+-    ))
++    job_helpers_impl::read_object_streamable(s3_client, file_key).await
+ }
+ 
+ #[allow(dead_code)]
+ #[cfg(not(feature = "private"))]
+ pub async fn delete_s3_file_internal(
+-    _authed: &ApiAuthed,
+-    _db: &DB,
+-    _token: &str,
+-    _w_id: &str,
+-    _query: DeleteS3FileQuery,
++    authed: &ApiAuthed,
++    db: &DB,
++    token: &str,
++    w_id: &str,
++    query: DeleteS3FileQuery,
+ ) -> error::Result<()> {
+-    Err(error::Error::internal_err(
+-        "Not implemented in Windmill's Open Source repository".to_string(),
+-    ))
++    job_helpers_impl::delete_s3_file_internal(authed, db, token, w_id, query).await
+ }
+ 
+ #[cfg(not(feature = "private"))]
+@@ -151,15 +140,19 @@ pub struct DeleteS3FileQuery {
+ 
+ #[cfg(not(feature = "private"))]
+ pub async fn get_workspace_s3_resource_and_check_paths<'c>(
+-    _db_with_opt_authed: &DbWithOptAuthed<'c, ApiAuthed>,
+-    _w_id: &str,
+-    _storage: Option<String>,
+-    _paths: &[(&str, windmill_common::s3_helpers::S3Permission)],
++    db_with_opt_authed: &DbWithOptAuthed<'c, ApiAuthed>,
++    w_id: &str,
++    storage: Option<String>,
++    paths: &[(&str, windmill_common::s3_helpers::S3Permission)],
+ ) -> windmill_common::error::Result<(
+     Option<bool>,
+     Option<windmill_common::s3_helpers::ObjectStoreResource>,
+ )> {
+-    Err(windmill_common::error::Error::internal_err(
+-        "Not implemented in Windmill's Open Source repository".to_string(),
+-    ))
++    job_helpers_impl::get_workspace_s3_resource_and_check_paths(
++        db_with_opt_authed,
++        w_id,
++        storage,
++        paths,
++    )
++    .await
+ }
+diff --git a/windmill-common/src/job_s3_helpers_impl.rs b/windmill-common/src/job_s3_helpers_impl.rs
+new file mode 100644
+index 000000000..0250c772a
+--- /dev/null
++++ b/windmill-common/src/job_s3_helpers_impl.rs
+@@ -0,0 +1,211 @@
++//! Open implementation of the workspace object storage helpers that the stock
++//! open-source build leaves as `todo!()` in `job_s3_helpers_oss.rs`.
++//!
++//! Static-credential S3, Azure Blob and GCS resources are fully supported.
++//! `S3AwsOidc` and `AzureWorkloadIdentity` need Windmill to issue OIDC tokens
++//! for the job, which the open build cannot do, so they return a clear error
++//! instead of panicking.
++
++use crate::error::{self, Error};
++use crate::s3_helpers::{
++    AzureBlobResource, GcsResource, ObjectStoreResource, S3Permission, S3PermissionRule,
++    S3Resource, StorageResourceType,
++};
++
++use super::TokenGenerator;
++
++const OIDC_UNAVAILABLE: &str =
++    "AWS OIDC / Azure Workload Identity object storage needs Windmill-issued OIDC tokens, which are not available in this build. Use a resource with static credentials instead.";
++
++/// Parse the raw JSON value of a resource into an `ObjectStoreResource` for the
++/// given storage type.
++pub fn parse_object_store_resource(
++    resource_type: &StorageResourceType,
++    raw: serde_json::Value,
++) -> error::Result<ObjectStoreResource> {
++    match resource_type {
++        StorageResourceType::S3 => serde_json::from_value::<S3Resource>(raw)
++            .map(ObjectStoreResource::S3)
++            .map_err(|e| Error::internal_err(format!("Error reading S3 resource: {e}"))),
++        StorageResourceType::AzureBlob => serde_json::from_value::<AzureBlobResource>(raw)
++            .map(ObjectStoreResource::Azure)
++            .map_err(|e| Error::internal_err(format!("Error reading Azure Blob resource: {e}"))),
++        StorageResourceType::GoogleCloudStorage => serde_json::from_value::<GcsResource>(raw)
++            .map(ObjectStoreResource::Gcs)
++            .map_err(|e| Error::internal_err(format!("Error reading GCS resource: {e}"))),
++        StorageResourceType::S3AwsOidc | StorageResourceType::AzureWorkloadIdentity => {
++            Err(Error::BadConfig(OIDC_UNAVAILABLE.to_string()))
++        }
++    }
++}
++
++pub async fn get_s3_resource_internal<'c>(
++    resource_type: StorageResourceType,
++    s3_resource_value_raw: serde_json::Value,
++    _gen_token: TokenGenerator<'c>,
++    _db: &crate::DB,
++) -> error::Result<ObjectStoreResource> {
++    parse_object_store_resource(&resource_type, s3_resource_value_raw)
++}
++
++pub async fn gen_token<'c>(
++    generator: &TokenGenerator<'c>,
++    audience: &str,
++    _db: Option<&crate::DB>,
++) -> anyhow::Result<String> {
++    match generator {
++        // The API answers this with the OSS OIDC stub; the error is propagated as is.
++        TokenGenerator::AsClient(client) => client.get_id_token(audience).await,
++        TokenGenerator::AsServerInstance() => Err(anyhow::anyhow!(OIDC_UNAVAILABLE)),
++    }
++}
++
++pub fn oidc_unavailable() -> Error {
++    Error::BadConfig(OIDC_UNAVAILABLE.to_string())
++}
++
++/// Expand the `{username}`, `{group}`, `{folder_read}` and `{folder_write}`
++/// placeholders of a rule pattern for one user. A placeholder with no value
++/// (a user without groups, say) yields no pattern.
++fn expand_pattern(
++    pattern: &str,
++    username: &str,
++    groups: &[String],
++    folders: &[(String, bool, bool)],
++) -> Vec<String> {
++    let mut out = vec![pattern.replace("{username}", username)];
++    let expand = |patterns: Vec<String>, placeholder: &str, values: Vec<&str>| -> Vec<String> {
++        let mut next = vec![];
++        for p in patterns {
++            if p.contains(placeholder) {
++                for v in &values {
++                    next.push(p.replace(placeholder, v));
++                }
++            } else {
++                next.push(p);
++            }
++        }
++        next
++    };
++    out = expand(out, "{group}", groups.iter().map(|g| g.as_str()).collect());
++    out = expand(
++        out,
++        "{folder_read}",
++        folders.iter().map(|(f, _, _)| f.as_str()).collect(),
++    );
++    out = expand(
++        out,
++        "{folder_write}",
++        folders
++            .iter()
++            .filter(|(_, w, _)| *w)
++            .map(|(f, _, _)| f.as_str())
++            .collect(),
++    );
++    out
++}
++
++/// Whether `rules` grant `perm` on `path` for this user. Rules are evaluated in
++/// order and the first pattern matching the path decides; a path matched by no
++/// rule is denied (the default rule set ends with a `**/*` catch-all).
++pub fn s3_path_allowed(
++    rules: &[S3PermissionRule],
++    username: &str,
++    groups: &[String],
++    folders: &[(String, bool, bool)],
++    path: &str,
++    perm: S3Permission,
++) -> bool {
++    let path = path.trim_start_matches('/');
++    for rule in rules {
++        for pattern in expand_pattern(&rule.pattern, username, groups, folders) {
++            let glob = match globset::GlobBuilder::new(&pattern)
++                .literal_separator(true)
++                .build()
++            {
++                Ok(g) => g.compile_matcher(),
++                Err(e) => {
++                    tracing::warn!("invalid S3 permission pattern {pattern:?}: {e}");
++                    continue;
++                }
++            };
++            if glob.is_match(path) {
++                return rule.allow.contains(perm);
++            }
++        }
++    }
++    false
++}
++
++/// Check every `(path, permission)` pair against the rules, returning a
++/// permission error naming the first path that is denied.
++pub fn check_s3_paths(
++    rules: &[S3PermissionRule],
++    username: &str,
++    groups: &[String],
++    folders: &[(String, bool, bool)],
++    paths: &[(&str, S3Permission)],
++) -> error::Result<()> {
++    for (path, perm) in paths {
++        if !s3_path_allowed(rules, username, groups, folders, path, *perm) {
++            // Generic(FORBIDDEN): Error::PermissionDenied is mapped to HTTP 500 by
++            // windmill-common's IntoResponse, which the UI would show as a crash.
++            return Err(Error::Generic(
++                axum::http::StatusCode::FORBIDDEN,
++                format!(
++                    "{} access to {path} is not allowed by the workspace storage permission rules",
++                    perm_name(*perm)
++                ),
++            ));
++        }
++    }
++    Ok(())
++}
++
++fn perm_name(perm: S3Permission) -> &'static str {
++    if perm.contains(S3Permission::DELETE) {
++        "Delete"
++    } else if perm.contains(S3Permission::WRITE) {
++        "Write"
++    } else if perm.contains(S3Permission::LIST) {
++        "List"
++    } else {
++        "Read"
++    }
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++
++    fn rules() -> Vec<S3PermissionRule> {
++        serde_json::from_value(serde_json::json!([
++            { "pattern": "windmill_uploads/*", "allow": "read,write,delete" },
++            { "pattern": "u/{username}/**/*", "allow": "read,write,delete,list" },
++            { "pattern": "g/{group}/**/*", "allow": "read,write,delete,list" },
++            { "pattern": "f/{folder_write}/**/*", "allow": "read,write,delete,list" },
++            { "pattern": "f/{folder_read}/**/*", "allow": "read,list" },
++            { "pattern": "**/*", "allow": "" }
++        ]))
++        .unwrap()
++    }
++
++    #[test]
++    fn default_rules() {
++        let r = rules();
++        let groups = vec!["all".to_string(), "data".to_string()];
++        let folders = vec![("ro".to_string(), false, false), ("rw".to_string(), true, false)];
++        let ok = |p: &str, perm| s3_path_allowed(&r, "alice", &groups, &folders, p, perm);
++        assert!(ok("windmill_uploads/x.csv", S3Permission::WRITE));
++        assert!(!ok("windmill_uploads/x.csv", S3Permission::LIST));
++        assert!(!ok("windmill_uploads/sub/x.csv", S3Permission::READ));
++        assert!(ok("u/alice/a/b.txt", S3Permission::DELETE));
++        assert!(!ok("u/bob/a/b.txt", S3Permission::READ));
++        assert!(ok("g/data/x", S3Permission::WRITE));
++        assert!(!ok("g/other/x", S3Permission::READ));
++        assert!(ok("f/ro/x", S3Permission::READ));
++        assert!(!ok("f/ro/x", S3Permission::WRITE));
++        assert!(ok("f/rw/x", S3Permission::WRITE));
++        assert!(!ok("elsewhere/x", S3Permission::READ));
++    }
++}
+diff --git a/windmill-common/src/job_s3_helpers_oss.rs b/windmill-common/src/job_s3_helpers_oss.rs
+index b7ebd57f3..e344762b3 100644
+--- a/windmill-common/src/job_s3_helpers_oss.rs
++++ b/windmill-common/src/job_s3_helpers_oss.rs
+@@ -2,17 +2,22 @@
+ #[allow(unused)]
+ pub use crate::job_s3_helpers_ee::*;
+ 
++#[cfg(not(feature = "private"))]
++#[path = "job_s3_helpers_impl.rs"]
++pub mod job_s3_helpers_impl;
++
+ #[cfg(not(feature = "private"))]
+ use crate::s3_helpers::{ObjectStoreResource, StorageResourceType};
+ 
+ #[cfg(not(feature = "private"))]
+ pub async fn get_s3_resource_internal<'c>(
+-    _resource_type: StorageResourceType,
+-    _s3_resource_value_raw: serde_json::Value,
+-    _gen_token: TokenGenerator<'c>,
+-    _db: &crate::DB,
++    resource_type: StorageResourceType,
++    s3_resource_value_raw: serde_json::Value,
++    gen_token: TokenGenerator<'c>,
++    db: &crate::DB,
+ ) -> crate::error::Result<ObjectStoreResource> {
+-    todo!()
++    job_s3_helpers_impl::get_s3_resource_internal(resource_type, s3_resource_value_raw, gen_token, db)
++        .await
+ }
+ 
+ #[cfg(not(feature = "private"))]
+@@ -25,10 +30,10 @@ pub enum TokenGenerator<'c> {
+ impl<'c> TokenGenerator<'c> {
+     pub async fn gen_token(
+         &self,
+-        _audience: &str,
+-        _db: Option<&crate::DB>,
++        audience: &str,
++        db: Option<&crate::DB>,
+     ) -> anyhow::Result<String> {
+-        todo!()
++        job_s3_helpers_impl::gen_token(self, audience, db).await
+     }
+ }
+ 
+@@ -38,5 +43,5 @@ pub(crate) async fn generate_s3_aws_oidc_resource<'c>(
+     _token_generator: TokenGenerator<'c>,
+     _init_private_key: Option<&sqlx::Pool<sqlx::Postgres>>,
+ ) -> crate::error::Result<ObjectStoreResource> {
+-    todo!()
++    Err(job_s3_helpers_impl::oidc_unavailable())
+ }
