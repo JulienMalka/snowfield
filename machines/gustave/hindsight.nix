@@ -102,6 +102,30 @@ in
       # the default of 32 in flight would let a busy evening crowd those out.
       HINDSIGHT_API_LLM_MAX_CONCURRENT = "4";
 
+      # Server-wide missions, so every bank gets them; the hermes plugin has
+      # config keys for both but (at the pinned commit) never sends them. The
+      # extractor sees one turn at a time, so "the workspace" or "admin" in a
+      # turn that never names Windmill is resolved against this text rather
+      # than guessed from the context label, which is how "admin on the
+      # jacques VM" got stored in the 2026-10-13 test.
+      HINDSIGHT_API_RETAIN_MISSION = lib.concatStringsSep " " [
+        "Memory of Jacques, the hermes agent Julien runs on the jacques VM."
+        "Julien's machines: gustave (main server: Windmill at workflows.luj.fr,"
+        "litellm at inference.luj.fr, Postgres, nginx), the DGX Sparks inference01"
+        "and inference02 (vLLM serving DeepSeek V4 Flash), lambda (monitoring),"
+        "pve (the Proxmox host). \"Workspace\", \"admin\" or \"folder\" in a Windmill"
+        "context mean the ai-workflows Windmill workspace, not a machine."
+        "Keep: decisions, Julien's rules and corrections, what was done on which"
+        "machine and how it ended, open tasks, where credentials live (never"
+        "their values), facts about people and projects Julien names."
+        "Skip tool output, progress narration and pleasantries."
+      ];
+      HINDSIGHT_API_REFLECT_MISSION = lib.concatStringsSep " " [
+        "You are the long-term memory of Jacques, Julien's hermes agent. Answer"
+        "from the retained conversations, date events when you can, and say"
+        "plainly when something was retracted or never established."
+      ];
+
       # bge-small (embeddings) and MiniLM (reranker) from the HF hub on first
       # start, cached in the state dir. Both run fine on a few CPU threads.
       HINDSIGHT_API_EMBEDDINGS_PROVIDER = "local";

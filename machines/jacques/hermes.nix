@@ -93,28 +93,8 @@ let
     # narrator setting (the plugin sends none).
     retain_user_prefix = "Julien";
     retain_assistant_prefix = "Jacques";
-    # Both are applied to the bank through the server's config API. The
-    # extractor sees one turn at a time, so "the workspace" or "admin" in a
-    # turn that never names Windmill gets resolved against this text rather
-    # than guessed from the context label (which is how "admin on the
-    # jacques VM" got stored in the 2026-10-13 test).
-    bank_retain_mission = ''
-      Memory of Jacques, the hermes agent Julien runs on the jacques VM. Julien's
-      machines: gustave (main server: Windmill at workflows.luj.fr, litellm at
-      inference.luj.fr, Postgres, nginx), the DGX Sparks inference01 and
-      inference02 (vLLM serving DeepSeek V4 Flash), lambda (monitoring), pve
-      (the Proxmox host). "Workspace", "admin" or "folder" in a Windmill
-      context mean the ai-workflows Windmill workspace, not a machine. Keep:
-      decisions, Julien's rules and corrections, what was done on which
-      machine and how it ended, open tasks, where credentials live (never
-      their values), facts about people and projects Julien names. Skip tool
-      output, progress narration and pleasantries.
-    '';
-    bank_mission = ''
-      You are the long-term memory of Jacques, Julien's hermes agent. Answer
-      from the retained conversations, date events when you can, and say
-      plainly when something was retracted or never established.
-    '';
+    # The retain and reflect missions live on the server (machines/gustave/
+    # hindsight.nix): the plugin's bank_mission keys are read but never sent.
     # Status lines ("recalled N memories") would land on Signal as messages.
     recall_indicator = false;
     retain_indicator = false;
