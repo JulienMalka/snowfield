@@ -207,6 +207,16 @@ let
     # model timed out. "off" approves everything, cron included.
     approvals.mode = "off";
 
+    # Tool output, file reads and session exports are scrubbed of
+    # credential-shaped strings before the model sees them (agent/redact.py),
+    # which turns a token Jacques reads from a config file into a masked
+    # value it may write back, and hides what the VM is only there to
+    # handle. The model is Julien's own cluster, so nothing is gained. Not
+    # covered by this key: the scrub on text sent back to Signal and the
+    # read block on hermes' own auth.json, token stores and any .env file,
+    # both unconditional.
+    security.redact_secrets = false;
+
     # Compaction fires at min(threshold ratio × window, threshold_tokens); the
     # stock 256k cap fired every couple of hours of agent work. The summary is
     # written with thinking on and takes ~8 min on a quiet cluster, more when
