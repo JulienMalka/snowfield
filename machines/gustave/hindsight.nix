@@ -43,6 +43,10 @@ in
       }
     ];
     extensions = ps: [ ps.pgvector ];
+    # Before Hindsight the server already sat at 96 of the 97 slots the
+    # default 100 leaves to ordinary users (Windmill idles 57 of them), and
+    # Hindsight's second start found none for its migration (2026-10-13).
+    settings.max_connections = 200;
   };
 
   # The migrations check for pgvector and stop with "CREATE EXTENSION vector"
@@ -89,6 +93,11 @@ in
       HINDSIGHT_API_PORT = toString port;
       HINDSIGHT_API_DATABASE_URL = "postgresql://hindsight@/hindsight?host=/run/postgresql";
       HINDSIGHT_API_RUN_MIGRATIONS_ON_STARTUP = "true";
+      # The stock pool grows to 100, the whole of Postgres' max_connections
+      # here, and the second start (2026-10-13) found no slot left for its own
+      # migration. One agent's turns need a handful.
+      HINDSIGHT_API_DB_POOL_MIN_SIZE = "1";
+      HINDSIGHT_API_DB_POOL_MAX_SIZE = "10";
 
       # litellm's only chat model. DeepSeek V4 Flash reasons by default and the
       # thinking is wasted on fact extraction: it took each retain from ~15 s
