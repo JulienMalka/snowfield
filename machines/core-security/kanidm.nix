@@ -52,6 +52,7 @@ in
           "sofia"
         ];
         "litellm_admins".members = [ "luj" ];
+        "windmill_users".members = [ "luj" ];
       };
 
       persons.luj = {
@@ -250,6 +251,21 @@ in
           };
         };
 
+        windmill = {
+          displayName = "Windmill";
+          originUrl = "https://workflows.luj.fr/user/login_callback/kanidm";
+          originLanding = "https://workflows.luj.fr/";
+          basicSecretFile = config.age.secrets.kanidm-oauth2-windmill.path;
+          # Windmill's OAuth client does not do PKCE.
+          allowInsecureClientDisablePkce = true;
+          preferShortUsername = true;
+          scopeMaps.windmill_users = [
+            "openid"
+            "email"
+            "profile"
+          ];
+        };
+
         step = {
           public = true;
           displayName = "Step CA";
@@ -306,6 +322,10 @@ in
   };
   age.secrets.kanidm-oauth2-open-webui = {
     file = ./kanidm-oauth2-open-webui.age;
+    owner = "kanidm";
+  };
+  age.secrets.kanidm-oauth2-windmill = {
+    file = ./kanidm-oauth2-windmill.age;
     owner = "kanidm";
   };
 
