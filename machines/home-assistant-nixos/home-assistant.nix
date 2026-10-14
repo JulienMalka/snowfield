@@ -18,7 +18,6 @@ _: {
       "mobile_app"
       "radio_browser"
       "google_translate"
-      "tuya"
       "isal"
     ];
     config = {
