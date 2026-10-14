@@ -164,6 +164,11 @@ let
     };
 
     cron.wrap_response = false;
+    # Scheduled jobs run in their own session; without the mirror the main
+    # Signal transcript never sees what Jacques sent, and "did both tasks"
+    # got matched against the previous evening's turns (2026-10-14). The
+    # delivery is appended as a user-role "[Cron delivery: <job>]" line.
+    cron.mirror_delivery = true;
 
     # The built-in files are injected into every system prompt, so their
     # size is a token cost, cached as prefix; it is also what makes Jacques
@@ -191,6 +196,12 @@ let
       "${hermesHome}/cache/scratch"
       "${hermesHome}/cache/browser-use/workspace"
     ];
+    # The model only knows the date from the system prompt, pinned when the
+    # session starts, so a message answered the next morning was read as the
+    # same evening (2026-10-14). This prefixes each inbound message with a
+    # local-time stamp in the model context; it is stripped before storage
+    # and never reaches the chat.
+    gateway.message_timestamps.enabled = true;
 
     # Left unset, search and extract pick the bundled DuckDuckGo plugin, whose
     # worker runs under the bare interpreter and dies on a missing httpx
