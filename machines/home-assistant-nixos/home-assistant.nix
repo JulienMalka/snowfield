@@ -1,6 +1,14 @@
 _: {
   networking.firewall.allowedTCPPorts = [ 8123 ];
 
+  luj.nginx.enable = true;
+  services.nginx.virtualHosts."home.luj" = {
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:8123";
+      proxyWebsockets = true;
+    };
+  };
+
   services.home-assistant = {
     enable = true;
     extraComponents = [
@@ -18,6 +26,13 @@ _: {
         name = "Home";
         unit_system = "metric";
         time_zone = "Europe/Paris";
+      };
+      http = {
+        use_x_forwarded_for = true;
+        trusted_proxies = [
+          "127.0.0.1"
+          "::1"
+        ];
       };
     };
   };
