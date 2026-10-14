@@ -8,6 +8,7 @@ _: {
       "zha"
       "met"
       "mobile_app"
+      "radio_browser"
       "isal"
     ];
     config = {
