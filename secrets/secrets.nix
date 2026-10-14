@@ -22,6 +22,7 @@ let
     jacques = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBBgWu3hLZ5Rfp3lH6I03ZabztLo5E8GQhZCWVePNEHe";
     inference01 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC8nwtUciJIcqv4RDYkIh/tFkbBwgQUT35skDoljWQ8H";
     inference02 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJifbUFEcvVGaF8mDI5TZneqYHFT8nfTl78WGqaV7vs2";
+    home-assistant-nixos = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOSrSynnOcJ9Q3GWnQVyABaOOnryXw3fGFmN7MBRb5lP";
   };
   secrets_owners = [
     keys.arcadia

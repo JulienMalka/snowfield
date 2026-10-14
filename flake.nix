@@ -85,6 +85,10 @@
       url = "github:graham33/nixos-dgx-spark/main";
       flake = false;
     };
+    nixos-hardware = {
+      url = "github:NixOS/nixos-hardware/master";
+      flake = false;
+    };
     nixos-images = {
       url = "github:nix-community/nixos-images/main";
       flake = false;
