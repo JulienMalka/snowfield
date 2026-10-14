@@ -27,13 +27,6 @@ _: {
         unit_system = "metric";
         time_zone = "Europe/Paris";
       };
-      http = {
-        use_x_forwarded_for = true;
-        trusted_proxies = [
-          "127.0.0.1"
-          "::1"
-        ];
-      };
     };
   };
 }
