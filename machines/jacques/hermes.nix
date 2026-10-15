@@ -115,10 +115,18 @@ let
     openssh
     pandoc
     poppler-utils
+    # One python for the agent's own helpers. caldav + icalendar back the
+    # calendar skill's scripts/agenda.py (Julien's calendars on Stalwart,
+    # endpoint in the unit environment below, app password in a credential);
+    # the script itself lives with the skill on the VM so Jacques can extend it.
     (python3.withPackages (
       ps: with ps; [
         beautifulsoup4
+        caldav
+        icalendar
+        python-dateutil
         requests
+        tzdata
       ]
     ))
     ripgrep
@@ -308,6 +316,7 @@ in
       config.age.secrets.hermes-litellm-key.file
       config.age.secrets.hermes-vaultwarden.file
       config.age.secrets.hermes-windmill.file
+      config.age.secrets.hermes-caldav.file
     ];
 
     environment = {
@@ -332,6 +341,15 @@ in
       # See hindsightClient above. Subprocesses inherit it; the toolbox
       # python is a different interpreter and ignores these two packages.
       PYTHONPATH = hindsightPath;
+      # The calendar skill's helper (skills/calendar/scripts/agenda.py).
+      # Stalwart serves CalDAV under /dav/cal/<account>/ and answers
+      # principal discovery from the collection root; the account itself is
+      # in the credential with the password.
+      CALDAV_URL = "https://mail.luj.fr/dav/cal/";
+      AGENDA_TZ = "Europe/Paris";
+      AGENDA_EMAIL = "julien@malka.sh";
+      # Julien's only calendar there (checked 2026-10-13).
+      AGENDA_DEFAULT_CALENDAR = "Base";
     };
 
     # The generated config is authoritative: it is rewritten on every start, so
@@ -353,6 +371,7 @@ in
       # credential. Windmill being down costs a warning, not the start.
       set -a
       . "$CREDENTIALS_DIRECTORY/windmill"
+      . "$CREDENTIALS_DIRECTORY/caldav"
       set +a
       if ! wmill workspace add ${windmillWorkspace} ${windmillWorkspace} ${windmillUrl}/ --token "$WINDMILL_TOKEN" > /dev/null 2>&1; then
         echo "wmill: could not register the workspace, the CLI will need it by hand" >&2
@@ -391,6 +410,7 @@ in
         "litellm-key:${config.age.secrets.hermes-litellm-key.path}"
         "vaultwarden:${config.age.secrets.hermes-vaultwarden.path}"
         "windmill:${config.age.secrets.hermes-windmill.path}"
+        "caldav:${config.age.secrets.hermes-caldav.path}"
       ];
       Restart = "always";
       RestartSec = 5;
@@ -455,4 +475,8 @@ in
   # WINDMILL_TOKEN (plain, for the CLI) and WINDMILL_MCP_TOKEN (scoped) of
   # the jacques Windmill user, as shell assignments.
   age.secrets.hermes-windmill.file = ./hermes-windmill.age;
+  # CALDAV_USER and CALDAV_PASSWORD: Julien's Stalwart account and an app
+  # password made for Jacques in the self-service portal, as shell
+  # assignments.
+  age.secrets.hermes-caldav.file = ./hermes-caldav.age;
 }
