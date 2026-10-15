@@ -28,6 +28,8 @@
         name = "Home";
         unit_system = "metric";
         time_zone = "Europe/Paris";
+        external_url = "https://home.luj";
+        internal_url = "https://home.luj";
       };
     };
   };
