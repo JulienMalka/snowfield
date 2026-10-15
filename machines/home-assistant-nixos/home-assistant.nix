@@ -13,6 +13,10 @@
   services.home-assistant = {
     enable = true;
     customComponents = [ pkgs.home-assistant-custom-components.xiaomi_home ];
+    customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
+      bubble-card
+      card-mod
+    ];
     extraComponents = [
       "default_config"
       "zha"
