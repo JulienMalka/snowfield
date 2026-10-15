@@ -1,4 +1,5 @@
-_: {
+{ pkgs, ... }:
+{
   networking.firewall.allowedTCPPorts = [ 8123 ];
 
   luj.nginx.enable = true;
@@ -11,6 +12,7 @@ _: {
 
   services.home-assistant = {
     enable = true;
+    customComponents = [ pkgs.home-assistant-custom-components.xiaomi_home ];
     extraComponents = [
       "default_config"
       "zha"
