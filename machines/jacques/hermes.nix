@@ -349,7 +349,7 @@ in
       AGENDA_TZ = "Europe/Paris";
       AGENDA_EMAIL = "julien@malka.sh";
       # Julien's only calendar there (checked 2026-10-13).
-      AGENDA_DEFAULT_CALENDAR = "Base";
+      AGENDA_DEFAULT_CALENDAR = "Perso";
     };
 
     # The generated config is authoritative: it is rewritten on every start, so
