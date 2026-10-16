@@ -63,10 +63,25 @@ let
   # is the one dependency hermes does not already carry.
   hermesPython = (lib.head pkgs.hermes-agent.dependencies).pythonModule;
   hindsightClient = hermesPython.pkgs.callPackage ../../packages/hindsight/client.nix { };
-  hindsightPath = lib.makeSearchPath hermesPython.sitePackages [
-    hindsightClient
-    hermesPython.pkgs.aiohttp-retry
-  ];
+  # The calendar skill's helper (skills/calendar/scripts/agenda.py, with
+  # the skill on the VM so Jacques can extend it) and whatever helpers he
+  # adds beside it run on the same interpreter with a plain `python3`:
+  # caldav and icalendar ride on the same PYTHONPATH, with their dependency
+  # closure, since makeSearchPath does not follow propagated inputs. The
+  # closure overlaps hermes' own packages, same python set, same store
+  # paths, so nothing is shadowed.
+  hermesExtraPackages = lib.closePropagation (
+    [
+      hindsightClient
+      hermesPython.pkgs.aiohttp-retry
+    ]
+    ++ (with hermesPython.pkgs; [
+      caldav
+      icalendar
+      python-dateutil
+    ])
+  );
+  hindsightPath = lib.makeSearchPath hermesPython.sitePackages hermesExtraPackages;
   hindsightUrl = "http://${lib.snowfield.gustave.ips.vpn.ipv4}:8888";
 
   # The plugin reads $HERMES_HOME/hindsight/config.json, not config.yaml.
@@ -104,62 +119,32 @@ let
   # unit's PATH (subprocesses) and login shells spawned by its terminal
   # tool, which re-source the system profile — so the list has to be in
   # both the unit path and systemPackages.
-  # One python for the agent's own helpers. caldav + icalendar back the
-  # calendar skill's scripts/agenda.py (Julien's calendars on Stalwart,
-  # endpoint in the unit environment below, app password in a credential);
-  # the script itself lives with the skill on the VM so Jacques can extend it.
-  # hermes' own interpreter (3.14, no caldav) comes first on the unit PATH, so
-  # a bare `python3` is the wrong one: the `agenda` launcher and
-  # `agenda-python` pin this environment for the skill and its helpers.
-  agendaPython = pkgs.python3.withPackages (
-    ps: with ps; [
-      beautifulsoup4
-      caldav
-      icalendar
-      python-dateutil
-      requests
-      tzdata
-    ]
-  );
-  agendaLaunchers = [
-    (pkgs.writeShellScriptBin "agenda" ''
-      exec ${agendaPython}/bin/python3 /var/lib/hermes/skills/calendar/scripts/agenda.py "$@"
-    '')
-    (pkgs.writeShellScriptBin "agenda-python" ''
-      exec ${agendaPython}/bin/python3 "$@"
-    '')
+  toolbox = with pkgs; [
+    bash
+    coreutils
+    curl
+    git
+    gnugrep
+    gnused
+    jq
+    openssh
+    pandoc
+    poppler-utils
+    ripgrep
+    sqlite
+    bitwarden-cli
+    wmill
+    # hermes' browser tools (browser_navigate, browser_snapshot, ...) only
+    # appear once the agent-browser CLI is found and a Chromium is on PATH
+    # (tools/browser_tool_install.py:check_browser_requirements); the package
+    # disables its own downloads, so both come from nixpkgs. The CLI is pure
+    # Rust talking CDP, no Node daemon, and runs headless without a display or
+    # a user runtime dir. Pages that bot-wall plain fetches (LinkedIn, grep.app)
+    # render fine this way (checked 2026-10-12). The CLI itself is told where
+    # Chromium is through the unit environment, see below.
+    agent-browser
+    chromium
   ];
-
-  toolbox =
-    with pkgs;
-    [
-      bash
-      coreutils
-      curl
-      git
-      gnugrep
-      gnused
-      jq
-      openssh
-      pandoc
-      poppler-utils
-      agendaPython
-      ripgrep
-      sqlite
-      bitwarden-cli
-      wmill
-      # hermes' browser tools (browser_navigate, browser_snapshot, ...) only
-      # appear once the agent-browser CLI is found and a Chromium is on PATH
-      # (tools/browser_tool_install.py:check_browser_requirements); the package
-      # disables its own downloads, so both come from nixpkgs. The CLI is pure
-      # Rust talking CDP, no Node daemon, and runs headless without a display or
-      # a user runtime dir. Pages that bot-wall plain fetches (LinkedIn, grep.app)
-      # render fine this way (checked 2026-10-12). The CLI itself is told where
-      # Chromium is through the unit environment, see below.
-      agent-browser
-      chromium
-    ]
-    ++ agendaLaunchers;
 
   # hermes reads $HERMES_HOME/config.yaml and expands ''${VAR} references from
   # the environment, so the API key stays out of the store and arrives via
@@ -354,8 +339,8 @@ in
       # which sits on the home connection. Browser traffic only; hermes'
       # own API calls and fetches keep the direct route.
       AGENT_BROWSER_PROXY = "socks5://${lib.snowfield.inference01.ips.vpn.ipv4}:1080";
-      # See hindsightClient above. Subprocesses inherit it; the toolbox
-      # python is a different interpreter and ignores these two packages.
+      # See hindsightClient and hermesExtraPackages above. Subprocesses
+      # inherit it, so a bare `python3` in the terminal tool sees them.
       PYTHONPATH = hindsightPath;
       # The calendar skill's helper (skills/calendar/scripts/agenda.py).
       # Stalwart serves CalDAV under /dav/cal/<account>/ and answers
