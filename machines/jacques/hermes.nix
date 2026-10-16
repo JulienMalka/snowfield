@@ -104,46 +104,62 @@ let
   # unit's PATH (subprocesses) and login shells spawned by its terminal
   # tool, which re-source the system profile — so the list has to be in
   # both the unit path and systemPackages.
-  toolbox = with pkgs; [
-    bash
-    coreutils
-    curl
-    git
-    gnugrep
-    gnused
-    jq
-    openssh
-    pandoc
-    poppler-utils
-    # One python for the agent's own helpers. caldav + icalendar back the
-    # calendar skill's scripts/agenda.py (Julien's calendars on Stalwart,
-    # endpoint in the unit environment below, app password in a credential);
-    # the script itself lives with the skill on the VM so Jacques can extend it.
-    (python3.withPackages (
-      ps: with ps; [
-        beautifulsoup4
-        caldav
-        icalendar
-        python-dateutil
-        requests
-        tzdata
-      ]
-    ))
-    ripgrep
-    sqlite
-    bitwarden-cli
-    wmill
-    # hermes' browser tools (browser_navigate, browser_snapshot, ...) only
-    # appear once the agent-browser CLI is found and a Chromium is on PATH
-    # (tools/browser_tool_install.py:check_browser_requirements); the package
-    # disables its own downloads, so both come from nixpkgs. The CLI is pure
-    # Rust talking CDP, no Node daemon, and runs headless without a display or
-    # a user runtime dir. Pages that bot-wall plain fetches (LinkedIn, grep.app)
-    # render fine this way (checked 2026-10-12). The CLI itself is told where
-    # Chromium is through the unit environment, see below.
-    agent-browser
-    chromium
+  # One python for the agent's own helpers. caldav + icalendar back the
+  # calendar skill's scripts/agenda.py (Julien's calendars on Stalwart,
+  # endpoint in the unit environment below, app password in a credential);
+  # the script itself lives with the skill on the VM so Jacques can extend it.
+  # hermes' own interpreter (3.14, no caldav) comes first on the unit PATH, so
+  # a bare `python3` is the wrong one: the `agenda` launcher and
+  # `agenda-python` pin this environment for the skill and its helpers.
+  agendaPython = pkgs.python3.withPackages (
+    ps: with ps; [
+      beautifulsoup4
+      caldav
+      icalendar
+      python-dateutil
+      requests
+      tzdata
+    ]
+  );
+  agendaLaunchers = [
+    (pkgs.writeShellScriptBin "agenda" ''
+      exec ${agendaPython}/bin/python3 /var/lib/hermes/skills/calendar/scripts/agenda.py "$@"
+    '')
+    (pkgs.writeShellScriptBin "agenda-python" ''
+      exec ${agendaPython}/bin/python3 "$@"
+    '')
   ];
+
+  toolbox =
+    with pkgs;
+    [
+      bash
+      coreutils
+      curl
+      git
+      gnugrep
+      gnused
+      jq
+      openssh
+      pandoc
+      poppler-utils
+      agendaPython
+      ripgrep
+      sqlite
+      bitwarden-cli
+      wmill
+      # hermes' browser tools (browser_navigate, browser_snapshot, ...) only
+      # appear once the agent-browser CLI is found and a Chromium is on PATH
+      # (tools/browser_tool_install.py:check_browser_requirements); the package
+      # disables its own downloads, so both come from nixpkgs. The CLI is pure
+      # Rust talking CDP, no Node daemon, and runs headless without a display or
+      # a user runtime dir. Pages that bot-wall plain fetches (LinkedIn, grep.app)
+      # render fine this way (checked 2026-10-12). The CLI itself is told where
+      # Chromium is through the unit environment, see below.
+      agent-browser
+      chromium
+    ]
+    ++ agendaLaunchers;
 
   # hermes reads $HERMES_HOME/config.yaml and expands ''${VAR} references from
   # the environment, so the API key stays out of the store and arrives via
