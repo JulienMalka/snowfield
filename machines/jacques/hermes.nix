@@ -120,6 +120,10 @@ let
   # tool, which re-source the system profile — so the list has to be in
   # both the unit path and systemPackages.
   toolbox = with pkgs; [
+    # The terminal tool runs a login shell with the system profile PATH, not
+    # the unit's, so hermes' interpreter has to be here too for a plain
+    # `python3` (the PYTHONPATH below is inherited either way).
+    hermesPython
     bash
     coreutils
     curl
