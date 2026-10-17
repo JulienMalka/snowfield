@@ -96,9 +96,20 @@ in
   environment.systemPackages = [ pkgs.notmuch ];
   environment.variables.NOTMUCH_CONFIG = "${notmuchConfig}";
 
+  # The mail skill's draft.py stores drafts on the server for all four
+  # principals, so the gateway carries the mirrors' password as well as
+  # the CalDAV one it already has for malka.
   systemd.services.hermes-gateway = {
     path = [ pkgs.notmuch ];
-    environment.NOTMUCH_CONFIG = "${notmuchConfig}";
+    environment = {
+      NOTMUCH_CONFIG = "${notmuchConfig}";
+      MAIL_DIR = mailDir;
+    };
+    restartTriggers = [ config.age.secrets.hermes-mail-mirrors.file ];
+    serviceConfig.LoadCredential = [ "mail-mirrors:${config.age.secrets.hermes-mail-mirrors.path}" ];
+    script = lib.mkBefore ''
+      export MAIL_MIRRORS_PASSWORD="$(< "$CREDENTIALS_DIRECTORY/mail-mirrors")"
+    '';
   };
 
   systemd.services.hermes-mail-sync = {
