@@ -197,6 +197,16 @@ let
       provider = "hindsight";
     };
 
+    # The one cloud lane, agreed 2026-10-17: deepseek-v4-flash is text-only,
+    # so images (Signal photos, browser screenshots, rendered pages) are
+    # described by GPT-6 Sol through Julien's ChatGPT login. Everything else
+    # stays on the cluster. The OAuth token is runtime state in auth.json,
+    # added once with `hermes auth add openai-codex`.
+    auxiliary.vision = {
+      provider = "openai-codex";
+      model = "gpt-6-sol";
+    };
+
     # Files the model emits as MEDIA: are only sent when they sit under one
     # of hermes' media cache dirs or outside its system denylist, and that
     # denylist carries /var/lib with an exemption for $HOME only when the
