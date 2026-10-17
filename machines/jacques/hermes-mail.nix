@@ -68,6 +68,7 @@ let
   sync = pkgs.writeShellApplication {
     name = "hermes-mail-sync";
     runtimeInputs = [
+      pkgs.bash
       pkgs.mujmap-patched
       pkgs.notmuch
       pkgs.gnused
