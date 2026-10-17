@@ -16,7 +16,7 @@ let
   accounts = {
     malka = {
       principal = "malka";
-      passwordCommand = "sed -n 's/^CALDAV_PASSWORD=//p' ${credentials}/caldav";
+      passwordCommand = ''. ${credentials}/caldav && printf %s "$CALDAV_PASSWORD"'';
     };
     ens = {
       principal = "julien-ens";
@@ -71,7 +71,6 @@ let
       pkgs.bash
       pkgs.mujmap-patched
       pkgs.notmuch
-      pkgs.gnused
       pkgs.coreutils
     ];
     text = ''
