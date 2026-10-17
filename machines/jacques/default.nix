@@ -11,6 +11,7 @@
     ./hardware.nix
     ./home-julien.nix
     ./gh-proxy.nix
+    ./hermes-mail.nix
   ];
 
   machine.meta = {
