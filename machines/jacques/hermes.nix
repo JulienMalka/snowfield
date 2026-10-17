@@ -229,7 +229,13 @@ let
     # The VM exists for hermes alone, so nothing it runs needs a human to
     # vouch for it; the prompts only ever reached Julien when the safety
     # model timed out. "off" approves everything, cron included.
-    approvals.mode = "off";
+    approvals = {
+      mode = "off";
+      # /new and the other history-dropping slash commands ask first; the
+      # "Always Approve" answer is written to config.yaml, which the next
+      # start overwrites, so the choice lives here.
+      destructive_slash_confirm = false;
+    };
 
     # Tool output, file reads and session exports are scrubbed of
     # credential-shaped strings before the model sees them (agent/redact.py),
