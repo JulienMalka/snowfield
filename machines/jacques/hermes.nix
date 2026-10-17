@@ -62,6 +62,13 @@ let
   # hermes' wrapper leaves alone. hindsight-client is pure python, aiohttp-retry
   # is the one dependency hermes does not already carry.
   hermesPython = (lib.head pkgs.hermes-agent.dependencies).pythonModule;
+
+  # The llm-agents package installs skills and plugins under share/hermes but
+  # not the locales/ catalogs, so every translated gateway reply (/resume,
+  # /sessions, approvals) came out as its bare key, e.g.
+  # "gateway.resume.list_header". The source tree has them.
+  hermesLocales = "${pkgs.hermes-agent.src}/locales";
+
   hindsightClient = hermesPython.pkgs.callPackage ../../packages/hindsight/client.nix { };
   # The calendar skill's helper (skills/calendar/scripts/agenda.py, with
   # the skill on the VM so Jacques can extend it) and whatever helpers he
@@ -298,6 +305,7 @@ in
   nix.settings.trusted-users = [ "hermes" ];
 
   environment.systemPackages = toolbox;
+  environment.variables.HERMES_BUNDLED_LOCALES = hermesLocales;
 
   systemd.services.signal-cli = {
     description = "signal-cli daemon backing the hermes Signal adapter";
@@ -342,6 +350,7 @@ in
 
     environment = {
       HERMES_HOME = hermesHome;
+      HERMES_BUNDLED_LOCALES = hermesLocales;
       HOME = hermesHome;
       SIGNAL_HTTP_URL = "http://${signalHttp}";
       SIGNAL_ACCOUNT = signalAccount;
