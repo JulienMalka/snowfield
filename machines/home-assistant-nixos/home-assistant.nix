@@ -28,6 +28,9 @@
     ];
     config = {
       default_config = { };
+      automation = "!include automations.yaml";
+      script = "!include scripts.yaml";
+      scene = "!include scenes.yaml";
       homeassistant = {
         name = "Home";
         unit_system = "metric";
