@@ -22,22 +22,9 @@ let
           output_cost_per_token = 1.28e-6;
         };
       }
-      # Parakeet on the EPYC container (transcription-server), CPU. The old
-      # whisper name stays as an alias: the server ignores the model field.
+      # Parakeet on the EPYC container (transcription-server), CPU.
       {
         model_name = "parakeet-tdt-0.6b-v3";
-        litellm_params = {
-          model = "openai/parakeet-tdt-0.6b-v3";
-          api_base = "http://100.100.45.8:8002/v1";
-          api_key = "dummy";
-        };
-        model_info = {
-          mode = "audio_transcription";
-          input_cost_per_second = 1.0e-4;
-        };
-      }
-      {
-        model_name = "whisper-large-v3";
         litellm_params = {
           model = "openai/parakeet-tdt-0.6b-v3";
           api_base = "http://100.100.45.8:8002/v1";
