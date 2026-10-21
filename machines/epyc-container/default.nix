@@ -12,7 +12,20 @@
     ./forgejo-runner.nix
     ./nixbot.nix
     ./windmill-worker.nix
+    inputs.vibecoded-monorepo.nixosModules.transcription-server
   ];
+
+  # Parakeet speech-to-text for litellm (gustave) and the Windmill recording
+  # flows, on the VPN only. Four onnxruntime threads per transcription is
+  # the sweet spot measured on a desktop; two at a time covers a voice note
+  # arriving while a meeting is being transcribed.
+  services.transcription-server = {
+    enable = true;
+    host = "100.100.45.8";
+    threads = 4;
+    maxConcurrency = 2;
+  };
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 8002 ];
 
   boot.loader.grub.enable = false;
   boot.isNspawnContainer = true;

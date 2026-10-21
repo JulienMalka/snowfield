@@ -174,6 +174,21 @@ let
       extra.http_url = "http://${signalHttp}";
     };
 
+    # Voice notes go to Parakeet on the EPYC container through litellm. The
+    # language stays unset: the stock "en" would force English on French
+    # notes, and the model detects the language itself.
+    stt = {
+      provider = "openai";
+      language = "";
+      echo_transcripts = false;
+      openai = {
+        base_url = "https://inference.luj.fr/v1";
+        api_key = "\${LITELLM_API_KEY}";
+        model = "parakeet-tdt-0.6b-v3";
+        timeout = 120;
+      };
+    };
+
     # The MCP token is scoped to running and inspecting: scripts and flows
     # are tools, jobs and schedules are readable and manageable, but the
     # script/flow write tools are left out. Authoring goes through the

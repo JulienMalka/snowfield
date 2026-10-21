@@ -945,6 +945,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_11": {
+      "locked": {
+        "lastModified": 1790578696,
+        "narHash": "sha256-ZoxIApko70jCdbH3l20HWXOBaT2HZd87orzd2yJ9dVE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1723541349,
@@ -1231,7 +1247,8 @@
         "snowfield-private": "snowfield-private",
         "stateless-uptime-kuma": "stateless-uptime-kuma",
         "tp7-sync": "tp7-sync",
-        "unstable": "unstable"
+        "unstable": "unstable",
+        "vibecoded-monorepo": "vibecoded-monorepo"
       }
     },
     "rust-overlay": {
@@ -1501,6 +1518,24 @@
         "owner": "nixos",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "vibecoded-monorepo": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_11"
+      },
+      "locked": {
+        "lastModified": 1792619377,
+        "narHash": "sha256-9q+XkJf40stHlOof0jlP4dt3JiHzd7IxgXBsaCf8uig=",
+        "owner": "Edaoven",
+        "repo": "vibecoded-monorepo",
+        "rev": "6fcf4d8d7e034e88b6a56d938e578f8179d61b17",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Edaoven",
+        "repo": "vibecoded-monorepo",
         "type": "github"
       }
     }

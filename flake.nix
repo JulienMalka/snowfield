@@ -117,6 +117,7 @@
       url = "git+https://git.dgnum.eu/Luj/stateless-uptime-kuma.git?ref=truly-deterministic";
       flake = false;
     };
+    vibecoded-monorepo.url = "github:Edaoven/vibecoded-monorepo";
     unstable = {
       url = "github:nixos/nixpkgs/nixos-unstable";
       flake = false;
