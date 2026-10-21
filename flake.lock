@@ -1532,12 +1532,12 @@
         "rev": "c4b9c0f77841664569982773d04c320020da06c9",
         "revCount": 1,
         "type": "git",
-        "url": "ssh://forgejo@git.luj.fr/luj/vibecoded-monorepo.git"
+        "url": "https://git.luj.fr/luj/vibecoded-monorepo.git"
       },
       "original": {
         "ref": "main",
         "type": "git",
-        "url": "ssh://forgejo@git.luj.fr/luj/vibecoded-monorepo.git"
+        "url": "https://git.luj.fr/luj/vibecoded-monorepo.git"
       }
     }
   },
