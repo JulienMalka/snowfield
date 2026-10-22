@@ -11,10 +11,13 @@
 let
   inherit (config.services.tp7-sync.settings) destination;
 
-  # More new takes than this in one pass is the recorder's backlog arriving
-  # (tp7-sync copies everything still on the device), not someone talking to
-  # Jacques. They are marked as seen and left alone.
-  maxBatch = 3;
+  # tp7-sync copies everything still on the device, one file at a time, so
+  # old takes arrive alongside new ones and each triggers its own pass.
+  # Only takes recorded this recently are sent; older ones are marked as
+  # seen and left alone. The recorder names its files after the local time
+  # it started recording, e.g. 2026-10-22_142204_000.wav; other files go by
+  # their modification time.
+  maxAge = 12 * 3600;
 
   upload = pkgs.writeShellApplication {
     name = "tp7-notes";
@@ -36,12 +39,17 @@ let
         exit 0
       fi
 
+      recorded() {
+        local name
+        name="$(basename "$1")"
+        if [[ "$name" =~ ^([0-9]{4}-[0-9]{2}-[0-9]{2})_([0-9]{2})([0-9]{2})([0-9]{2}) ]]; then
+          date -d "''${BASH_REMATCH[1]} ''${BASH_REMATCH[2]}:''${BASH_REMATCH[3]}:''${BASH_REMATCH[4]}" +%s
+        else
+          date -r "$1" +%s
+        fi
+      }
+
       mapfile -t new < <(takes | LC_ALL=C comm -23 - <(LC_ALL=C sort "$sent"))
-      if [ "''${#new[@]}" -gt ${toString maxBatch} ]; then
-        echo "''${#new[@]} new takes at once, treated as backlog and not sent"
-        printf '%s\n' "''${new[@]}" >> "$sent"
-        exit 0
-      fi
 
       set -a
       # shellcheck disable=SC1091
@@ -50,6 +58,11 @@ let
 
       for take in "''${new[@]}"; do
         path="${destination}/$take"
+        if [ $(($(date +%s) - $(recorded "$path"))) -gt ${toString maxAge} ]; then
+          echo "$take: recorded more than ${toString maxAge}s ago, not sent"
+          printf '%s\n' "$take" >> "$sent"
+          continue
+        fi
         key="inbox/$(date -r "$path" +%Y%m%dT%H%M%S)-$(basename "$take" | tr -c 'A-Za-z0-9._\n-' _)"
         curl -fsS --aws-sigv4 aws:amz:paris:s3 \
           --user "$AWS_ACCESS_KEY_ID:$AWS_SECRET_ACCESS_KEY" \
@@ -79,6 +92,9 @@ in
 
   systemd.user.services.tp7-notes = {
     description = "Send new TP-7 takes to Jacques";
+    # A sync renames files in quick succession and each one starts a pass;
+    # the default start limit failed the path unit halfway through one.
+    startLimitIntervalSec = 0;
     serviceConfig = {
       Type = "oneshot";
       ExecStart = lib.getExe upload;
