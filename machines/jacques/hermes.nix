@@ -279,6 +279,14 @@ let
       extract_backend = "firecrawl";
     };
 
+    # Left unset, hermes switches to the Browser Use CLI (browser_exec)
+    # whenever its binary exists, and that replaces the browser_* tools. It
+    # was uv-installed by hand on 2026-10-12 into a venv on the system
+    # python, so the bump to 3.14 broke it (No module named 'browser_use')
+    # while the Nix-managed agent-browser + Chromium stack sat unused. "off"
+    # keeps the built-in tools on that stack.
+    browser.backend = "off";
+
     # The VM exists for hermes alone, so nothing it runs needs a human to
     # vouch for it; the prompts only ever reached Julien when the safety
     # model timed out. "off" approves everything, cron included.
