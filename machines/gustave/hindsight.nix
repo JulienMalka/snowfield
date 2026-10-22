@@ -136,12 +136,21 @@ in
       ];
 
       # bge-small (embeddings) and MiniLM (reranker) from the HF hub on first
-      # start, cached in the state dir. Both run fine on a few CPU threads.
+      # start, cached in the state dir.
       HINDSIGHT_API_EMBEDDINGS_PROVIDER = "local";
       HINDSIGHT_API_RERANKER_PROVIDER = "local";
       HF_HOME = "${stateDir}/hf";
       HF_HUB_DISABLE_TELEMETRY = "1";
-      OMP_NUM_THREADS = "4";
+      # Reranking is the whole cost of a recall. With 4 threads and the
+      # default 300 candidates it took ~10.5 s on this VM's CPU, past hermes'
+      # 8 s prefetch limit, so from 2026-10-17 Jacques got no recall at all.
+      # 300 synthetic pairs: 3.4 s at 4 threads, 1.4 s at 12 (2026-10-22).
+      # 12 of the 16 vCPUs, one rerank at a time so they never oversubscribe,
+      # the top 100 candidates only, and length-bucketed batches.
+      OMP_NUM_THREADS = "12";
+      HINDSIGHT_API_RERANKER_LOCAL_MAX_CONCURRENT = "1";
+      HINDSIGHT_API_RERANKER_MAX_CANDIDATES = "100";
+      HINDSIGHT_API_RERANKER_LOCAL_BUCKET_BATCHING = "true";
     };
 
     serviceConfig = {
