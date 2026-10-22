@@ -27,7 +27,7 @@ let
     text = ''
       sent="$STATE_DIRECTORY/sent"
       takes() {
-        find ${destination} -type f -iname '*.wav' -printf '%P\n' 2>/dev/null | LC_ALL=C sort
+        { find ${destination} -type f -iname '*.wav' -printf '%P\n' 2> /dev/null || true; } | LC_ALL=C sort
       }
 
       if [ ! -e "$sent" ]; then
