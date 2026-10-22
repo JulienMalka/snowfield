@@ -234,9 +234,12 @@ let
     memory = {
       memory_char_limit = 6600;
       user_char_limit = 4125;
-      # The periodic review nudge is for the built-in store alone; off once an
-      # external provider captures every turn (config_defaults.py).
-      nudge_interval = 0;
+      # Every 20 user turns a background fork re-reads the conversation and
+      # updates MEMORY.md/USER.md. Hindsight records turns but never edits
+      # these files, which sit in every prompt; with the review off (0, from
+      # 2026-10-13) a wrong standing fact, Julien's address misspelled in
+      # USER.md, stayed wrong while Jacques worked around it (2026-10-22).
+      nudge_interval = 20;
       provider = "hindsight";
     };
 
