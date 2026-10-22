@@ -10,6 +10,7 @@
   imports = [
     ./hardware.nix
     ./home-julien.nix
+    ./tp7-notes.nix
   ];
 
   machine.meta = {

@@ -30,6 +30,9 @@ let
   # checkout. Both tokens come from the credential below.
   windmillUrl = "https://workflows.luj.fr";
   windmillWorkspace = "ai-workflows";
+
+  # hermes' webhook listener, reached by the Windmill workers over Tailscale.
+  webhookPort = 8644;
   wmill = pkgs.writeShellApplication {
     name = "wmill";
     runtimeInputs = [ pkgs.deno ];
@@ -186,6 +189,29 @@ let
         api_key = "\${LITELLM_API_KEY}";
         model = "parakeet-tdt-0.6b-v3";
         timeout = 120;
+      };
+    };
+
+    # Voice notes Julien records on his TP-7. gallifrey uploads each take and
+    # Windmill's f/tp7_notes/process_note transcribes and corrects it, then
+    # posts the text here signed with the route secret. The run gets its own
+    # session, so the reply goes to the Signal home channel and is mirrored
+    # into that chat, the same way cron deliveries are. The listener binds
+    # every address; the firewall below only lets it out on tailscale0.
+    platforms.webhook = {
+      enabled = true;
+      extra = {
+        port = webhookPort;
+        routes.tp7 = {
+          secret = "\${TP7_WEBHOOK_SECRET}";
+          prompt = ''
+            Voice note from Julien, recorded on his TP-7 and synced at {synced_at}. It was transcribed and corrected automatically, so a word may still be wrong; read it as a message he sent you on Signal.
+
+            {text}
+          '';
+          deliver = "signal";
+          mirror_to_session = true;
+        };
       };
     };
 
@@ -361,6 +387,7 @@ in
       config.age.secrets.hermes-vaultwarden.file
       config.age.secrets.hermes-windmill.file
       config.age.secrets.hermes-caldav.file
+      config.age.secrets.hermes-webhook.file
     ];
 
     environment = {
@@ -417,6 +444,7 @@ in
       set -a
       . "$CREDENTIALS_DIRECTORY/windmill"
       . "$CREDENTIALS_DIRECTORY/caldav"
+      . "$CREDENTIALS_DIRECTORY/webhook"
       set +a
       if ! wmill workspace add ${windmillWorkspace} ${windmillWorkspace} ${windmillUrl}/ --token "$WINDMILL_TOKEN" > /dev/null 2>&1; then
         echo "wmill: could not register the workspace, the CLI will need it by hand" >&2
@@ -456,6 +484,7 @@ in
         "vaultwarden:${config.age.secrets.hermes-vaultwarden.path}"
         "windmill:${config.age.secrets.hermes-windmill.path}"
         "caldav:${config.age.secrets.hermes-caldav.path}"
+        "webhook:${config.age.secrets.hermes-webhook.path}"
       ];
       Restart = "always";
       RestartSec = 5;
@@ -524,4 +553,9 @@ in
   # password made for Jacques in the self-service portal, as shell
   # assignments.
   age.secrets.hermes-caldav.file = ./hermes-caldav.age;
+  # TP7_WEBHOOK_SECRET, the HMAC secret of the tp7 route, as a shell
+  # assignment. Windmill holds the same value in f/tp7_notes/jacques.
+  age.secrets.hermes-webhook.file = ./hermes-webhook.age;
+
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ webhookPort ];
 }
