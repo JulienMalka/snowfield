@@ -91,6 +91,10 @@
   services.tp7-sync = {
     enable = true;
     settings.destination = "/home/julien/Recordings/tp7";
+    # Voice notes go to Jacques (tp7-notes.nix), so the default 30 s wait
+    # after a take is shortened. Starting a new take within this window
+    # still cancels the pending sync.
+    settings.settle = "15s";
   };
 
   boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
