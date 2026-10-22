@@ -31,8 +31,8 @@ let
   windmillUrl = "https://workflows.luj.fr";
   windmillWorkspace = "ai-workflows";
 
-  # hermes' webhook listener, reached by the Windmill workers over Tailscale.
-  webhookPort = 8644;
+  # The tp7 plugin's listener, reached by the Windmill workers over Tailscale.
+  tp7Port = 8645;
   wmill = pkgs.writeShellApplication {
     name = "wmill";
     runtimeInputs = [ pkgs.deno ];
@@ -194,30 +194,18 @@ let
 
     # Voice notes Julien records on his TP-7. gallifrey uploads each take and
     # Windmill's f/tp7_notes/process_note transcribes and corrects it, then
-    # posts the text here signed with the route secret. The run gets its own
-    # session, so the reply goes to the Signal home channel and is mirrored
-    # into that chat, the same way cron deliveries are. The listener binds
-    # every address; the firewall below only lets it out on tailscale0.
-    platforms.webhook = {
+    # posts the text here signed with TP7_WEBHOOK_SECRET. The tp7 plugin
+    # (hermes-plugins/tp7) hands it to the Signal adapter as his next message
+    # in the Signal chat, so Jacques answers within that conversation. The
+    # stock webhook platform was tried first and could not do this: each
+    # delivery runs in a session of its own, without the chat's context. The
+    # listener binds every address; the firewall below only opens tailscale0.
+    plugins.enabled = [ "tp7" ];
+    platforms.tp7 = {
       enabled = true;
       extra = {
-        port = webhookPort;
-        routes.tp7 = {
-          secret = "\${TP7_WEBHOOK_SECRET}";
-          prompt = ''
-            Voice note from Julien, recorded on his TP-7 and synced at {synced_at}. It was transcribed and corrected automatically, so a word may still be wrong; read it as a message he sent you on Signal.
-
-            {text}
-          '';
-          deliver = "signal";
-          mirror_to_session = true;
-          # Webhook runs default to hermes-webhook, a toolset for untrusted
-          # events with no terminal, so the first real note ("what does my
-          # day look like?") had no way to reach the calendar script. These
-          # notes are Julien speaking, behind the HMAC, so they get what his
-          # Signal messages get.
-          toolsets = [ "hermes-signal" ];
-        };
+        port = tp7Port;
+        secret = "\${TP7_WEBHOOK_SECRET}";
       };
     };
 
@@ -438,6 +426,8 @@ in
       install -m 0600 ${configFile} ${hermesHome}/config.yaml
       install -d -m 0700 ${hermesHome}/hindsight
       install -m 0600 ${hindsightConfig} ${hermesHome}/hindsight/config.json
+      install -d -m 0755 ${hermesHome}/plugins
+      ln -sfn ${./hermes-plugins/tp7} ${hermesHome}/plugins/tp7
     '';
 
     script = ''
@@ -563,5 +553,5 @@ in
   # assignment. Windmill holds the same value in f/tp7_notes/jacques.
   age.secrets.hermes-webhook.file = ./hermes-webhook.age;
 
-  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ webhookPort ];
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ tp7Port ];
 }

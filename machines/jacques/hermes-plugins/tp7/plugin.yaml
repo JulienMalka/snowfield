@@ -1,0 +1,9 @@
+name: tp7
+label: TP-7 voice notes
+kind: platform
+version: 1.0.0
+description: >
+  Receives Julien's TP-7 voice notes, already transcribed by Windmill, and
+  hands each one to the Signal adapter as his next message in his Signal
+  chat, so Jacques answers it there with that conversation's context.
+requires_env: []
