@@ -8,7 +8,8 @@ the Signal home channel, which is Julien's direct chat, so it lands in that
 session as if he had typed it, and the reply goes out through Signal as usual.
 
 config.yaml ``platforms.tp7.extra``: ``port`` (default 8645), ``host``
-(default every address), ``secret`` (required).
+(default every address), ``secret`` (required), ``user_name`` (the name the
+Signal adapter shows for Julien; defaults to the home channel's label).
 """
 
 import json
@@ -41,6 +42,7 @@ class TP7Adapter(BasePlatformAdapter):
         self._host: Optional[str] = extra.get("host") or None
         self._port = int(extra.get("port", DEFAULT_PORT))
         self._secret = str(extra.get("secret") or "")
+        self._user_name: Optional[str] = extra.get("user_name") or None
         self._runner: Optional[web.AppRunner] = None
         self._seen = MessageDeduplicator(max_size=1000, ttl_seconds=7 * 24 * 3600)
 
@@ -103,9 +105,10 @@ class TP7Adapter(BasePlatformAdapter):
             logger.error("[tp7] no Signal adapter or Signal home channel to deliver into")
             return web.json_response({"error": "signal unavailable"}, status=503)
 
+        name = self._user_name or home.name
         source = signal.build_source(
-            chat_id=home.chat_id, chat_name=home.name, chat_type="dm",
-            user_id=home.chat_id, user_name=home.name, user_id_alt=home.chat_id)
+            chat_id=home.chat_id, chat_name=name, chat_type="dm",
+            user_id=home.chat_id, user_name=name, user_id_alt=home.chat_id)
         event = MessageEvent(text=text, message_type=MessageType.TEXT, source=source,
                              message_id=note_id or None, raw_message={"tp7": payload})
         logger.info("[tp7] note %s handed to Signal chat %s", note_id, home.chat_id[:8])
