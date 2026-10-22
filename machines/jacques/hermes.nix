@@ -211,6 +211,12 @@ let
           '';
           deliver = "signal";
           mirror_to_session = true;
+          # Webhook runs default to hermes-webhook, a toolset for untrusted
+          # events with no terminal, so the first real note ("what does my
+          # day look like?") had no way to reach the calendar script. These
+          # notes are Julien speaking, behind the HMAC, so they get what his
+          # Signal messages get.
+          toolsets = [ "hermes-signal" ];
         };
       };
     };
