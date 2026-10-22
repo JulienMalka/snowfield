@@ -200,7 +200,21 @@ let
     # stock webhook platform was tried first and could not do this: each
     # delivery runs in a session of its own, without the chat's context. The
     # listener binds every address; the firewall below only opens tailscale0.
-    plugins.enabled = [ "tp7" ];
+    plugins.enabled = [
+      "tp7"
+      "heartbeat2"
+    ];
+
+    # heartbeat2 (catalog plugin under plugins/, installed by hand like
+    # hindsight) wakes Jacques in the Signal chat itself for follow-ups and
+    # watchers; allow_gateway_injection is the consent key it needs for that.
+    plugins.entries.heartbeat2 = {
+      allow_gateway_injection = true;
+      settings = {
+        timezone = "Europe/Paris";
+        quiet_hours = "23:00-07:30";
+      };
+    };
     platforms.tp7 = {
       enabled = true;
       extra = {
