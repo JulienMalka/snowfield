@@ -28,6 +28,7 @@
     ./wm-detector.nix
     ./jellyswarrm.nix
     ./hindsight.nix
+    ./hermes-relay.nix
   ];
 
   users.users.julien.linger = true;

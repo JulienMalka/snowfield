@@ -1,6 +1,10 @@
 { pkgs, ... }:
 {
-  networking.firewall.allowedTCPPorts = [ 8123 ];
+  networking.firewall.allowedTCPPorts = [
+    8123
+    21064
+  ];
+  networking.firewall.allowedUDPPorts = [ 5353 ];
 
   luj.nginx.enable = true;
   services.nginx.virtualHosts."home.luj" = {
@@ -25,6 +29,7 @@
       "radio_browser"
       "google_translate"
       "isal"
+      "homekit"
     ];
     config = {
       default_config = { };

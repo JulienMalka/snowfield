@@ -10,6 +10,7 @@ let
     "cal-proxy"
     "gh-proxy"
     "tp7-sync"
+    "hermes-relay"
   ];
   packages = builtins.mapAttrs (
     name: _:

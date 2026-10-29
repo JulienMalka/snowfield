@@ -16,6 +16,10 @@
       url = "git+ssh://forgejo@git.luj.fr/luj/tp7-sync.git?ref=main";
       flake = false;
     };
+    hermes-relay = {
+      url = "git+ssh://forgejo@git.luj.fr/luj/assistant-app.git?ref=main";
+      flake = false;
+    };
     agenix = {
       url = "github:ryantm/agenix/main";
       flake = false;

@@ -1,5 +1,6 @@
 {
   inputs,
+  lib,
   profiles,
   ...
 }:
@@ -27,6 +28,10 @@
     };
     defaultInterface = "end0";
   };
+
+  networking.networkmanager.enable = true;
+  networking.networkmanager.wifi.powersave = false;
+  networking.useDHCP = lib.mkForce false;
 
   system.stateVersion = "26.05";
 }

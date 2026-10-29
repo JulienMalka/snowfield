@@ -609,6 +609,23 @@
         "type": "github"
       }
     },
+    "hermes-relay": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792977668,
+        "narHash": "sha256-88Pg3RPpS+3mZJ7uzR7pBFfk/xU6WXJ/mF85RHdybkw=",
+        "ref": "main",
+        "rev": "8eb2c76b5a8a8563dd09f461e3ea3ee2e287b442",
+        "revCount": 86,
+        "type": "git",
+        "url": "ssh://forgejo@git.luj.fr/luj/assistant-app.git"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "ssh://forgejo@git.luj.fr/luj/assistant-app.git"
+      }
+    },
     "home-manager": {
       "flake": false,
       "locked": {
@@ -931,11 +948,11 @@
     "nixpkgs_10": {
       "flake": false,
       "locked": {
-        "lastModified": 1790635395,
-        "narHash": "sha256-bNyvoIyOCu7lzoCpWKWGIsHpTtERUWzqYWFPlN++WTw=",
+        "lastModified": 1792898606,
+        "narHash": "sha256-Mg3rRjsbMqhSMxop5PYMXos8SwAjejrxSgVThTvP9eg=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "7fc6f2c20af09cdcaf48b92ec3121860139ec668",
+        "rev": "1f607aa79b6356ed45d3cd3c8079c196e79efa2c",
         "type": "github"
       },
       "original": {
@@ -1226,6 +1243,7 @@
         "emacs-config": "emacs-config",
         "gh-proxy": "gh-proxy",
         "git-hooks": "git-hooks",
+        "hermes-relay": "hermes-relay",
         "home-manager": "home-manager",
         "home-manager-unstable": "home-manager-unstable",
         "impermanence": "impermanence",

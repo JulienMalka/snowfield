@@ -1,11 +1,28 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
 }:
 let
   hermesHome = "/var/lib/hermes";
+
+  # The Hermes app's repository (the relay's source on gustave too): its
+  # plugin, Jacques' starting skills, and the references they point to.
+  appRepo = inputs.hermes-relay;
+  # Pairs the app (`hermes-app-pair` as julien): prints the QR code to scan in
+  # the app's Settings. Runs the plugin's pairing directly, as the hermes user.
+  appPairPython = hermesPython.withPackages (ps: [
+    ps.aiohttp
+    ps.cryptography
+  ]);
+  hermesAppPair = pkgs.writeShellScriptBin "hermes-app-pair" ''
+    exec /run/wrappers/bin/sudo -u hermes env HERMES_HOME=${hermesHome} \
+      HERMES_APP_TOKEN_FILE=${config.age.secrets.hermes-app-token.path} HERMES_APP_NAME=Jacques \
+      PATH=${lib.makeBinPath [ pkgs.qrencode ]} PYTHONPATH=${hermesHome}/plugins \
+      ${appPairPython}/bin/python3 -m hermes_app.pair "$@"
+  '';
   signalHome = "/var/lib/signal-cli";
 
   # signal-cli runs as an HTTP daemon and hermes talks JSON-RPC to it; the
@@ -146,6 +163,9 @@ let
     poppler-utils
     ripgrep
     sqlite
+    # The app plugin runs card and page scripts here (qjs) before they reach
+    # the phone, with the same helpers the phone runs them with.
+    quickjs
     bitwarden-cli
     wmill
     # hermes' browser tools (browser_navigate, browser_snapshot, ...) only
@@ -161,15 +181,14 @@ let
   ];
 
   # hermes reads $HERMES_HOME/config.yaml and expands ''${VAR} references from
-  # the environment, so the API key stays out of the store and arrives via
-  # credentials. "custom" is hermes' OpenAI-compatible provider; it points at
-  # our litellm gateway, whose only chat model is the vLLM cluster's.
+  # the environment, so API keys stay out of the store and arrive via
+  # credentials. The main model is DeepSeek V4.1 Flash through Julien's OpenCode
+  # Go subscription; hermes reads its key from OPENCODE_GO_API_KEY. Voice notes
+  # still go through our litellm gateway (below).
   configFile = settingsFormat.generate "hermes-config.yaml" {
     model = {
-      provider = "custom";
-      base_url = "https://inference.luj.fr/v1";
-      api_key = "\${LITELLM_API_KEY}";
-      default = "deepseek-v4-flash";
+      provider = "opencode-go";
+      default = "deepseek-v4.1-flash";
     };
 
     platforms.signal = {
@@ -203,6 +222,7 @@ let
     plugins.enabled = [
       "tp7"
       "heartbeat2"
+      "hermes_app"
     ];
 
     # heartbeat2 (catalog plugin under plugins/, installed by hand like
@@ -213,6 +233,34 @@ let
       settings = {
         timezone = "Europe/Paris";
         quiet_hours = "23:00-07:30";
+      };
+    };
+    # The iPhone app (hermes-plugins in the app's repository), reached through
+    # the relay on gustave. Its main conversation is the chat "main", the home
+    # channel; each topic is a chat, and a session, of its own. Injection lets
+    # app_topic seed a new topic's session with its brief.
+    plugins.entries.hermes_app.allow_gateway_injection = true;
+    # The app counts what Jacques is writing while he works, his reasoning
+    # included, so a long turn shows it is moving.
+    plugins.stream_reasoning_deltas = true;
+    # Pages in the app are kept up to date by cron jobs: their runs get the
+    # app tools on top of cron's usual ones, to write the refreshed data.
+    platform_toolsets.cron = [
+      "hermes-cron"
+      "app"
+    ];
+    platforms.app = {
+      enabled = true;
+      home_channel = {
+        platform = "app";
+        chat_id = "main";
+        name = "Jacques app";
+      };
+      extra = {
+        token = "\${HERMES_APP_TOKEN}";
+        relay = "https://jacques.luj.fr";
+        name = "Jacques";
+        user_name = "Julien Malka";
       };
     };
     platforms.tp7 = {
@@ -257,11 +305,10 @@ let
       provider = "hindsight";
     };
 
-    # The one cloud lane, agreed 2026-10-17: deepseek-v4-flash is text-only,
-    # so images (Signal photos, browser screenshots, rendered pages) are
-    # described by GPT-6 Sol through Julien's ChatGPT login. Everything else
-    # stays on the cluster. The OAuth token is runtime state in auth.json,
-    # added once with `hermes auth add openai-codex`.
+    # DeepSeek is text-only, so images (Signal photos, browser screenshots,
+    # rendered pages) are described by GPT-6 Sol through Julien's ChatGPT
+    # login (agreed 2026-10-17). The OAuth token is runtime state in
+    # auth.json, added once with `hermes auth add openai-codex`.
     auxiliary.vision = {
       provider = "openai-codex";
       model = "gpt-6-sol";
@@ -365,7 +412,7 @@ in
   nix.settings.allowed-users = [ "hermes" ];
   nix.settings.trusted-users = [ "hermes" ];
 
-  environment.systemPackages = toolbox;
+  environment.systemPackages = toolbox ++ [ hermesAppPair ];
   environment.variables.HERMES_BUNDLED_LOCALES = hermesLocales;
 
   systemd.services.signal-cli = {
@@ -404,15 +451,22 @@ in
     # must restart it too, or it keeps the old token in its environment.
     restartTriggers = [
       config.age.secrets.hermes-litellm-key.file
+      config.age.secrets.hermes-opencode-key.file
       config.age.secrets.hermes-vaultwarden.file
       config.age.secrets.hermes-windmill.file
       config.age.secrets.hermes-caldav.file
       config.age.secrets.hermes-webhook.file
+      config.age.secrets.hermes-app-token.file
     ];
 
     environment = {
       HERMES_HOME = hermesHome;
       HERMES_BUNDLED_LOCALES = hermesLocales;
+      # The app's home chat, for cron jobs delivered to the app, and its one
+      # sender: only the phone paired through the relay can seal a message
+      # the plugin opens, and everything it sends comes from "app".
+      APP_HOME_CHANNEL = "main";
+      APP_ALLOWED_USERS = "app";
       HOME = hermesHome;
       SIGNAL_HTTP_URL = "http://${signalHttp}";
       SIGNAL_ACCOUNT = signalAccount;
@@ -454,10 +508,23 @@ in
       install -m 0600 ${hindsightConfig} ${hermesHome}/hindsight/config.json
       install -d -m 0755 ${hermesHome}/plugins
       ln -sfn ${./hermes-plugins/tp7} ${hermesHome}/plugins/tp7
+      ln -sfn ${appRepo}/plugin/hermes_app ${hermesHome}/plugins/hermes_app
+
+      # Jacques' starting skills for the app: copied once, then his to change.
+      # The references beside them are ours and refreshed on every start.
+      install -d -m 0755 ${hermesHome}/skills/drawing-cards ${hermesHome}/skills/living-in-the-app
+      [ -e ${hermesHome}/skills/drawing-cards/SKILL.md ] || install -m 0644 ${appRepo}/docs/hermes-ui/skill/SKILL.md ${hermesHome}/skills/drawing-cards/SKILL.md
+      [ -e ${hermesHome}/skills/living-in-the-app/SKILL.md ] || install -m 0644 ${appRepo}/plugin/skills/living-in-the-app/SKILL.md ${hermesHome}/skills/living-in-the-app/SKILL.md
+      install -m 0644 ${appRepo}/docs/hermes-ui.md ${hermesHome}/skills/drawing-cards/hermes-ui.md
+      rm -rf ${hermesHome}/skills/drawing-cards/examples
+      cp -r --no-preserve=mode ${appRepo}/docs/hermes-ui/examples ${hermesHome}/skills/drawing-cards/examples
+      install -m 0644 ${appRepo}/docs/protocol.md ${hermesHome}/skills/living-in-the-app/protocol.md
     '';
 
     script = ''
       export LITELLM_API_KEY="$(< "$CREDENTIALS_DIRECTORY/litellm-key")"
+      export OPENCODE_GO_API_KEY="$(< "$CREDENTIALS_DIRECTORY/opencode-key")"
+      export HERMES_APP_TOKEN="$(< "$CREDENTIALS_DIRECTORY/app-token")"
 
       # Both Windmill tokens: the MCP one is read by the config, the plain one
       # by the CLI. The CLI keeps its remote list under $HOME/.config/windmill
@@ -503,10 +570,12 @@ in
       WorkingDirectory = hermesHome;
       LoadCredential = [
         "litellm-key:${config.age.secrets.hermes-litellm-key.path}"
+        "opencode-key:${config.age.secrets.hermes-opencode-key.path}"
         "vaultwarden:${config.age.secrets.hermes-vaultwarden.path}"
         "windmill:${config.age.secrets.hermes-windmill.path}"
         "caldav:${config.age.secrets.hermes-caldav.path}"
         "webhook:${config.age.secrets.hermes-webhook.path}"
+        "app-token:${config.age.secrets.hermes-app-token.path}"
       ];
       Restart = "always";
       RestartSec = 5;
@@ -565,6 +634,7 @@ in
   age.secrets.syncthing-key.file = ./syncthing-key.age;
   age.secrets.syncthing-cert.file = ./syncthing-cert.age;
   age.secrets.hermes-litellm-key.file = ./hermes-litellm-key.age;
+  age.secrets.hermes-opencode-key.file = ./hermes-opencode-key.age;
   # BW_CLIENTID, BW_CLIENTSECRET and BW_PASSWORD of hermes' vaultwarden
   # account, as shell assignments.
   age.secrets.hermes-vaultwarden.file = ./hermes-vaultwarden.age;
@@ -578,6 +648,12 @@ in
   # TP7_WEBHOOK_SECRET, the HMAC secret of the tp7 route, as a shell
   # assignment. Windmill holds the same value in f/tp7_notes/jacques.
   age.secrets.hermes-webhook.file = ./hermes-webhook.age;
+  # The agent token the relay (jacques.luj.fr) gave Jacques for his invite,
+  # bare. Owned by hermes so `hermes-app-pair` can read it too.
+  age.secrets.hermes-app-token = {
+    file = ./hermes-app-token.age;
+    owner = "hermes";
+  };
 
   networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ tp7Port ];
 }
