@@ -92,11 +92,11 @@
     "cal-proxy": {
       "flake": false,
       "locked": {
-        "lastModified": 1792190377,
-        "narHash": "sha256-w6/Sn5uG+Qr12fsiAZZQ3tgYm2gjeBZ/V4a887JHEEI=",
+        "lastModified": 1793281960,
+        "narHash": "sha256-G+LK+DxFjh8kFK3dPJyQYQvKz8MQr4MsW6UraV4upNo=",
         "ref": "main",
-        "rev": "91d1679f76c2a9cdad17a1aa87690adbd72bb56a",
-        "revCount": 15,
+        "rev": "6c4ff53e6b1ec46cf3667a7712e07a17225b537f",
+        "revCount": 16,
         "type": "git",
         "url": "ssh://forgejo@git.luj.fr/luj/cal-proxy.git"
       },
