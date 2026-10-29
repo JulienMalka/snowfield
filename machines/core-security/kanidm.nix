@@ -331,4 +331,6 @@ in
 
   environment.etc."kanidm/luj-logo.png".source = ./kanidm-theme/luj-logo.png;
 
+  nixpkgs.config.permittedInsecurePackages = [ "kanidm-with-secret-provisioning-1.9.4" ];
+
 }
